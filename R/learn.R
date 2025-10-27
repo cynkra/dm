@@ -98,7 +98,14 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
     dm_flatten_to_tbl(key_column_usage, .recursive = TRUE) %>%
-    select(constraint_catalog, constraint_schema, constraint_name, dm_name, column_name, is_autoincrement) %>%
+    select(
+      constraint_catalog,
+      constraint_schema,
+      constraint_name,
+      dm_name,
+      column_name,
+      is_autoincrement
+    ) %>%
     group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
     summarize(
       pks = list(tibble(
@@ -117,13 +124,19 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_zoom_to(key_column_usage) %>%
     semi_join(table_constraints) %>%
     left_join(table_constraints, select = c(delete_rule)) %>%
-    left_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
+    left_join(
+      columns,
+      select = c(column_name, dm_name, table_catalog, table_schema, table_name)
+    ) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
     dm_zoom_to(constraint_column_usage) %>%
     #
     # inner_join(): Matching column sometimes not found on Postgres
-    inner_join(columns, select = c(column_name, dm_name, table_catalog, table_schema, table_name)) %>%
+    inner_join(
+      columns,
+      select = c(column_name, dm_name, table_catalog, table_schema, table_name)
+    ) %>%
     #
     dm_update_zoomed() %>%
     dm_select_tbl(-columns) %>%

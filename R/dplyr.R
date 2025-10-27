@@ -317,7 +317,14 @@ count.dm <- function(x, ...) {
 #' @rdname dplyr_table_manipulation
 #' @inheritParams dplyr::count
 #' @export
-count.dm_zoomed <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = group_by_drop_default(x)) {
+count.dm_zoomed <- function(
+  x,
+  ...,
+  wt = NULL,
+  sort = FALSE,
+  name = NULL,
+  .drop = group_by_drop_default(x)
+) {
   tbl <- tbl_zoomed(x)
 
   if (!missing(...)) {
@@ -464,7 +471,15 @@ inner_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, se
 
 #' @rdname dplyr_join
 #' @export
-inner_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+inner_join.dm_keyed_tbl <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = FALSE
+) {
   if (!is_dm_keyed_tbl(y)) {
     return(NextMethod())
   }
@@ -546,7 +561,15 @@ right_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, se
 
 #' @rdname dplyr_join
 #' @export
-right_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE) {
+right_join.dm_keyed_tbl <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = FALSE
+) {
   if (!is_dm_keyed_tbl(y)) {
     return(NextMethod())
   }
@@ -770,7 +793,14 @@ unique_prefix <- function(x) {
 }
 
 # Workaround for dev dplyr + dbplyr
-safe_count <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = group_by_drop_default(x)) {
+safe_count <- function(
+  x,
+  ...,
+  wt = NULL,
+  sort = FALSE,
+  name = NULL,
+  .drop = group_by_drop_default(x)
+) {
   quos <- enquos(...)
 
   if (has_length(quos)) {

@@ -147,9 +147,19 @@ test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .uniqu
   out
 }
 
-test_db_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .unique_indexes = NULL) {
+test_db_src_frame <- function(
+  ...,
+  .temporary = TRUE,
+  .env = parent.frame(),
+  .unique_indexes = NULL
+) {
   if (is_db_test_src()) {
-    return(test_src_frame(..., .temporary = .temporary, .env = .env, .unique_indexes = .unique_indexes))
+    return(test_src_frame(
+      ...,
+      .temporary = .temporary,
+      .env = .env,
+      .unique_indexes = .unique_indexes
+    ))
   }
 
   src <- my_db_test_src()
@@ -734,7 +744,10 @@ dm_for_flatten %<-%
 result_from_flatten %<-%
   {
     fact_clean() %>%
-      left_join(dim_1_clean(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+      left_join(
+        dim_1_clean(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      ) %>%
       left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
       left_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
       left_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
@@ -743,7 +756,10 @@ result_from_flatten %<-%
 result_from_flatten_new %<-%
   {
     fact_clean_new() %>%
-      left_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+      left_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      ) %>%
       left_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
       left_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
       left_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
@@ -827,9 +843,14 @@ get_test_tables_from_postgres <- function() {
   con_postgres <- src_postgres$con
 
   con_postgres %>%
-    DBI::dbGetQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'") %>%
+    DBI::dbGetQuery(
+      "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"
+    ) %>%
     as_tibble() %>%
-    filter(grepl("^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+", table_name))
+    filter(grepl(
+      "^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+",
+      table_name
+    ))
 }
 
 is_postgres_empty <- function() {

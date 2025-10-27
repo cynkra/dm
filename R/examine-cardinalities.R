@@ -33,7 +33,13 @@
 #' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nycflights13() %>%
 #'   dm_examine_cardinalities()
-dm_examine_cardinalities <- function(.dm, ..., .progress = NA, dm = deprecated(), progress = deprecated()) {
+dm_examine_cardinalities <- function(
+  .dm,
+  ...,
+  .progress = NA,
+  dm = deprecated(),
+  progress = deprecated()
+) {
   check_dots_empty()
 
   if (!is_missing(dm)) {
@@ -48,12 +54,19 @@ dm_examine_cardinalities <- function(.dm, ..., .progress = NA, dm = deprecated()
     if (is.na(progress)) {
       progress <- .progress
     }
-    deprecate_soft("1.0.0", "dm_examine_cardinalities(progress = )", "dm_examine_cardinalities(.progress = )")
+    deprecate_soft(
+      "1.0.0",
+      "dm_examine_cardinalities(progress = )",
+      "dm_examine_cardinalities(.progress = )"
+    )
   }
 
   check_not_zoomed(.dm)
   .dm %>%
-    dm_examine_cardinalities_impl(progress = .progress, top_level_fun = "dm_examine_cardinalities") %>%
+    dm_examine_cardinalities_impl(
+      progress = .progress,
+      top_level_fun = "dm_examine_cardinalities"
+    ) %>%
     new_dm_examine_cardinalities()
 }
 
@@ -126,7 +139,9 @@ bullets_cardinalities <- function(x) {
     arrange(col)
   walk2(x$cardinalities, x$col, ~ cli::cat_bullet(.x, bullet_col = .y))
   if (sum(x$col == "red") > 0) {
-    cli::cli_alert_warning("Not all FK constraints satisfied, call `dm_examine_constraints()` for details.")
+    cli::cli_alert_warning(
+      "Not all FK constraints satisfied, call `dm_examine_constraints()` for details."
+    )
   }
   invisible(x)
 }

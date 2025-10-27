@@ -374,6 +374,11 @@ gui_server <- function(input, output, session) {
 
   output$o_svg <- renderDmSVG({
     dm <- r_dm()
-    dmSVG(dm, viewBox = FALSE, node_to_zoom = r_node_to_zoom(), nodes_to_select = I(r_table_names_select()))
+    dmSVG(
+      dm,
+      viewBox = FALSE,
+      node_to_zoom = r_node_to_zoom(),
+      nodes_to_select = I(r_table_names_select())
+    )
   })
 }

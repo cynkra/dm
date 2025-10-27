@@ -304,7 +304,15 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    other,
+    join = join,
+    join_name = join_name,
+    squash = FALSE,
+    .position = "prefix"
+  )
 }
 
 #' @rdname deprecated
@@ -665,7 +673,11 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     dm_from_def(zoomed = TRUE, validate = FALSE)
 
   dm_wo_outgoing_fks %>%
-    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, names_list$old_new_names[old_tbl_name], col_tracker_zoomed(dm)) %>%
+    dm_insert_zoomed_outgoing_fks(
+      new_tbl_name_chr,
+      names_list$old_new_names[old_tbl_name],
+      col_tracker_zoomed(dm)
+    ) %>%
     dm_clean_zoomed()
 }
 
@@ -751,7 +763,12 @@ error_txt_rm_fk_col_missing <- function() {
 #' @keywords internal
 #' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
-  deprecate_soft("1.0.0", "dm_add_tbl()", "dm()", details = 'Use `.name_repair = "unique"` if necessary.')
+  deprecate_soft(
+    "1.0.0",
+    "dm_add_tbl()",
+    "dm()",
+    details = 'Use `.name_repair = "unique"` if necessary.'
+  )
 
   check_not_zoomed(dm)
 

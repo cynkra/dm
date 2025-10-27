@@ -107,12 +107,18 @@ info_local_named <-
 
   # FIXME: Simplify with rekey, https://github.com/cynkra/dm/issues/519
   dm_zoom_to(schemata) %>%
-  mutate(fq_schema_name = quote_fq_schema(!!con, catalog_name, schema_name), .before = catalog_name) %>%
+  mutate(
+    fq_schema_name = quote_fq_schema(!!con, catalog_name, schema_name),
+    .before = catalog_name
+  ) %>%
   dm_update_zoomed() %>%
 
   dm_zoom_to(tables) %>%
   left_join(schemata, select = fq_schema_name) %>%
-  mutate(fq_table_name = quote_fq_table(!!con, fq_schema_name, table_name), .before = table_catalog) %>%
+  mutate(
+    fq_table_name = quote_fq_table(!!con, fq_schema_name, table_name),
+    .before = table_catalog
+  ) %>%
   mutate(r_table_name = fq_r_table_if_needed(table_catalog, table_schema, table_name)) %>%
   dm_update_zoomed() %>%
 

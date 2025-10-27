@@ -12,10 +12,34 @@ test_that("check_card_api() new interface", {
 
   expect_same(
     check_card_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
-    check_card_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
-    check_card_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
-    check_card_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
-    check_card_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = b, by_position = TRUE),
+    check_card_api(
+      x = data_mcard_1(),
+      data_mcard_2(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
+    check_card_api(
+      data_mcard_1(),
+      y = data_mcard_2(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
+    check_card_api(
+      x = data_mcard_1(),
+      y = data_mcard_2(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
+    check_card_api(
+      y = data_mcard_2(),
+      x = data_mcard_1(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
     check_card_api(data_mcard_1(), a, data_mcard_2(), b)
   )
 })
@@ -24,7 +48,10 @@ test_that("check_cardinality_...() functions work without `x_select` and `y_sele
   expect_silent(check_cardinality_0_n(data_card_1(), data_card_11()))
   expect_silent(check_cardinality_1_n(data_card_1(), data_card_12()))
   # compute(): Can't open the same table twice on MySQL
-  expect_silent(check_cardinality_1_1(data_card_1(), suppress_mssql_message(compute(data_card_1()))))
+  expect_silent(check_cardinality_1_1(
+    data_card_1(),
+    suppress_mssql_message(compute(data_card_1()))
+  ))
   expect_silent(check_cardinality_0_1(data_card_1(), data_card_11()))
 
   expect_snapshot({
@@ -41,7 +68,12 @@ test_that("check_card_api() compatibility", {
 
   expect_same(
     check_card_api(data_mcard_1(), a, data_mcard_2(), b),
-    check_card_api(parent_table = data_mcard_1(), pk_column = a, child_table = data_mcard_2(), fk_column = b)
+    check_card_api(
+      parent_table = data_mcard_1(),
+      pk_column = a,
+      child_table = data_mcard_2(),
+      fk_column = b
+    )
   )
   expect_same(
     check_card_api(fk_column = b, data_mcard_1(), a, data_mcard_2()),
@@ -256,30 +288,150 @@ test_that("check_card_api() compatibility", {
     check_card_api(b, child_table = data_mcard_2(), pk_column = a, parent_table = data_mcard_1())
   )
   expect_same(
-    check_card_api(parent_table = data_mcard_1(), pk_column = a, child_table = data_mcard_2(), fk_column = b),
-    check_card_api(parent_table = data_mcard_1(), pk_column = a, fk_column = b, child_table = data_mcard_2()),
-    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), pk_column = a, fk_column = b),
-    check_card_api(parent_table = data_mcard_1(), child_table = data_mcard_2(), fk_column = b, pk_column = a),
-    check_card_api(parent_table = data_mcard_1(), fk_column = b, pk_column = a, child_table = data_mcard_2()),
-    check_card_api(parent_table = data_mcard_1(), fk_column = b, child_table = data_mcard_2(), pk_column = a),
-    check_card_api(pk_column = a, parent_table = data_mcard_1(), child_table = data_mcard_2(), fk_column = b),
-    check_card_api(pk_column = a, parent_table = data_mcard_1(), fk_column = b, child_table = data_mcard_2()),
-    check_card_api(pk_column = a, child_table = data_mcard_2(), parent_table = data_mcard_1(), fk_column = b),
-    check_card_api(pk_column = a, child_table = data_mcard_2(), fk_column = b, parent_table = data_mcard_1()),
-    check_card_api(pk_column = a, fk_column = b, parent_table = data_mcard_1(), child_table = data_mcard_2()),
-    check_card_api(pk_column = a, fk_column = b, child_table = data_mcard_2(), parent_table = data_mcard_1()),
-    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), pk_column = a, fk_column = b),
-    check_card_api(child_table = data_mcard_2(), parent_table = data_mcard_1(), fk_column = b, pk_column = a),
-    check_card_api(child_table = data_mcard_2(), pk_column = a, parent_table = data_mcard_1(), fk_column = b),
-    check_card_api(child_table = data_mcard_2(), pk_column = a, fk_column = b, parent_table = data_mcard_1()),
-    check_card_api(child_table = data_mcard_2(), fk_column = b, parent_table = data_mcard_1(), pk_column = a),
-    check_card_api(child_table = data_mcard_2(), fk_column = b, pk_column = a, parent_table = data_mcard_1()),
-    check_card_api(fk_column = b, parent_table = data_mcard_1(), pk_column = a, child_table = data_mcard_2()),
-    check_card_api(fk_column = b, parent_table = data_mcard_1(), child_table = data_mcard_2(), pk_column = a),
-    check_card_api(fk_column = b, pk_column = a, parent_table = data_mcard_1(), child_table = data_mcard_2()),
-    check_card_api(fk_column = b, pk_column = a, child_table = data_mcard_2(), parent_table = data_mcard_1()),
-    check_card_api(fk_column = b, child_table = data_mcard_2(), parent_table = data_mcard_1(), pk_column = a),
-    check_card_api(fk_column = b, child_table = data_mcard_2(), pk_column = a, parent_table = data_mcard_1())
+    check_card_api(
+      parent_table = data_mcard_1(),
+      pk_column = a,
+      child_table = data_mcard_2(),
+      fk_column = b
+    ),
+    check_card_api(
+      parent_table = data_mcard_1(),
+      pk_column = a,
+      fk_column = b,
+      child_table = data_mcard_2()
+    ),
+    check_card_api(
+      parent_table = data_mcard_1(),
+      child_table = data_mcard_2(),
+      pk_column = a,
+      fk_column = b
+    ),
+    check_card_api(
+      parent_table = data_mcard_1(),
+      child_table = data_mcard_2(),
+      fk_column = b,
+      pk_column = a
+    ),
+    check_card_api(
+      parent_table = data_mcard_1(),
+      fk_column = b,
+      pk_column = a,
+      child_table = data_mcard_2()
+    ),
+    check_card_api(
+      parent_table = data_mcard_1(),
+      fk_column = b,
+      child_table = data_mcard_2(),
+      pk_column = a
+    ),
+    check_card_api(
+      pk_column = a,
+      parent_table = data_mcard_1(),
+      child_table = data_mcard_2(),
+      fk_column = b
+    ),
+    check_card_api(
+      pk_column = a,
+      parent_table = data_mcard_1(),
+      fk_column = b,
+      child_table = data_mcard_2()
+    ),
+    check_card_api(
+      pk_column = a,
+      child_table = data_mcard_2(),
+      parent_table = data_mcard_1(),
+      fk_column = b
+    ),
+    check_card_api(
+      pk_column = a,
+      child_table = data_mcard_2(),
+      fk_column = b,
+      parent_table = data_mcard_1()
+    ),
+    check_card_api(
+      pk_column = a,
+      fk_column = b,
+      parent_table = data_mcard_1(),
+      child_table = data_mcard_2()
+    ),
+    check_card_api(
+      pk_column = a,
+      fk_column = b,
+      child_table = data_mcard_2(),
+      parent_table = data_mcard_1()
+    ),
+    check_card_api(
+      child_table = data_mcard_2(),
+      parent_table = data_mcard_1(),
+      pk_column = a,
+      fk_column = b
+    ),
+    check_card_api(
+      child_table = data_mcard_2(),
+      parent_table = data_mcard_1(),
+      fk_column = b,
+      pk_column = a
+    ),
+    check_card_api(
+      child_table = data_mcard_2(),
+      pk_column = a,
+      parent_table = data_mcard_1(),
+      fk_column = b
+    ),
+    check_card_api(
+      child_table = data_mcard_2(),
+      pk_column = a,
+      fk_column = b,
+      parent_table = data_mcard_1()
+    ),
+    check_card_api(
+      child_table = data_mcard_2(),
+      fk_column = b,
+      parent_table = data_mcard_1(),
+      pk_column = a
+    ),
+    check_card_api(
+      child_table = data_mcard_2(),
+      fk_column = b,
+      pk_column = a,
+      parent_table = data_mcard_1()
+    ),
+    check_card_api(
+      fk_column = b,
+      parent_table = data_mcard_1(),
+      pk_column = a,
+      child_table = data_mcard_2()
+    ),
+    check_card_api(
+      fk_column = b,
+      parent_table = data_mcard_1(),
+      child_table = data_mcard_2(),
+      pk_column = a
+    ),
+    check_card_api(
+      fk_column = b,
+      pk_column = a,
+      parent_table = data_mcard_1(),
+      child_table = data_mcard_2()
+    ),
+    check_card_api(
+      fk_column = b,
+      pk_column = a,
+      child_table = data_mcard_2(),
+      parent_table = data_mcard_1()
+    ),
+    check_card_api(
+      fk_column = b,
+      child_table = data_mcard_2(),
+      parent_table = data_mcard_1(),
+      pk_column = a
+    ),
+    check_card_api(
+      fk_column = b,
+      child_table = data_mcard_2(),
+      pk_column = a,
+      parent_table = data_mcard_1()
+    )
   )
 })
 
@@ -297,17 +449,42 @@ test_that("check_cardinality_...() API errors", {
 test_that("check_cardinality_...() functions are checking the cardinality correctly?", {
   #  expecting silent: ------------------------------------------------------
 
-  expect_silent(check_cardinality_0_n(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)))
+  expect_silent(check_cardinality_0_n(
+    data_card_1(),
+    data_card_3(),
+    x_select = a,
+    y_select = c(a = c)
+  ))
 
-  expect_silent(check_cardinality_1_n(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)))
+  expect_silent(check_cardinality_1_n(
+    data_card_1(),
+    data_card_3(),
+    x_select = a,
+    y_select = c(a = c)
+  ))
 
-  expect_silent(check_cardinality_1_1(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)))
+  expect_silent(check_cardinality_1_1(
+    data_card_1(),
+    data_card_3(),
+    x_select = a,
+    y_select = c(a = c)
+  ))
 
   expect_silent(check_set_equality(data_card_1(), data_card_3(), x_select = a, y_select = c(a = c)))
 
-  expect_silent(check_cardinality_0_n(data_card_5(), data_card_4(), x_select = a, y_select = c(a = c)))
+  expect_silent(check_cardinality_0_n(
+    data_card_5(),
+    data_card_4(),
+    x_select = a,
+    y_select = c(a = c)
+  ))
 
-  expect_silent(check_cardinality_0_1(data_card_5(), data_card_6(), x_select = a, y_select = c(a = c)))
+  expect_silent(check_cardinality_0_1(
+    data_card_5(),
+    data_card_6(),
+    x_select = a,
+    y_select = c(a = c)
+  ))
 
   # scenarios for examine_cardinality() -------------------------------------
 
@@ -386,8 +563,18 @@ test_that("check_cardinality_...() functions are checking the cardinality correc
 
 test_that("check_cardinality_...() functions are supporting compound keys", {
   # successes
-  expect_silent(check_cardinality_0_n(data_card_1(), data_card_11(), x_select = c(a, b), y_select = c(a, b)))
-  expect_silent(check_cardinality_1_n(data_card_1(), data_card_12(), x_select = c(a, b), y_select = c(a, b)))
+  expect_silent(check_cardinality_0_n(
+    data_card_1(),
+    data_card_11(),
+    x_select = c(a, b),
+    y_select = c(a, b)
+  ))
+  expect_silent(check_cardinality_1_n(
+    data_card_1(),
+    data_card_12(),
+    x_select = c(a, b),
+    y_select = c(a, b)
+  ))
   # compute(): Can't open the same table twice on MySQL
   expect_silent(check_cardinality_1_1(
     data_card_1(),
@@ -395,8 +582,18 @@ test_that("check_cardinality_...() functions are supporting compound keys", {
     x_select = c(a, b),
     y_select = c(a, b)
   ))
-  expect_silent(check_set_equality(data_card_12(), data_card_1(), x_select = c(a, b), y_select = c(a, b)))
-  expect_silent(check_cardinality_0_1(data_card_1(), data_card_11(), x_select = c(a, b), y_select = c(a, b)))
+  expect_silent(check_set_equality(
+    data_card_12(),
+    data_card_1(),
+    x_select = c(a, b),
+    y_select = c(a, b)
+  ))
+  expect_silent(check_cardinality_0_1(
+    data_card_1(),
+    data_card_11(),
+    x_select = c(a, b),
+    y_select = c(a, b)
+  ))
 
   # scenarios for examine_cardinality() -------------------------------------
 

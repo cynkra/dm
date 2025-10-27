@@ -68,7 +68,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
       dim_2_clean_new(),
       by = c("dim_2_key" = "dim_2_pk")
     ) %>%
-      left_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
+      left_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      )
   )
 
   # with grandparent table
@@ -126,7 +129,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'full_join()'", {
   expect_equivalent_tbl(
     out,
     fact_clean_new() %>%
-      full_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+      full_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      ) %>%
       full_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
       full_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
       full_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
@@ -163,7 +169,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
       "right_join"
     )),
     fact_clean_new() %>%
-      right_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")) %>%
+      right_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      ) %>%
       right_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
       right_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
       right_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
@@ -184,7 +193,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'right_join()'", {
       dim_2_clean_new(),
       by = c("dim_2_key" = "dim_2_pk")
     ) %>%
-      right_join(dim_1_clean_new(), by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2"))
+      right_join(
+        dim_1_clean_new(),
+        by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
+      )
   )
 })
 

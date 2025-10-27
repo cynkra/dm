@@ -191,7 +191,11 @@ test_that("schema handling on MSSQL works for different DBs", {
     sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     tibble(
       table_name = "test_1",
-      remote_name = list(DBI::Id(catalog = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"))
+      remote_name = list(DBI::Id(
+        catalog = "test_db_for_schema_dm",
+        schema = "test_schema",
+        table = "test_1"
+      ))
     )
   )
 })

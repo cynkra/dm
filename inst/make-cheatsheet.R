@@ -98,7 +98,10 @@ withr::with_dir(
     )
 
     # render --------------
-    template <- paste0(brio::read_lines(system.file("cheatsheet-template.html", package = "dm")), collapse = "")
+    template <- paste0(
+      brio::read_lines(system.file("cheatsheet-template.html", package = "dm")),
+      collapse = ""
+    )
     rendered <- whisker::whisker.render(template)
     brio::write_lines(rendered, "cheatsheet-printable.html")
     fs::dir_copy(getwd(), final_dir)

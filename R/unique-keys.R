@@ -284,6 +284,8 @@ error_txt_uk_not_defined <- function() {
 }
 
 abort_no_uk_if_pk <- function(table, column, type = "PK") {
-  error_txt <- glue("A {type} ({commas(tick(column))}) for table `{table}` already exists, not adding UK.")
+  error_txt <- glue(
+    "A {type} ({commas(tick(column))}) for table `{table}` already exists, not adding UK."
+  )
   abort(error_txt, class = dm_error_full("no_uk_if_pk"))
 }

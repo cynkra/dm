@@ -33,7 +33,13 @@ new_mw_cg <- function(dm) {
 #'   must abort the operation.
 #'   Processed with [rlang::as_function()].
 #' @noRd
-mw_cg_run <- function(mw_cg, op_name, ..., confirmation_function = abort_function, abort_function = abort) {
+mw_cg_run <- function(
+  mw_cg,
+  op_name,
+  ...,
+  confirmation_function = abort_function,
+  abort_function = abort
+) {
   confirmation_function <- as_function(confirmation_function)
   abort_function <- as_function(abort_function)
 

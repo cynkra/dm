@@ -270,10 +270,20 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def <- dm_get_def(dm)
 
-  dm_get_all_fks_def_impl(def = def, parent_table = parent_table, ignore_on_delete = ignore_on_delete, id = id)
+  dm_get_all_fks_def_impl(
+    def = def,
+    parent_table = parent_table,
+    ignore_on_delete = ignore_on_delete,
+    id = id
+  )
 }
 
-dm_get_all_fks_def_impl <- function(def, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
+dm_get_all_fks_def_impl <- function(
+  def,
+  parent_table = NULL,
+  ignore_on_delete = FALSE,
+  id = FALSE
+) {
   def_sub <- def[c("table", "fks")]
   names(def_sub)[[1]] <- "parent_table"
 
@@ -562,7 +572,13 @@ enum_fk_candidates <- function(dm_zoomed, ref_table, ...) {
   ref_tbl_pk <- dm_get_pk_impl(dm_zoomed, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(dm_zoomed)[[ref_table_name]]
-  enum_fk_candidates_impl(table_name, tbl_zoomed(dm_zoomed), ref_table_name, ref_tbl, ref_tbl_pk) %>%
+  enum_fk_candidates_impl(
+    table_name,
+    tbl_zoomed(dm_zoomed),
+    ref_table_name,
+    ref_tbl,
+    ref_tbl_pk
+  ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }

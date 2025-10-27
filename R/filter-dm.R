@@ -198,7 +198,11 @@ dm_apply_filters_to_tbl <- function(dm, table) {
 
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
-    deprecate_soft("1.0.0", "dm_apply_filters_to_tbl()", details = "Access tables directly after `dm_filter()`.")
+    deprecate_soft(
+      "1.0.0",
+      "dm_apply_filters_to_tbl()",
+      details = "Access tables directly after `dm_filter()`."
+    )
   }
 
   dm_apply_filters_to_tbl_impl(dm, {{ table }})
@@ -244,7 +248,12 @@ dm_get_filtered_table <- function(dm, from) {
       semi_joins <- pull(semi_joins)
       semi_joins_tbls <- list_of_tables[semi_joins]
       table <-
-        reduce2(semi_joins_tbls, semi_joins, ~ semi_join(..1, ..2, by = get_by(dm, table_name, ..3)), .init = table)
+        reduce2(
+          semi_joins_tbls,
+          semi_joins,
+          ~ semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
+          .init = table
+        )
     }
     list_of_tables[[table_name]] <- table
   }
@@ -294,7 +303,11 @@ dm_get_filters <- function(dm) {
 
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
-    deprecate_soft("1.0.0", "dm_get_filters()", details = "Filter conditions are no longer stored with the dm object.")
+    deprecate_soft(
+      "1.0.0",
+      "dm_get_filters()",
+      details = "Filter conditions are no longer stored with the dm object."
+    )
   }
   filters
 }

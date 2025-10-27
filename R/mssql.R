@@ -118,7 +118,10 @@ mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
     semi_join(info_fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name")) %>%
     select(-table_schema, -table_name, -column_name) %>%
     distinct() %>%
-    left_join(sys_fkc_column_usage, by = c("constraint_catalog", "constraint_schema", "constraint_name"))
+    left_join(
+      sys_fkc_column_usage,
+      by = c("constraint_catalog", "constraint_schema", "constraint_name")
+    )
 }
 
 mssql_escape <- function(x, con) {

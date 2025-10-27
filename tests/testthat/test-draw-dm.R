@@ -28,11 +28,14 @@ test_that("`dm_set_colors()` works", {
   colset <- c(blue = "flights", green = "airports")
 
   # test splicing
-  expect_snapshot(variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy", {
-    dm_nycflights_small() %>%
-      dm_set_colors(!!!colset) %>%
-      dm_get_colors()
-  })
+  expect_snapshot(
+    variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy",
+    {
+      dm_nycflights_small() %>%
+        dm_set_colors(!!!colset) %>%
+        dm_get_colors()
+    }
+  )
 })
 
 test_that("`dm_set_colors()` errors if old syntax used", {

@@ -72,10 +72,25 @@ dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
-  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = .join, join_name = join_name, squash = .recursive)
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    list_of_pts,
+    join = .join,
+    join_name = join_name,
+    squash = .recursive
+  )
 }
 
-dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squash, .position = "suffix") {
+dm_flatten_to_tbl_impl <- function(
+  dm,
+  start,
+  list_of_pts,
+  join,
+  join_name,
+  squash,
+  .position = "suffix"
+) {
   if (join_name == "nest_join") {
     abort_no_flatten_with_nest_join()
   }
@@ -172,7 +187,15 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    other,
+    join = join,
+    join_name = join_name,
+    squash = FALSE,
+    .position = "prefix"
+  )
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
