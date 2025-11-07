@@ -1,5 +1,24 @@
 # Changelog
 
+## dm 1.0.12.9007
+
+### Chore
+
+- Format with air with line length 100
+  ([\#2335](https://github.com/cynkra/dm/issues/2335)).
+
+### Continuous integration
+
+- Fix dev pkgdown.
+
+### Documentation
+
+- Agent docs and updated instructions.
+
+### claude
+
+- Fix config.
+
 ## dm 1.0.12.9006
 
 ### Chore
