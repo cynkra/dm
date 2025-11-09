@@ -1,5 +1,11 @@
 # Changelog
 
+## dm 1.0.12.9008
+
+### Continuous integration
+
+- Sync ([\#2341](https://github.com/cynkra/dm/issues/2341)).
+
 ## dm 1.0.12.9007
 
 ### Chore
