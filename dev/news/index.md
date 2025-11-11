@@ -1,5 +1,12 @@
 # Changelog
 
+## dm 1.0.12.9009
+
+### Continuous integration
+
+- Use workflows for fledge
+  ([\#2343](https://github.com/cynkra/dm/issues/2343)).
+
 ## dm 1.0.12.9008
 
 ### Continuous integration
