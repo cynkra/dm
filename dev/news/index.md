@@ -1,5 +1,12 @@
 # Changelog
 
+## dm 1.0.12.9010
+
+### Continuous integration
+
+- Fix reviewdog and add commenting workflow
+  ([\#2345](https://github.com/cynkra/dm/issues/2345)).
+
 ## dm 1.0.12.9009
 
 ### Continuous integration

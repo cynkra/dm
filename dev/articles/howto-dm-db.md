@@ -515,7 +515,7 @@ deployed_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.50.4 []
+#> src:  sqlite 3.51.0 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `loans`, `accounts`, `total_loans`
 #> Columns: 13

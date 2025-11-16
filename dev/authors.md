@@ -36,12 +36,12 @@ Source:
 [`DESCRIPTION`](https://github.com/cynkra/dm/blob/main/DESCRIPTION)
 
 Schieferdecker T, Müller K, Bergant D (2025). *dm: Relational Data
-Models*. R package version 1.0.12.9009, <https://dm.cynkra.com/>.
+Models*. R package version 1.0.12.9010, <https://dm.cynkra.com/>.
 
     @Manual{,
       title = {dm: Relational Data Models},
       author = {Tobias Schieferdecker and Kirill Müller and Darko Bergant},
       year = {2025},
-      note = {R package version 1.0.12.9009},
+      note = {R package version 1.0.12.9010},
       url = {https://dm.cynkra.com/},
     }
