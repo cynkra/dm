@@ -96,6 +96,7 @@ try(
 }
 \seealso{
 Other foreign key functions: 
+\code{\link{dm_add_keys_by_name}()},
 \code{\link{dm_enum_fk_candidates}()},
 \code{\link{dm_get_all_fks}()},
 \code{\link{dm_rm_fk}()}

@@ -99,15 +99,21 @@ dm_add_keys_by_name <- function(dm, ..., quiet = FALSE) {
       logical(1)
     )]
 
-    if (length(tables_with_col) < 2) next
+    if (length(tables_with_col) < 2) {
+      next
+    }
 
     # Check which tables have unique values for this column (potential PK)
-    uniqueness <- vapply(tables_with_col, function(tbl) {
-      tbl_data <- tables[[tbl]]
-      vals <- tbl_data[[col]]
-      # A column is a PK candidate if all values are unique and no NAs
-      !anyNA(vals) && !anyDuplicated(vals)
-    }, logical(1))
+    uniqueness <- vapply(
+      tables_with_col,
+      function(tbl) {
+        tbl_data <- tables[[tbl]]
+        vals <- tbl_data[[col]]
+        # A column is a PK candidate if all values are unique and no NAs
+        !anyNA(vals) && !anyDuplicated(vals)
+      },
+      logical(1)
+    )
 
     pk_tables <- tables_with_col[uniqueness]
     fk_tables <- tables_with_col[!uniqueness]
