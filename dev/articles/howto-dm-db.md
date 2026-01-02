@@ -216,7 +216,8 @@ unserialize(serialize(my_dm_keys, NULL))
 #> ── Table source ───────────────────────────────────────────────────────────
 ```
 
-    #> Error: Invalid connection
+    #> Error:
+    #> ! Invalid connection
 
 The connection is tightly coupled with the tables in the dm object and
 cannot be replaced. A practical solution is to define, for each dm
@@ -515,7 +516,7 @@ deployed_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.0 []
+#> src:  sqlite 3.51.1 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `loans`, `accounts`, `total_loans`
 #> Columns: 13

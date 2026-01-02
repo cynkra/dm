@@ -1,5 +1,12 @@
 # Changelog
 
+## dm 1.0.12.9011
+
+### Continuous integration
+
+- Install binaries from r-universe for dev workflow
+  ([\#2348](https://github.com/cynkra/dm/issues/2348)).
+
 ## dm 1.0.12.9010
 
 ### Continuous integration

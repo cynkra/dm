@@ -29,7 +29,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9010</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9011</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,7 +88,7 @@
                         <h4 data-toc-skip class="author">James
 Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2025-11-16</h4>
+            <h4 data-toc-skip class="date">2026-01-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/howto-dm-db.Rmd" class="external-link"><code>vignettes/howto-dm-db.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-db.Rmd</code></div>
@@ -273,7 +273,8 @@ chunks:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">unserialize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize</a></span><span class="op">(</span><span class="va">my_dm_keys</span>, <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Error: Invalid connection</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Invalid connection</span></span></code></pre>
 <p>The connection is tightly coupled with the tables in the dm object
 and cannot be replaced. A practical solution is to define, for each dm
 object your project uses, a function that recreates it using a new
@@ -518,7 +519,7 @@ any RDBMS supported by {DBI}.</p>
 <span></span>
 <span><span class="va">deployed_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.51.0 []</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.51.1 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `loans`, `accounts`, `total_loans`</span></span>
 <span><span class="co">#&gt; Columns: 13</span></span>
