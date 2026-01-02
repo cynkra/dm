@@ -683,7 +683,16 @@ nest_join.dm_zoomed <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, nam
 }
 
 #' @autoglobal
-prepare_join <- function(x, y, by, selected, suffix, copy, disambiguate = TRUE, error_call = caller_env()) {
+prepare_join <- function(
+  x,
+  y,
+  by,
+  selected,
+  suffix,
+  copy,
+  disambiguate = TRUE,
+  error_call = caller_env()
+) {
   y_name <- dm_tbl_name(x, {{ y }})
   select_quo <- enquo(selected)
 
