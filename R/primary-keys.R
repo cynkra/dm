@@ -281,7 +281,7 @@ dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL) {
   dm_rm_pk_impl(dm, table_name, columns)
 }
 
-dm_rm_pk_impl <- function(dm, table_name, columns) {
+dm_rm_pk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
   def <- dm_get_def(dm)
 
   if (is.null(table_name)) {
@@ -299,7 +299,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns) {
       def$pks[i],
       ~ tryCatch(
         {
-          vars <- eval_select_indices(columns, colnames(.x))
+          vars <- eval_select_indices(columns, colnames(.x), error_call = error_call)
           identical(names(vars), .y$column[[1]])
         },
         error = function(e) {

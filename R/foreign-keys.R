@@ -345,7 +345,7 @@ dm_rm_fk <- function(dm, table = NULL, columns = NULL, ref_table = NULL, ref_col
 }
 
 #' @autoglobal
-dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
+dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols, error_call = caller_env()) {
   def <- dm_get_def(dm)
 
   # Filter by each argument if given:
@@ -384,7 +384,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
       ~ {
         ii <- tryCatch(
           {
-            names_vars <- names(eval_select_indices(ref_cols, colnames(..3)))
+            names_vars <- names(eval_select_indices(ref_cols, colnames(..3), error_call = error_call))
             map_lgl(.x$ref_column[.y], identical, names_vars)
           },
           error = function(e) {
@@ -415,7 +415,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
           ~ {
             tryCatch(
               {
-                names_vars <- names(eval_select_indices(cols, colnames(all_tables[[.x]])))
+                names_vars <- names(eval_select_indices(cols, colnames(all_tables[[.x]]), error_call = error_call))
                 identical(.y, names_vars)
               },
               error = function(e) {
