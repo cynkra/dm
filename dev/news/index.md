@@ -1,5 +1,12 @@
 # Changelog
 
+## dm 1.0.12.9012
+
+### Chore
+
+- Better traceback location for selection errors
+  ([\#2351](https://github.com/cynkra/dm/issues/2351)).
+
 ## dm 1.0.12.9011
 
 ### Continuous integration
