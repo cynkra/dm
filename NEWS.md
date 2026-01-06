@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9013
+
+## Continuous integration
+
+- Install odbc from GitHub remote to avoid failures on older versions of R.
+
+
 # dm 1.0.12.9012
 
 ## Chore
