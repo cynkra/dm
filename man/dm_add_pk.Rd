@@ -76,6 +76,7 @@ try(
 }
 \seealso{
 Other primary key functions: 
+\code{\link{dm_add_keys_by_name}()},
 \code{\link{dm_add_uk}()},
 \code{\link{dm_get_all_pks}()},
 \code{\link{dm_get_all_uks}()},
