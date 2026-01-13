@@ -88,7 +88,7 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2026-01-08</h4>
+            <h4 data-toc-skip class="date">2026-01-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-filter.Rmd</code></div>
@@ -166,7 +166,7 @@ visualization of the entity-relationship model:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">dm</span>, <span class="st">"airports"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `dm[[table_name]]` instead to access a specific table.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 86 × 8</span></span>
@@ -243,7 +243,7 @@ International Airport.</strong></p>
 <span><span class="va">sum_nrow_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/dm_nrow.html">dm_nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/deprecated.html">dm_apply_filters</a></span><span class="op">(</span><span class="va">filtered_dm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: `dm_apply_filters()` was deprecated in dm 1.0.0.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <p>The total number of rows in the <code>dm</code> drops from 2 951 to

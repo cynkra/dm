@@ -86,7 +86,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Migration guide: 'cdm' -&gt; 'dm'</h1>
             
-            <h4 data-toc-skip class="date">2026-01-08</h4>
+            <h4 data-toc-skip class="date">2026-01-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/tech-dm-cdm.Rmd" class="external-link"><code>vignettes/tech-dm-cdm.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-cdm.Rmd</code></div>
@@ -152,7 +152,7 @@ syntax:</p>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="st">"airports"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: `tbl.dm()` was deprecated in dm 0.2.0.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `dm[[table_name]]` instead to access a specific table.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 86 × 8</span></span>
@@ -209,7 +209,7 @@ call:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/deprecated.html">dm_apply_filters_to_tbl</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airlines</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: `dm_apply_filters_to_tbl()` was deprecated in dm 1.0.0.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Access tables directly after `dm_filter()`.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 15 × 2</span></span>

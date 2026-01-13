@@ -84,7 +84,7 @@ table, call
 tbl(dm, "airports")
 #> Warning: `tbl.dm()` was deprecated in dm 0.2.0.
 #> ℹ Use `dm[[table_name]]` instead to access a specific table.
-#> This warning is displayed once every 8 hours.
+#> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 ```
@@ -177,7 +177,7 @@ sum_nrow <- sum(dm_nrow(dm))
 sum_nrow_filtered <- sum(dm_nrow(dm_apply_filters(filtered_dm)))
 #> Warning: `dm_apply_filters()` was deprecated in dm 1.0.0.
 #> ℹ Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary.
-#> This warning is displayed once every 8 hours.
+#> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 ```

@@ -232,7 +232,7 @@ my_dm_sqlite_resid <-
   dm_add_fk(loans_residuals, id, loans)
 #> Warning: `copy_to.dm()` was deprecated in dm 0.2.0.
 #> ℹ Use `copy_to(dm_get_con(dm), ...)` and `dm()`.
-#> This warning is displayed once every 8 hours.
+#> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 

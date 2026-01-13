@@ -57,7 +57,7 @@ flights_dm <- dm_nycflights13()
 tbl(flights_dm, "airports")
 #> Warning: `tbl.dm()` was deprecated in dm 0.2.0.
 #> ℹ Use `dm[[table_name]]` instead to access a specific table.
-#> This warning is displayed once every 8 hours.
+#> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 ```
@@ -130,7 +130,7 @@ call:
 dm_apply_filters_to_tbl(flights_dm, airlines)
 #> Warning: `dm_apply_filters_to_tbl()` was deprecated in dm 1.0.0.
 #> ℹ Access tables directly after `dm_filter()`.
-#> This warning is displayed once every 8 hours.
+#> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 ```

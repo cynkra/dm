@@ -164,7 +164,7 @@ data in single a data frame:
 
 ``` r
 object.size(dm)
-#> 476256 bytes
+#> 476264 bytes
 
 object.size(nycflights13_df)
 #> 108020824 bytes
