@@ -95,7 +95,7 @@ A \code{dm} object on the given \code{src} with the same table names
 as the input \code{dm}.
 }
 \description{
-\code{copy_dm_to()} takes a \link[dplyr:src_dbi]{dplyr::src_dbi} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
+\code{copy_dm_to()} takes a \link[dbplyr:src_dbi]{dbplyr::src_dbi} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
 and a \code{\link{dm}} object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set \code{temporary = FALSE} to create permanent tables.
