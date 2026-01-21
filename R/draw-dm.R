@@ -24,9 +24,12 @@
 #' @param columnArrows Edges from columns to columns (default: `TRUE`).
 #' @inheritParams rlang::args_dots_empty
 #' @param column_types Set to `TRUE` to show column types.
-#' @param backend Currently, only the default `"DiagrammeR"` is accepted.
-#'   Pass this value explicitly if your code not only uses this function
-#'   to display a data model but relies on the type of the return value.
+#' @param backend The rendering backend to use. Options are:
+#'   - `"DiagrammeR"` (default): Uses DiagrammeR/Graphviz for rendering.
+#'     Returns a `grViz` object.
+#'   - `"g6R"`: Uses g6R for interactive rendering with pan/zoom support.
+#'     Returns a `g6` htmlwidget.
+#'   Pass this value explicitly if your code relies on the type of the return value.
 #' @param font_size `r lifecycle::badge("experimental")`
 #'
 #'   Font size for:
@@ -72,7 +75,7 @@ dm_draw <- function(
   focus = NULL,
   graph_name = "Data Model",
   column_types = NULL,
-  backend = "DiagrammeR",
+  backend = c("DiagrammeR", "g6R"),
   font_size = NULL
 ) {
   check_not_zoomed(dm)
@@ -94,7 +97,7 @@ dm_draw <- function(
     }
   }
 
-  stopifnot(identical(backend, "DiagrammeR"))
+  backend <- arg_match(backend)
 
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
@@ -105,6 +108,18 @@ dm_draw <- function(
 
   data_model <- dm_get_data_model(dm, column_types)
 
+  if (backend == "g6R") {
+    return(bdm_render_g6r(
+      data_model,
+      rankdir = rankdir,
+      view_type = view_type,
+      columnArrows = columnArrows,
+      graph_name = graph_name,
+      top_level_fun = "dm_draw"
+    ))
+  }
+
+  # DiagrammeR backend (default)
   graph <- bdm_create_graph(
     data_model,
     rankdir = rankdir,

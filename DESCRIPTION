@@ -73,6 +73,7 @@ Suggests:
     dbplyr (>= 2.3.4),
     DiagrammeR,
     DiagrammeRsvg,
+    g6R,
     digest,
     duckdb (>= 0.4.0),
     fansi,

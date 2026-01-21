@@ -17,7 +17,7 @@ dm_draw(
   focus = NULL,
   graph_name = "Data Model",
   column_types = NULL,
-  backend = "DiagrammeR",
+  backend = c("DiagrammeR", "g6R"),
   font_size = NULL
 )
 }
@@ -48,9 +48,14 @@ It defines the level of details for rendering tables
 
 \item{column_types}{Set to \code{TRUE} to show column types.}
 
-\item{backend}{Currently, only the default \code{"DiagrammeR"} is accepted.
-Pass this value explicitly if your code not only uses this function
-to display a data model but relies on the type of the return value.}
+\item{backend}{The rendering backend to use. Options are:
+\itemize{
+\item \code{"DiagrammeR"} (default): Uses DiagrammeR/Graphviz for rendering.
+Returns a \code{grViz} object.
+\item \code{"g6R"}: Uses g6R for interactive rendering with pan/zoom support.
+Returns a \code{g6} htmlwidget.
+Pass this value explicitly if your code relies on the type of the return value.
+}}
 
 \item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
