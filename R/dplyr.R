@@ -469,10 +469,26 @@ left_join.dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), 
 
 #' @rdname dplyr_join
 #' @export
-left_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = NULL, select = NULL) {
+left_join.dm_zoomed <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = NULL,
+  select = NULL
+) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., keep = keep)
+  joined_tbl <- left_join(
+    join_data$x_tbl,
+    join_data$y_tbl,
+    join_data$by,
+    copy = FALSE,
+    ...,
+    keep = keep
+  )
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -510,10 +526,26 @@ inner_join.dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"),
 
 #' @rdname dplyr_join
 #' @export
-inner_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = NULL, select = NULL) {
+inner_join.dm_zoomed <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = NULL,
+  select = NULL
+) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., keep = keep)
+  joined_tbl <- inner_join(
+    join_data$x_tbl,
+    join_data$y_tbl,
+    join_data$by,
+    copy = FALSE,
+    ...,
+    keep = keep
+  )
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -559,10 +591,26 @@ full_join.dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), 
 
 #' @rdname dplyr_join
 #' @export
-full_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = NULL, select = NULL) {
+full_join.dm_zoomed <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = NULL,
+  select = NULL
+) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., keep = keep)
+  joined_tbl <- full_join(
+    join_data$x_tbl,
+    join_data$y_tbl,
+    join_data$by,
+    copy = FALSE,
+    ...,
+    keep = keep
+  )
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -600,10 +648,26 @@ right_join.dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"),
 
 #' @rdname dplyr_join
 #' @export
-right_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = NULL, select = NULL) {
+right_join.dm_zoomed <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = NULL,
+  select = NULL
+) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., keep = keep)
+  joined_tbl <- right_join(
+    join_data$x_tbl,
+    join_data$y_tbl,
+    join_data$by,
+    copy = FALSE,
+    ...,
+    keep = keep
+  )
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
