@@ -1,7 +1,7 @@
 #' Copy data model to data source
 #'
 #' @description
-#' `copy_dm_to()` takes a [`dplyr::src_dbi`] object or a [`DBI::DBIConnection-class`] object as its first argument
+#' `copy_dm_to()` takes a [`dbplyr::src_dbi`] object or a [`DBI::DBIConnection-class`] object as its first argument
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
 #' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
