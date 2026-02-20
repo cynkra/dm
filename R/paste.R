@@ -127,10 +127,10 @@ dm_paste_impl <- function(dm, options, tab_width) {
     code_fks,
     code_color
   )
-  
+
   # remove any NULL/empty elements
   all_operations <- all_operations[lengths(all_operations) > 0]
-  
+
   # combine dm and paste code with chunking if needed
   code_dm <- dm_paste_chunk_operations(
     code_construct,
@@ -257,13 +257,13 @@ dm_paste_chunk_operations <- function(code_construct, all_operations, tab, chunk
       sep = glue(" %>%\n{tab}", .trim = FALSE)
     ))
   }
-  
+
   # Split operations into chunks
   chunks <- split(all_operations, ceiling(seq_along(all_operations) / chunk_size))
-  
+
   # Generate code for each chunk
   chunk_codes <- vector("character", length(chunks))
-  
+
   for (i in seq_along(chunks)) {
     if (i == 1) {
       # First chunk includes the dm construction
@@ -279,15 +279,15 @@ dm_paste_chunk_operations <- function(code_construct, all_operations, tab, chunk
       )
     }
   }
-  
+
   # If only one chunk, return it directly
   if (length(chunks) == 1) {
     return(chunk_codes[1])
   }
-  
+
   # Generate intermediate variable assignments and final result
   result_lines <- character()
-  
+
   for (i in seq_along(chunk_codes)) {
     var_name <- if (i == length(chunk_codes)) {
       # Last chunk - no assignment, just the expression
@@ -295,7 +295,7 @@ dm_paste_chunk_operations <- function(code_construct, all_operations, tab, chunk
     } else {
       paste0("dm_step_", i)
     }
-    
+
     if (i == 1) {
       # First chunk
       if (!is.null(var_name)) {
@@ -307,7 +307,7 @@ dm_paste_chunk_operations <- function(code_construct, all_operations, tab, chunk
       # Subsequent chunks
       prev_var_name <- paste0("dm_step_", i - 1)
       chunk_with_var <- paste0(prev_var_name, " %>%\n", tab, chunk_codes[i])
-      
+
       if (!is.null(var_name)) {
         result_lines <- c(result_lines, paste0(var_name, " <- ", chunk_with_var))
       } else {
@@ -315,7 +315,7 @@ dm_paste_chunk_operations <- function(code_construct, all_operations, tab, chunk
       }
     }
   }
-  
+
   paste(result_lines, collapse = "\n\n")
 }
 
