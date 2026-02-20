@@ -46,7 +46,7 @@ unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
 unite.dm_keyed_tbl <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   keys_info <- keyed_get_info(data)
   tbl <- unclass_keyed_tbl(data)
-  out <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
+  out <- unite(tbl, col = {{ col }}, ..., sep = sep, remove = remove, na.rm = na.rm)
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
