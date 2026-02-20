@@ -56,6 +56,7 @@ utils::globalVariables(c(
   "child_fk_cols", # <dm_get_data_model>
   "parent_table", # <dm_get_data_model>
   "parent_key_cols", # <dm_get_data_model>
+  "id", # <dm_get_data_model>
   "uk_col", # <dm_get_data_model>
   "column", # <dm_get_data_model>
   "key", # <dm_get_data_model>

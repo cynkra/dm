@@ -159,24 +159,24 @@ dm_flatten_to_tbl_impl <- function(
 
   # perform the joins according to the list, starting with table `initial_LHS`
   if (squash && length(order_df$name) > 0) {
-    # For recursive flattening, use an iterative approach to handle 
+    # For recursive flattening, use an iterative approach to handle
     # cases where columns serve as both PK and FK
     result <- tbl_impl(prep_dm, start)
-    
+
     for (i in seq_along(order_df$name)) {
       table_to_join <- ordered_table_list[[i]]
       join_by <- by[[i]]
-      
+
       # Additional safety check: verify join columns exist
       result_cols <- colnames(result)
       left_cols <- names(join_by)
       right_cols <- colnames(table_to_join)
       join_right_cols <- unname(join_by)
-      
+
       # Check if all required columns exist
       missing_left <- setdiff(left_cols, result_cols)
       missing_right <- setdiff(join_right_cols, right_cols)
-      
+
       if (length(missing_left) > 0) {
         # This is where the error likely occurs
         # For recursive joins, we might need to handle column name mapping
@@ -194,10 +194,10 @@ dm_flatten_to_tbl_impl <- function(
         }
         join_by <- mapped_join_by
       }
-      
+
       result <- join(result, table_to_join, by = join_by)
     }
-    
+
     result
   } else {
     # For non-recursive flattening, use the original approach
