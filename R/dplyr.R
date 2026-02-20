@@ -347,6 +347,9 @@ reframe.dm_keyed_tbl <- function(.data, ...) {
 
   reframed_tbl <- reframe(tbl, ...)
 
+  # reframe() can return any number of rows per group,
+
+  # so the primary key is not preserved
   new_keyed_tbl(
     reframed_tbl,
     uuid = keys_info$uuid
