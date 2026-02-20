@@ -3,16 +3,18 @@ input <- knitr::current_input(dir = TRUE)
 input_dir <- dirname(input)
 final_dir <- file.path(input_dir, "cheatsheet")
 withr::with_dir(
-  temp_folder, {
+  temp_folder,
+  {
     html_path <- withr::local_tempfile(fileext = ".html")
     rmd_path <- withr::local_tempfile(fileext = ".rmd")
 
     original <- brio::read_lines(input)
     # remove the part reading this very script to avoid an infinite loop :-s
-    brio::write_lines(original[-c((length(original)-4):length(original))], rmd_path)
+    brio::write_lines(original[-c((length(original) - 4):length(original))], rmd_path)
 
     withr::with_envvar(
-      new = list("CHEATSHEET" = "blabla"), {
+      new = list("CHEATSHEET" = "blabla"),
+      {
         rmarkdown::render(
           rmd_path,
           output_format = rmarkdown::html_document(
@@ -46,7 +48,6 @@ withr::with_dir(
 
     # content ---------
     find_col <- function(col) {
-
       xml2::xml_find_first(
         html,
         sprintf(
@@ -97,7 +98,10 @@ withr::with_dir(
     )
 
     # render --------------
-    template <- paste0(brio::read_lines(system.file("cheatsheet-template.html", package = "dm")), collapse = "")
+    template <- paste0(
+      brio::read_lines(system.file("cheatsheet-template.html", package = "dm")),
+      collapse = ""
+    )
     rendered <- whisker::whisker.render(template)
     brio::write_lines(rendered, "cheatsheet-printable.html")
     fs::dir_copy(getwd(), final_dir)

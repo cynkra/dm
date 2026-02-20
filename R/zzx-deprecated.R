@@ -15,7 +15,9 @@ check_if_subset <- function(t1, c1, t2, c2) {
   setdiff_v1_v2 <- setdiff(v1, v2)
   print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
   abort_not_subset_of(
-    as_name(t1q), as_name(c1q), as_name(t2q),
+    as_name(t1q),
+    as_name(c1q),
+    as_name(t2q),
     as_name(c2q)
   )
 }
@@ -116,9 +118,19 @@ cdm_rm_tbl <- function(dm, ...) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_copy_to <- function(dest, dm, ..., types = NULL, overwrite = NULL, indexes = NULL,
-                        unique_indexes = NULL, set_key_constraints = TRUE, unique_table_names = FALSE,
-                        table_names = NULL, temporary = TRUE) {
+cdm_copy_to <- function(
+  dest,
+  dm,
+  ...,
+  types = NULL,
+  overwrite = NULL,
+  indexes = NULL,
+  unique_indexes = NULL,
+  set_key_constraints = TRUE,
+  unique_table_names = FALSE,
+  table_names = NULL,
+  temporary = TRUE
+) {
   deprecate_soft("0.1.0", "dm::cdm_copy_to()", "dm::copy_dm_to()")
 
   if (!is_null(unique_table_names)) {
@@ -154,14 +166,29 @@ cdm_disambiguate_cols <- function(dm, sep = ".", quiet = FALSE) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_draw <- function(dm, rankdir = "LR", col_attr = "column", view_type = "keys_only",
-                     columnArrows = TRUE, graph_attrs = "", node_attrs = "", edge_attrs = "",
-                     focus = NULL, graph_name = "Data Model") {
+cdm_draw <- function(
+  dm,
+  rankdir = "LR",
+  col_attr = "column",
+  view_type = "keys_only",
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model"
+) {
   deprecate_soft("0.1.0", "dm::cdm_draw()", "dm::dm_draw()")
   dm_draw(
-    dm = dm, rankdir = rankdir, col_attr = col_attr,
-    view_type = view_type, columnArrows = columnArrows, graph_attrs = graph_attrs,
-    node_attrs = node_attrs, edge_attrs = edge_attrs, focus = focus,
+    dm = dm,
+    rankdir = rankdir,
+    col_attr = col_attr,
+    view_type = view_type,
+    columnArrows = columnArrows,
+    graph_attrs = graph_attrs,
+    node_attrs = node_attrs,
+    edge_attrs = edge_attrs,
+    focus = focus,
     graph_name = graph_name
   )
 }
@@ -188,7 +215,8 @@ cdm_get_colors <- function(dm) {
 #' @export
 cdm_get_available_colors <- function() {
   deprecate_soft(
-    "0.1.0", "dm::cdm_get_available_colors()",
+    "0.1.0",
+    "dm::cdm_get_available_colors()",
     "dm::dm_get_available_colors()"
   )
   dm_get_available_colors()
@@ -224,7 +252,15 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
-  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    list_of_pts,
+    join = join,
+    join_name = join_name,
+    squash = FALSE,
+    .position = "prefix"
+  )
 }
 
 #' @rdname deprecated
@@ -233,13 +269,23 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   deprecate_soft("0.1.0", "dm::cdm_squash_to_tbl()", "dm::dm_squash_to_tbl()")
   join_name <- deparse(substitute(join))
-  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) {
+    abort_squash_limited()
+  }
   start <- dm_tbl_name(dm, {{ start }})
 
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
-  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = TRUE, .position = "prefix")
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    list_of_pts,
+    join = join,
+    join_name = join_name,
+    squash = TRUE,
+    .position = "prefix"
+  )
 }
 
 #' @rdname deprecated
@@ -258,7 +304,15 @@ cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    other,
+    join = join,
+    join_name = join_name,
+    squash = FALSE,
+    .position = "prefix"
+  )
 }
 
 #' @rdname deprecated
@@ -274,7 +328,8 @@ cdm_apply_filters <- function(dm) {
 #' @export
 cdm_apply_filters_to_tbl <- function(dm, table) {
   deprecate_soft(
-    "0.1.0", "dm::cdm_apply_filters_to_tbl()",
+    "0.1.0",
+    "dm::cdm_apply_filters_to_tbl()",
     "dm::dm_apply_filters_to_tbl()"
   )
   check_not_zoomed(dm)
@@ -373,8 +428,11 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) {
   ref_tbl <- tbl_impl(dm, ref_table_name)
   tbl <- tbl_impl(dm, table_name)
   enum_fk_candidates_impl(
-    table_name, tbl, ref_table_name,
-    ref_tbl, ref_tbl_pk
+    table_name,
+    tbl,
+    ref_table_name,
+    ref_tbl,
+    ref_tbl_pk
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
@@ -394,7 +452,8 @@ cdm_is_referenced <- function(dm, table) {
 #' @export
 cdm_get_referencing_tables <- function(dm, table) {
   deprecate_soft(
-    "0.1.0", "dm::cdm_get_referencing_tables()",
+    "0.1.0",
+    "dm::cdm_get_referencing_tables()",
     "dm::dm_get_referencing_tables()"
   )
   check_not_zoomed(dm)
@@ -586,7 +645,9 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   }
   names_list <- repair_table_names(
     old_names = src_tbls_impl(dm),
-    new_names = new_tbl_name_chr, repair, quiet
+    new_names = new_tbl_name_chr,
+    repair,
+    quiet
   )
   dm <- dm_select_tbl_zoomed_impl(dm, names_list$new_old_names)
   new_tbl_name_chr <- names_list$new_names
@@ -612,12 +673,18 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     dm_from_def(zoomed = TRUE, validate = FALSE)
 
   dm_wo_outgoing_fks %>%
-    dm_insert_zoomed_outgoing_fks(new_tbl_name_chr, names_list$old_new_names[old_tbl_name], col_tracker_zoomed(dm)) %>%
+    dm_insert_zoomed_outgoing_fks(
+      new_tbl_name_chr,
+      names_list$old_new_names[old_tbl_name],
+      col_tracker_zoomed(dm)
+    ) %>%
     dm_clean_zoomed()
 }
 
 dm_select_tbl_zoomed_impl <- function(dm, selected) {
-  if (anyDuplicated(names(selected))) abort_need_unique_names(names(selected[duplicated(names(selected))]))
+  if (anyDuplicated(names(selected))) {
+    abort_need_unique_names(names(selected[duplicated(names(selected))]))
+  }
 
   def <-
     dm_get_def(dm) %>%
@@ -627,8 +694,14 @@ dm_select_tbl_zoomed_impl <- function(dm, selected) {
   dm_from_def(def, zoomed = TRUE)
 }
 
-dm_add_tbl_zoomed_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()),
-                                   pks = list_of(new_pk()), fks = list_of(new_fk())) {
+dm_add_tbl_zoomed_impl <- function(
+  dm,
+  tbls,
+  table_name,
+  filters = list_of(new_filter()),
+  pks = list_of(new_pk()),
+  fks = list_of(new_fk())
+) {
   def <- dm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]
@@ -690,7 +763,10 @@ error_txt_rm_fk_col_missing <- function() {
 #' @keywords internal
 #' @export
 dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
-  deprecate_soft("1.0.0", "dm_add_tbl()", "dm()",
+  deprecate_soft(
+    "1.0.0",
+    "dm_add_tbl()",
+    "dm()",
     details = 'Use `.name_repair = "unique"` if necessary.'
   )
 
@@ -727,24 +803,38 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 
 #' @description
 #' `dm_squash_to_tbl()`  is deprecated as of dm 1.0.0, because the same functionality
-#' is offered by [dm_flatten_to_tbl()] with `recursive = TRUE`.
+#' is offered by [dm_flatten_to_tbl()] with `.recursive = TRUE`.
 #'
 #' @rdname deprecated
 #' @keywords internal
 #'
 #' @export
 dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
-  deprecate_soft("1.0.0", "dm_squash_to_tbl()", details = "Please use `recursive = TRUE` in `dm_flatten_to_tbl()` instead.")
+  deprecate_soft(
+    "1.0.0",
+    "dm_squash_to_tbl()",
+    details = "Please use `.recursive = TRUE` in `dm_flatten_to_tbl()` instead."
+  )
 
   check_not_zoomed(dm)
   join_name <- as_label(enexpr(join))
-  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  if (!(join_name %in% c("left_join", "full_join", "inner_join"))) {
+    abort_squash_limited()
+  }
   start <- dm_tbl_name(dm, {{ start }})
 
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
-  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = join, join_name = join_name, squash = TRUE, .position = "prefix")
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    list_of_pts,
+    join = join,
+    join_name = join_name,
+    squash = TRUE,
+    .position = "prefix"
+  )
 }
 
 #' @description
@@ -773,8 +863,7 @@ rows_truncate.data.frame <- function(x, ..., in_place = NULL) {
 }
 
 #' @export
-rows_truncate.tbl_sql <- function(x, ...,
-                                  in_place = NULL) {
+rows_truncate.tbl_sql <- function(x, ..., in_place = NULL) {
   name <- target_table_name(x, in_place)
 
   if (!is_null(name)) {
@@ -830,9 +919,13 @@ target_table_name <- function(x, in_place) {
   # Verbose by default
   if (is_null(in_place)) {
     if (is_null(name)) {
-      inform("Result is returned as lazy table, because `x` does not correspond to a table that can be updated. Use `in_place = FALSE` to mute this message.")
+      inform(
+        "Result is returned as lazy table, because `x` does not correspond to a table that can be updated. Use `in_place = FALSE` to mute this message."
+      )
     } else {
-      inform("Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table.")
+      inform(
+        "Result is returned as lazy table. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying table."
+      )
     }
   }
 

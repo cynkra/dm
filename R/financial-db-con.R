@@ -13,7 +13,8 @@ financial_db_con <- function() {
 
   abort(paste0(
     "Can't connect to relational.fel.cvut.cz or databases.pacha.dev:\n",
-    conditionMessage(err_relational), "\n",
+    conditionMessage(err_relational),
+    "\n",
     conditionMessage(err_dbedu)
   ))
 }
