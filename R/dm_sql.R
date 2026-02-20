@@ -92,7 +92,7 @@ ddl_reorder_dm <- function(dm, con) {
   ## For databases that do not support adding constraints after table creation,
   ## reorder queries according to topological sort so uks are created before associated fks
   graph <- create_graph_from_dm(dm, directed = TRUE)
-  topo <- names(igraph::topo_sort(graph, mode = "in"))
+  topo <- names(dm_topo_sort(graph, mode = "in"))
 
   if (length(topo) == length(dm)) {
     dm <- dm[topo]

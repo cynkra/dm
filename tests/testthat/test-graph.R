@@ -1,4 +1,5 @@
 test_that("functions working with graphs do the right thing?", {
+  skip_if_not_installed("igraph")
   join_list_tbl_1 <- tibble(
     lhs = c("tf_2", "tf_3", "tf_4", "tf_5", "tf_6"),
     rhs = c("tf_1", "tf_2", "tf_3", "tf_4", "tf_5"),
@@ -32,6 +33,7 @@ test_that("functions working with graphs do the right thing?", {
 })
 
 test_that("empty graph", {
+  skip_if_not_installed("igraph")
   opt <- igraph::igraph_options(print.id = FALSE)
   on.exit(igraph::igraph_options(opt))
 
