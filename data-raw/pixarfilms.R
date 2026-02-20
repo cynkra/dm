@@ -8,4 +8,4 @@ data <- list(
 )
 
 dir.create("inst/extdata", showWarnings = FALSE)
-saveRDS(data, "inst/extdata/pixarfilms-v1.rds", compress = "gzip", version = 2)
+saveRDS(data, "inst/extdata/pixarfilms-v1.rds")
