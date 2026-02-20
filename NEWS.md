@@ -1,229 +1,222 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.10.9015
-
-## Chore
-
-- Bump RMariaDB version (#2244).
+# dm 1.0.12.9014
 
 ## Continuous integration
 
-- Configure token.
+- Tweaks (#2354).
 
-- Count rulesets to understand if branch protection is enabled.
 
-- Remove Aviator.
+# dm 1.0.12.9013
+
+## Continuous integration
+
+- Install odbc from GitHub remote to avoid failures on older versions of R.
+
+
+# dm 1.0.12.9012
+
+## Chore
+
+- Better traceback location for selection errors (#2351).
+
+
+# dm 1.0.12.9011
+
+## Continuous integration
+
+- Install binaries from r-universe for dev workflow (#2348).
+
+
+# dm 1.0.12.9010
+
+## Continuous integration
+
+- Fix reviewdog and add commenting workflow (#2345).
+
+
+# dm 1.0.12.9009
+
+## Continuous integration
+
+- Use workflows for fledge (#2343).
+
+
+# dm 1.0.12.9008
+
+## Continuous integration
+
+- Sync (#2341).
+
+
+# dm 1.0.12.9007
+
+## Chore
+
+- Format with air with line length 100 (#2335).
+
+## Continuous integration
+
+- Fix dev pkgdown.
+
+## Documentation
+
+- Agent docs and updated instructions.
+
+## claude
+
+- Fix config.
+
+
+# dm 1.0.12.9006
+
+## Chore
+
+- Adapt to igraph \>= 2.2.0 (#2289).
+
+
+# dm 1.0.12.9005
+
+## Continuous integration
+
+- Use reviewdog for external PRs (#2323).
+
+
+# dm 1.0.12.9004
+
+## Chore
+
+- Auto-update from GitHub Actions (#2321).
+
+
+# dm 1.0.12.9003
+
+## Continuous integration
+
+- Cleanup and fix macOS (#2317).
+
+
+# dm 1.0.12.9002
 
 ## Testing
+
+- Add tests for `check_key()` (#2298).
+
+
+# dm 1.0.12.9001
+
+## Bug fixes
+
+- `check_key()` returns input data frame when key is valid (#2221, #2303).
+
+- Correct deprecation warning message for `dm_squash_to_tbl()` (#1364, #2302).
+
+## Chore
+
+- Use summary reporter.
+
+- Support SQL Server, needs image update.
+
+- Fully support MariaDB.
+
+- Support new `DM_TEST_*_HOST` env vars.
+
+- Add MariaDB, do not connect yet.
+
+- Add Postgres to devcontainer.
+
+- Claude settings.
+
+- Claude and Copilot settings.
+
+- Add devcontainer.
+
+- Add Claude Code GitHub Workflow.
+
+## Continuous integration
+
+- Format with air, check detritus, better handling of `extra-packages` (#2308).
+
+## Testing
+
+- Add snapshot test for `dm_squash_to_tbl()` (#1364, #2299).
+
+## Uncategorized
+
+- Feat!: `copy_dm_to()` uses `dm_sql()`. Unique keys and autoincrement primary keys (#1725) are created on the database. Data models with cyclic references are supported on databases that allow adding constraints in `ALTER TABLE` statements (at this time, all except DuckDB and SQLite, #664) (#2022) (@krlmlr, @41898282+github-actions\[bot\], #1887).
+
+
+# dm 1.0.12.9000
+
+## fledge
+
+- CRAN release v1.0.12 (#2295).
+
+
+# dm 1.0.12
+
+## Bug fixes
+
+- Improve detection of foreign-key relationships in Postgres (#1879, #2286).
+
+- Avoid including constraints from a different `constraint_schema` when learning from a database (#2228, #2275).
+
+## Features
+
+- Add support for Redshift connections (@owenjonesuob, #2215).
+
+## Chore
+
+- Remove fansi.
+
+- Suggest package used in demo.
+
+- Bump RMariaDB version (#2244).
+
+- Drop crayon and mockr dependencies (@olivroy, #2220).
+
+## Documentation
+
+- Add cynkra ROR (#2282).
+
+- Fix intended links (@guspan-tanadi, #2278).
+
+- Restore empty space removed by styler (#2269).
+
+- Use `index.md`.
+
+- Tweak formatting (@salim-b, #2232).
+
+- Fix typo (@salim-b, #2218).
+
+## Testing
+
+- Stabilize learning tests (#2291).
 
 - Fix compatibility with waldo \>= 0.6.0 (#2240).
 
 
-# dm 1.0.10.9014
+# dm 1.0.11
 
-## Continuous integration
+## Features
 
-  - Configure token.
+- Add support for Redshift connections (@owenjonesuob, #2215).
 
-  - Count rulesets to understand if branch protection is enabled.
+## Chore
 
-  - Remove Aviator.
+- Drop crayon and mockr dependencies (@olivroy, #2220).
+
+## Documentation
+
+- Use `index.md`.
+
+- Tweak formatting (@salim-b, #2232).
+
+- Fix typo (@salim-b, #2218).
 
 ## Testing
 
-  - Fix compatibility with waldo \>= 0.6.0 (#2240).
-    
-      - test: Fix compatibility with waldo \>= 0.6.0
-    
-      - chore: Auto-update from GitHub Actions
-    
-    Run: https://github.com/cynkra/dm/actions/runs/11885168927
-
-
-# dm 1.0.10.9013
-
-## Continuous integration
-
-  - Use stable pak (#2239).
-
-
-# dm 1.0.10.9012
-
-## Continuous integration
-
-  - Trigger run (#2238).
-    
-      - ci: Trigger run
-    
-      - ci: Latest changes
-
-
-# dm 1.0.10.9011
-
-## Chore
-
-  - Drop crayon and mockr dependencies (@olivroy, #2220).
-
-  - Auto-update from GitHub Actions (#2231).
-
-  - Auto-update from GitHub Actions.
-    
-    Run: https://github.com/cynkra/dm/actions/runs/10395389155
-
-  - Use dev RMariaDB.
-
-  - Auto-update from GitHub Actions.
-    
-    Run: https://github.com/cynkra/dm/actions/runs/10223713876
-
-  - Roxygenize.
-
-## Continuous integration
-
-  - Use pkgdown branch (#2237).
-
-  - Install via R CMD INSTALL ., not pak (#2230).
-    
-      - ci: Install via R CMD INSTALL ., not pak
-    
-      - ci: Bump version of upload-artifact action
-
-  - Install local package for pkgdown builds.
-
-  - Improve support for protected branches with fledge.
-
-  - Improve support for protected branches, without fledge.
-
-  - Sync with latest developments.
-
-  - Use v2 instead of master.
-
-  - Inline action.
-
-## Documentation
-
-  - Tweak formatting (@salim-b, #2232).
-
-  - Fix typo (@salim-b, #2218).
-
-## Uncategorized
-
-  - Merge branch 'docs'.
-
-  - Merge branch 'docs'.
-
-
-# dm 1.0.10.9010
-
-## Chore
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/10200118253
-
-## Continuous integration
-
-- Use dev roxygen2 and decor.
-
-
-# dm 1.0.10.9009
-
-## Continuous integration
-
-- Fix on Windows, tweak lock workflow.
-
-
-# dm 1.0.10.9008
-
-## Chore
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9727972354
-
-
-# dm 1.0.10.9007
-
-## Chore
-
-- Auto-update from GitHub Actions.
-
-  Run: https://github.com/cynkra/dm/actions/runs/9692097886
-
-## Continuous integration
-
-- Avoid checking bashisms on Windows.
-
-- Better commit message.
-
-- Harmonize workflows.
-
-- Use value after `source()`.
-
-- Bump versions, better default.
-
-- Recent updates.
-
-- Prepare for dynamic build matrix.
-
-
-# dm 1.0.10.9006
-
-## Documentation
-
-- Set BS version explicitly for now.
-
-  https://github.com/cynkra/cynkratemplate/issues/53
-
-
-# dm 1.0.10.9005
-
-## Chore
-
-- Use CRAN dbplyr.
-
-
-# dm 1.0.10.9004
-
-## Chore
-
-### deps
-
-- Update peter-evans/create-pull-request action to v6.
-
-
-# dm 1.0.10.9003
-
-## Chore
-
-### deps
-
-- Update nick-fields/retry action to v3.
-
-### deps
-
-- Update actions/cache action to v4 (#2186).
-
-- Use dev odbc and dbplyr to fix CI/CD (#2189).
-
-
-# dm 1.0.10.9002
-
-## Chore
-
-- Tweak Compose file.
-
-
-# dm 1.0.10.9001
-
-## Chore
-
-- Format NEWS.
-
-
-# dm 1.0.10.9000
-
-- Merge branch 'cran-1.0.10'.
+- Fix compatibility with waldo \>= 0.6.0 (#2240).
 
 
 # dm 1.0.10

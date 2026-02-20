@@ -60,7 +60,6 @@ test_that("dm_get_keyed_tables_impl()", {
 })
 
 
-
 test_that("`new_keyed_tbl()` formatting", {
   local_options(
     pillar.min_title_chars = NULL,
@@ -449,7 +448,8 @@ test_that("left join works as expected with keyed tables", {
     dm_zoom_to(flights) %>%
     left_join(weather)
 
-  jd1 <- keyed_tbl_impl(dm, "weather") %>% left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
+  jd1 <- keyed_tbl_impl(dm, "weather") %>%
+    left_join(keyed_tbl_impl(dm, "flights"), multiple = "all")
   jd2 <- keyed_tbl_impl(dm, "flights") %>% left_join(keyed_tbl_impl(dm, "weather"))
 
   expect_equal(ncol(jd1), ncol(jd2))

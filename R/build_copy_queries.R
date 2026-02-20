@@ -1,5 +1,11 @@
 #' @autoglobal
-build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary = TRUE, table_names = set_names(names(dm))) {
+build_copy_queries <- function(
+  dest,
+  dm,
+  set_key_constraints = TRUE,
+  temporary = TRUE,
+  table_names = set_names(names(dm))
+) {
   stopifnot(!is_src_db(dm))
 
   ## Reorder queries according to topological sort so pks are created before associated fks
@@ -23,13 +29,17 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       inform(glue('`on_delete = "cascade"` not supported for duckdb'))
       ""
     } else {
-      map_chr(x, ~ {
-        switch(.x,
-          "no_action" = "",
-          "cascade" = " ON DELETE CASCADE",
-          abort(glue('`on_delete = "{.x}"` not supported'))
-        )
-      })
+      map_chr(
+        x,
+        ~ {
+          switch(
+            .x,
+            "no_action" = "",
+            "cascade" = " ON DELETE CASCADE",
+            abort(glue('`on_delete = "{.x}"` not supported'))
+          )
+        }
+      )
     }
   }
 
@@ -83,7 +93,7 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       pk_col <- pk_col[[1]]
 
       # Postgres:
-      if (is_postgres(dest)) {
+      if (is_postgres(dest) || is_redshift(dest)) {
         types[pk_col] <- "SERIAL"
       }
 
@@ -115,11 +125,13 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     if (length(pk_col) > 0L) {
       df_col_types <-
         df_col_types %>%
-        mutate(autoincrement_attribute = if_else(
-          col == pk_col,
-          !!autoincrement_attribute,
-          autoincrement_attribute
-        ))
+        mutate(
+          autoincrement_attribute = if_else(
+            col == pk_col,
+            !!autoincrement_attribute,
+            autoincrement_attribute
+          )
+        )
     }
 
     df_col_types
@@ -176,7 +188,9 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     # https://github.com/r-lib/rlang/issues/1422
     if (is_mariadb(con) && temporary) {
       if (nrow(fks) > 0 && !is_testing()) {
-        warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
+        warn(
+          "MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`"
+        )
       }
     } else {
       fk_defs <-
@@ -203,7 +217,10 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
           name = child_table,
           index_name = map_chr(child_fk_cols, paste, collapse = "_"),
           remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
-          remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[[length(.x@name)]]),
+          remote_name_unquoted = map_chr(
+            DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)),
+            ~ .x@name[[length(.x@name)]]
+          ),
           index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
         ) %>%
         group_by(name) %>%
@@ -241,9 +258,14 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       )
     ) %>%
     ungroup() %>%
-    transmute(name, remote_name, columns, sql_table = DBI::SQL(glue(
-      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {purrr::map_chr(remote_name, ~ DBI::dbQuoteIdentifier(con, .x))} (\n  {all_defs}\n)"
-    )))
+    transmute(
+      name,
+      remote_name,
+      columns,
+      sql_table = DBI::SQL(glue(
+        "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {purrr::map_chr(remote_name, ~ DBI::dbQuoteIdentifier(con, .x))} (\n  {all_defs}\n)"
+      ))
+    )
 
   queries <-
     tbl_defs %>%

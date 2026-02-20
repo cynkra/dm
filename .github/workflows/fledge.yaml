@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   check_fork:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       is_forked: ${{ steps.check.outputs.is_forked }}
     steps:
@@ -33,7 +33,7 @@ jobs:
         shell: bash
 
   fledge:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: check_fork
     if: needs.check_fork.outputs.is_forked == 'false'
     permissions:
@@ -46,27 +46,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true
 
-      - name: Configure Git identity
-        run: |
-          env | sort
-          git config --local user.name "$GITHUB_ACTOR"
-          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-        shell: bash
+      - uses: ./.github/workflows/git-identity
 
       - name: Update apt
         run: |
           sudo apt-get update
         shell: bash
 
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          install-r: false
-          use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        env:
-          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./.github/workflows/install
         with:
           pak-version: devel
           packages: cynkra/fledge
@@ -104,10 +93,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -x
-          gh pr create --base main --head fledge --fill-first
-          gh workflow run rcc -f ref=$(git rev-parse HEAD)
-          gh pr merge --merge --auto
+          set -ex
+          if [ -n "$(git diff main --numstat)" ]; then
+            gh pr create --base main --head fledge --fill-first
+            gh workflow run rcc -f ref=$(git rev-parse HEAD)
+            gh pr merge --squash --auto
+          else
+            echo "No changes."
+          fi
         shell: bash
 
       - name: Check release

@@ -16,8 +16,7 @@ library(magrittr)
 ##
 ##
 ##
-
-
+##
 
 # Take home messages
 
@@ -86,7 +85,6 @@ loans
 ## ...
 ## ...
 
-
 ## ----dm-object, highlight.output = 2, cache = FALSE------------
 library(dm)
 dm <- dm_from_src(mydb)
@@ -130,35 +128,43 @@ dm_pk
 dm_fk <-
   dm_pk %>% # <<
   dm_add_fk(
-    loans, account_id,
+    loans,
+    account_id,
     accounts
   ) %>%
   dm_add_fk(
-    orders, account_id,
+    orders,
+    account_id,
     accounts
   ) %>%
   dm_add_fk(
-    trans, account_id,
+    trans,
+    account_id,
     accounts
   ) %>%
   dm_add_fk(
-    disps, account_id,
+    disps,
+    account_id,
     accounts
   ) %>%
   dm_add_fk(
-    disps, client_id,
+    disps,
+    client_id,
     clients
   ) %>%
   dm_add_fk(
     accounts,
-    district_id, districts
+    district_id,
+    districts
   ) %>%
   dm_add_fk(
     clients,
-    district_id, districts
+    district_id,
+    districts
   ) %>%
   dm_add_fk(
-    cards, disp_id,
+    cards,
+    disp_id,
     disps
   )
 
@@ -242,7 +248,8 @@ characters <-
   select(-films)
 
 dm_starwars <-
-  dm( # <<
+  dm(
+    # <<
     characters,
     films,
     characters_films
@@ -250,7 +257,8 @@ dm_starwars <-
   dm_add_pk(characters, name) %>%
   dm_add_pk(films, film) %>%
   dm_add_fk(
-    characters_films, name,
+    characters_films,
+    name,
     characters
   ) %>%
   dm_add_fk(characters_films, film, films)

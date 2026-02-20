@@ -36,3 +36,10 @@
 ^tests/testthat/helper-sync\.R$
 ^index\.md$
 ^revdep$
+^AGENTS\.md$
+^CLAUDE\.md$
+^DEVCONTAINER\.md$
+^\.venv$
+^\.claude$
+^\.devcontainer$
+^air\.toml$

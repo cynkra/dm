@@ -94,10 +94,11 @@
 #' # What kind of cardinality is it?
 #' examine_cardinality(d1, d3, x_select = c(c = a))
 #' examine_cardinality(d1, d2)
-check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL,
-                                  by_position = NULL) {
+check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
   check_card_api(
-    {{ x }}, {{ y }}, ...,
+    {{ x }},
+    {{ y }},
+    ...,
     x_select = {{ x_select }},
     y_select = {{ y_select }},
     by_position = by_position,
@@ -115,10 +116,11 @@ check_cardinality_0_n_impl0 <- function(x, y, x_label, y_label) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_1_n <- function(x, y, ..., x_select = NULL, y_select = NULL,
-                                  by_position = NULL) {
+check_cardinality_1_n <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
   check_card_api(
-    {{ x }}, {{ y }}, ...,
+    {{ x }},
+    {{ y }},
+    ...,
     x_select = {{ x_select }},
     y_select = {{ y_select }},
     by_position = by_position,
@@ -136,10 +138,11 @@ check_cardinality_1_n_impl0 <- function(x, y, x_label, y_label) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_1_1 <- function(x, y, ..., x_select = NULL, y_select = NULL,
-                                  by_position = NULL) {
+check_cardinality_1_1 <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
   check_card_api(
-    {{ x }}, {{ y }}, ...,
+    {{ x }},
+    {{ y }},
+    ...,
     x_select = {{ x_select }},
     y_select = {{ y_select }},
     by_position = by_position,
@@ -165,10 +168,11 @@ check_cardinality_1_1_impl0 <- function(x, y, x_label, y_label) {
 
 #' @rdname examine_cardinality
 #' @export
-check_cardinality_0_1 <- function(x, y, ..., x_select = NULL, y_select = NULL,
-                                  by_position = NULL) {
+check_cardinality_0_1 <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
   check_card_api(
-    {{ x }}, {{ y }}, ...,
+    {{ x }},
+    {{ y }},
+    ...,
     x_select = {{ x_select }},
     y_select = {{ y_select }},
     by_position = by_position,
@@ -194,10 +198,11 @@ check_cardinality_0_1_impl0 <- function(x, y, x_label, y_label) {
 
 #' @rdname examine_cardinality
 #' @export
-examine_cardinality <- function(x, y, ..., x_select = NULL, y_select = NULL,
-                                by_position = NULL) {
+examine_cardinality <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
   check_card_api(
-    {{ x }}, {{ y }}, ...,
+    {{ x }},
+    {{ y }},
+    ...,
     x_select = {{ x_select }},
     y_select = {{ y_select }},
     by_position = by_position,
@@ -238,15 +243,22 @@ examine_cardinality_impl0 <- function(x, y, x_label, y_label) {
 }
 
 
-check_card_api <- function(x, y,
-                           ...,
-                           x_select = NULL, y_select = NULL,
-                           by_position = NULL,
-                           call = caller_env(),
-                           target = list) {
+check_card_api <- function(
+  x,
+  y,
+  ...,
+  x_select = NULL,
+  y_select = NULL,
+  by_position = NULL,
+  call = caller_env(),
+  target = list
+) {
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_card_api")
-    deprecate_soft("1.0.0", paste0(name, "(pk_column)"), paste0(name, "(x_select = )"),
+    deprecate_soft(
+      "1.0.0",
+      paste0(name, "(pk_column)"),
+      paste0(name, "(x_select = )"),
       details = c(
         "*" = "Use `y_select` instead of `fk_column`, and `x` and `y` instead of `parent_table` and `child_table`.",
         "*" = "Using `by_position = TRUE` for compatibility."
@@ -254,23 +266,34 @@ check_card_api <- function(x, y,
     )
     stopifnot(is.null(by_position))
     check_card_api_impl(
-      {{ x }}, {{ y }}, ...,
+      {{ x }},
+      {{ y }},
+      ...,
       by_position = TRUE,
       target = target
     )
   } else {
     check_dots_empty(call = call)
     check_card_api_impl(
-      {{ x }}, {{ x_select }}, {{ y }}, {{ y_select }},
+      {{ x }},
+      {{ x_select }},
+      {{ y }},
+      {{ y_select }},
       by_position = by_position %||% FALSE,
       target = target
     )
   }
 }
 
-check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column, ...,
-                                by_position,
-                                target) {
+check_card_api_impl <- function(
+  parent_table,
+  pk_column,
+  child_table,
+  fk_column,
+  ...,
+  by_position,
+  target
+) {
   ptq <- enquo(parent_table)
   ctq <- enquo(child_table)
 
@@ -288,7 +311,9 @@ check_card_api_impl <- function(parent_table, pk_column, child_table, fk_column,
   if (!isTRUE(by_position)) {
     y_idx <- match(colnames(parent_table), colnames(child_table))
     if (anyNA(y_idx)) {
-      abort("`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.")
+      abort(
+        "`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`."
+      )
     }
 
     child_table <-
