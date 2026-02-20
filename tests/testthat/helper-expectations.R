@@ -1,5 +1,12 @@
 expect_identical_graph <- function(g1, g2) {
-  expect_true(igraph::identical_graphs(g1, g2))
+  if (igraph_available()) {
+    expect_true(igraph::identical_graphs(g1, g2))
+  } else {
+    expect_setequal(g1$vnames, g2$vnames)
+    edges1 <- sort(paste(g1$vnames[g1$from], g1$vnames[g1$to]))
+    edges2 <- sort(paste(g2$vnames[g2$from], g2$vnames[g2$to]))
+    expect_equal(edges1, edges2)
+  }
 }
 
 expect_equivalent_dm <- function(

@@ -1,5 +1,4 @@
 test_that("functions working with graphs do the right thing?", {
-  skip_if_not_installed("igraph")
   join_list_tbl_1 <- tibble(
     lhs = c("tf_2", "tf_3", "tf_4", "tf_5", "tf_6"),
     rhs = c("tf_1", "tf_2", "tf_3", "tf_4", "tf_5"),
@@ -17,7 +16,7 @@ test_that("functions working with graphs do the right thing?", {
   )
 
   expect_identical_graph(
-    igraph::graph_from_data_frame(
+    dm_graph_from_data_frame(
       tibble(
         tables = c("tf_1", "tf_2", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6"),
         ref_tables = c("tf_2", "tf_7", "tf_3", "tf_4", "tf_5", "tf_6", "tf_7")
@@ -28,17 +27,24 @@ test_that("functions working with graphs do the right thing?", {
   )
 
   expect_snapshot({
-    attr(igraph::E(create_graph_from_dm(nyc_comp())), "vnames")
+    attr(dm_E(create_graph_from_dm(nyc_comp())), "vnames")
   })
 })
 
 test_that("empty graph", {
-  skip_if_not_installed("igraph")
-  opt <- igraph::igraph_options(print.id = FALSE)
-  on.exit(igraph::igraph_options(opt))
+  if (igraph_available()) {
+    opt <- igraph::igraph_options(print.id = FALSE)
+    on.exit(igraph::igraph_options(opt))
+    expect_snapshot({
+      create_graph_from_dm(empty_dm())
+      create_graph_from_dm(dm(x = tibble(a = 1)))
+    })
+  }
 
-  expect_snapshot({
-    create_graph_from_dm(empty_dm())
-    create_graph_from_dm(dm(x = tibble(a = 1)))
-  })
+  g0 <- create_graph_from_dm(empty_dm())
+  g1 <- create_graph_from_dm(dm(x = tibble(a = 1)))
+  expect_equal(length(dm_V(g0)), 0L)
+  expect_equal(length(dm_V(g1)), 1L)
+  expect_equal(length(dm_E(g0)), 0L)
+  expect_equal(length(dm_E(g1)), 0L)
 })

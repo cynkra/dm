@@ -2,6 +2,9 @@
 # When igraph is installed, the wrappers delegate to igraph.
 # When igraph is not installed, pure R implementations are used instead.
 
+# Memoised check so the package availability lookup happens only once per session.
+igraph_available <- memoise::memoise(function() rlang::is_installed("igraph"))
+
 # Minimal graph representation for when igraph is not available.
 # A dm_graph has:
 #   directed: logical(1)
@@ -17,19 +20,18 @@ new_dm_graph <- function(directed, vnames, from, to) {
 
 # graph_from_data_frame -------------------------------------------------------
 
-dm_graph_from_data_frame <- function(d, directed, vertices) {
-  if (is_installed("igraph")) {
+dm_graph_from_data_frame <- function(d, directed, vertices = NULL) {
+  if (igraph_available()) {
     return(igraph::graph_from_data_frame(d, directed = directed, vertices = vertices))
   }
-  vnames <- as.character(vertices)
-  vidx <- setNames(seq_along(vnames), vnames)
-  if (nrow(d) > 0) {
-    from <- unname(vidx[as.character(d[[1]])])
-    to <- unname(vidx[as.character(d[[2]])])
+  if (is.null(vertices)) {
+    vnames <- unique(c(as.character(d[[1]]), as.character(d[[2]])))
   } else {
-    from <- integer(0)
-    to <- integer(0)
+    vnames <- as.character(vertices)
   }
+  vidx <- set_names(seq_along(vnames), vnames)
+  from <- unname(vidx[as.character(d[[1]])])
+  to <- unname(vidx[as.character(d[[2]])])
   new_dm_graph(directed = directed, vnames = vnames, from = from, to = to)
 }
 
@@ -37,23 +39,19 @@ dm_graph_from_data_frame <- function(d, directed, vertices) {
 # Returns a named integer vector: values are 1-based indices, names are vertex names.
 
 dm_V <- function(g) {
-  UseMethod("dm_V")
+  if (igraph_available()) {
+    return(igraph::V(g))
+  }
+  set_names(seq_along(g$vnames), g$vnames)
 }
-
-dm_V.igraph <- function(g) igraph::V(g)
-
-dm_V.dm_graph <- function(g) setNames(seq_along(g$vnames), g$vnames)
 
 # E: edge accessor -------------------------------------------------------------
 # Returns an integer vector with a "vnames" attribute (e.g. "from|to").
 
 dm_E <- function(g) {
-  UseMethod("dm_E")
-}
-
-dm_E.igraph <- function(g) igraph::E(g)
-
-dm_E.dm_graph <- function(g) {
+  if (igraph_available()) {
+    return(igraph::E(g))
+  }
   out <- seq_along(g$from)
   attr(out, "vnames") <- paste(g$vnames[g$from], g$vnames[g$to], sep = "|")
   out
@@ -63,22 +61,17 @@ dm_E.dm_graph <- function(g) {
 # Returns a list with $order (named integer), $dist (named numeric), $parent (named integer).
 
 dm_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
-  UseMethod("dm_dfs")
-}
-
-dm_dfs.igraph <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
-  igraph::dfs(g, root, unreachable = unreachable, parent = parent, dist = dist)
-}
-
-dm_dfs.dm_graph <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
+  if (igraph_available()) {
+    return(igraph::dfs(g, root, unreachable = unreachable, parent = parent, dist = dist))
+  }
   n <- length(g$vnames)
-  vidx <- setNames(seq_along(g$vnames), g$vnames)
+  vidx <- set_names(seq_along(g$vnames), g$vnames)
   root_idx <- vidx[[root]]
 
   visited <- logical(n)
   visit_order <- integer(0)
-  parent_vec <- setNames(rep(NA_integer_, n), g$vnames)
-  dist_vec <- setNames(rep(Inf, n), g$vnames)
+  parent_vec <- set_names(rep(NA_integer_, n), g$vnames)
+  dist_vec <- set_names(rep(Inf, n), g$vnames)
 
   dfs_visit <- function(v, d) {
     visited[v] <<- TRUE
@@ -97,7 +90,7 @@ dm_dfs.dm_graph <- function(g, root, unreachable = TRUE, parent = FALSE, dist = 
 
   n_visited <- length(visit_order)
   n_unvisited <- n - n_visited
-  order_result <- setNames(
+  order_result <- set_names(
     c(visit_order, rep(NA_integer_, n_unvisited)),
     c(g$vnames[visit_order], rep(NA_character_, n_unvisited))
   )
@@ -114,12 +107,9 @@ dm_dfs.dm_graph <- function(g, root, unreachable = TRUE, parent = FALSE, dist = 
 # mode = "in":  for edge u→v, v comes before u (parents before children in FK graph).
 
 dm_topo_sort <- function(g, mode = "out") {
-  UseMethod("dm_topo_sort")
-}
-
-dm_topo_sort.igraph <- function(g, mode = "out") igraph::topo_sort(g, mode = mode)
-
-dm_topo_sort.dm_graph <- function(g, mode = "out") {
+  if (igraph_available()) {
+    return(igraph::topo_sort(g, mode = mode))
+  }
   n <- length(g$vnames)
   if (mode == "in") {
     from <- g$to
@@ -146,7 +136,7 @@ dm_topo_sort.dm_graph <- function(g, mode = "out") {
     }
   }
 
-  setNames(result, g$vnames[result])
+  set_names(result, g$vnames[result])
 }
 
 # distances -------------------------------------------------------------------
@@ -154,12 +144,9 @@ dm_topo_sort.dm_graph <- function(g, mode = "out") {
 # dm_distances(g, v)[1, ] gives distances from v to all vertices.
 
 dm_distances <- function(g, v = NULL) {
-  UseMethod("dm_distances")
-}
-
-dm_distances.igraph <- function(g, v = NULL) igraph::distances(g, v)
-
-dm_distances.dm_graph <- function(g, v = NULL) {
+  if (igraph_available()) {
+    return(igraph::distances(g, v))
+  }
   n <- length(g$vnames)
 
   # Build adjacency list (undirected: use both directions)
@@ -186,7 +173,7 @@ dm_distances.dm_graph <- function(g, v = NULL) {
     d
   }
 
-  vidx <- setNames(seq_along(g$vnames), g$vnames)
+  vidx <- set_names(seq_along(g$vnames), g$vnames)
   start_indices <- vidx[v]
   dist_mat <- t(vapply(start_indices, bfs_dist, numeric(n)))
   rownames(dist_mat) <- v
@@ -198,17 +185,14 @@ dm_distances.dm_graph <- function(g, v = NULL) {
 # Returns a new graph containing only the specified vertices and edges between them.
 
 dm_induced_subgraph <- function(g, vids) {
-  UseMethod("dm_induced_subgraph")
-}
-
-dm_induced_subgraph.igraph <- function(g, vids) igraph::induced_subgraph(g, vids)
-
-dm_induced_subgraph.dm_graph <- function(g, vids) {
+  if (igraph_available()) {
+    return(igraph::induced_subgraph(g, vids))
+  }
   keep_mask <- g$vnames %in% vids
   new_vnames <- g$vnames[keep_mask]
   old_indices <- which(keep_mask)
   # Map old integer indices to new integer indices
-  idx_map <- setNames(seq_along(old_indices), as.character(old_indices))
+  idx_map <- set_names(seq_along(old_indices), as.character(old_indices))
   keep_edges <- g$from %in% old_indices & g$to %in% old_indices
   new_from <- unname(idx_map[as.character(g$from[keep_edges])])
   new_to <- unname(idx_map[as.character(g$to[keep_edges])])
@@ -221,16 +205,11 @@ dm_induced_subgraph.dm_graph <- function(g, vids) {
 # names(result$predecessors) are the predecessor vertex names (NA for source vertex).
 
 dm_shortest_paths <- function(g, from, to, predecessors = FALSE) {
-  UseMethod("dm_shortest_paths")
-}
-
-dm_shortest_paths.igraph <- function(g, from, to, predecessors = FALSE) {
-  igraph::shortest_paths(g, from, to, predecessors = predecessors)
-}
-
-dm_shortest_paths.dm_graph <- function(g, from, to, predecessors = FALSE) {
+  if (igraph_available()) {
+    return(igraph::shortest_paths(g, from, to, predecessors = predecessors))
+  }
   n <- length(g$vnames)
-  vidx <- setNames(seq_along(g$vnames), g$vnames)
+  vidx <- set_names(seq_along(g$vnames), g$vnames)
   start_idx <- vidx[[from]]
 
   # Build adjacency list (undirected)
@@ -240,7 +219,7 @@ dm_shortest_paths.dm_graph <- function(g, from, to, predecessors = FALSE) {
     adj[[g$to[[i]]]] <- c(adj[[g$to[[i]]]], g$from[[i]])
   }
 
-  pred_idx <- setNames(rep(NA_integer_, n), g$vnames)
+  pred_idx <- set_names(rep(NA_integer_, n), g$vnames)
   visited <- logical(n)
   visited[[start_idx]] <- TRUE
   queue <- start_idx
@@ -263,7 +242,7 @@ dm_shortest_paths.dm_graph <- function(g, from, to, predecessors = FALSE) {
     # - names are the predecessor vertex names (NA for source vertex)
     # - values are the predecessor vertex indices (NA for source vertex)
     pred_names <- ifelse(is.na(pred_idx), NA_character_, g$vnames[pred_idx])
-    result$predecessors <- setNames(pred_idx, pred_names)
+    result$predecessors <- set_names(pred_idx, pred_names)
   }
   result
 }
@@ -272,12 +251,9 @@ dm_shortest_paths.dm_graph <- function(g, from, to, predecessors = FALSE) {
 # Returns a new graph with the specified vertices (and their incident edges) removed.
 
 dm_delete_vertices <- function(g, v) {
-  UseMethod("dm_delete_vertices")
-}
-
-dm_delete_vertices.igraph <- function(g, v) igraph::delete_vertices(g, v)
-
-dm_delete_vertices.dm_graph <- function(g, v) {
+  if (igraph_available()) {
+    return(igraph::delete_vertices(g, v))
+  }
   dm_induced_subgraph(g, setdiff(g$vnames, v))
 }
 
@@ -288,48 +264,41 @@ dm_delete_vertices.dm_graph <- function(g, v) {
 # mode = "all": both
 
 dm_neighbors <- function(g, v, mode = "all") {
-  UseMethod("dm_neighbors")
-}
-
-dm_neighbors.igraph <- function(g, v, mode = "all") igraph::neighbors(g, v, mode = mode)
-
-dm_neighbors.dm_graph <- function(g, v, mode = "all") {
+  if (igraph_available()) {
+    return(igraph::neighbors(g, v, mode = mode))
+  }
   v_idx <- if (is.character(v)) {
-    setNames(seq_along(g$vnames), g$vnames)[[v]]
+    set_names(seq_along(g$vnames), g$vnames)[[v]]
   } else {
     as.integer(v)
   }
   incoming <- if (mode %in% c("in", "all")) g$from[g$to == v_idx] else integer(0)
   outgoing <- if (mode %in% c("out", "all")) g$to[g$from == v_idx] else integer(0)
   nbrs <- unique(c(incoming, outgoing))
-  setNames(nbrs, g$vnames[nbrs])
+  set_names(nbrs, g$vnames[nbrs])
 }
 
 # vcount ----------------------------------------------------------------------
 # Returns the number of vertices in the graph.
 
 dm_vcount <- function(g) {
-  UseMethod("dm_vcount")
+  if (igraph_available()) {
+    return(igraph::vcount(g))
+  }
+  length(g$vnames)
 }
-
-dm_vcount.igraph <- function(g) igraph::vcount(g)
-
-dm_vcount.dm_graph <- function(g) length(g$vnames)
 
 # girth -----------------------------------------------------------------------
 # Returns a list with $circle: a named integer vector of vertices forming the shortest cycle.
 # names($circle) are vertex names.
 
 dm_girth <- function(g) {
-  UseMethod("dm_girth")
-}
-
-dm_girth.igraph <- function(g) igraph::girth(g)
-
-dm_girth.dm_graph <- function(g) {
+  if (igraph_available()) {
+    return(igraph::girth(g))
+  }
   n <- length(g$vnames)
   if (n == 0L) {
-    return(list(girth = Inf, circle = setNames(integer(0), character(0))))
+    return(list(girth = Inf, circle = set_names(integer(0), character(0))))
   }
 
   # Build adjacency list (directed)
@@ -375,8 +344,9 @@ dm_girth.dm_graph <- function(g) {
   }
 
   if (is.null(cycle)) {
-    list(girth = Inf, circle = setNames(integer(0), character(0)))
+    list(girth = Inf, circle = set_names(integer(0), character(0)))
   } else {
-    list(girth = length(cycle), circle = setNames(cycle, g$vnames[cycle]))
+    list(girth = length(cycle), circle = set_names(cycle, g$vnames[cycle]))
   }
 }
+
