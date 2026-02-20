@@ -42,3 +42,4 @@
 ^\.claude$
 ^\.devcontainer$
 ^air\.toml$
+^dplyr.*\.md$
