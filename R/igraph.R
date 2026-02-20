@@ -96,8 +96,12 @@ dm_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
   )
 
   result <- list(order = order_result)
-  if (dist) result$dist <- dist_vec
-  if (parent) result$parent <- parent_vec
+  if (dist) {
+    result$dist <- dist_vec
+  }
+  if (parent) {
+    result$parent <- parent_vec
+  }
   result
 }
 
@@ -316,10 +320,14 @@ dm_girth <- function(g) {
   cycle <- NULL
 
   dfs_visit <- function(v) {
-    if (!is.null(cycle)) return()
+    if (!is.null(cycle)) {
+      return()
+    }
     color[[v]] <<- 1L
     for (u in adj[[v]]) {
-      if (!is.null(cycle)) return()
+      if (!is.null(cycle)) {
+        return()
+      }
       if (color[[u]] == 1L) {
         # Found a back edge v→u: reconstruct cycle
         path <- v
@@ -339,7 +347,9 @@ dm_girth <- function(g) {
   }
 
   for (v in seq_len(n)) {
-    if (color[[v]] == 0L) dfs_visit(v)
+    if (color[[v]] == 0L) {
+      dfs_visit(v)
+    }
     if (!is.null(cycle)) break
   }
 
@@ -349,4 +359,3 @@ dm_girth <- function(g) {
     list(girth = length(cycle), circle = set_names(cycle, g$vnames[cycle]))
   }
 }
-
