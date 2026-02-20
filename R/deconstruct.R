@@ -17,7 +17,13 @@ vec_new_uuid_along <- function(x) {
   map_chr(x, function(.x) new_uuid())
 }
 
-new_fks <- function(..., child_uuid = NULL, child_fk_cols = NULL, parent_uuid = NULL, parent_key_cols = NULL) {
+new_fks <- function(
+  ...,
+  child_uuid = NULL,
+  child_fk_cols = NULL,
+  parent_uuid = NULL,
+  parent_key_cols = NULL
+) {
   check_dots_empty0(...)
 
   child_fk_cols <- new_keys(child_fk_cols)
@@ -41,13 +47,15 @@ new_fks_out <- function(child_fk_cols = NULL, parent_uuid = NULL, parent_key_col
   )
 }
 
-new_keyed_tbl <- function(x,
-                          ...,
-                          pk = NULL,
-                          uks = NULL,
-                          fks_in = NULL,
-                          fks_out = NULL,
-                          uuid = NULL) {
+new_keyed_tbl <- function(
+  x,
+  ...,
+  pk = NULL,
+  uks = NULL,
+  fks_in = NULL,
+  fks_out = NULL,
+  uuid = NULL
+) {
   check_dots_empty()
 
   pk <- vec_cast(pk, character())
@@ -176,7 +184,11 @@ fks_df_from_keys_info <- function(tables) {
     map_dfr(info, ~ tibble(child_uuid = .x$uuid, .x$fks_out))
 
   fks <-
-    vec_rbind(fks_out, fks_in, .ptype = new_fks(child_uuid = character(), parent_uuid = character())) %>%
+    vec_rbind(
+      fks_out,
+      fks_in,
+      .ptype = new_fks(child_uuid = character(), parent_uuid = character())
+    ) %>%
     distinct()
 
   uuid_lookup <- tibble(
@@ -198,7 +210,9 @@ fks_df_from_keys_info <- function(tables) {
     filter(map2_lgl(parent_key_cols, parent_data, ~ all(.x %in% colnames(.y)))) %>%
     group_by(parent_table) %>%
     # FIXME: Capture on_delete
-    summarize(fks = list(new_fk(as.list(parent_key_cols), child_table, as.list(child_fk_cols), "no_action"))) %>%
+    summarize(
+      fks = list(new_fk(as.list(parent_key_cols), child_table, as.list(child_fk_cols), "no_action"))
+    ) %>%
     ungroup() %>%
     rename(table = parent_table)
 }

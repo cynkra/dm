@@ -1,5 +1,10 @@
-mw_cg_make_dm_add_fk <- function(dm, ..., table_names = NULL,
-                                 column_names = NULL, other_column_names = NULL) {
+mw_cg_make_dm_add_fk <- function(
+  dm,
+  ...,
+  table_names = NULL,
+  column_names = NULL,
+  other_column_names = NULL
+) {
   # Checks
   check_dots_empty()
   stopifnot(length(table_names) == 2)
