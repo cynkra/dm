@@ -460,12 +460,11 @@ dm_rm_fk_impl <- function(
   } else if (!is.null(ref_cols)) {
     show_disambiguation <- FALSE
   } else {
-    # Check if all FKs point to the primary key
-    show_disambiguation <- !all(map2_lgl(
-      def$fks[idx],
-      def$pks[idx],
+    # Check if all FKs (being removed) point to the primary key
+    show_disambiguation <- !all(pmap_lgl(
+      list(def$fks[idx], idx_fk, def$pks[idx]),
       ~ {
-        all(map_lgl(.x$ref_column, identical, .y$column[[1]]))
+        all(map_lgl(..1$ref_column[..2], identical, ..3$column[[1]]))
       }
     ))
   }
