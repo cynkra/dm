@@ -1,5 +1,6 @@
 #' Create R code for a dm object
 #'
+#' @description
 #' `dm_paste()` takes an existing `dm` and emits the code necessary for its creation.
 #'
 #' @inheritParams dm_add_pk
@@ -12,7 +13,7 @@
 #'     derived from [dm_ptype()], overrides `"select"`.
 #'   - `"select"`: [dm_select()] statements for columns that are part
 #'     of the dm.
-#'   - `"keys"`: [dm_add_pk()] and [dm_add_fk()] statements for adding keys.
+#'   - `"keys"`: [dm_add_pk()], [dm_add_fk()] and [dm_add_uk()] statements for adding keys.
 #'   - `"color"`: [dm_set_colors()] statements to set color.
 #'   - `"all"`: All options above except `"select"`
 #'
@@ -31,20 +32,20 @@
 #' @examples
 #' dm() %>%
 #'   dm_paste()
+#' @examplesIf rlang::is_installed("nycflights13")
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste()
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste(options = "select")
-dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
-                     options = NULL, path = NULL) {
+dm_paste <- function(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL) {
   check_dots_empty(action = warn)
 
   options <- check_paste_options(options, select, caller_env())
 
   if (!is.null(path)) {
-    stopifnot(rlang::is_installed("brio"))
+    check_suggested("brio", "dm_paste")
   }
 
   code <- dm_paste_impl(dm = dm, options, tab_width = tab_width)
@@ -69,7 +70,12 @@ check_paste_options <- function(options, select, env) {
   }
 
   if (!is.null(select)) {
-    deprecate_soft("0.1.2", "dm::dm_paste(select = )", "dm::dm_paste(options = 'select')", env = env)
+    deprecate_soft(
+      "0.1.2",
+      "dm::dm_paste(select = )",
+      "dm::dm_paste(options = 'select')",
+      env = env
+    )
     if (isTRUE(select)) {
       options <- c(options, "select")
     }
@@ -96,13 +102,16 @@ dm_paste_impl <- function(dm, options, tab_width) {
   code_tables <- if ("tables" %in% options) dm_paste_tables(dm, tab)
 
   # code for including the tables
-  code_construct <- dm_paste_construct(dm)
+  code_construct <- dm_paste_construct(dm, tab)
 
   # adding code for selection of columns
   code_select <- if ("select" %in% options) dm_paste_select(dm)
 
   # adding code for establishing PKs
   code_pks <- if ("keys" %in% options) dm_paste_pks(dm)
+
+  # adding code for establishing UKs
+  code_uks <- if ("keys" %in% options) dm_paste_uks(dm)
 
   # adding code for establishing FKs
   code_fks <- if ("keys" %in% options) dm_paste_fks(dm)
@@ -116,6 +125,7 @@ dm_paste_impl <- function(dm, options, tab_width) {
       code_construct,
       code_select,
       code_pks,
+      code_uks,
       code_fks,
       code_color
     ),
@@ -138,56 +148,109 @@ dm_paste_tables <- function(dm, tab) {
   )
 }
 
-dm_paste_construct <- function(dm) {
-  glue("dm({glue_collapse1(tick_if_needed(src_tbls(dm)), ', ')})")
+dm_paste_construct <- function(dm, tab) {
+  if (length(dm) == 0) {
+    return("dm::dm(\n)")
+  }
+
+  paste0(
+    "dm::dm(\n",
+    paste0(tab, tick_if_needed(src_tbls_impl(dm)), ",\n", collapse = ""),
+    ")"
+  )
 }
 
+#' @autoglobal
 dm_paste_select <- function(dm) {
-  tbl_select <- dm %>%
+  tbl_select <-
+    dm %>%
     dm_get_def() %>%
     mutate(cols = map(data, colnames)) %>%
     mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) %>%
-    mutate(code = glue("dm_select({tick_if_needed(table)}{cols})")) %>%
+    mutate(code = glue("dm::dm_select({tick_if_needed(table)}{cols})")) %>%
     pull()
 }
 
 dm_paste_pks <- function(dm) {
-  # FIXME: this will fail with compound keys
-  dm_get_all_pks_impl(dm) %>%
-    mutate(code = glue("dm_add_pk({tick_if_needed(table)}, {tick_if_needed(pk_col)})")) %>%
+  dm %>%
+    dm_get_all_pks_impl() %>%
+    mutate(
+      code = if_else(
+        !is.na(autoincrement) & autoincrement,
+        glue(
+          "dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"
+        ),
+        glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")
+      )
+    ) %>%
+    pull()
+}
+
+dm_paste_uks <- function(dm) {
+  dm %>%
+    dm_get_def() %>%
+    dm_get_all_uks_def_impl() %>%
+    mutate(code = glue("dm::dm_add_uk({tick_if_needed(table)}, {deparse_keys(uk_col)})")) %>%
     pull()
 }
 
 dm_paste_fks <- function(dm) {
-  # FIXME: this will fail with compound keys
-  dm_get_all_fks_impl(dm) %>%
-    mutate(code = glue("dm_add_fk({tick_if_needed(child_table)}, {tick_if_needed(child_fk_cols)}, {tick_if_needed(parent_table)})")) %>%
-    pull()
+  pks <-
+    dm %>%
+    dm_get_all_pks_impl() %>%
+    set_names(c("parent_table", "parent_default_pk_cols", "autoincrement"))
+
+  fks <-
+    dm %>%
+    dm_get_all_fks_impl()
+
+  fpks <-
+    left_join(fks, pks, by = "parent_table")
+
+  need_non_default <- !map2_lgl(fpks$parent_key_cols, fpks$parent_default_pk_cols, identical)
+  fpks$non_default_parent_key_cols <- ""
+  fpks$non_default_parent_key_cols[need_non_default] <- paste0(
+    ", ",
+    deparse_keys(fpks$parent_key_cols[need_non_default])
+  )
+
+  on_delete <- if_else(
+    fpks$on_delete != "no_action",
+    glue(", on_delete = \"{fpks$on_delete}\""),
+    ""
+  )
+
+  glue(
+    "dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})"
+  )
 }
 
 dm_paste_color <- function(dm) {
   colors <- dm_get_colors(dm)
   colors <- colors[names(colors) != "default"]
-  glue("dm_set_colors({tick_if_needed(names(colors))} = {tick_if_needed(colors)})")
+  glue("dm::dm_set_colors({tick_if_needed(names(colors))} = {tick_if_needed(colors)})")
 }
 
 df_paste <- function(x, tab) {
   cols <- map_chr(x, deparse_line)
   if (is_empty(x)) {
-    cols <- ""
+    cols <- character()
   } else {
-    cols <- paste0(
-      paste0("\n", tab, tick_if_needed(names(cols)), " = ", cols, collapse = ","),
-      "\n"
-    )
+    cols <- paste0(tab, tick_if_needed(names(cols)), " = ", cols, ",\n", collapse = "")
   }
 
-  paste0("tibble(", cols, ")")
+  paste0("tibble::tibble(\n", cols, ")")
 }
 
 deparse_line <- function(x) {
+  attrs <- attributes(x)
+  # Workaround necessary for R < 3.5:
+  if (length(attrs) > 0) {
+    attributes(x) <- attrs[sort(names(attrs))]
+  }
   x <- deparse(x, width.cutoff = 500, backtick = TRUE)
-  gsub(" *\n *", " ", x)
+  # need paste0() because of https://github.com/cynkra/dm/issues/1510
+  paste0(gsub(" *\n *", " ", x), collapse = "")
 }
 
 glue_collapse1 <- function(x, ...) {
@@ -208,10 +271,12 @@ dquote <- function(x) {
 # Errors ------------------------------------------------------------------
 
 abort_unknown_option <- function(options, all_options) {
-  abort(error_txt_unknown_option(options, all_options), .subclass = dm_error_full("unknown_option"))
+  abort(error_txt_unknown_option(options, all_options), class = dm_error_full("unknown_option"))
 }
 
 error_txt_unknown_option <- function(options, all_options) {
   bad_options <- setdiff(options, all_options)
-  glue("Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}.")
+  glue(
+    "Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}."
+  )
 }

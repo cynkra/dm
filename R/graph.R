@@ -1,56 +1,45 @@
 #' Check foreign key reference
 #'
-#' Is a table of a [`dm`] referenced by another table?
+#' `dm_is_referenced()` is soft-deprecated, use the information returned from
+#' [dm_get_all_fks()] instead.
 #'
 #' @inheritParams dm_add_pk
 #'
-#' @return `TRUE` if at least one foreign key exists that points to the primary
-#' key of the `table` argument, `FALSE` otherwise.
-#'
-#' @family functions utilizing foreign key relations
-#'
+#' @rdname deprecated
 #' @export
-#' @examples
-#' dm_nycflights13() %>%
-#'   dm_is_referenced(airports)
-#' dm_nycflights13() %>%
-#'   dm_is_referenced(flights)
 dm_is_referenced <- function(dm, table) {
+  deprecate_soft("0.3.0", "dm::dm_is_referenced()", "dm::dm_get_all_fks()")
+
   check_not_zoomed(dm)
   has_length(dm_get_referencing_tables(dm, !!ensym(table)))
 }
 
 #' Get the names of referencing tables
 #'
-#' This function returns the names of all tables that point to the primary key
-#' of a table.
+#' `dm_get_referencing_tables()` is soft-deprecated, use the information
+#' returned from [dm_get_all_fks()] instead.
 #'
 #' @inheritParams dm_is_referenced
+#' @rdname deprecated
 #'
-#' @return A character vector of the names of the tables that point to the primary
-#'   key of `table`.
-#'
-#' @family functions utilizing foreign key relations
-#'
-#' @examples
-#' dm_get_referencing_tables(dm_nycflights13(), airports)
-#' dm_get_referencing_tables(dm_nycflights13(), flights)
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
+  deprecate_soft("0.3.0", "dm::dm_get_referencing_tables()", "dm::dm_get_all_fks()")
+
   check_not_zoomed(dm)
-  table <- as_name(ensym(table))
-  check_correct_input(dm, table)
+  table <- dm_tbl_name(dm, {{ table }})
 
   def <- dm_get_def(dm)
   i <- which(def$table == table)
   def$fks[[i]]$table
 }
 
+#' @autoglobal
 create_graph_from_dm <- function(dm, directed = FALSE) {
   def <- dm_get_def(dm)
   def %>%
     select(ref_table = table, fks) %>%
-    unnest(fks) %>%
+    unnest_list_of_df("fks") %>%
     select(table, ref_table) %>%
     igraph::graph_from_data_frame(directed = directed, vertices = def$table)
 }

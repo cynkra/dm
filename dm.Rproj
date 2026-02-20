@@ -1,4 +1,5 @@
 Version: 1.0
+ProjectId: 1b8bc487-1b33-4dff-8d94-7bb130ab23c9
 
 RestoreWorkspace: No
 SaveWorkspace: No
@@ -18,4 +19,4 @@ StripTrailingWhitespace: Yes
 BuildType: Package
 PackageUseDevtools: Yes
 PackageInstallArgs: --no-multiarch --with-keep.source
-PackageRoxygenize: rd,collate,namespace
+PackageRoxygenize: rd,collate,namespace,roxyglobals::global_roclet

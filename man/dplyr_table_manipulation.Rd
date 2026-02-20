@@ -2,56 +2,109 @@
 % Please edit documentation in R/dplyr.R
 \name{dplyr_table_manipulation}
 \alias{dplyr_table_manipulation}
-\alias{filter.zoomed_dm}
-\alias{mutate.zoomed_dm}
-\alias{transmute.zoomed_dm}
-\alias{select.zoomed_dm}
-\alias{rename.zoomed_dm}
-\alias{distinct.zoomed_dm}
-\alias{arrange.zoomed_dm}
-\alias{slice.zoomed_dm}
-\alias{group_by.zoomed_dm}
-\alias{ungroup.zoomed_dm}
-\alias{summarise.zoomed_dm}
-\alias{pull.zoomed_dm}
+\alias{filter.dm_zoomed}
+\alias{mutate.dm_zoomed}
+\alias{transmute.dm_zoomed}
+\alias{select.dm_zoomed}
+\alias{relocate.dm_zoomed}
+\alias{rename.dm_zoomed}
+\alias{distinct.dm_zoomed}
+\alias{arrange.dm_zoomed}
+\alias{slice.dm_zoomed}
+\alias{group_by.dm_zoomed}
+\alias{group_by.dm_keyed_tbl}
+\alias{ungroup.dm_zoomed}
+\alias{summarise.dm_zoomed}
+\alias{summarise.dm_keyed_tbl}
+\alias{count.dm_zoomed}
+\alias{tally.dm_zoomed}
+\alias{pull.dm_zoomed}
+\alias{compute.dm_zoomed}
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
-\method{filter}{zoomed_dm}(.data, ...)
+\method{filter}{dm_zoomed}(.data, ...)
 
-\method{mutate}{zoomed_dm}(.data, ...)
+\method{mutate}{dm_zoomed}(.data, ...)
 
-\method{transmute}{zoomed_dm}(.data, ...)
+\method{transmute}{dm_zoomed}(.data, ...)
 
-\method{select}{zoomed_dm}(.data, ...)
+\method{select}{dm_zoomed}(.data, ...)
 
-\method{rename}{zoomed_dm}(.data, ...)
+\method{relocate}{dm_zoomed}(.data, ..., .before = NULL, .after = NULL)
 
-\method{distinct}{zoomed_dm}(.data, ..., .keep_all = FALSE)
+\method{rename}{dm_zoomed}(.data, ...)
 
-\method{arrange}{zoomed_dm}(.data, ...)
+\method{distinct}{dm_zoomed}(.data, ..., .keep_all = FALSE)
 
-\method{slice}{zoomed_dm}(.data, ..., .keep_pk = NULL)
+\method{arrange}{dm_zoomed}(.data, ...)
 
-\method{group_by}{zoomed_dm}(.data, ...)
+\method{slice}{dm_zoomed}(.data, ..., .keep_pk = NULL)
 
-\method{ungroup}{zoomed_dm}(x, ...)
+\method{group_by}{dm_zoomed}(.data, ...)
 
-\method{summarise}{zoomed_dm}(.data, ...)
+\method{group_by}{dm_keyed_tbl}(.data, ...)
 
-\method{pull}{zoomed_dm}(.data, var = -1, ...)
+\method{ungroup}{dm_zoomed}(x, ...)
+
+\method{summarise}{dm_zoomed}(.data, ...)
+
+\method{summarise}{dm_keyed_tbl}(.data, ...)
+
+\method{count}{dm_zoomed}(
+  x,
+  ...,
+  wt = NULL,
+  sort = FALSE,
+  name = NULL,
+  .drop = group_by_drop_default(x)
+)
+
+\method{tally}{dm_zoomed}(x, ...)
+
+\method{pull}{dm_zoomed}(.data, var = -1, ...)
+
+\method{compute}{dm_zoomed}(x, ...)
 }
 \arguments{
-\item{.data}{object of class \code{zoomed_dm}}
+\item{.data}{object of class \code{dm_zoomed}}
 
 \item{...}{see corresponding function in package \pkg{dplyr} or \pkg{tidyr}}
 
-\item{.keep_all}{For \code{distinct.zoomed_dm()}: see \code{\link[dplyr:distinct]{dplyr::distinct}}}
+\item{.before, .after}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Destination of
+columns selected by \code{...}. Supplying neither will move columns to the
+left-hand side; specifying both is an error.}
 
-\item{.keep_pk}{For \code{slice.zoomed_dm}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
+\item{.keep_all}{For \code{distinct.dm_zoomed()}: see \code{\link[dplyr:distinct]{dplyr::distinct()}}}
+
+\item{.keep_pk}{For \code{slice.dm_zoomed}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.
-This argument is specific for the \code{slice.zoomed_dm()} method.}
+This argument is specific for the \code{slice.dm_zoomed()} method.}
 
-\item{x}{For \code{ungroup.zoomed_dm}: object of class \code{zoomed_dm}}
+\item{x}{For \code{ungroup.dm_zoomed}: object of class \code{dm_zoomed}}
+
+\item{wt}{<\code{\link[rlang:args_data_masking]{data-masking}}> Frequency weights.
+Can be \code{NULL} or a variable:
+\itemize{
+\item If \code{NULL} (the default), counts the number of rows in each group.
+\item If a variable, computes \code{sum(wt)} for each group.
+}}
+
+\item{sort}{If \code{TRUE}, will show the largest groups at the top.}
+
+\item{name}{The name of the new column in the output.
+
+If omitted, it will default to \code{n}. If there's already a column called \code{n},
+it will use \code{nn}. If there's a column called \code{n} and \code{nn}, it'll use
+\code{nnn}, and so on, adding \code{n}s until it gets a new name.}
+
+\item{.drop}{Handling of factor levels that don't appear in the data, passed
+on to \code{\link[dplyr:group_by]{group_by()}}.
+
+For \code{count()}: if \code{FALSE} will include counts for empty groups (i.e. for
+levels of factors that don't exist in the data).
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#defunct}{\figure{lifecycle-defunct.svg}{options: alt='[Defunct]'}}}{\strong{[Defunct]}} For \code{add_count()}: defunct since it
+can't actually affect the output.}
 
 \item{var}{A variable specified as:
 \itemize{
@@ -64,13 +117,14 @@ The default returns the last column (on the assumption that's the
 column you've created most recently).
 
 This argument is taken by expression and supports
-\link[rlang:quasiquotation]{quasiquotation} (you can unquote column
-names and column positions).}
+\link[rlang:topic-inject]{quasiquotation} (you can unquote column
+names and column locations).}
 }
 \description{
-Use these methods without the '.zoomed_dm' suffix (see examples).
+Use these methods without the '.dm_zoomed' suffix (see examples).
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 zoomed <- dm_nycflights13() \%>\%
   dm_zoom_to(flights) \%>\%
   group_by(month) \%>\%
@@ -78,4 +132,5 @@ zoomed <- dm_nycflights13() \%>\%
   summarize(avg_air_time = mean(air_time, na.rm = TRUE))
 zoomed
 dm_insert_zoomed(zoomed, new_tbl_name = "avg_air_time_per_month")
+\dontshow{\}) # examplesIf}
 }

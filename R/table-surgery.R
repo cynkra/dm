@@ -1,7 +1,7 @@
 #' Decompose a table into two linked tables
 #'
 #' @description
-#' \lifecycle{questioning}
+#' `r lifecycle::badge("experimental")`
 #'
 #' Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
 #'
@@ -35,8 +35,10 @@
 #'   - entry "parent_table": the "lookup table" for `child_table`.
 #'
 #' @section Life cycle:
-#' This function is marked "questioning" because it feels more useful
+#' This function is marked "experimental" because it seems more useful
 #' when applied to a table in a dm object.
+#' Changing the interface later seems harmless because these functions are
+#' most likely used interactively.
 #'
 #' @examples
 #' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
@@ -57,9 +59,10 @@ decompose_table <- function(.data, new_id_column, ...) {
   parent_table <-
     select(.data, !!!sel_vars$indices) %>%
     distinct() %>%
-    arrange(!!!syms(names(sel_vars$indices))) %>%
     # Without as.integer(), RPostgres creates integer64 column (#15)
-    mutate(!!id_col_q := as.integer(row_number())) %>%
+    mutate(
+      !!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))
+    ) %>%
     select(!!id_col_q, everything())
 
   non_key_indices <-
@@ -81,7 +84,7 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' Merge two tables that are linked by a foreign key relation
 #'
 #' @description
-#' \lifecycle{questioning}
+#' `r lifecycle::badge("experimental")`
 #'
 #' Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 #'
@@ -98,8 +101,10 @@ decompose_table <- function(.data, new_id_column, ...) {
 #' @return A wide table produced by joining the two given tables.
 #'
 #' @section Life cycle:
-#' These functions are marked "questioning" because they feel more useful
+#' These functions are marked "experimental" because they seem more useful
 #' when applied to a table in a dm object.
+#' Changing the interface later seems harmless because these functions are
+#' most likely used interactively.
 #'
 #' @name reunite_parent_child
 #'
@@ -141,11 +146,9 @@ reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_colum
   id_col_chr <-
     as_name(id_col_q)
 
-  child_table <- list_of_parent_child_tables %>%
-    extract2("child_table")
+  child_table <- list_of_parent_child_tables[["child_table"]]
 
-  parent_table <- list_of_parent_child_tables %>%
-    extract2("parent_table")
+  parent_table <- list_of_parent_child_tables[["parent_table"]]
 
   child_table %>%
     left_join(parent_table, by = id_col_chr) %>%

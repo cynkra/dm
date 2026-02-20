@@ -3,37 +3,28 @@
 \name{dm}
 \alias{dm}
 \alias{new_dm}
-\alias{validate_dm}
-\alias{dm_get_src}
-\alias{dm_get_con}
-\alias{dm_get_tables}
 \alias{is_dm}
 \alias{as_dm}
 \title{Data model class}
 \usage{
-dm(..., .name_repair = c("check_unique", "unique", "universal", "minimal"))
+dm(
+  ...,
+  .name_repair = c("check_unique", "unique", "universal", "minimal"),
+  .quiet = FALSE
+)
 
 new_dm(tables = list())
 
-validate_dm(x)
-
-dm_get_src(x)
-
-dm_get_con(x)
-
-dm_get_tables(x)
-
 is_dm(x)
 
-as_dm(x)
+as_dm(x, ...)
 }
 \arguments{
-\item{...}{Tables to add to the \code{dm} object.
-If no names are provided, the tables
-are auto-named.}
+\item{...}{Tables or existing \code{dm} objects to add to the \code{dm} object.
+Unnamed tables are auto-named, \code{dm} objects must not be named.}
 
-\item{.name_repair}{Options for name repair.
-Forwarded as \code{repair} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
+\item{.name_repair, .quiet}{Options for name repair.
+Forwarded as \code{repair} and \code{quiet} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
 
 \item{tables}{A named list of the tables (tibble-objects, not names),
 to be included in the \code{dm} object.}
@@ -43,22 +34,14 @@ to be included in the \code{dm} object.}
 \value{
 For \code{dm()}, \code{new_dm()}, \code{as_dm()}: A \code{dm} object.
 
-For \code{validate_dm()}: Returns the \code{dm}, invisibly, after finishing all checks.
-
-For \code{dm_get_src()}: the \pkg{dplyr} source for a \code{dm} object.
-
-For \code{dm_get_con()}: The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
-
-For \code{dm_get_tables()}: A named list with the tables constituting the \code{dm}.
-
-For \code{is_dm()}: Boolean, is this object a \code{dm}.
+For \code{is_dm()}: A scalar logical, \code{TRUE} if is this object is a \code{dm}.
 }
 \description{
 The \code{dm} class holds a list of tables and their relationships.
 It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
 and extends the idea by offering operations to access the data in the tables.
 
-\code{dm()} creates a \code{dm} object from one or multiple \link{tbl} objects
+\code{dm()} creates a \code{dm} object from \link{tbl} objects
 (tibbles or lazy data objects).
 
 \code{new_dm()} is a low-level constructor that creates a new \code{dm} object.
@@ -66,61 +49,58 @@ and extends the idea by offering operations to access the data in the tables.
 \item If called without arguments, it will create an empty \code{dm}.
 \item If called with arguments, no validation checks will be made to ascertain that
 the inputs are of the expected class and internally consistent;
-use \code{validate_dm()} to double-check the returned object.
+use \code{\link[=dm_validate]{dm_validate()}} to double-check the returned object.
 }
-
-\code{validate_dm()} checks the internal consistency of a \code{dm} object.
-
-\code{dm_get_src()} returns the \pkg{dplyr} source for a \code{dm} object.
-All tables in a \code{dm} object must be from the same source,
-i.e. either they are all data frames, or they all are stored on the same
-database.
-
-\code{dm_get_con()} returns the \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} for \code{dm} objects.
-This works only if the tables are stored on a database, otherwise an error
-is thrown.
-
-\code{dm_get_tables()} returns a named list of \pkg{dplyr} \link{tbl} objects
-of a \code{dm} object.
-Filtering expressions are NOT evaluated at this stage.
-To get a filtered table, use \code{dm_apply_filters_to_tbl()}, to apply filters to all tables use \code{dm_apply_filters()}
 
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
 \code{as_dm()} coerces objects to the \code{dm} class
 }
 \examples{
-dm(iris, mtcars)
-new_dm(list(iris = iris, mtcars = mtcars))
-as_dm(list(iris = iris, mtcars = mtcars))
+dm(trees, mtcars)
 
-dm_nycflights13() \%>\% tbl("airports")
-dm_nycflights13() \%>\% src_tbls()
-dm_nycflights13() \%>\% dm_get_src()
+new_dm(list(trees = trees, mtcars = mtcars))
 
-copy_dm_to(
-  dbplyr::src_memdb(),
-  dm_nycflights13(),
-  unique_table_names = TRUE
-) \%>\%
-  dm_get_con()
+as_dm(list(trees = trees, mtcars = mtcars))
+\dontshow{if (rlang::is_installed(c("nycflights13", "dbplyr"))) withAutoprint(\{ # examplesIf}
 
-dm_nycflights13() \%>\% dm_get_tables()
-dm_nycflights13() \%>\% dm_get_filters()
-dm_nycflights13() \%>\% validate_dm()
 is_dm(dm_nycflights13())
-dm_nycflights13()["airports"]
-dm_nycflights13()[["airports"]]
+
 dm_nycflights13()$airports
+
+dm_nycflights13()["airports"]
+
+dm_nycflights13()[["airports"]]
+
+dm_nycflights13() \%>\% names()
+\dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
+library(dm)
+library(nycflights13)
+
+# using `data.frame` objects
+new_dm(tibble::lst(weather, airports))
+
+# using `dm_keyed_tbl` objects
+dm <- dm_nycflights13()
+y1 <- dm$planes \%>\%
+  mutate() \%>\%
+  select(everything())
+y2 <- dm$flights \%>\%
+  left_join(dm$airlines, by = "carrier")
+
+new_dm(list("tbl1" = y1, "tbl2" = y2))
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{
-\item \code{\link[=dm_from_src]{dm_from_src()}} for connecting to all tables in a database
+\item \code{\link[=dm_from_con]{dm_from_con()}} for connecting to all tables in a database
 and importing the primary and foreign keys
+\item \code{\link[=dm_get_tables]{dm_get_tables()}} for returning a list of tables
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} for adding primary and foreign keys
 \item \code{\link[=copy_dm_to]{copy_dm_to()}} for DB interaction
 \item \code{\link[=dm_draw]{dm_draw()}} for visualization
-\item \code{\link[=dm_join_to_tbl]{dm_join_to_tbl()}} for flattening
+\item \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
 \item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
 \item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object

@@ -1,7 +1,7 @@
-table_names <- c("table_1", "table_2", "table_3")
-quo <- quo(c(table_3_new = table_3, table_1_new = table_1))
-
 test_that("tidyselecting tables works", {
+  table_names <- c("table_1", "table_2", "table_3")
+  quo <- quo(c(table_3_new = table_3, table_1_new = table_1))
+
   expect_identical(
     eval_select_table_indices(quo, table_names),
     c(table_3_new = 3L, table_1_new = 1L)
@@ -16,4 +16,17 @@ test_that("tidyselecting tables works", {
     eval_rename_table_all(quo, table_names),
     set_names(table_names, c("table_1_new", "table_2", "table_3_new"))
   )
+})
+
+test_that("output", {
+  skip_if_not_installed("vctrs", "0.4.1")
+  skip_if(packageVersion("tidyselect") > "1.2.0")
+
+  expect_snapshot(error = TRUE, {
+    dm_for_filter() %>%
+      dm_select_tbl(tf_7)
+
+    dm_for_filter() %>%
+      dm_rename_tbl(tf_0 = tf_7)
+  })
 })

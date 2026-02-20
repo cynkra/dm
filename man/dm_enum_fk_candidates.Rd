@@ -5,9 +5,9 @@
 \alias{enum_fk_candidates}
 \title{Foreign key candidates}
 \usage{
-dm_enum_fk_candidates(dm, table, ref_table)
+dm_enum_fk_candidates(dm, table, ref_table, ...)
 
-enum_fk_candidates(zoomed_dm, ref_table)
+enum_fk_candidates(dm_zoomed, ref_table, ...)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -16,7 +16,9 @@ enum_fk_candidates(zoomed_dm, ref_table)
 
 \item{ref_table}{A table with a primary key.}
 
-\item{zoomed_dm}{A \code{dm} with a zoomed table.}
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{dm_zoomed}{A \code{dm} with a zoomed table.}
 }
 \value{
 A tibble with the following columns:
@@ -27,7 +29,7 @@ A tibble with the following columns:
 }
 }
 \description{
-\lifecycle{questioning}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Determine which columns would be good candidates to be used as foreign keys of a table,
 to reference the primary key column of another table of the \code{\link{dm}} object.
@@ -51,7 +53,7 @@ The outcome of the join operation determines the value of the \code{why} column 
 }
 \section{Life cycle}{
 
-These functions are marked "questioning" because we are not yet sure about
+These functions are marked "experimental" because we are not yet sure about
 the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
 variants.
 Changing the interface later seems harmless because these functions are
@@ -59,18 +61,19 @@ most likely used interactively.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_enum_fk_candidates(flights, airports)
 
 dm_nycflights13() \%>\%
   dm_zoom_to(flights) \%>\%
   enum_fk_candidates(airports)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions: 
 \code{\link{dm_add_fk}()},
 \code{\link{dm_get_all_fks}()},
-\code{\link{dm_get_fk}()},
-\code{\link{dm_has_fk}()}
+\code{\link{dm_rm_fk}()}
 }
 \concept{foreign key functions}

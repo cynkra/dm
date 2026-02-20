@@ -1,0 +1,226 @@
+---
+title: "Create a dm object from data frames"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{How to: Create a dm object from data frames}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+
+``````{r setup, include = FALSE}
+source("setup/setup.R")
+``````
+
+
+dm allows you to create your own relational data models from local data frames.
+Once your data model is complete, you can deploy it to a range of database management systems (DBMS) using {dm}.
+
+## Creating a dm object from data frames
+
+The example data set that we will be using is available through the [`nycflights13`](https://github.com/tidyverse/nycflights13) package.
+The five tables that we are working with contain information about all flights that departed from the airports of New York to other destinations in the United States in 2013:
+
+- `flights` represents the trips taken by planes
+- `airlines` includes
+  - the names of transport organizations (`name`)
+  - their abbreviated codes (`carrier`)
+- `airports` indicates the ports of departure (`origin`) and of destination (`dest`)
+- `weather` contains meteorological information at each hour
+- `planes` describes characteristics of the aircraft
+
+Once we've loaded {nycflights13}, the aforementioned tables are all in our work environment, ready to be accessed.
+
+```{r nycflights13, message=FALSE}
+library(nycflights13)
+
+airports
+```
+
+Your own data will probably not be available as an R package.
+Whatever format it is in, you will need to be able to load it as data frames into your R session.
+If the data is too large, consider using dm to connect to the database instead.
+See `vignette("howto-dm-db")` for details on using dm with databases.
+
+## Adding Tables
+
+Our first step will be to tell `dm` which tables we want to work with and how they are connected.
+For that we can use `dm()`, passing in the table names as arguments.
+
+```{r}
+library(dm)
+
+flights_dm_no_keys <- dm(airlines, airports, flights, planes, weather)
+flights_dm_no_keys
+```
+
+The `as_dm()` function is an alternative that works if you already have a list of tables.
+
+## A dm is a list
+
+`dm` objects behave like lists with a user- and console-friendly print format.
+In fact, using a dm as a nicer list for organizing your data frames in your environment is an easy first step towards using dm and its data modeling functionality.
+
+Subsetting syntax for a `dm` object (either by subscript or by name) is similar to syntax for lists, and so you don't need to learn any additional syntax to work with `dm` objects.
+
+```{r listlike}
+names(flights_dm_no_keys)
+flights_dm_no_keys$airports
+flights_dm_no_keys[c("airports", "flights")]
+```
+
+## Defining Keys
+
+Even though we now have a `dm` object that contains all our data, we have not specified how our five tables are connected.
+To do this, we need to define primary keys and foreign keys on the tables.
+
+Primary keys and foreign keys are how relational database tables are linked with each other.
+A primary key is a column or column tuple that has a unique value for each row within a table.
+A foreign key is a column or column tuple containing the primary key for a row in another table.
+Foreign keys act as cross references between tables.
+They specify the relationships that gives us the *relational* database.
+For more information on keys and a crash course on databases, see `vignette("howto-dm-theory")`.
+
+## Primary Keys
+
+`dm` offers `dm_enum_pk_candidates()` to identify viable primary keys for a table in the `dm` object, and `dm_add_pk()` to add them.
+
+```{r}
+dm_enum_pk_candidates(
+  dm = flights_dm_no_keys,
+  table = planes
+)
+```
+
+Now, we can add the identified primary keys:
+
+```{r}
+flights_dm_only_pks <-
+  flights_dm_no_keys %>%
+  dm_add_pk(table = airlines, columns = carrier) %>%
+  dm_add_pk(airports, faa) %>%
+  dm_add_pk(planes, tailnum) %>%
+  dm_add_pk(weather, c(origin, time_hour))
+flights_dm_only_pks
+```
+
+Note that {dm} functions work with both named and positional argument specification, and compound keys can be specified using a vector argument.
+
+## Foreign Keys
+
+To define how our tables are related, we use `dm_add_fk()` to add foreign keys.
+Naturally, this function will deal with two tables: a table *looking for* a reference, and a table that is *providing* the reference.
+Accordingly, while calling `dm_add_fk()`, the `table` argument specifies the table that needs a foreign key to link it to a second table, and the `ref_table` argument specifies the table to be linked to, which needs a primary key already defined for it.
+
+```{r}
+dm_enum_fk_candidates(
+  dm = flights_dm_only_pks,
+  table = flights,
+  ref_table = airlines
+)
+```
+
+
+Having chosen a column from the successful candidates provided by `dm_enum_fk_candidates()`, we use the `dm_add_fk()` function to establish the foreign key linking the tables.
+In the second call to `dm_add_fk()` we complete the process for the `flights` and `airlines` tables that we started above.
+The `carrier` column in the `airlines` table will be added as the foreign key in `flights`.
+
+```{r}
+flights_dm_all_keys <-
+  flights_dm_only_pks %>%
+  dm_add_fk(table = flights, columns = tailnum, ref_table = planes) %>%
+  dm_add_fk(flights, carrier, airlines) %>%
+  dm_add_fk(flights, origin, airports) %>%
+  dm_add_fk(flights, c(origin, time_hour), weather)
+flights_dm_all_keys
+```
+
+Having created the required primary and foreign keys to link all the tables together, we now have a relational data model we can work with.
+
+## Visualization
+
+Visualizing a data model is a quick and easy way to verify that we have successfully created the model we were aiming for.
+We can use `dm_draw()` at any stage of the process to generate a visual representation of the tables and the links between them:
+
+```{r}
+flights_dm_no_keys %>%
+  dm_draw(rankdir = "TB", view_type = "all")
+```
+
+
+```{r}
+flights_dm_no_keys %>%
+  dm_add_pk(airlines, carrier) %>%
+  dm_draw()
+```
+
+
+```{r}
+flights_dm_only_pks %>%
+  dm_add_fk(flights, tailnum, planes) %>%
+  dm_draw()
+```
+
+
+```{r}
+flights_dm_all_keys %>%
+  dm_draw()
+```
+
+
+## Integrity Checks
+
+As well as checking our data model visually, dm can examine the constraints we have created by the addition of keys and verify that they are sensible.
+
+```{r}
+flights_dm_no_keys %>%
+  dm_examine_constraints()
+
+flights_dm_only_pks %>%
+  dm_examine_constraints()
+
+flights_dm_all_keys %>%
+  dm_examine_constraints()
+```
+
+The results are presented in a human-readable form, and available as a tibble for programmatic inspection.
+
+
+## Programming
+
+Helper functions are available to access details on keys and check results.
+
+A data frame of primary keys is retrieved with `dm_get_all_pks()`:
+
+```{r}
+flights_dm_only_pks %>%
+  dm_get_all_pks()
+```
+
+Similarly, a data frame of foreign keys is retrieved with `dm_get_all_fks()`:
+
+```{r}
+flights_dm_all_keys %>%
+  dm_get_all_fks()
+```
+
+We can use `tibble::as_tibble()` on the result of `dm_examine_constraints()` to programmatically inspect which constraints are not satisfied:
+
+```{r}
+flights_dm_all_keys %>%
+  dm_examine_constraints() %>%
+  tibble::as_tibble()
+```
+
+## Conclusion {#conclusion}
+
+In this tutorial, we have demonstrated how simple it is to create relational data models from local data frames using {dm}, including setting primary and foreign keys and visualizing the resulting relational model.
+
+## Further reading
+
+`vignette("howto-dm-db")` -- This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
+
+`vignette("howto-dm-theory")` -- Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.

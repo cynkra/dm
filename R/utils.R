@@ -1,30 +1,44 @@
-#' \pkg{utils} table manipulation methods for `zoomed_dm` objects
+#' \pkg{utils} table manipulation methods for `dm_zoomed` objects
 #'
+#' @description
 #' Extract the first or last rows from a table.
-#' Use these methods without the '.zoomed_dm' suffix (see examples).
+#' Use these methods without the '.dm_zoomed' suffix (see examples).
 #' The methods for regular `dm` objects extract the first or last tables.
 #'
-#' @param x object of class `zoomed_dm`
+#' @param x object of class `dm_zoomed`
 #' @inheritParams utils::head
 #' @rdname utils_table_manipulation
 #'
-#' @return A `zoomed_dm` object.
+#' @return A `dm_zoomed` object.
 #'
 #' @details see manual for the corresponding functions in \pkg{utils}.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' zoomed <- dm_nycflights13() %>%
 #'   dm_zoom_to(flights) %>%
 #'   head(4)
 #' zoomed
 #' dm_insert_zoomed(zoomed, new_tbl_name = "head_flights")
 #' @export
-head.zoomed_dm <- function(x, n = 6L, ...) {
-  replace_zoomed_tbl(x, head(get_zoomed_tbl(x), n, ...))
+head.dm_zoomed <- function(x, n = 6L, ...) {
+  # dm method provided by utils
+  replace_zoomed_tbl(x, head(tbl_zoomed(x), n, ...))
 }
 
 #' @rdname utils_table_manipulation
 #' @export
-tail.zoomed_dm <- function(x, n = 6L, ...) {
-  replace_zoomed_tbl(x, tail(get_zoomed_tbl(x), n, ...))
+tail.dm_zoomed <- function(x, n = 6L, ...) {
+  # dm method provided by utils
+  replace_zoomed_tbl(x, tail(tbl_zoomed(x), n, ...))
+}
+
+fast_tibble <- function(...) {
+  out <- vctrs::df_list(...)
+  tibble::new_tibble(out)
+}
+
+recode_compat <- function(x, y) {
+  x <- unname(x)
+  idx <- vctrs::vec_match(names(y), x)
+  vctrs::vec_assign(x, idx, y)
 }

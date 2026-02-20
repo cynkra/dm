@@ -1,161 +1,224 @@
 #' Filtering
 #'
 #' @description
-#' \lifecycle{questioning}
-#'
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it
 #' directly or indirectly via foreign key relations.
 #'
 #' `dm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
-#' These conditions will be stored in the [`dm`], and executed immediately for the tables that they are referring to.
+#' The filters work across related tables:
+#' The resulting `dm` object only contains rows that are related
+#' (directly or indirectly) to rows that remain after applying the filters
+#' on all tables.
 #'
-#' With `dm_apply_filters()`, all tables will be updated according to the filter conditions and the foreign key relations.
+#' @details
+#' As of dm 1.0.0, these conditions are no longer stored in the `dm` object,
+#' instead they are applied to all tables during the call to `dm_filter()`.
+#' Calling `dm_apply_filters()` or `dm_apply_filters_to_tbl()` is no longer necessary.
 #'
-#' `dm_apply_filters_to_tbl()` retrieves one specific table of the `dm` that is updated according to the filter conditions and the foreign key relations.
+#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without affecting related tables.
 #'
-#' @details The effect of the stored filter conditions on the tables related to the filtered ones is only evaluated
-#' in one of the following scenarios:
+#' @inheritParams dm_examine_constraints
+#' @param ...
+#'   Named logical predicates.
+#'   The names correspond to tables in the `dm` object.
+#'   The predicates are defined in terms of the variables in the corresponding table,
+#'   they are passed on to [dplyr::filter()].
 #'
-#' 1. Calling `dm_apply_filters()` or `compute()` (method for `dm` objects) on a `dm`: each filtered table potentially
-#' reduces the rows of all other tables connected to it by foreign key relations (cascading effect), leaving only the rows
-#' with corresponding key values.
-#' Tables that are not connected to any table with an active filter are left unchanged.
-#' This results in a new `dm` class object without any filter conditions.
-#'
-#' 1. Calling `dm_apply_filters_to_tbl()`: the remaining rows of the requested table are calculated by performing a sequence
-#' of semi-joins ([`dplyr::semi_join()`]) starting from each table that has been filtered to the requested table
-#' (similar to 1. but only for one table).
-#'
-#' Several functions of the {dm} package will throw an error if filter conditions exist when they are called.
-#'
-#' @section Life cycle:
-#' These functions are marked "questioning" because it feels wrong
-#' to tightly couple filtering with the data model.
-#' On the one hand, an overview of active filters is useful
-#' when specifying the base data set for an analysis in terms of column selections
-#' and row filters.
-#' However, these filter condition should be only of informative nature
-#' and never affect the results of other operations.
-#' We are working on formalizing the semantics of the underlying operations
-#' in order to present them in a cleaner interface.
-#'
-#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering
-#' the filter.
-#'
-#' @rdname dm_filter
-#'
-#' @inheritParams dm_add_pk
-#' @param ... Logical predicates defined in terms of the variables in `.data`, passed on to [dplyr::filter()].
-#'   Multiple conditions are combined with `&` or `,`.
+#'   Multiple conditions are combined with `&`.
 #'   Only the rows where the condition evaluates
 #'   to `TRUE` are kept.
 #'
-#'   The arguments in ... are automatically quoted and evaluated in the context of
-#'   the data frame. They support unquoting and splicing.
-#'   See `vignette("programming", package = "dplyr")`
-#'   for an introduction to these concepts.
+#' @return An updated `dm` object with filters executed across all tables.
 #'
-#' @return For `dm_filter()`: an updated `dm` object (filter executed for given table, and condition stored).
-#'
-#' @examples
+#' @examplesIf rlang::is_installed("nycflights13")
 #' dm_nyc <- dm_nycflights13()
+#' dm_nyc %>%
+#'   dm_nrow()
+#'
 #' dm_nyc_filtered <-
 #'   dm_nycflights13() %>%
-#'   dm_filter(airports, name == "John F Kennedy Intl")
-#'
-#' dm_apply_filters_to_tbl(dm_nyc_filtered, flights)
+#'   dm_filter(airports = (name == "John F Kennedy Intl"))
 #'
 #' dm_nyc_filtered %>%
-#'   dm_apply_filters()
+#'   dm_nrow()
 #'
 #' # If you want to keep only those rows in the parent tables
 #' # whose primary key values appear as foreign key values in
 #' # `flights`, you can set a `TRUE` filter in `flights`:
 #' dm_nyc %>%
-#'   dm_filter(flights, 1 == 1) %>%
-#'   dm_apply_filters() %>%
+#'   dm_filter(flights = (1 == 1)) %>%
 #'   dm_nrow()
 #' # note that in this example, the only affected table is
 #' # `airports` because the departure airports in `flights` are
 #' # only the three New York airports.
 #' @export
-dm_filter <- function(dm, table, ...) {
+dm_filter <- function(.dm, ...) {
+  dm_filter_api0({{ .dm }}, ..., target = dm_filter_impl0, apply_target = dm_apply_filters_impl)
+}
+
+dm_filter_api0 <- function(
+  ...,
+  dm = NULL,
+  call = caller_env(),
+  user_env = caller_env(2),
+  target = make_dm_filter_api_call,
+  apply_target = make_dm_apply_filters_call
+) {
+  if (!is.null(dm)) {
+    deprecate_soft("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
+    dm_filter_api1(
+      dm,
+      ...,
+      call = call,
+      user_env = user_env,
+      target = target,
+      apply_target = apply_target
+    )
+  } else {
+    dm_filter_api1(
+      ...,
+      call = call,
+      user_env = user_env,
+      target = target,
+      apply_target = apply_target
+    )
+  }
+}
+
+dm_filter_api1 <- function(.dm, ..., table = NULL, call, user_env, target, apply_target) {
+  quos <- enquos(...)
+  table <- enquo(table)
+
+  if (is_named2(quos)) {
+    # New-style API: apply immediately
+    out <- reduce2(names(quos), quos, dm_filter_api, .init = .dm, target = target)
+    apply_target(out)
+  } else {
+    deprecate_soft(
+      "1.0.0",
+      "dm_filter(table = )",
+      user_env = user_env,
+      details = "`dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters."
+    )
+
+    if (quo_is_null(table)) {
+      table_idx <- match("", names2(quos))
+      if (is.na(table_idx)) {
+        abort_table_missing("table")
+      }
+      table <- quos[[table_idx]]
+      quos <- quos[-table_idx]
+    }
+
+    stopifnot(quo_is_symbol(table))
+
+    reduce(quos, dm_filter_api, table = as_name(table), .init = .dm, target = target)
+  }
+}
+
+dm_filter_api <- function(dm, table, expr, target) {
+  target(dm, {{ table }}, {{ expr }})
+}
+
+make_dm_filter_api_call <- function(dm, table, expr) {
+  call2("%>%", dm, call2("dm_filter_api", table, expr))
+}
+
+make_dm_apply_filters_call <- function(dm) {
+  call2("%>%", dm, call2("dm_apply_filters"))
+}
+
+dm_filter_impl0 <- function(dm, table, expr) {
   check_not_zoomed(dm)
-  dm_zoom_to(dm, {{ table }}) %>%
-    dm_filter_impl(..., set_filter = TRUE) %>%
+  dm %>%
+    dm_zoom_to(!!table) %>%
+    dm_filter_impl({{ expr }}, set_filter = TRUE) %>%
     dm_update_zoomed()
 }
 
-dm_filter_impl <- function(zoomed_dm, ..., set_filter) {
+dm_filter_impl <- function(dm_zoomed, ..., set_filter) {
   # valid table and empty ellipsis provided
   filter_quos <- enquos(...)
   if (is_empty(filter_quos)) {
-    return(zoomed_dm)
+    return(dm_zoomed)
   }
 
-  tbl <- get_zoomed_tbl(zoomed_dm)
+  tbl <- tbl_zoomed(dm_zoomed)
   filtered_tbl <- filter(tbl, ...)
 
   # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
   # in case of `dm_insert_zoomed()` the filter exprs needs to be transferred
   if (set_filter) {
-    zoomed_dm <-
-      zoomed_dm %>%
-      set_filter_for_table(orig_name_zoomed(zoomed_dm), map(filter_quos, quo_get_expr), TRUE)
+    dm_zoomed <-
+      dm_zoomed %>%
+      set_filter_for_table(orig_name_zoomed(dm_zoomed), map(filter_quos, quo_get_expr), TRUE)
   }
 
-  replace_zoomed_tbl(zoomed_dm, filtered_tbl)
+  replace_zoomed_tbl(dm_zoomed, filtered_tbl)
 }
 
 set_filter_for_table <- function(dm, table, filter_exprs, zoomed) {
   def <- dm_get_def(dm)
 
   i <- which(def$table == table)
-  def$filters[[i]] <- vctrs::vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
-  new_dm3(def, zoomed = zoomed)
+  def$filters[[i]] <- vec_rbind(def$filters[[i]], new_filter(filter_exprs, zoomed))
+  dm_from_def(def, zoomed = zoomed)
 }
 
 
-#' @rdname dm_filter
-#'
-#' @inheritParams dm_add_pk
-#'
-#' @return For `dm_apply_filters()`: an updated `dm` object (filter effects evaluated for all tables).
-#'
-#' @examples
-#'
-#' dm_nyc %>%
-#'   dm_filter(planes, engine %in% c("Reciprocating", "4 Cycle")) %>%
-#'   compute()
+#' @rdname deprecated
 #' @export
 dm_apply_filters <- function(dm) {
   check_not_zoomed(dm)
+
+  filters <- dm_get_filters_impl(dm)
+  if (nrow(filters) == 0) {
+    deprecate_soft(
+      "1.0.0",
+      "dm_apply_filters()",
+      details = "Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary."
+    )
+  }
+
+  dm_apply_filters_impl(dm)
+}
+
+dm_apply_filters_impl <- function(dm) {
   def <- dm_get_def(dm)
 
   def$data <- map(def$table, ~ dm_get_filtered_table(dm, .))
 
-  dm_reset_all_filters(new_dm3(def))
+  dm_reset_all_filters(dm_from_def(def))
 }
 
-# FIXME: 'dm_apply_filters()' should get an own doc-page which 'dm_apply_filters_to_tbl()' should share (cf. #145)
-#' @rdname dm_filter
-#'
-#' @inheritParams dm_add_pk
-#'
-#' @return For `dm_apply_filters_to_tbl()`, a table.
+#' @rdname deprecated
 #' @export
 dm_apply_filters_to_tbl <- function(dm, table) {
   check_not_zoomed(dm)
-  table_name <- as_string(ensym(table))
-  check_correct_input(dm, table_name)
 
+  filters <- dm_get_filters_impl(dm)
+  if (nrow(filters) == 0) {
+    deprecate_soft(
+      "1.0.0",
+      "dm_apply_filters_to_tbl()",
+      details = "Access tables directly after `dm_filter()`."
+    )
+  }
+
+  dm_apply_filters_to_tbl_impl(dm, {{ table }})
+}
+
+dm_apply_filters_to_tbl_impl <- function(dm, table) {
+  table_name <- dm_tbl_name(dm, {{ table }})
   dm_get_filtered_table(dm, table_name)
 }
 
 # calculates the necessary semi-joins from all tables that were filtered to
 # the requested table
+#' @autoglobal
 dm_get_filtered_table <- function(dm, from) {
-  filters <- dm_get_filters(dm)
+  filters <- dm_get_filters_impl(dm)
+  # Shortcut for speed, not really necessary
   if (nrow(filters) == 0) {
     return(dm_get_tables(dm)[[from]])
   }
@@ -185,7 +248,8 @@ dm_get_filtered_table <- function(dm, from) {
       semi_joins <- pull(semi_joins)
       semi_joins_tbls <- list_of_tables[semi_joins]
       table <-
-        reduce2(semi_joins_tbls,
+        reduce2(
+          semi_joins_tbls,
           semi_joins,
           ~ semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
           .init = table
@@ -196,8 +260,77 @@ dm_get_filtered_table <- function(dm, from) {
   list_of_tables[[from]]
 }
 
+
+#' Get filter expressions
+#'
+#' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
+#' These filter expressions are not intended for evaluation, only for
+#' information.
+#'
+#' @section Life cycle:
+#' This function is marked "questioning" because it seems wrong
+#' to tightly couple filtering with the data model.
+#' On the one hand, an overview of active filters is useful
+#' when specifying the base data set for an analysis in terms of column selections
+#' and row filters.
+#' However, these filter condition should be only of informative nature
+#' and never affect the results of other operations.
+#' We are working on formalizing the semantics of the underlying operations
+#' in order to present them in a cleaner interface.
+#'
+#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering
+#' the filter.
+#'
+#' @seealso [dm_filter()], [dm_apply_filters()]
+#'
+#' @return A tibble with the following columns:
+#'   \describe{
+#'     \item{`table`}{table that was filtered,}
+#'     \item{`filter`}{the filter expression,}
+#'     \item{`zoomed`}{logical, does the filter condition relate to the zoomed table.}
+#'   }
+#'
+#' @examplesIf rlang::is_installed(c("nycflights13", "dbplyr"))
+#' dm_nycflights13() %>%
+#'   dm_get_filters()
+#' @noRd
+NULL
+
+#' @rdname deprecated
+#' @export
+dm_get_filters <- function(dm) {
+  check_not_zoomed(dm)
+
+  filters <- dm_get_filters_impl(dm)
+  if (nrow(filters) == 0) {
+    deprecate_soft(
+      "1.0.0",
+      "dm_get_filters()",
+      details = "Filter conditions are no longer stored with the dm object."
+    )
+  }
+  filters
+}
+
+#' @autoglobal
+dm_get_filters_impl <- function(dm) {
+  filter_df <-
+    dm_get_def(dm) %>%
+    select(table, filters) %>%
+    unnest_list_of_df("filters")
+
+  # FIXME: Should work better with dplyr 0.9.0
+  # if (!("filter_expr" %in% names(filter_df))) {
+  #   filter_df$filter_expr <- list()
+  # }
+
+  filter_df %>%
+    rename(filter = filter_expr) %>%
+    mutate(filter = unname(filter))
+}
+
 get_all_filtered_connected <- function(dm, table) {
-  filtered_tables <- unique(dm_get_filters(dm)$table)
+  filtered_tables <- unique(dm_get_filters_impl(dm)$table)
   graph <- create_graph_from_dm(dm)
 
   # Computation of distances and shortest paths uses the same algorithm
@@ -210,16 +343,22 @@ get_all_filtered_connected <- function(dm, table) {
   # as target. This avoids a warning.
   target_tables <- names(finite_distances)
 
+  if (is_empty(intersect(target_tables, filtered_tables))) {
+    return(new_filtered_edges(table))
+  }
+
   # use only subgraph to
   # 1. speed things up
   # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
   graph <- igraph::induced_subgraph(graph, target_tables)
-  if (length(E(graph)) >= length(V(graph))) abort_no_cycles()
+  if (length(E(graph)) >= length(V(graph))) {
+    abort_no_cycles(graph)
+  }
   paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
 
   # All edges with finite distance as tidy data frame
   all_edges <-
-    tibble(
+    new_filtered_edges(
       node = names(V(graph)),
       parent = names(paths$predecessors),
       # all of `graph`, `paths` and `finite_distances` are based on the same subset of tables,
@@ -227,15 +366,22 @@ get_all_filtered_connected <- function(dm, table) {
       distance = finite_distances
     )
 
+  # igraph >= 2.0.0:
+  all_edges$parent[is.na(all_edges$parent)] <- all_edges$node[is.na(all_edges$parent)]
+  stopifnot(!anyNA(all_edges$parent))
+
   # Edges of interest, will be grown until source node `table` is reachable
   # from all nodes
   edges <-
     all_edges %>%
     filter(node %in% !!c(filtered_tables, table))
+
   # Recursive join
   repeat {
     missing <- setdiff(edges$parent, edges$node)
-    if (is_empty(missing)) break
+    if (is_empty(missing)) {
+      break
+    }
 
     edges <- bind_rows(edges, filter(all_edges, node %in% !!missing))
   }
@@ -246,21 +392,18 @@ get_all_filtered_connected <- function(dm, table) {
     arrange(-distance)
 }
 
+new_filtered_edges <- function(node, parent = node, distance = 0) {
+  tibble(node, parent, distance)
+}
+
 check_no_filter <- function(dm) {
   def <-
     dm_get_def(dm)
 
-  if (detect_index(def$filters, ~ vctrs::vec_size(.) > 0) == 0) {
+  if (detect_index(def$filters, ~ vec_size(.) > 0) == 0) {
     return()
   }
 
   fun_name <- as_string(sys.call(-1)[[1]])
   abort_only_possible_wo_filters(fun_name)
-}
-
-get_filter_for_table <- function(dm, table_name) {
-  dm_get_def(dm) %>%
-    filter(table == table_name) %>%
-    pull(filters) %>%
-    pluck(1)
 }

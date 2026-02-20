@@ -1,26 +1,23 @@
 #' Prototype for a dm object
 #'
 #' @description
-#' \lifecycle{experimental}
-#'
 #' The prototype contains all tables, all primary and foreign keys,
 #' but no data.
-#' All tables are truncated and converted to zero-row tibbles.
-#' Column names retain their type.
+#' All tables are truncated and converted to zero-row tibbles,
+#' also for remote data models.
+#' Columns retain their type.
 #' This is useful for performing creation and population of a database
 #' in separate steps.
 #'
-#' @inheritParams dm_get_fk
+#' @inheritParams dm_has_fk
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf dm:::dm_has_financial()
 #' dm_financial() %>%
 #'   dm_ptype()
 #'
 #' dm_financial() %>%
 #'   dm_ptype() %>%
 #'   dm_nrow()
-#' }
 dm_ptype <- function(dm) {
   check_not_zoomed(dm)
 
@@ -29,6 +26,6 @@ dm_ptype <- function(dm) {
   dm %>%
     dm_get_def() %>%
     mutate(data = map(data, ~ head(.x, 0))) %>%
-    new_dm3() %>%
+    dm_from_def() %>%
     collect()
 }

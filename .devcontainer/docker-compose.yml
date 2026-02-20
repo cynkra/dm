@@ -1,0 +1,137 @@
+volumes:
+  postgres-socket:
+    driver: local
+  postgres-data:
+    driver: local
+  mariadb-data:
+    driver: local
+  mssql-data:
+    driver: local
+
+networks:
+  devcontainer-network:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: devcontainer-postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: compose
+      POSTGRES_PASSWORD: "YourStrong!Passw0rd"
+      POSTGRES_DB: test
+      # Enable socket connections
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_INITDB_ARGS: "--auth-host=md5 --auth-local=trust"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      # Mount socket directory for local connections
+      - postgres-socket:/var/run/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - devcontainer-network
+    # Configure PostgreSQL for socket connections
+    command: >
+      postgres
+      -c listen_addresses='*'
+      -c unix_socket_directories='/var/run/postgresql'
+      -c unix_socket_permissions=0777
+      -c shared_preload_libraries='pg_stat_statements'
+      -c log_statement=all
+      -c log_destination=stderr
+      -c logging_collector=off
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U compose -d test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  mariadb:
+    container_name: devcontainer-mariadb
+    image: mariadb:latest
+    environment:
+      MARIADB_ROOT_PASSWORD: "YourStrong!Passw0rd"
+      MARIADB_USER: compose
+      MARIADB_PASSWORD: "YourStrong!Passw0rd"
+      MARIADB_DATABASE: test
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - devcontainer-network
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h localhost -u compose -p'YourStrong!Passw0rd' --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  mssql:
+    container_name: devcontainer-mssql
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+    volumes:
+      - mssql-data:/var/opt/mssql
+    ports:
+      - "1433:1433"
+    networks:
+      - devcontainer-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P 'YourStrong!Passw0rd' -Q 'IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = ''test'') CREATE DATABASE test; SELECT 1' -C -N"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    container_name: devcontainer-dm
+    image: ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-dc-dt-dm:latest
+    environment:
+      # Set environment for socket connection
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: compose
+      PGPASSWORD: "YourStrong!Passw0rd"
+      PGDATABASE: test
+      # Also support socket connections
+      PGSOCKET: /var/run/postgresql
+      # Service-specific database hosts
+      DM_TEST_POSTGRES_HOST: postgres
+      DM_TEST_MARIA_HOST: mariadb
+      DM_TEST_MSSQL_HOST: mssql
+      # MariaDB connection settings
+      MYSQL_HOST: mariadb
+      MYSQL_PORT: 3306
+      MYSQL_USER: compose
+      MYSQL_PASSWORD: "YourStrong!Passw0rd"
+      MYSQL_DATABASE: test
+      # SQL Server connection settings
+      MSSQL_HOST: mssql
+      MSSQL_PORT: 1433
+      MSSQL_USER: SA
+      MSSQL_PASSWORD: "YourStrong!Passw0rd"
+      MSSQL_DATABASE: test
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mariadb:
+        condition: service_healthy
+      mssql:
+        condition: service_healthy
+    networks:
+      - devcontainer-network
+    volumes:
+      - ..:/home/ubuntu/workspace:cached
+      # Mount PostgreSQL socket directory
+      - postgres-socket:/var/run/postgresql
+    working_dir: /home/ubuntu/workspace
+    command: sleep infinity
+    stdin_open: true
+    tty: true
+    user: ubuntu

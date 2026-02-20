@@ -3,17 +3,11 @@
 #' @description If there are any permament tables on a DB, a new [`dm`] object can be created that contains those tables,
 #' along with their primary and foreign key constraints.
 #'
-#' Currently this only works with MSSQL and Postgres databases.
+#' Currently this only works with MSSQL and Postgres/Redshift databases.
 #'
 #' The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
-#' @param ...
-#'   \lifecycle{experimental}
-#'
-#'   Additional parameters for the schema learning query.
-#'   Currently supports `schema` (default: `"public"`)
-#'   and `table_type` (default: `"BASE TABLE"`) for Postgres databases.
 #'
 #' @family DB interaction functions
 #'
@@ -38,7 +32,8 @@
 #'   # the `dm` from the SQLite DB
 #'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
 #' }
-dm_learn_from_db <- function(dest, ...) {
+#' @autoglobal
+dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{table}") {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
@@ -47,279 +42,197 @@ dm_learn_from_db <- function(dest, ...) {
     return()
   }
 
-  sql <- db_learn_query(con, ...)
-  if (is.null(sql)) {
-    return()
-  }
+  info <- dm_meta(con, catalog = dbname, schema = schema)
 
-  overview <-
-    dbGetQuery(con, sql) %>%
-    as_tibble()
-  if (nrow(overview) == 0) {
-    return(NULL)
-  } else {
-    overview <- arrange(overview, table)
-  }
+  df_info <-
+    info %>%
+    dm_select_tbl(-schemata) %>%
+    collect()
 
-  table_names <- overview %>%
-    select(schema, table) %>%
-    transmute(name = table, value = schema_if(schema, table)) %>%
-    deframe()
+  dm_name <-
+    df_info$tables %>%
+    select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
+    mutate(name = glue(!!name_format)) %>%
+    pull() %>%
+    unclass() %>%
+    vec_as_names(repair = "unique")
 
-  # FIXME: Use tbl_sql(vars = ...)
-  tables <- map(table_names, ~ tbl(con, dbplyr::ident_q(.x)))
+  from <-
+    df_info$tables %>%
+    select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
+    pmap_chr(function(...) {
+      args <- list(...)
+      args <- args[!is.na(args)]
+      DBI::dbQuoteIdentifier(con, do.call(DBI::Id, args))
+    })
 
-  data_model <- get_datamodel_from_overview(overview)
+  df_key_info <-
+    df_info %>%
+    dm_zoom_to(tables) %>%
+    mutate(dm_name = !!dm_name, from = !!from) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(columns) %>%
+    arrange(ordinal_position) %>%
+    select(-ordinal_position) %>%
+    left_join(tables) %>%
+    dm_update_zoomed() %>%
+    dm_select_tbl(constraint_column_usage, key_column_usage, columns, table_constraints)
 
-  legacy_new_dm(tables, data_model)
+  table_info <-
+    df_key_info %>%
+    dm_zoom_to(columns) %>%
+    group_by(dm_name, from) %>%
+    summarize(vars = list(column_name)) %>%
+    ungroup() %>%
+    pull_tbl()
+
+  table_info$from_id <- DBI::dbUnquoteIdentifier(con, DBI::SQL(table_info$from))
+  tables <- map2(table_info$from_id, table_info$vars, ~ tbl(con, .x, vars = .y))
+  names(tables) <- table_info$dm_name
+
+  pks_df <-
+    df_key_info %>%
+    dm_zoom_to(table_constraints) %>%
+    filter(constraint_type == "PRIMARY KEY") %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(key_column_usage) %>%
+    semi_join(table_constraints) %>%
+    anti_join(constraint_column_usage) %>%
+    arrange(ordinal_position) %>%
+    dm_update_zoomed() %>%
+    dm_select_tbl(-table_constraints) %>%
+    dm_flatten_to_tbl(key_column_usage, .recursive = TRUE) %>%
+    select(
+      constraint_catalog,
+      constraint_schema,
+      constraint_name,
+      dm_name,
+      column_name,
+      is_autoincrement
+    ) %>%
+    group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
+    summarize(
+      pks = list(tibble(
+        column = list(column_name),
+        autoincrement = any(as.logical(is_autoincrement))
+      ))
+    ) %>%
+    ungroup() %>%
+    select(table = dm_name, pks)
+
+  fks_df <-
+    df_key_info %>%
+    dm_zoom_to(table_constraints) %>%
+    filter(constraint_type == "FOREIGN KEY") %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(key_column_usage) %>%
+    semi_join(table_constraints) %>%
+    left_join(table_constraints, select = c(delete_rule)) %>%
+    left_join(
+      columns,
+      select = c(column_name, dm_name, table_catalog, table_schema, table_name)
+    ) %>%
+    dm_update_zoomed() %>%
+    dm_select_tbl(-table_constraints) %>%
+    dm_zoom_to(constraint_column_usage) %>%
+    #
+    # inner_join(): Matching column sometimes not found on Postgres
+    inner_join(
+      columns,
+      select = c(column_name, dm_name, table_catalog, table_schema, table_name)
+    ) %>%
+    #
+    dm_update_zoomed() %>%
+    dm_select_tbl(-columns) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.table_catalog = table_catalog) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.table_schema = table_schema) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.table_name = table_name) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.column_name = column_name) %>%
+    dm_rename(constraint_column_usage, constraint_column_usage.dm_name = dm_name) %>%
+    dm_rename(key_column_usage, key_column_usage.table_catalog = table_catalog) %>%
+    dm_rename(key_column_usage, key_column_usage.table_schema = table_schema) %>%
+    dm_rename(key_column_usage, key_column_usage.table_name = table_name) %>%
+    dm_rename(key_column_usage, key_column_usage.column_name = column_name) %>%
+    dm_rename(key_column_usage, key_column_usage.dm_name = dm_name) %>%
+    # inner_join: Sometimes, constraint_schema is different, https://github.com/cynkra/dm/issues/2228
+    dm_flatten_to_tbl(constraint_column_usage, .join = inner_join) %>%
+    select(
+      constraint_catalog,
+      constraint_schema,
+      constraint_name,
+      ordinal_position,
+      delete_rule,
+      ref_table = constraint_column_usage.dm_name,
+      ref_column = constraint_column_usage.column_name,
+      table = key_column_usage.dm_name,
+      column = key_column_usage.column_name,
+    ) %>%
+    arrange(
+      constraint_catalog,
+      constraint_schema,
+      constraint_name,
+      ordinal_position,
+    ) %>%
+    select(-ordinal_position) %>%
+    # FIXME: Where to learn this in INFORMATION_SCHEMA?
+    group_by(
+      constraint_catalog,
+      constraint_schema,
+      constraint_name,
+      ref_table,
+    ) %>%
+    summarize(
+      fks = list(tibble(
+        ref_column = list(ref_column),
+        table = if (length(table) > 0) table[[1]] else NA_character_,
+        column = list(column),
+        on_delete = {
+          x <- case_when(
+            delete_rule == "CASCADE" ~ "cascade",
+            .default = "no_action"
+          ) %>%
+            unique()
+          if (!is_empty(x) & !is_scalar_character(x)) {
+            abort("delete_rule for all fk_cols in one constraint_name should be the same")
+          }
+          x
+        }
+      ))
+    ) %>%
+    ungroup() %>%
+    select(-(1:3)) %>%
+    group_by(table = ref_table) %>%
+    summarize(fks = list(bind_rows(fks))) %>%
+    ungroup()
+
+  # FIXME: add uks_df
+  def <- new_dm_def(tables, pks_df, fks_df = fks_df)
+  dm_from_def(def)
 }
 
-schema_if <- function(schema, table) {
-  if_else(is.na(schema), table, paste0(schema, ".", table))
-}
-
-db_learn_query <- function(dest, ...) {
-  if (is_mssql(dest)) {
-    return(mssql_learn_query())
-  }
-  if (is_postgres(dest)) {
-    return(postgres_learn_query(dest, ...))
-  }
-  if (is_sqlite(dest)) {
-    return(sqlite_learn_query())
-  }
-}
-
-mssql_learn_query <- function() { # taken directly from {datamodelr}
-  "select
-    NULL as [schema],
-    tabs.name as [table],
-    cols.name as [column],
-    isnull(ind_col.column_id, 0) as [key],
-    OBJECT_NAME (ref.referenced_object_id) AS ref,
-    COL_NAME (ref.referenced_object_id, ref.referenced_column_id) AS ref_col,
-    1 - cols.is_nullable as mandatory,
-    types.name as [type],
-    cols.max_length,
-    cols.precision,
-    cols.scale
-  from
-    sys.all_columns cols
-    inner join sys.tables tabs on
-      cols.object_id = tabs.object_id
-    left outer join sys.foreign_key_columns ref on
-      ref.parent_object_id = tabs.object_id
-      and ref.parent_column_id = cols.column_id
-    left outer join sys.indexes ind on
-      ind.object_id = tabs.object_id
-      and ind.is_primary_key = 1
-    left outer join sys.index_columns ind_col on
-      ind_col.object_id = ind.object_id
-      and ind_col.index_id = ind.index_id
-      and ind_col.column_id = cols.column_id
-    left outer join sys.systypes [types] on
-      types.xusertype = cols.system_type_id
-  order by
-    tabs.create_date,
-    cols.column_id"
-}
-
-postgres_learn_query <- function(con, schema = "public", table_type = "BASE TABLE") {
-  sprintf(
-    "SELECT
-    t.table_schema as schema,
-    t.table_name as table,
-    c.column_name as column,
-    case when pk.column_name is null then 0 else 1 end as key,
-    fk.ref,
-    fk.ref_col,
-    case c.is_nullable when 'YES' then 0 else 1 end as mandatory,
-    c.data_type as type,
-    c.ordinal_position as column_order
-
-    from
-    information_schema.columns c
-    inner join information_schema.tables t on
-    t.table_name = c.table_name
-    and t.table_schema = c.table_schema
-    and t.table_catalog = c.table_catalog
-
-    left join  -- primary keys
-    ( SELECT DISTINCT
-      tc.constraint_name, tc.table_name, tc.table_schema, tc.table_catalog, kcu.column_name
-      FROM
-      information_schema.table_constraints AS tc
-      JOIN information_schema.key_column_usage AS kcu ON
-      tc.constraint_name = kcu.constraint_name
-      WHERE constraint_type = 'PRIMARY KEY'
-    ) pk on
-    pk.table_name = c.table_name
-    and pk.column_name = c.column_name
-    and pk.table_schema = c.table_schema
-    and pk.table_catalog = c.table_catalog
-
-    left join  -- foreign keys
-    ( SELECT DISTINCT
-      tc.constraint_name, kcu.table_name, kcu.table_schema, kcu.table_catalog, kcu.column_name,
-      ccu.table_name as ref,
-      ccu.column_name as ref_col
-      FROM
-      information_schema.table_constraints AS tc
-      JOIN information_schema.key_column_usage AS kcu ON
-      tc.constraint_name = kcu.constraint_name
-      JOIN information_schema.constraint_column_usage AS ccu ON
-      ccu.constraint_name = tc.constraint_name
-      WHERE tc.constraint_type = 'FOREIGN KEY'
-    ) fk on
-    fk.table_name = c.table_name
-    and fk.table_schema = c.table_schema
-    and fk.table_catalog = c.table_catalog
-    and fk.column_name = c.column_name
-
-    where
-    c.table_schema = %s
-    and t.table_type = %s",
-    dbQuoteString(con, schema),
-    dbQuoteString(con, table_type)
-  )
-}
-
-sqlite_learn_query <- function() {
-  "SELECT
-    NULL as schema,
-    c.*,
-    fk.ref,
-    fk.ref_col
-  FROM (
-    SELECT
-      m.name as 'table',
-      c.name as column,
-      c.pk as 'key',
-      c.'type',
-      c.'notnull' as mandatory,
-      c.cid + 1 as column_order
-    FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) m
-    JOIN pragma_table_info(m.name) c ON m.type = 'table'
-  ) c
-  LEFT JOIN (
-    SELECT
-      m.name as 'table',
-      fk.'table' as ref,
-      fk.'from' as column,
-      fk.'to' as ref_col
-    FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) m
-    JOIN pragma_foreign_key_list(m.name) fk
-  ) fk  ON c.'table' = fk.'table' AND c.column = fk.column"
-}
-
-# FIXME: only needed for `dm_learn_from_db()` <- needs to be implemented in a different manner
-legacy_new_dm <- function(tables = NULL, data_model = NULL) {
-  if (is_null(tables) && is_null(data_model)) {
-    return(empty_dm())
-  }
-
-  if (!all_same_source(tables)) abort_not_same_src()
-  stopifnot(is.data_model(data_model))
-
-  columns <- as_tibble(data_model$columns)
-
-  data_model_tables <- data_model$tables
-
-  stopifnot(all(names(tables) %in% data_model_tables$table))
-  stopifnot(all(data_model_tables$table %in% names(tables)))
-
-  pks <- columns %>%
-    select(column, table, key) %>%
-    filter(key > 0) %>%
-    select(-key)
-
-  if (is.null(data_model$references) || nrow(data_model$references) == 0) {
-    fks <- tibble(
-      table = character(),
-      column = character(),
-      ref = character(),
-      ref_col = character()
+schema_if <- function(schema, table, con, dbname = NULL) {
+  if (is_null(dbname) || is.na(dbname) || dbname == "") {
+    purrr::map2(
+      schema,
+      table,
+      ~ {
+        if (is.na(.x)) {
+          DBI::Id(table = .y)
+        } else {
+          DBI::Id(schema = .x, table = .y)
+        }
+      }
     )
   } else {
-    fks <-
-      data_model$references %>%
-      select(table, column, ref, ref_col) %>%
-      as_tibble()
-  }
-
-  # Legacy
-  data <- unname(tables[data_model_tables$table])
-
-  table <- data_model_tables$table
-  segment <- data_model_tables$segment
-  # would be logical NA otherwise, but if set, it is class `character`
-  display <- as.character(data_model_tables$display)
-  zoom <- new_zoom()
-  col_tracker_zoom <- new_col_tracker_zoom()
-
-  pks <-
-    pks %>%
-    # Legacy compatibility
-    mutate(column = as.list(column, list())) %>%
-    nest_compat(pks = -table)
-
-  pks <-
-    tibble(
-      table = setdiff(table, pks$table),
-      pks = vctrs::list_of(new_pk())
-    ) %>%
-    vctrs::vec_rbind(pks)
-
-  # Legacy compatibility
-  fks$column <- as.list(fks$column)
-
-  fks <-
-    fks %>%
-    select(-ref_col) %>%
-    nest_compat(fks = -ref) %>%
-    rename(table = ref)
-
-  fks <-
-    tibble(
-      table = setdiff(table, fks$table),
-      fks = vctrs::list_of(new_fk())
-    ) %>%
-    vctrs::vec_rbind(fks)
-
-  # there are no filters at this stage
-  filters <-
-    tibble(
-      table = table,
-      filters = vctrs::list_of(new_filter())
+    # 'schema_if()' only used internally (can e.g. be set to default schema beforehand)
+    # so IMHO we don't need a formal 'dm_error' here
+    if (anyNA(schema)) {
+      abort("`schema` must be given if `dbname` is not NULL`.")
+    }
+    purrr::map2(
+      table,
+      schema,
+      ~ DBI::Id(catalog = dbname, schema = .y, table = .x)
     )
-
-  def <-
-    tibble(table, data, segment, display) %>%
-    left_join(pks, by = "table") %>%
-    left_join(fks, by = "table") %>%
-    left_join(filters, by = "table") %>%
-    left_join(zoom, by = "table") %>%
-    left_join(col_tracker_zoom, by = "table")
-
-  new_dm3(def)
-}
-
-nest_compat <- function(.data, ...) {
-  # `...` has to be name-variable pair (see `?nest()`) of length 1
-  quos <- enquos(...)
-  stopifnot(length(quos) == 1)
-  new_col <- names(quos)
-  if (nrow(.data) == 0) {
-    remove <- eval_select_indices(quo(c(...)), colnames(.data))
-    keep <- setdiff(seq_along(.data), remove)
-
-    nest <- vctrs::new_list_of(list(), ptype = .data %>% select(!!!remove))
-
-    .data %>%
-      select(!!!keep) %>%
-      mutate(!!new_col := !!nest)
-  } else {
-    nest(.data, ...) %>%
-      mutate_at(vars(new_col), vctrs::as_list_of)
   }
 }

@@ -4,9 +4,18 @@
 \alias{dm_nycflights13}
 \title{Creates a dm object for the \pkg{nycflights13} data}
 \usage{
-dm_nycflights13(cycle = FALSE, color = TRUE, subset = TRUE)
+dm_nycflights13(
+  ...,
+  cycle = FALSE,
+  color = TRUE,
+  subset = TRUE,
+  compound = TRUE,
+  table_description = FALSE
+)
 }
 \arguments{
+\item{...}{These dots are for future extensions and must be empty.}
+
 \item{cycle}{Boolean.
 If \code{FALSE} (default), only one foreign key relation
 (from \code{flights$origin} to \code{airports$faa}) between the \code{flights} table and the \code{airports} table is
@@ -18,21 +27,30 @@ between those tables will be produced.}
 colors assigned to different tables for visualization with \code{dm_draw()}.}
 
 \item{subset}{Boolean, if \code{TRUE} (default), the \code{flights} table is reduced to flights with column \code{day} equal to 10.}
+
+\item{compound}{Boolean, if \code{FALSE}, no link will be established between tables \code{flights} and \code{weather},
+because this requires compound keys.}
+
+\item{table_description}{Boolean, if \code{TRUE}, a description will be added for each table that will be displayed
+when drawing the table with \code{\link[=dm_draw]{dm_draw()}}.}
 }
 \value{
-A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
+A \code{dm} object consisting of \pkg{nycflights13} tables, complete with primary and foreign keys and optionally colored.
 }
 \description{
 Creates an example \code{\link{dm}} object from the tables in \pkg{nycflights13},
 along with the references.
-See \link[nycflights13:flights]{nycflights13::flights} for a description of the data.
-As described in \link[nycflights13:planes]{nycflights13::planes}, the relationship
+See \code{\link[nycflights13:flights]{nycflights13::flights}} for a description of the data.
+As described in \code{\link[nycflights13:planes]{nycflights13::planes}}, the relationship
 between the \code{flights} table and the \code{planes} tables is "weak", it does not satisfy
 data integrity constraints.
 }
 \examples{
-if (rlang::is_installed("nycflights13")) {
-  dm_nycflights13() \%>\%
-    dm_draw()
+\dontshow{if (rlang::is_installed("DiagrammeR")) withAutoprint(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_draw()
+\dontshow{\}) # examplesIf}
 }
+\seealso{
+\code{vignette("howto-dm-df")}
 }

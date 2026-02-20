@@ -1,11 +1,5 @@
-Patch release.
+dm 1.0.12
 
-## Test environments
+## Cran Repository Policy
 
-* local R installation, R 3.6.3
-* ubuntu 16.04 (on travis-ci), R 3.6.3
-* win-builder (devel)
-
-## R CMD check results
-
-OK
+- [x] Reviewed CRP last edited 2024-08-27.

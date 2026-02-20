@@ -1,3 +1,36 @@
+test_that("check_key() API", {
+  local_options(lifecycle_verbosity = "warning")
+
+  expect_snapshot({
+    check_key(tibble(a = 1), a)
+    check_key(.data = tibble(a = 1), a)
+    check_key(a, .data = tibble(a = 1))
+  })
+})
+
+test_that("check_key() returns data frame for valid keys", {
+  # Test the specific issue from #2221: check_key should return the data frame, not NULL
+  dat <- tibble(a = c(1, 2, 3), b = c(5, 5, 6), c = c(7, 8, 9))
+
+  # Single column key
+  result <- check_key(dat, a)
+  expect_identical(result, dat)
+
+  # Multiple column key
+  result2 <- check_key(dat, a, c)
+  expect_identical(result2, dat)
+
+  # All columns key
+  result3 <- check_key(dat)
+  expect_identical(result3, dat)
+
+  # Test that it can be used in piping
+  piped_result <- dat %>%
+    check_key(a) %>%
+    select(a)
+  expect_equal(piped_result, select(dat, a))
+})
+
 test_that("check_key() checks primary key properly?", {
   expect_dm_error(
     check_key(data_mcard(), c1, c2),
@@ -21,12 +54,11 @@ test_that("check_key() checks primary key properly?", {
     check_key(test_tbl, everything())
   )
 
-  expect_dm_error(
-    check_key(test_tbl),
-    "not_unique_key"
-  )
+  # Since dm 1.0.0:
+  expect_silent(check_key(test_tbl))
 
   # if {tidyselect} selects nothing
+  # cf. issue #360
   skip_if_remote_src()
   expect_dm_error(
     check_key(data_mcard(), starts_with("d")),
@@ -41,22 +73,336 @@ test_that("check_key() checks primary key properly?", {
   )
 })
 
-test_that("check_subset() checks if tf_1$c1 column values are subset of tf_2$c2 properly?", {
-  # FIXME: Message about temporary table
-  skip_if_src("mssql")
-  expect_silent(check_subset(data_mcard_1(), a, data_mcard_2(), a))
+test_that("check_key() returns data frame when key is valid", {
+  # Test from issue #2221: check_key() should return the data frame when columns are a valid key
+  dat <- tibble(a = c(1, 2, 3), b = c(5, 5, 6), c = c(7, 8, 9))
+
+  # Should return the original data frame, not NULL
+  result <- check_key(dat, a)
+  expect_identical(result, dat)
+
+  # Also test with multiple columns as key
+  result2 <- check_key(dat, a, c)
+  expect_identical(result2, dat)
+
+  # Also test with data_mcard examples
+  result3 <- check_key(data_mcard(), c1, c3)
+  expect_identical(result3, data_mcard())
 })
 
-verify_output(
-  "out/check-if-subset-2a-1a.txt",
-  check_subset(data_mcard_2(), a, data_mcard_1(), a)
-)
+test_that("check_api() new interface", {
+  local_options(lifecycle_verbosity = "quiet")
 
-test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
-  expect_silent(check_set_equality(data_mcard_1(), a, data_mcard_3(), a))
+  expect_same(
+    check_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = c(a = b)),
+    check_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = c(a = b)),
+    check_api(data_mcard_1(), a, data_mcard_2(), c(a = b))
+  )
 
-  verify_output(
-    "out/check-set-equality-1a-2a.txt",
-    check_set_equality(data_mcard_1(), a, data_mcard_2(), a)
+  expect_same(
+    check_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(
+      x = data_mcard_1(),
+      y = data_mcard_2(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
+    check_api(
+      y = data_mcard_2(),
+      x = data_mcard_1(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
+    check_api(data_mcard_1(), a, data_mcard_2(), b)
   )
 })
+
+test_that("check_api() compatibility", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  expect_same(
+    check_api(data_mcard_1(), a, data_mcard_2(), b),
+    check_api(t1 = data_mcard_1(), c1 = a, t2 = data_mcard_2(), c2 = b)
+  )
+  expect_same(
+    check_api(c2 = b, data_mcard_1(), a, data_mcard_2()),
+    check_api(data_mcard_1(), c2 = b, a, data_mcard_2()),
+    check_api(data_mcard_1(), a, c2 = b, data_mcard_2()),
+    check_api(data_mcard_1(), a, data_mcard_2(), c2 = b)
+  )
+  expect_same(
+    check_api(t2 = data_mcard_2(), data_mcard_1(), a, b),
+    check_api(data_mcard_1(), t2 = data_mcard_2(), a, b),
+    check_api(data_mcard_1(), a, t2 = data_mcard_2(), b),
+    check_api(data_mcard_1(), a, b, t2 = data_mcard_2())
+  )
+  expect_same(
+    check_api(t2 = data_mcard_2(), c2 = b, data_mcard_1(), a),
+    check_api(t2 = data_mcard_2(), data_mcard_1(), c2 = b, a),
+    check_api(t2 = data_mcard_2(), data_mcard_1(), a, c2 = b),
+    check_api(c2 = b, t2 = data_mcard_2(), data_mcard_1(), a),
+    check_api(c2 = b, data_mcard_1(), t2 = data_mcard_2(), a),
+    check_api(c2 = b, data_mcard_1(), a, t2 = data_mcard_2()),
+    check_api(data_mcard_1(), t2 = data_mcard_2(), c2 = b, a),
+    check_api(data_mcard_1(), t2 = data_mcard_2(), a, c2 = b),
+    check_api(data_mcard_1(), c2 = b, t2 = data_mcard_2(), a),
+    check_api(data_mcard_1(), c2 = b, a, t2 = data_mcard_2()),
+    check_api(data_mcard_1(), a, t2 = data_mcard_2(), c2 = b),
+    check_api(data_mcard_1(), a, c2 = b, t2 = data_mcard_2())
+  )
+  expect_same(
+    check_api(c1 = a, data_mcard_1(), data_mcard_2(), b),
+    check_api(data_mcard_1(), c1 = a, data_mcard_2(), b),
+    check_api(data_mcard_1(), data_mcard_2(), c1 = a, b),
+    check_api(data_mcard_1(), data_mcard_2(), b, c1 = a)
+  )
+  expect_same(
+    check_api(c1 = a, c2 = b, data_mcard_1(), data_mcard_2()),
+    check_api(c1 = a, data_mcard_1(), c2 = b, data_mcard_2()),
+    check_api(c1 = a, data_mcard_1(), data_mcard_2(), c2 = b),
+    check_api(c2 = b, c1 = a, data_mcard_1(), data_mcard_2()),
+    check_api(c2 = b, data_mcard_1(), c1 = a, data_mcard_2()),
+    check_api(c2 = b, data_mcard_1(), data_mcard_2(), c1 = a),
+    check_api(data_mcard_1(), c1 = a, c2 = b, data_mcard_2()),
+    check_api(data_mcard_1(), c1 = a, data_mcard_2(), c2 = b),
+    check_api(data_mcard_1(), c2 = b, c1 = a, data_mcard_2()),
+    check_api(data_mcard_1(), c2 = b, data_mcard_2(), c1 = a),
+    check_api(data_mcard_1(), data_mcard_2(), c1 = a, c2 = b),
+    check_api(data_mcard_1(), data_mcard_2(), c2 = b, c1 = a)
+  )
+  expect_same(
+    check_api(c1 = a, t2 = data_mcard_2(), data_mcard_1(), b),
+    check_api(c1 = a, data_mcard_1(), t2 = data_mcard_2(), b),
+    check_api(c1 = a, data_mcard_1(), b, t2 = data_mcard_2()),
+    check_api(t2 = data_mcard_2(), c1 = a, data_mcard_1(), b),
+    check_api(t2 = data_mcard_2(), data_mcard_1(), c1 = a, b),
+    check_api(t2 = data_mcard_2(), data_mcard_1(), b, c1 = a),
+    check_api(data_mcard_1(), c1 = a, t2 = data_mcard_2(), b),
+    check_api(data_mcard_1(), c1 = a, b, t2 = data_mcard_2()),
+    check_api(data_mcard_1(), t2 = data_mcard_2(), c1 = a, b),
+    check_api(data_mcard_1(), t2 = data_mcard_2(), b, c1 = a),
+    check_api(data_mcard_1(), b, c1 = a, t2 = data_mcard_2()),
+    check_api(data_mcard_1(), b, t2 = data_mcard_2(), c1 = a)
+  )
+  expect_same(
+    check_api(c1 = a, t2 = data_mcard_2(), c2 = b, data_mcard_1()),
+    check_api(c1 = a, t2 = data_mcard_2(), data_mcard_1(), c2 = b),
+    check_api(c1 = a, c2 = b, t2 = data_mcard_2(), data_mcard_1()),
+    check_api(c1 = a, c2 = b, data_mcard_1(), t2 = data_mcard_2()),
+    check_api(c1 = a, data_mcard_1(), t2 = data_mcard_2(), c2 = b),
+    check_api(c1 = a, data_mcard_1(), c2 = b, t2 = data_mcard_2()),
+    check_api(t2 = data_mcard_2(), c1 = a, c2 = b, data_mcard_1()),
+    check_api(t2 = data_mcard_2(), c1 = a, data_mcard_1(), c2 = b),
+    check_api(t2 = data_mcard_2(), c2 = b, c1 = a, data_mcard_1()),
+    check_api(t2 = data_mcard_2(), c2 = b, data_mcard_1(), c1 = a),
+    check_api(t2 = data_mcard_2(), data_mcard_1(), c1 = a, c2 = b),
+    check_api(t2 = data_mcard_2(), data_mcard_1(), c2 = b, c1 = a),
+    check_api(c2 = b, c1 = a, t2 = data_mcard_2(), data_mcard_1()),
+    check_api(c2 = b, c1 = a, data_mcard_1(), t2 = data_mcard_2()),
+    check_api(c2 = b, t2 = data_mcard_2(), c1 = a, data_mcard_1()),
+    check_api(c2 = b, t2 = data_mcard_2(), data_mcard_1(), c1 = a),
+    check_api(c2 = b, data_mcard_1(), c1 = a, t2 = data_mcard_2()),
+    check_api(c2 = b, data_mcard_1(), t2 = data_mcard_2(), c1 = a),
+    check_api(data_mcard_1(), c1 = a, t2 = data_mcard_2(), c2 = b),
+    check_api(data_mcard_1(), c1 = a, c2 = b, t2 = data_mcard_2()),
+    check_api(data_mcard_1(), t2 = data_mcard_2(), c1 = a, c2 = b),
+    check_api(data_mcard_1(), t2 = data_mcard_2(), c2 = b, c1 = a),
+    check_api(data_mcard_1(), c2 = b, c1 = a, t2 = data_mcard_2()),
+    check_api(data_mcard_1(), c2 = b, t2 = data_mcard_2(), c1 = a)
+  )
+  expect_same(
+    check_api(t1 = data_mcard_1(), a, data_mcard_2(), b),
+    check_api(a, t1 = data_mcard_1(), data_mcard_2(), b),
+    check_api(a, data_mcard_2(), t1 = data_mcard_1(), b),
+    check_api(a, data_mcard_2(), b, t1 = data_mcard_1())
+  )
+  expect_same(
+    check_api(t1 = data_mcard_1(), c2 = b, a, data_mcard_2()),
+    check_api(t1 = data_mcard_1(), a, c2 = b, data_mcard_2()),
+    check_api(t1 = data_mcard_1(), a, data_mcard_2(), c2 = b),
+    check_api(c2 = b, t1 = data_mcard_1(), a, data_mcard_2()),
+    check_api(c2 = b, a, t1 = data_mcard_1(), data_mcard_2()),
+    check_api(c2 = b, a, data_mcard_2(), t1 = data_mcard_1()),
+    check_api(a, t1 = data_mcard_1(), c2 = b, data_mcard_2()),
+    check_api(a, t1 = data_mcard_1(), data_mcard_2(), c2 = b),
+    check_api(a, c2 = b, t1 = data_mcard_1(), data_mcard_2()),
+    check_api(a, c2 = b, data_mcard_2(), t1 = data_mcard_1()),
+    check_api(a, data_mcard_2(), t1 = data_mcard_1(), c2 = b),
+    check_api(a, data_mcard_2(), c2 = b, t1 = data_mcard_1())
+  )
+  expect_same(
+    check_api(t1 = data_mcard_1(), t2 = data_mcard_2(), a, b),
+    check_api(t1 = data_mcard_1(), a, t2 = data_mcard_2(), b),
+    check_api(t1 = data_mcard_1(), a, b, t2 = data_mcard_2()),
+    check_api(t2 = data_mcard_2(), t1 = data_mcard_1(), a, b),
+    check_api(t2 = data_mcard_2(), a, t1 = data_mcard_1(), b),
+    check_api(t2 = data_mcard_2(), a, b, t1 = data_mcard_1()),
+    check_api(a, t1 = data_mcard_1(), t2 = data_mcard_2(), b),
+    check_api(a, t1 = data_mcard_1(), b, t2 = data_mcard_2()),
+    check_api(a, t2 = data_mcard_2(), t1 = data_mcard_1(), b),
+    check_api(a, t2 = data_mcard_2(), b, t1 = data_mcard_1()),
+    check_api(a, b, t1 = data_mcard_1(), t2 = data_mcard_2()),
+    check_api(a, b, t2 = data_mcard_2(), t1 = data_mcard_1())
+  )
+  expect_same(
+    check_api(t1 = data_mcard_1(), t2 = data_mcard_2(), c2 = b, a),
+    check_api(t1 = data_mcard_1(), t2 = data_mcard_2(), a, c2 = b),
+    check_api(t1 = data_mcard_1(), c2 = b, t2 = data_mcard_2(), a),
+    check_api(t1 = data_mcard_1(), c2 = b, a, t2 = data_mcard_2()),
+    check_api(t1 = data_mcard_1(), a, t2 = data_mcard_2(), c2 = b),
+    check_api(t1 = data_mcard_1(), a, c2 = b, t2 = data_mcard_2()),
+    check_api(t2 = data_mcard_2(), t1 = data_mcard_1(), c2 = b, a),
+    check_api(t2 = data_mcard_2(), t1 = data_mcard_1(), a, c2 = b),
+    check_api(t2 = data_mcard_2(), c2 = b, t1 = data_mcard_1(), a),
+    check_api(t2 = data_mcard_2(), c2 = b, a, t1 = data_mcard_1()),
+    check_api(t2 = data_mcard_2(), a, t1 = data_mcard_1(), c2 = b),
+    check_api(t2 = data_mcard_2(), a, c2 = b, t1 = data_mcard_1()),
+    check_api(c2 = b, t1 = data_mcard_1(), t2 = data_mcard_2(), a),
+    check_api(c2 = b, t1 = data_mcard_1(), a, t2 = data_mcard_2()),
+    check_api(c2 = b, t2 = data_mcard_2(), t1 = data_mcard_1(), a),
+    check_api(c2 = b, t2 = data_mcard_2(), a, t1 = data_mcard_1()),
+    check_api(c2 = b, a, t1 = data_mcard_1(), t2 = data_mcard_2()),
+    check_api(c2 = b, a, t2 = data_mcard_2(), t1 = data_mcard_1()),
+    check_api(a, t1 = data_mcard_1(), t2 = data_mcard_2(), c2 = b),
+    check_api(a, t1 = data_mcard_1(), c2 = b, t2 = data_mcard_2()),
+    check_api(a, t2 = data_mcard_2(), t1 = data_mcard_1(), c2 = b),
+    check_api(a, t2 = data_mcard_2(), c2 = b, t1 = data_mcard_1()),
+    check_api(a, c2 = b, t1 = data_mcard_1(), t2 = data_mcard_2()),
+    check_api(a, c2 = b, t2 = data_mcard_2(), t1 = data_mcard_1())
+  )
+  expect_same(
+    check_api(t1 = data_mcard_1(), c1 = a, data_mcard_2(), b),
+    check_api(t1 = data_mcard_1(), data_mcard_2(), c1 = a, b),
+    check_api(t1 = data_mcard_1(), data_mcard_2(), b, c1 = a),
+    check_api(c1 = a, t1 = data_mcard_1(), data_mcard_2(), b),
+    check_api(c1 = a, data_mcard_2(), t1 = data_mcard_1(), b),
+    check_api(c1 = a, data_mcard_2(), b, t1 = data_mcard_1()),
+    check_api(data_mcard_2(), t1 = data_mcard_1(), c1 = a, b),
+    check_api(data_mcard_2(), t1 = data_mcard_1(), b, c1 = a),
+    check_api(data_mcard_2(), c1 = a, t1 = data_mcard_1(), b),
+    check_api(data_mcard_2(), c1 = a, b, t1 = data_mcard_1()),
+    check_api(data_mcard_2(), b, t1 = data_mcard_1(), c1 = a),
+    check_api(data_mcard_2(), b, c1 = a, t1 = data_mcard_1())
+  )
+  expect_same(
+    check_api(t1 = data_mcard_1(), c1 = a, c2 = b, data_mcard_2()),
+    check_api(t1 = data_mcard_1(), c1 = a, data_mcard_2(), c2 = b),
+    check_api(t1 = data_mcard_1(), c2 = b, c1 = a, data_mcard_2()),
+    check_api(t1 = data_mcard_1(), c2 = b, data_mcard_2(), c1 = a),
+    check_api(t1 = data_mcard_1(), data_mcard_2(), c1 = a, c2 = b),
+    check_api(t1 = data_mcard_1(), data_mcard_2(), c2 = b, c1 = a),
+    check_api(c1 = a, t1 = data_mcard_1(), c2 = b, data_mcard_2()),
+    check_api(c1 = a, t1 = data_mcard_1(), data_mcard_2(), c2 = b),
+    check_api(c1 = a, c2 = b, t1 = data_mcard_1(), data_mcard_2()),
+    check_api(c1 = a, c2 = b, data_mcard_2(), t1 = data_mcard_1()),
+    check_api(c1 = a, data_mcard_2(), t1 = data_mcard_1(), c2 = b),
+    check_api(c1 = a, data_mcard_2(), c2 = b, t1 = data_mcard_1()),
+    check_api(c2 = b, t1 = data_mcard_1(), c1 = a, data_mcard_2()),
+    check_api(c2 = b, t1 = data_mcard_1(), data_mcard_2(), c1 = a),
+    check_api(c2 = b, c1 = a, t1 = data_mcard_1(), data_mcard_2()),
+    check_api(c2 = b, c1 = a, data_mcard_2(), t1 = data_mcard_1()),
+    check_api(c2 = b, data_mcard_2(), t1 = data_mcard_1(), c1 = a),
+    check_api(c2 = b, data_mcard_2(), c1 = a, t1 = data_mcard_1()),
+    check_api(data_mcard_2(), t1 = data_mcard_1(), c1 = a, c2 = b),
+    check_api(data_mcard_2(), t1 = data_mcard_1(), c2 = b, c1 = a),
+    check_api(data_mcard_2(), c1 = a, t1 = data_mcard_1(), c2 = b),
+    check_api(data_mcard_2(), c1 = a, c2 = b, t1 = data_mcard_1()),
+    check_api(data_mcard_2(), c2 = b, t1 = data_mcard_1(), c1 = a),
+    check_api(data_mcard_2(), c2 = b, c1 = a, t1 = data_mcard_1())
+  )
+  expect_same(
+    check_api(t1 = data_mcard_1(), c1 = a, t2 = data_mcard_2(), b),
+    check_api(t1 = data_mcard_1(), c1 = a, b, t2 = data_mcard_2()),
+    check_api(t1 = data_mcard_1(), t2 = data_mcard_2(), c1 = a, b),
+    check_api(t1 = data_mcard_1(), t2 = data_mcard_2(), b, c1 = a),
+    check_api(t1 = data_mcard_1(), b, c1 = a, t2 = data_mcard_2()),
+    check_api(t1 = data_mcard_1(), b, t2 = data_mcard_2(), c1 = a),
+    check_api(c1 = a, t1 = data_mcard_1(), t2 = data_mcard_2(), b),
+    check_api(c1 = a, t1 = data_mcard_1(), b, t2 = data_mcard_2()),
+    check_api(c1 = a, t2 = data_mcard_2(), t1 = data_mcard_1(), b),
+    check_api(c1 = a, t2 = data_mcard_2(), b, t1 = data_mcard_1()),
+    check_api(c1 = a, b, t1 = data_mcard_1(), t2 = data_mcard_2()),
+    check_api(c1 = a, b, t2 = data_mcard_2(), t1 = data_mcard_1()),
+    check_api(t2 = data_mcard_2(), t1 = data_mcard_1(), c1 = a, b),
+    check_api(t2 = data_mcard_2(), t1 = data_mcard_1(), b, c1 = a),
+    check_api(t2 = data_mcard_2(), c1 = a, t1 = data_mcard_1(), b),
+    check_api(t2 = data_mcard_2(), c1 = a, b, t1 = data_mcard_1()),
+    check_api(t2 = data_mcard_2(), b, t1 = data_mcard_1(), c1 = a),
+    check_api(t2 = data_mcard_2(), b, c1 = a, t1 = data_mcard_1()),
+    check_api(b, t1 = data_mcard_1(), c1 = a, t2 = data_mcard_2()),
+    check_api(b, t1 = data_mcard_1(), t2 = data_mcard_2(), c1 = a),
+    check_api(b, c1 = a, t1 = data_mcard_1(), t2 = data_mcard_2()),
+    check_api(b, c1 = a, t2 = data_mcard_2(), t1 = data_mcard_1()),
+    check_api(b, t2 = data_mcard_2(), t1 = data_mcard_1(), c1 = a),
+    check_api(b, t2 = data_mcard_2(), c1 = a, t1 = data_mcard_1())
+  )
+  expect_same(
+    check_api(t1 = data_mcard_1(), c1 = a, t2 = data_mcard_2(), c2 = b),
+    check_api(t1 = data_mcard_1(), c1 = a, c2 = b, t2 = data_mcard_2()),
+    check_api(t1 = data_mcard_1(), t2 = data_mcard_2(), c1 = a, c2 = b),
+    check_api(t1 = data_mcard_1(), t2 = data_mcard_2(), c2 = b, c1 = a),
+    check_api(t1 = data_mcard_1(), c2 = b, c1 = a, t2 = data_mcard_2()),
+    check_api(t1 = data_mcard_1(), c2 = b, t2 = data_mcard_2(), c1 = a),
+    check_api(c1 = a, t1 = data_mcard_1(), t2 = data_mcard_2(), c2 = b),
+    check_api(c1 = a, t1 = data_mcard_1(), c2 = b, t2 = data_mcard_2()),
+    check_api(c1 = a, t2 = data_mcard_2(), t1 = data_mcard_1(), c2 = b),
+    check_api(c1 = a, t2 = data_mcard_2(), c2 = b, t1 = data_mcard_1()),
+    check_api(c1 = a, c2 = b, t1 = data_mcard_1(), t2 = data_mcard_2()),
+    check_api(c1 = a, c2 = b, t2 = data_mcard_2(), t1 = data_mcard_1()),
+    check_api(t2 = data_mcard_2(), t1 = data_mcard_1(), c1 = a, c2 = b),
+    check_api(t2 = data_mcard_2(), t1 = data_mcard_1(), c2 = b, c1 = a),
+    check_api(t2 = data_mcard_2(), c1 = a, t1 = data_mcard_1(), c2 = b),
+    check_api(t2 = data_mcard_2(), c1 = a, c2 = b, t1 = data_mcard_1()),
+    check_api(t2 = data_mcard_2(), c2 = b, t1 = data_mcard_1(), c1 = a),
+    check_api(t2 = data_mcard_2(), c2 = b, c1 = a, t1 = data_mcard_1()),
+    check_api(c2 = b, t1 = data_mcard_1(), c1 = a, t2 = data_mcard_2()),
+    check_api(c2 = b, t1 = data_mcard_1(), t2 = data_mcard_2(), c1 = a),
+    check_api(c2 = b, c1 = a, t1 = data_mcard_1(), t2 = data_mcard_2()),
+    check_api(c2 = b, c1 = a, t2 = data_mcard_2(), t1 = data_mcard_1()),
+    check_api(c2 = b, t2 = data_mcard_2(), t1 = data_mcard_1(), c1 = a),
+    check_api(c2 = b, t2 = data_mcard_2(), c1 = a, t1 = data_mcard_1())
+  )
+})
+
+test_that("check_subset() checks if tf_1$c1 column values are subset of tf_2$c2 properly?", {
+  expect_silent(check_subset(data_mcard_1(), data_mcard_2(), x_select = a, y_select = a))
+})
+
+test_that("output for legacy API", {
+  expect_snapshot({
+    check_subset(data_mcard_1(), a, data_mcard_2(), a)
+  })
+})
+
+test_that("output", {
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_1(), data_mcard_2(), x_select = c(x = a))
+  })
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_2(), data_mcard_1(), x_select = a)
+  })
+})
+
+test_that("output for compound keys", {
+  expect_snapshot(error = TRUE, {
+    check_subset(data_mcard_2(), data_mcard_1(), x_select = c(a, b))
+  })
+})
+
+test_that("check_set_equality() checks properly if 2 sets of values are equal?", {
+  expect_silent(check_set_equality(data_mcard_1(), data_mcard_3(), x_select = a))
+
+  expect_snapshot(error = TRUE, {
+    check_set_equality(data_mcard_1(), data_mcard_2(), x_select = c(a, c))
+  })
+})
+
+# FIXME: COMPOUND:: regarding compound keys: should `check_subset()` and `check_set_equality()`
+# also work for multiple columns? (matching needs to be provided, implicitly by order?)

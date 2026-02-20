@@ -1,192 +1,267 @@
-url: https://krlmlr.github.io/dm
+url: https://dm.cynkra.com/
 
 template:
-  assets:
-  - pkgdown/assets
-
+  assets: pkgdown/assets
+  package: cynkratemplate
+  bootstrap: 5
 reference:
-- title: Creation and basic functionality
+- title: Basic
+  desc: >
+    Construct a `dm` object from data frames, see also `vignette("howto-dm-df")`.
   contents:
   - dm
-  - dm_from_src
   - new_dm
   - as_dm
   - is_dm
-  - validate_dm
-  - dm_get_src
-  - dm_get_con
-  - dm_get_tables
-  - dm_get_filters
-  - dm_paste
-
-- title: Tables
+  - dm_validate
+- title: Database
+  desc: >
+    Construct a `dm` object from a database, see also `vignette("howto-dm-db")`.
   contents:
-  - dm_add_tbl
-  - dm_rm_tbl
+  - dm_from_con
+  - dm_get_con
+- title: Tables and columns
+  desc: >
+    Operate on the tables and columns stored in a `dm` object.
+  contents:
   - dm_select_tbl
   - dm_rename_tbl
+  - dm_get_tables
   - pull_tbl
-
-- title: Table retrieval, table info and DB interaction methods (`dplyr`)
-  contents:
-  - tbl.dm
-  - compute.dm
-  - compute.zoomed_dm
-  - src_tbls.dm
-  - copy_to.dm
-  - collect.dm
-
+  - dm_mutate_tbl
+  - dm_nrow
+  - dm_select
+  - dm_rename
 - title: Primary keys
+  desc: >
+    Primary keys uniquely identify rows in a table.
+    A table can have at most one primary key.
+    See also `vignette("howto-dm-theory")`.
   contents:
-  - dm_add_pk
-  - dm_has_pk
-  - dm_get_pk
-  - dm_get_all_pks
-  - dm_rm_pk
-  - dm_enum_pk_candidates
-  - enum_pk_candidates
-
+  - matches("_pk")
+  - -enum_pk_candidates
+  - -dm_enum_pk_candidates
+- title: Unique keys
+  desc: >
+    Unique keys are similar to primary keys.
+    Each table can have at most one record for each combination of values in a unique key.
+    A table can have more than one unique key.
+  contents: matches("_uk")
 - title: Foreign keys
+  desc: >
+    Foreign keys establish links between tables
+    by pointing to a primary or unique key in another table.
+    See also `vignette("howto-dm-theory")`.
   contents:
-  - dm_add_fk
-  - dm_has_fk
-  - dm_get_fk
-  - dm_get_all_fks
-  - dm_rm_fk
-  - dm_enum_fk_candidates
-  - enum_fk_candidates
-  - dm_is_referenced
-  - dm_get_referencing_tables
-
-- title: Visualization
+  - matches("_fk")
+  - -enum_fk_candidates
+  - -dm_enum_fk_candidates
+- title: Visualize
+  desc: >
+    Show a `dm` object, see also `vignette("tech-dm-draw")`.
   contents:
+  - dm_gui
   - dm_draw
-  - dm_set_colors
-  - dm_get_colors
-  - dm_get_available_colors
-
-- title: Zooming
+  - ends_with("_colors")
+  - ends_with("_table_description")
+- title: Deconstruct
+  desc: >
+    Rip a `dm` object apart and put it together, see also `vignette("tech-dm-keyed")`.
   contents:
-  - dm_zoom_to
-  - dm_insert_zoomed
-  - dm_update_zoomed
-  - dm_discard_zoomed
-  - arrange.zoomed_dm
-  - distinct.zoomed_dm
-  - filter.zoomed_dm
-  - group_by.zoomed_dm
-  - mutate.zoomed_dm
-  - rename.zoomed_dm
-  - select.zoomed_dm
-  - slice.zoomed_dm
-  - summarise.zoomed_dm
-  - transmute.zoomed_dm
-  - ungroup.zoomed_dm
-  - separate.zoomed_dm
-  - unite.zoomed_dm
-  - anti_join.zoomed_dm
-  - full_join.zoomed_dm
-  - inner_join.zoomed_dm
-  - left_join.zoomed_dm
-  - right_join.zoomed_dm
-  - semi_join.zoomed_dm
-  - head.zoomed_dm
-  - tail.zoomed_dm
-
-- title: Flattening
+  - dm_deconstruct
+- title: Flatten
+  desc: >
+    Combine multiple related tables, see also `vignette("tech-dm-join")`.
   contents:
   - dm_flatten_to_tbl
-  - dm_squash_to_tbl
-  - dm_join_to_tbl
   - dm_disambiguate_cols
-
-- title: Filtering and column selection
+- title: Filter
+  desc: >
+    Filter across multiple tables, see also `vignette("tech-dm-filter")`.
   contents:
   - dm_filter
-  - dm_apply_filters
-  - dm_apply_filters_to_tbl
-  - dm_rename
-  - dm_select
-
-- title: Upload
+- title: Zoom
+  desc: >
+    Focus on a single table, see also `vignette("tech-dm-zoom")`.
   contents:
+  - dm_zoom_to
+  - ends_with("_zoomed")
+  - ends_with(".dm_zoomed")
+  - -pack_join
+- title: Wrap
+  desc: >
+    Turn a `dm` object into a single table and back.
+  contents:
+  - dm_wrap_tbl
+  - dm_unwrap_tbl
+  - dm_nest_tbl
+  - dm_pack_tbl
+  - dm_unnest_tbl
+  - dm_unpack_tbl
+- title: Nested and packed data
+  desc: >
+    New verbs that power wrapping.
+  contents:
+  - pack_join
+  - starts_with("json_")
+- title: Materialize and upload
+  desc: >
+    Get data from and to the database, see also `vignette("howto-dm-copy")`.
+  contents:
+  - compute.dm
+  - collect.dm
   - copy_dm_to
-
+  - dm_sql
+- title: Modify
+  desc: >
+    Manipulate individual rows on the database, see also `vignette("howto-dm-rows")`.
+  contents:
+  - contains("rows")
+- title: Keys and cardinalities
+  desc: >
+    Check fulfillment and nature of relationships between tables.
+  contents:
+  - dm_examine_constraints
+  - enum_pk_candidates
+  - enum_fk_candidates
+  - matches("cardinality|cardinalities")
+  - starts_with("check_")
 - title: Table surgery
+  desc: >
+    Normalize and denormalize tables.
   contents:
   - decompose_table
   - reunite_parent_child
   - reunite_parent_child_from_list
-
-- title: Check keys and cardinalities
+- title: Database schemas
+  desc: >
+    New verbs that power access to database schemas.
   contents:
-  - dm_examine_constraints
-  - examine_cardinality
-  - check_key
-  - check_subset
-  - check_set_equality
-  - check_cardinality_0_n
-  - check_cardinality_1_n
-  - check_cardinality_0_1
-  - check_cardinality_1_1
-
-- title: Miscellaneous
+  - starts_with("db_schema_")
+- title: Example dm objects
+  desc: >
+    Ready to use and play with.
   contents:
   - dm_nycflights13
   - dm_financial
   - dm_financial_sqlite
-  - dm_nrow
+  - dm_pixarfilms
+- title: Structure and contents
+  desc: >
+    Recreate a `dm` object.
+  contents:
+  - dm_paste
   - dm_ptype
-
 navbar:
-  title: ~
-  type: default
-  left:
-  - text: Intro
-    href: articles/dm.html
-  - text: Reference
-    href: reference/index.html
-  - text: Tutorials
-    menu:
-    - text: Connect to a database
-      href: articles/dm-db.html
-    - text: Create a dm object from data frames
-      href: articles/dm-df.html
-    - text: Introduction to relational data models
-      href: articles/dm-introduction-relational-data-models.html
-  - text: Technical articles
-    menu:
-    - text: Class 'dm' and basic operations
-      href: articles/dm-class-and-basic-operations.html
-    - text: Visualizing dm objects
-      href: articles/dm-visualization.html
-    - text: Joining in relational data models
-      href: articles/dm-joining.html
-    - text: Zooming and manipulating tables
-      href: articles/dm-zoom-to-table.html
-    - text: Filtering in relational data models
-      href: articles/dm-filtering.html
-    - text: Checking keys
-      href: articles/dm-low-level.html
-    - text: Function naming logic
-      href: articles/dm-function-naming-logic.html
-    - text: 'Migration guide: ''cdm'' -> ''dm'''
-      href: articles/dm-version-migration-guide.html
-  - text: News
-    href: news/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/krlmlr/dm
-
+  structure:
+    left:
+    - intro
+    - reference
+    - tutorials
+    - cheatsheet
+    - tech
+    - news
+    right:
+    - search
+    - github
+  components:
+    cheatsheet:
+      text: Cheatsheet
+      href: articles/cheatsheet.html
+    tutorials:
+      text: Tutorials
+      menu:
+      - text: Introduction to relational data models
+        href: articles/howto-dm-theory.html
+        desc: |
+          Do you know all about data frames but very little about relational data
+          models? This quick introduction will walk you through the key similarities
+          and differences, and show you how to move from individual data frames
+          to a relational data model.
+      - text: Create a dm object from data frames
+        href: articles/howto-dm-df.html
+        desc: |
+          Is your data in local data frames? This article covers creating a data
+          model from your local data frames, including building the relationships
+          in your data model, verifying your model, and leveraging the power of
+          dplyr to operate on your data model.
+      - text: Create a dm object from a database
+        href: articles/howto-dm-db.html
+        desc: |
+          This article covers accessing and working with RDBMSs within your
+          R session, including manipulating data, filling in missing relationships
+          between tables, getting data out of the RDBMS and into your model, and
+          deploying your data model to an RDBMS.
+      - text: Copy data to and from a database
+        href: articles/howto-dm-copy.html
+        desc: |
+          This article covers methods and techniques for copying individual tables
+          and entire relational data models into an RDBMS.
+      - text: Insert, update, or remove rows in a database
+        href: articles/howto-dm-rows.html
+        desc: |
+          This tutorial introduces the methods {dm} provides for modifying the data
+          in the tables of a relational model.
+    tech:
+      text: Technical articles
+      menu:
+      - text: Visualizing dm objects
+        href: articles/tech-dm-draw.html
+        desc: |
+          A quick guide to dm's methods for drawing your data model for exploration,
+          verification, or documentation purposes. Learn how to customize the diagrams.
+      - text: Manipulating individual tables
+        href: articles/tech-dm-keyed.html
+        desc: |
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and deconstruction/reconstruction.
+      - text: Joining in relational data models
+        href: articles/tech-dm-join.html
+        desc: |
+          Joining is how separate, linked tables are virtually combined in order
+          to perform operations, generate summaries, or prepare data for extraction.
+          This article covers dm's methods for creating the different kind of joins
+          along with usage examples.
+      - text: Filtering in relational data models
+        href: articles/tech-dm-filter.html
+        desc: |
+          Need a subset of your data across tables? This introduction to dm's
+          filtering methods will show you how to apply them to data that is separated
+          into multiple tables.
+      - text: Zooming and manipulating tables
+        href: articles/tech-dm-zoom.html
+        desc: |
+          Learn how to manipulate the data in the tables in your dm
+          using dplyr verbs and zooming.
+      - text: Model verification - keys, constraints and normalization
+        href: articles/tech-dm-low-level.html
+        desc: |
+          If your data model needs to be rock solid, this article covers the dm methods
+          for checking every aspect of the model. It covers key constraints, cardinalities
+          between tables, and methods for normalization as you construct your data model.
+      - text: Class 'dm' and basic operations
+        href: articles/tech-dm-class.html
+        desc: |
+          A detailed overview of the `"dm"` class.
+      - text: Function naming logic
+        href: articles/tech-dm-naming.html
+        desc: |
+          Making sense of dm's API.
+      - text: 'Migration guide: ''cdm'' -> ''dm'''
+        href: articles/tech-dm-cdm.html
+        desc: |
+          If you were an early adopter, used dm version 0.0.5 or lower and want to
+          migrate your code, this is for you.
 development:
   mode: auto
-
 authors:
   Kirill Müller:
     href: http://krlmlr.info
   energie360° AG:
-    html: '<img src="https://krlmlr.github.io/dm/reference/figures/energie-72.png" height="16"/>'
-    href: https://www.energie360.ch
+    html: <img src="https://cynkra.github.io/dm/reference/figures/energie-72.png"
+      height="16" alt="energie360° AG"/>
+    href: https://www.energie360.ch/de/
   cynkra GmbH:
-    html: '<img src="https://krlmlr.github.io/dm/reference/figures/cynkra-72.png" height="16"/>'
+    html: <img src="https://cynkra.github.io/dm/reference/figures/cynkra-72.png"
+      height="16" alt="cynkra GmbH"/>
     href: https://www.cynkra.com

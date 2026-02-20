@@ -16,8 +16,9 @@ A named vector with the number of rows for each table.
 Returns a named vector with the number of rows for each table.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_filter(airports, faa \%in\% c("EWR", "LGA")) \%>\%
-  dm_apply_filters() \%>\%
+  dm_filter(airports = (faa \%in\% c("EWR", "LGA"))) \%>\%
   dm_nrow()
+\dontshow{\}) # examplesIf}
 }

@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(*)",
+      "Write(*)",
+      "Bash(touch:*)",
+      "Bash(devcontainer up:*)",
+      "Bash(devcontainer exec:*)",
+      "Bash(devcontainer build:*)",
+      "Bash(devcontainer --version:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(touch:*)",
+      "Bash(rm:*)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^Bash[(devcontainer.*[)]$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "devcontainer exec --workspace-folder . echo ok"
+          }
+        ]
+      }
+    ]
+  },
+  "$schema": "https://json.schemastore.org/claude-code-settings.json"
+}

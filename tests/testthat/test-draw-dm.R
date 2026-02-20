@@ -14,40 +14,31 @@ test_that("API", {
 })
 
 test_that("`dm_set_colors()` works", {
-  skip_if_remote_src()
+  expect_snapshot({
+    dm_nycflights_small() %>%
+      dm_set_colors(
+        blue = starts_with("air"),
+        green = contains("h")
+      ) %>%
+      dm_get_colors()
+  })
 
-  expect_identical(
-    dm_set_colors(
-      dm_nycflights_small(),
-      blue = starts_with("air"),
-      green = contains("h")
-    ) %>%
-      dm_get_colors(),
-    set_names(
-      src_tbls(dm_nycflights_small()),
-      c("#00FF00FF", "default", "#0000FFFF", "#0000FFFF", "#00FF00FF")
-    )
-  )
+  skip_if_not_installed("testthat", "3.1.1")
 
-  # test splicing
   colset <- c(blue = "flights", green = "airports")
 
-  expect_identical(
-    dm_set_colors(
-      dm_nycflights_small(),
-      !!!colset
-    ) %>%
-      dm_get_colors(),
-    set_names(
-      src_tbls(dm_nycflights_small()),
-      c("#0000FFFF", "default", "default", "#00FF00FF", "default")
-    )
+  # test splicing
+  expect_snapshot(
+    variant = if (packageVersion("testthat") > "3.1.0") "testthat-new" else "testthat-legacy",
+    {
+      dm_nycflights_small() %>%
+        dm_set_colors(!!!colset) %>%
+        dm_get_colors()
+    }
   )
 })
 
 test_that("`dm_set_colors()` errors if old syntax used", {
-  skip_if_remote_src()
-
   expect_dm_error(
     dm_set_colors(
       dm_nycflights_small(),
@@ -61,9 +52,6 @@ test_that("`dm_set_colors()` errors if old syntax used", {
 })
 
 test_that("`dm_set_colors()` errors with unnamed args", {
-  skip_if_src("postgres")
-  skip_if_src("mssql")
-
   expect_dm_error(
     dm_set_colors(
       dm_nycflights_small(),
@@ -78,14 +66,13 @@ test_that("last", {
     color_quos_to_display(
       flights = "blue",
       airlines =
-      ),
+    ),
     class = "last_col_missing"
   )
 })
 
 test_that("bad color", {
   skip_if_not(getRversion() >= "3.5")
-  skip_if_remote_src()
 
   expect_dm_error(
     dm_set_colors(
@@ -97,8 +84,6 @@ test_that("bad color", {
 })
 
 test_that("getter", {
-  skip_if_src("postgres")
-  skip_if_src("mssql")
   expect_equal(
     dm_get_colors(dm_nycflights13()),
     c(
@@ -111,20 +96,6 @@ test_that("getter", {
   )
 })
 
-test_that("datamodel-code for drawing", {
-  data_model_for_filter <- dm_get_data_model(dm_for_filter())
-
-  expect_s3_class(
-    data_model_for_filter,
-    "data_model"
-  )
-
-  expect_identical(
-    map(data_model_for_filter, nrow),
-    list(tables = 6L, columns = 15L, references = 5L)
-  )
-})
-
 test_that("get available colors", {
   expect_length(
     dm_get_available_colors(),
@@ -133,47 +104,97 @@ test_that("get available colors", {
 })
 
 test_that("helpers", {
-  expect_identical(
-    dm_get_all_columns(dm_for_filter()),
-    tibble::tribble(
-      ~table, ~id, ~column,
-      "tf_1", 1L, "a",
-      "tf_1", 2L, "b",
-      "tf_2", 1L, "c",
-      "tf_2", 2L, "d",
-      "tf_2", 3L, "e",
-      "tf_3", 1L, "f",
-      "tf_3", 2L, "g",
-      "tf_4", 1L, "h",
-      "tf_4", 2L, "i",
-      "tf_4", 3L, "j",
-      "tf_5", 1L, "k",
-      "tf_5", 2L, "l",
-      "tf_5", 3L, "m",
-      "tf_6", 1L, "n",
-      "tf_6", 2L, "o"
-    )
-  )
+  expect_snapshot({
+    dm_get_all_columns(dm_for_filter())
+  })
+
+  expect_snapshot({
+    dm_get_all_column_types(dm_for_filter())
+  })
 })
 
 test_that("output", {
-  skip_if_remote_src()
-  expect_known_output(
+  skip_if_not_installed("testthat", "3.1.1")
+
+  # 444: types
+  expect_snapshot_diagram(
     dm_nycflights13() %>%
-      dm_draw() %>%
-      DiagrammeRsvg::export_svg() %>%
-      cli::cat_line(),
-    "out/nycflights13.svg"
+      dm_draw(column_types = TRUE),
+    "nycflight-dm-types.svg"
   )
 
-  # Multi-fk (#37)
-  expect_known_output(
-    dm_nycflights13() %>%
+  expect_snapshot_diagram(
+    dm_nycflights13(cycle = TRUE) %>%
       dm_zoom_to(planes) %>%
+      # Multi-fk (#37)
       dm_insert_zoomed("planes_copy") %>%
-      dm_draw() %>%
-      DiagrammeRsvg::export_svg() %>%
-      cli::cat_line(),
-    "out/nycflights13-multi-fk.svg"
+      # Loose table
+      dm(loose = tibble(a = 1)) %>%
+      # Non-default fk (#402)
+      dm(agency = tibble(airline_name = character())) %>%
+      dm_add_fk(agency, airline_name, airlines, name) %>%
+      dm_draw(),
+    "nycflight-dm.svg"
+  )
+
+  # empty table corner cases
+  expect_snapshot_diagram(
+    dm(a = tibble()) %>%
+      dm_draw(),
+    "single-empty-table-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm(x = tibble(a = 1), y = tibble(b = 1), a = tibble()) %>%
+      dm_draw(view_type = "all"),
+    "empty-table-in-dm.svg"
+  )
+})
+
+test_that("table_description works", {
+  expect_error(dm_set_table_description(dm_nycflights_small(), "flight" = "Flüge"))
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
+      dm_draw(),
+    "table-desc-1-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
+      dm_draw(font_size = list(table_description = 6L)),
+    "table-desc-2-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
+      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+    "table-desc-3-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm_nycflights13(table_description = TRUE) %>%
+      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+    "table-desc-4-dm.svg"
+  )
+})
+
+test_that("UK support works", {
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_add_uk(weather, time_hour) %>%
+      dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
+      dm_draw(view_type = "all"),
+    "table-uk-1-dm.svg"
+  )
+
+  expect_snapshot_diagram(
+    dm_nycflights_small() %>%
+      dm_add_fk(flights, time_hour, weather, time_hour) %>%
+      dm_set_table_description("Wetter\npogoda" = weather) %>%
+      dm_draw(),
+    "table-uk-2-dm.svg"
   )
 })

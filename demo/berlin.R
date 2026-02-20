@@ -207,7 +207,8 @@ dm_nyc_filtered %>%
   dm_apply_filters()
 
 # If a filter condition is phrased wrongly it will only fail, once the filter is being applied
-(dm_nyc_fail <- dm_nycflights13() %>%
+(dm_nyc_fail <-
+  dm_nycflights13() %>%
   dm_filter(airports, origin == "EWR"))
 try(
   tbl(dm_nyc_fail, "flights")
@@ -370,7 +371,13 @@ flights_link <-
   unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE)
 
 # one option to create a `dm` is to use `as_dm()`:
-nycflights13_dm <- as_dm(list(airlines = airlines, airports = airports, flights = flights_link, planes = planes, weather = weather_link))
+nycflights13_dm <- as_dm(list(
+  airlines = airlines,
+  airports = airports,
+  flights = flights_link,
+  planes = planes,
+  weather = weather_link
+))
 
 # Copy to this environment
 airlines_global <- airlines

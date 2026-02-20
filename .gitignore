@@ -8,3 +8,9 @@ docs/
 dm.Rcheck/
 dm*.tar.gz
 dm*.tgz
+.ccache
+CRAN-RELEASE
+*.log
+CRAN-SUBMISSION
+.vscode
+_problems/

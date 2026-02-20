@@ -10,22 +10,21 @@ dm_ptype(dm)
 \item{dm}{A \code{dm} object.}
 }
 \description{
-\lifecycle{experimental}
-
 The prototype contains all tables, all primary and foreign keys,
 but no data.
-All tables are truncated and converted to zero-row tibbles.
-Column names retain their type.
+All tables are truncated and converted to zero-row tibbles,
+also for remote data models.
+Columns retain their type.
 This is useful for performing creation and population of a database
 in separate steps.
 }
 \examples{
-\dontrun{
+\dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}
 dm_financial() \%>\%
   dm_ptype()
 
 dm_financial() \%>\%
   dm_ptype() \%>\%
   dm_nrow()
-}
+\dontshow{\}) # examplesIf}
 }

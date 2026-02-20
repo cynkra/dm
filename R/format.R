@@ -1,17 +1,25 @@
 MAX_COMMAS <- 6L
 
 commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE, fun = identity) {
-  if (is_null(max_commas)) max_commas <- MAX_COMMAS
+  if (is_null(max_commas)) {
+    max_commas <- MAX_COMMAS
+  }
+  fun <- as_function(fun)
+
   if (is_empty(x)) {
     x <- ""
   } else if (length(x) > max_commas) {
     cap <- if (!capped) paste0(" (", length(x), " total)")
-    x[[max_commas]] <- paste0(cli::symbol$ellipsis, cap)
-    length(x) <- max_commas
+
+    x <- c(
+      fun(x[seq_len(max_commas - 1)]),
+      paste0(cli::symbol$ellipsis, cap)
+    )
+  } else {
+    x <- fun(x)
   }
 
-  fun <- as_function(fun)
-  glue_collapse(fun(x), sep = ", ")
+  glue_collapse(x, sep = ", ")
 }
 
 tick <- function(x) {
@@ -21,11 +29,12 @@ tick <- function(x) {
   paste0("`", x, "`")
 }
 
-default_local_src <- function() {
-  structure(
-    list(tbl_f = as_tibble, name = "<environment: R_GlobalEnv>", env = .GlobalEnv),
-    class = c("src_local", "src")
-  )
+deparse_keys <- function(x) {
+  ticked <- map(x, tick_if_needed)
+  out <- map_chr(ticked, paste, collapse = ", ")
+  add_c <- lengths(ticked) != 1
+  out[add_c] <- paste0("c(", out[add_c], ")")
+  out
 }
 
 # next 2 are borrowed from {tibble}:
@@ -45,4 +54,12 @@ if_pkg_version <- function(pkg, min_version, if_true, if_false = NULL) {
 
 format_classes <- function(class) {
   commas(tick(class))
+}
+
+trim_width <- function(x, width) {
+  if (nchar(x) > width) {
+    paste0(strtrim(x, width), cli::symbol$ellipsis)
+  } else {
+    x
+  }
 }

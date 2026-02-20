@@ -1,12 +1,14 @@
 #' Creates a dm object for the \pkg{nycflights13} data
 #'
-#' @description Creates an example [`dm`] object from the tables in \pkg{nycflights13},
+#' @description
+#' Creates an example [`dm`] object from the tables in \pkg{nycflights13},
 #' along with the references.
-#' See [nycflights13::flights] for a description of the data.
-#' As described in [nycflights13::planes], the relationship
+#' See [`nycflights13::flights`] for a description of the data.
+#' As described in [`nycflights13::planes`], the relationship
 #' between the `flights` table and the `planes` tables is "weak", it does not satisfy
 #' data integrity constraints.
 #'
+#' @inheritParams rlang::args_dots_empty
 #' @param cycle Boolean.
 #'   If `FALSE` (default), only one foreign key relation
 #'   (from `flights$origin` to `airports$faa`) between the `flights` table and the `airports` table is
@@ -16,26 +18,44 @@
 #' @param color Boolean, if `TRUE` (default), the resulting `dm` object will have
 #'   colors assigned to different tables for visualization with `dm_draw()`.
 #' @param subset Boolean, if `TRUE` (default), the `flights` table is reduced to flights with column `day` equal to 10.
+#' @param compound Boolean, if `FALSE`, no link will be established between tables `flights` and `weather`,
+#'   because this requires compound keys.
+#' @param table_description Boolean, if `TRUE`, a description will be added for each table that will be displayed
+#'   when drawing the table with [dm_draw()].
 #'
-#' @return A `dm` object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
+#' @return A `dm` object consisting of \pkg{nycflights13} tables, complete with primary and foreign keys and optionally colored.
 #'
 #' @export
-#' @examples
-#' if (rlang::is_installed("nycflights13")) {
-#'   dm_nycflights13() %>%
-#'     dm_draw()
-#' }
-dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
-  airlines <- nycflights13::airlines
-  airports <- nycflights13::airports
-  planes <- nycflights13::planes
+#' @seealso `vignette("howto-dm-df")`
+#' @examplesIf rlang::is_installed("DiagrammeR")
+#' dm_nycflights13() %>%
+#'   dm_draw()
+#' @autoglobal
+dm_nycflights13 <- function(
+  ...,
+  cycle = FALSE,
+  color = TRUE,
+  subset = TRUE,
+  compound = TRUE,
+  table_description = FALSE
+) {
+  check_dots_empty()
 
   if (subset) {
-    flights <- flights_subset()
-    weather <- weather_subset()
+    data <- nycflights_subset()
+    flights <- data$flights
+    weather <- data$weather
+    airlines <- data$airlines
+    airports <- data$airports
+    planes <- data$planes
   } else {
+    check_suggested("nycflights13", "dm_nycflights13")
+
     flights <- nycflights13::flights
     weather <- nycflights13::weather
+    airlines <- nycflights13::airlines
+    airports <- nycflights13::airports
+    planes <- nycflights13::planes
   }
 
   dm <-
@@ -43,9 +63,16 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
     dm_add_pk(planes, tailnum) %>%
     dm_add_pk(airlines, carrier) %>%
     dm_add_pk(airports, faa) %>%
-    dm_add_fk(flights, tailnum, planes, check = FALSE) %>%
+    dm_add_fk(flights, tailnum, planes) %>%
     dm_add_fk(flights, carrier, airlines) %>%
     dm_add_fk(flights, origin, airports)
+
+  if (compound) {
+    dm <-
+      dm %>%
+      dm_add_pk(weather, c(origin, time_hour)) %>%
+      dm_add_fk(flights, c(origin, time_hour), weather)
+  }
 
   if (color) {
     dm <-
@@ -63,15 +90,30 @@ dm_nycflights13 <- function(cycle = FALSE, color = TRUE, subset = TRUE) {
       dm_add_fk(flights, dest, airports, check = FALSE)
   }
 
+  if (table_description) {
+    dm <-
+      dm %>%
+      dm_set_table_description(
+        rlang::set_names(
+          c("flights", "airports", "planes", "weather", "airlines"),
+          c(
+            paste(
+              "On-time data for all flights that",
+              "departed NYC (i.e. JFK, LGA or EWR) in 2013",
+              sep = "\n"
+            ),
+            "Airports of origin or destination of the flights",
+            "Planes used for the flights",
+            "Hourly meteorological data for LGA, JFK and EWR in 2013",
+            "Airlines that operated the flights"
+          )
+        )
+      )
+  }
+
   dm
 }
 
-flights_subset <- function() {
-  nycflights13::flights %>%
-    filter(day == 10)
-}
-
-weather_subset <- function() {
-  nycflights13::weather %>%
-    filter(day == 10)
+nycflights_subset <- function() {
+  readRDS(system.file("extdata/nycflights13-small.rds", package = "dm"))
 }

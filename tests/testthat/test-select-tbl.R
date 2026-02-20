@@ -1,11 +1,11 @@
 test_that("dm_select_tbl() selects a part of a larger `dm` as a reduced `dm`?", {
   def <-
     dm_for_filter() %>%
-    dm_rm_fk(tf_5, m, tf_6) %>%
+    dm_rm_fk(tf_5, m, tf_6, n) %>%
     dm_rm_fk(tf_2, d, tf_1) %>%
     dm_get_def()
 
-  dm_for_filter_smaller <- new_dm3(def[def$table %in% c("tf_1", "tf_6"), ])
+  dm_for_filter_smaller <- dm_from_def(def[def$table %in% c("tf_1", "tf_6"), ])
 
   expect_equivalent_dm(
     dm_select_tbl(dm_for_filter(), -tf_2, -tf_3, -tf_4, -tf_5),
@@ -18,7 +18,7 @@ test_that("dm_select_tbl() can reorder the tables in a `dm`", {
     dm_for_filter() %>%
     dm_get_def() %>%
     arrange(c(3:1, 6:4)) %>%
-    new_dm3()
+    dm_from_def()
 
   expect_equivalent_dm(
     dm_select_tbl(dm_for_filter(), tf_3:tf_1, tf_6:tf_4),
@@ -27,20 +27,12 @@ test_that("dm_select_tbl() can reorder the tables in a `dm`", {
 })
 
 test_that("dm_select_tbl() remembers all FKs", {
-  skip_if_src("postgres")
-  skip_if_src("mssql")
-
-  reordered_dm_nycflights_small_cycle <- dm_add_fk(dm_nycflights_small(), flights, origin, airports) %>%
-    dm_get_def() %>%
-    filter(!(table %in% c("airlines", "planes"))) %>%
-    slice(2:1) %>%
-    new_dm3()
-
-  expect_equivalent_dm(
-    dm_add_fk(dm_nycflights_small(), flights, origin, airports) %>%
-      dm_select_tbl(airports, flights),
-    reordered_dm_nycflights_small_cycle
-  )
+  expect_snapshot({
+    dm_nycflights_small() %>%
+      dm_add_fk(flights, origin, airports) %>%
+      dm_select_tbl(airports, flights) %>%
+      dm_paste()
+  })
 })
 
 

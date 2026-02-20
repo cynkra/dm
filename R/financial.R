@@ -1,36 +1,24 @@
 #' Creates a dm object for the Financial data
 #'
 #' @description
-#' \lifecycle{experimental}
-#'
 #' `dm_financial()` creates an example [`dm`] object from the tables at
-#' <https://relational.fit.cvut.cz/dataset/Financial>.
+#' https://relational.fel.cvut.cz/dataset/Financial.
 #' The connection is established once per session,
 #' subsequent calls return the same connection.
 #'
 #' @return A `dm` object.
 #'
 #' @export
-#' @examples
-#' \dontrun{
-#' if (rlang::is_installed("RMariaDB")) {
-#'   dm_financial() %>%
-#'     dm_draw()
-#' }
-#' }
+#' @examplesIf dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")
+#' dm_financial() %>%
+#'   dm_draw()
 dm_financial <- function() {
-  stopifnot(rlang::is_installed("RMariaDB"))
+  check_suggested("RMariaDB", "dm_financial")
 
-  my_db <- DBI::dbConnect(
-    RMariaDB::MariaDB(),
-    username = "guest",
-    password = "relational",
-    dbname = "Financial_ijs",
-    host = "relational.fit.cvut.cz"
-  )
+  my_db <- financial_db_con()
 
   my_dm <-
-    dm_from_src(my_db) %>%
+    dm_from_con(my_db, learn_keys = FALSE) %>%
     dm_add_pk(districts, id) %>%
     dm_add_pk(accounts, id) %>%
     dm_add_pk(clients, id) %>%
@@ -51,6 +39,32 @@ dm_financial <- function() {
   my_dm
 }
 
+dm_has_financial <- function() {
+  # Not on CRAN:
+  if (Sys.getenv("CI") != "true") {
+    return(FALSE)
+  }
+
+  # Crashes observed with R < 3.5:
+  if (getRversion() < "3.5") {
+    return(FALSE)
+  }
+
+  # Connectivity:
+  try_connect <- try(dm_financial(), silent = TRUE)
+  if (inherits(try_connect, "try-error")) {
+    return(FALSE)
+  }
+
+  # Accessing the connection:
+  try_count <- try(collect(count(dm_financial()$districts)), silent = TRUE)
+  if (inherits(try_connect, "try-error")) {
+    return(FALSE)
+  }
+
+  TRUE
+}
+
 #' dm_financial_sqlite()
 #'
 #' `dm_financial_sqlite()` copies the data to a temporary SQLite database.
@@ -59,7 +73,7 @@ dm_financial <- function() {
 #' @rdname dm_financial
 #' @export
 dm_financial_sqlite <- function() {
-  stopifnot(rlang::is_installed("RSQLite"))
+  check_suggested("RSQLite", "dm_financial_sqlite")
 
   my_dm <-
     dm_financial() %>%

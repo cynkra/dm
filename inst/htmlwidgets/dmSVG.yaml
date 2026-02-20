@@ -1,0 +1,18 @@
+dependencies:
+- name: jquery
+  version: 3.6.0
+  src: htmlwidgets/lib/jquery
+  script: dist/jquery.min.js
+- name: customjs
+  version: 1.0.0
+  src: htmlwidgets
+  script: custom.js
+  stylesheet: css/styles.css
+- name: hammer
+  version: 2.0.8
+  src: htmlwidgets/lib/hammer
+  script: hammer.min.js
+- name: svg-pan-zoom
+  version: 3.6.1
+  src: htmlwidgets/lib/svg-pan-zoom
+  script: dist/svg-pan-zoom.min.js

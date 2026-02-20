@@ -4,10 +4,24 @@
 \alias{dm_examine_constraints}
 \title{Validate your data model}
 \usage{
-dm_examine_constraints(dm)
+dm_examine_constraints(
+  .dm,
+  ...,
+  .progress = NA,
+  dm = deprecated(),
+  progress = deprecated()
+)
 }
 \arguments{
-\item{dm}{A \code{dm} object.}
+\item{.dm}{A \code{dm} object.}
+
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{.progress}{Whether to display a progress bar, if \code{NA} (the default)
+hide in non-interactive mode, show in interactive mode. Requires the
+'progress' package.}
+
+\item{dm, progress}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \value{
 A tibble with the following columns:
@@ -23,7 +37,7 @@ A tibble with the following columns:
 \description{
 This function returns a tibble with information about
 which key constraints are met (\code{is_key = TRUE}) or violated (\code{FALSE}).
-The printing for this object is special, use \code{\link[=as_tibble]{as_tibble()}}
+The printing for this object is special, use \code{\link[tibble:as_tibble]{tibble::as_tibble()}}
 to print as a regular tibble.
 }
 \details{
@@ -32,6 +46,8 @@ For the foreign key constraints, the tests check if for each foreign key constra
 form a subset of the values of the referenced column.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_examine_constraints()
+\dontshow{\}) # examplesIf}
 }

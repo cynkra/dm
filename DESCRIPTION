@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 0.1.2
-Date: 2020-05-03
+Version: 1.0.12.9014
+Date: 2026-01-14
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -10,8 +10,11 @@ Authors@R:
       person(given = "Kirill",
              family = "Müller",
              role = c("aut", "cre"),
-             email = "krlmlr+r@mailbox.org",
+             email = "kirill@cynkra.com",
              comment = c(ORCID = "0000-0002-1416-3412")),
+      person(given = "Antoine",
+             family = "Fabri",
+             role = "ctb"),
       person(given = "Darko",
              family = "Bergant",
              role = "aut",
@@ -19,66 +22,111 @@ Authors@R:
       person(given = "Katharina",
              family = "Brunner",
              role = "ctb"),
+      person(given = "James",
+             family = "Wondrasek",
+             role = "ctb"),
+      person(given = "Indrajeet",
+             family = "Patil",
+             comment = c(ORCID = "0000-0003-1995-6531"),
+             role = "ctb"),
+      person(given = "Maëlle",
+             family = "Salmon",
+             comment = c(ORCID = "0000-0002-2815-0399"),
+             role = "ctb"),
       person(given = "energie360° AG",
              role = "fnd",
              email = "info@energie360.ch"),
       person(given = "cynkra GmbH",
              role = c("fnd", "cph"),
-             email = "mail@cynkra.com"))
+             email = "mail@cynkra.com",
+             comment = c(ROR = "0335t7e62"))
+    )
 Description: Provides tools for working with multiple related
     tables, stored as data frames or in a relational database.  Multiple
     tables (data and metadata) are stored in a compound object, which can
     then be manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
-URL: https://krlmlr.github.io/dm, https://github.com/krlmlr/dm
-BugReports: https://github.com/krlmlr/dm/issues
+URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
+BugReports: https://github.com/cynkra/dm/issues
 Depends: 
     R (>= 3.3)
 Imports:
     backports,
-    cli (>= 2.0.0),
-    DBI,
-    dplyr,
-    ellipsis,
+    cli (>= 2.2.0),
+    dplyr (>= 1.1.0),
     glue,
-    igraph,
-    lifecycle,
-    magrittr,
+    igraph (>= 2.2.0),
+    lifecycle (>= 1.0.3),
     memoise,
     methods,
-    pillar,
-    purrr,
-    rlang (>= 0.4.0),
-    tibble,
+    purrr (>= 1.0.0),
+    rlang (>= 1.0.2),
+    tibble (>= 3.0.0),
     tidyr (>= 1.0.0),
-    tidyselect (>= 1.0.0),
-    vctrs (>= 0.2.0)
+    tidyselect (>= 1.2.0),
+    vctrs (>= 0.3.2)
 Suggests: 
     brio,
-    crayon,
+    colourpicker,
+    covr,
+    DBI (>= 1.2.0),
+    dbplyr (>= 2.3.4),
     DiagrammeR,
     DiagrammeRsvg,
-    dbplyr,
     digest,
+    duckdb (>= 0.4.0),
     fansi,
+    forcats,
+    htmltools,
+    htmlwidgets,
+    jsonlite,
     keyring,
     knitr,
+    labelled (>= 2.12.0),
+    magrittr,
     nycflights13,
-    odbc,
+    odbc (>= 1.4.2),
+    pillar,
+    pixarfilms,
+    pool,
+    progress,
+    reactable,
+    RMariaDB (>= 1.3.3),
     rmarkdown,
-    RMariaDB,
     RPostgres,
-    rprojroot,
-    RSQLite,
-    testthat (>= 2.1.0),
+    RSQLite (>= 2.2.8),
+    rstudioapi,
+    shiny,
+    shinyAce,
+    shinydashboard,
+    testthat (>= 3.2.0),
     tidyverse,
+    waldo,
     withr
+Config/Needs/website:
+    brio,
+    bslib,
+    cynkra/cynkratemplate,
+    htmltools,
+    pagedown,
+    purrr,
+    rmarkdown,
+    whisker,
+    xml2
+Config/Needs/check: anthonynorth/roxyglobals
+Remotes: r-dbi/odbc
+RemotesInfo: https://github.com/cran/odbc/commit/c12831e0e1a9ac22bf6d0d4f898a581e55cf2a60
 VignetteBuilder: 
     knitr
-RdMacros: 
-    lifecycle
+Config/autostyle/scope: line_breaks
+Config/autostyle/strict: true
+Config/testthat/edition: 3
+Config/testthat/parallel: false
+Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
+    draw-dm, bind, rows-dm, learn
 Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE, roclets = c("collate",
-    "namespace", "rd"))
-RoxygenNote: 7.1.0
+Roxygen: list(
+      markdown = TRUE,
+      roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet")
+    )
+RoxygenNote: 7.3.3.9000

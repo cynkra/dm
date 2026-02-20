@@ -1,32 +1,14 @@
-nyc_check <- tibble::tribble(
-  ~table, ~kind, ~columns, ~ref_table, ~is_key, ~problem,
-  "flights", "FK", "dest", "airports", FALSE, "<reason>",
-  "flights", "FK", "tailnum", "planes", FALSE, "<reason>",
-  "airlines", "PK", "carrier", NA, TRUE, "",
-  "airports", "PK", "faa", NA, TRUE, "",
-  "planes", "PK", "tailnum", NA, TRUE, "",
-  "flights", "FK", "carrier", "airlines", TRUE, "",
-) %>%
-  mutate(columns = new_keys(columns)) %>%
-  new_dm_examine_constraints()
-
 test_that("`dm_examine_constraints()` works", {
-
-  # FIXME: remove after 15 May 2020 (dplyr update)?
-  if (packageVersion("dbplyr") >= "1.4.3" && packageVersion("dplyr") < "0.8.99") {
-    skip("slight package incompatibility")
-  }
-
   # case of no constraints:
   expect_identical(
     dm_examine_constraints(dm_test_obj()),
     tibble(
-      table = character(0),
-      kind = character(0),
-      columns = new_keys(character()),
-      ref_table = character(0),
-      is_key = logical(0),
-      problem = character(0)
+      table = character(),
+      kind = character(),
+      columns = new_keys(),
+      ref_table = character(),
+      is_key = logical(),
+      problem = character()
     ) %>%
       new_dm_examine_constraints()
   )
@@ -46,27 +28,17 @@ test_that("`dm_examine_constraints()` works", {
     ) %>%
       new_dm_examine_constraints()
   )
-
-  skip_if_src("postgres")
-  skip_if_src("mssql")
-
-  # case of some constraints, some violated:
-  expect_identical(
-    dm_examine_constraints(dm_nycflights_small()) %>%
-      mutate(problem = if_else(problem == "", "", "<reason>")),
-    nyc_check
-  )
 })
 
 test_that("output", {
-  skip_if_remote_src()
+  skip_if_ide()
 
-  verify_output("out/examine-constraints.txt", {
+  expect_snapshot({
     dm() %>% dm_examine_constraints()
 
-    dm_nycflights13() %>% dm_examine_constraints()
-    dm_nycflights13(cycle = TRUE) %>% dm_examine_constraints()
-    dm_nycflights13(cycle = TRUE) %>%
+    dm_nycflights_small() %>% dm_examine_constraints()
+    dm_nycflights_small_cycle() %>% dm_examine_constraints()
+    dm_nycflights_small_cycle() %>%
       dm_select_tbl(-flights) %>%
       dm_examine_constraints()
 
@@ -77,11 +49,49 @@ test_that("output", {
 })
 
 test_that("output as tibble", {
-  skip_if_remote_src()
+  skip_if_ide()
 
-  verify_output("out/examine-constraints-as-tibble.txt", {
-    dm_nycflights13(cycle = TRUE) %>%
+  expect_snapshot({
+    dm_nycflights_small_cycle() %>%
       dm_examine_constraints() %>%
       as_tibble()
+  })
+})
+
+
+# test compound keys ------------------------------------------------------
+
+test_that("output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  expect_snapshot({
+    bad_dm() %>%
+      dm_examine_constraints()
+  })
+})
+
+# Test unique keys for weak FK (no explicit PK set) -----------------------
+
+test_that("Non-explicit PKs should be tested too", {
+  expect_snapshot(
+    # dm_for_card() has no PKs set, only FKs
+    dm_for_card() %>%
+      dm_examine_constraints()
+  )
+})
+
+test_that("`dm_examine_constraints()` API", {
+  local_options(lifecycle_verbosity = "warning")
+
+  expect_snapshot({
+    dm_examine_constraints(dm_test_obj(), progress = FALSE)
+    dm_examine_constraints(dm = dm_test_obj())
+  })
+})
+
+test_that("`dm_examine_constraints()` API (2)", {
+  expect_snapshot(error = TRUE, {
+    dm_examine_constraints(dm_test_obj(), foo = "bar")
   })
 })

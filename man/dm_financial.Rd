@@ -13,10 +13,8 @@ dm_financial_sqlite()
 A \code{dm} object.
 }
 \description{
-\lifecycle{experimental}
-
 \code{dm_financial()} creates an example \code{\link{dm}} object from the tables at
-\url{https://relational.fit.cvut.cz/dataset/Financial}.
+https://relational.fel.cvut.cz/dataset/Financial.
 The connection is established once per session,
 subsequent calls return the same connection.
 
@@ -25,10 +23,8 @@ The data is downloaded once per session, subsequent calls return the same databa
 The \code{trans} table is excluded due to its size.
 }
 \examples{
-\dontrun{
-if (rlang::is_installed("RMariaDB")) {
-  dm_financial() \%>\%
-    dm_draw()
-}
-}
+\dontshow{if (dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")) withAutoprint(\{ # examplesIf}
+dm_financial() \%>\%
+  dm_draw()
+\dontshow{\}) # examplesIf}
 }

@@ -25,11 +25,12 @@ optionally renaming them.
 \code{dm_rename_tbl()} renames tables.
 }
 \examples{
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_select_tbl(airports, fl = flights)
+\dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_rename_tbl(ap = airports, fl = flights)
-}
-\seealso{
-\code{\link[=dm_rm_tbl]{dm_rm_tbl()}}
+\dontshow{\}) # examplesIf}
 }

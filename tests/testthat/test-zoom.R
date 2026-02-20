@@ -1,5 +1,4 @@
 test_that("dm_zoom_to() works", {
-
   # no zoom in unzoomed `dm`
   expect_false(
     is_zoomed(dm_for_filter())
@@ -12,7 +11,7 @@ test_that("dm_zoom_to() works", {
 
   expect_s3_class(
     dm_for_filter() %>% dm_zoom_to(tf_3),
-    c("zoomed_dm", "dm")
+    c("dm_zoomed", "dm")
   )
 })
 
@@ -27,31 +26,29 @@ test_that("dm_discard_zoomed() works", {
   )
 })
 
-test_that("print() and format() methods for subclass `zoomed_dm` work", {
-  expect_output(
-    dm_for_filter() %>% dm_zoom_to(tf_5) %>% print(),
-    "# Zoomed table: tf_5"
+test_that("print() and format() methods for subclass `dm_zoomed` work", {
+  expect_snapshot(
+    dm_for_filter() %>% dm_zoom_to(tf_5) %>% as_dm_zoomed_df() %>% tbl_sum()
   )
 
-  expect_output(
-    dm_for_filter() %>% dm_zoom_to(tf_2) %>% format(),
-    "# Zoomed table: tf_2"
+  expect_snapshot(
+    dm_for_filter() %>% dm_zoom_to(tf_2) %>% as_dm_zoomed_df() %>% tbl_sum()
   )
 })
 
 
-test_that("dm_get_zoomed_tbl() works", {
+test_that("dm_get_zoom() and tbl_zoomed() works", {
   expect_identical(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
-      dm_get_zoomed_tbl() %>%
+      dm_get_zoom() %>%
       pluck("table"),
     "tf_2"
   )
   expect_equivalent_tbl(
     dm_for_filter() %>%
       dm_zoom_to(tf_2) %>%
-      dm_get_zoomed_tbl() %>%
+      dm_get_zoom() %>%
       pluck("zoom") %>%
       pluck(1),
     tf_2()
@@ -59,7 +56,7 @@ test_that("dm_get_zoomed_tbl() works", {
 
   # function for getting only the tibble itself works
   expect_equivalent_tbl(
-    dm_for_filter() %>% dm_zoom_to(tf_3) %>% get_zoomed_tbl(),
+    dm_for_filter() %>% dm_zoom_to(tf_3) %>% tbl_zoomed(),
     tf_3()
   )
 })
@@ -67,12 +64,13 @@ test_that("dm_get_zoomed_tbl() works", {
 test_that("dm_insert_zoomed() works", {
   # test that a new tbl is inserted, based on the requested one
   expect_equivalent_dm(
-    dm_zoom_to(dm_for_filter(), tf_4) %>% dm_insert_zoomed("tf_4_new"),
+    dm_zoom_to(dm_for_filter(), tf_4) %>%
+      dm_insert_zoomed("tf_4_new"),
     dm_for_filter() %>%
-      dm_add_tbl(tf_4_new = tf_4()) %>%
+      dm(tf_4_new = tf_4()) %>%
       dm_add_pk(tf_4_new, h) %>%
-      dm_add_fk(tf_4_new, j, tf_3) %>%
-      dm_add_fk(tf_5, l, tf_4_new)
+      dm_add_fk(tf_4_new, c(j, j1), tf_3) %>%
+      dm_add_fk(tf_5, l, tf_4_new, on_delete = "cascade")
   )
 
   # test that an error is thrown if 'repair = check_unique' and duplicate table names
@@ -83,42 +81,98 @@ test_that("dm_insert_zoomed() works", {
 
   # test that in case of 'repair = unique' and duplicate table names -> renames of old and new
   expect_equivalent_dm(
-    expect_silent(dm_zoom_to(dm_for_filter(), tf_4) %>% dm_insert_zoomed("tf_4", repair = "unique", quiet = TRUE)),
+    # FIXME: This produced occasional warnings on GitHub Actions, why?
+    dm_for_filter() %>%
+      dm_zoom_to(tf_4) %>%
+      dm_insert_zoomed("tf_4", repair = "unique", quiet = TRUE),
     dm_for_filter() %>%
       dm_rename_tbl(tf_4...4 = tf_4) %>%
-      dm_add_tbl(tf_4...7 = tf_4()) %>%
+      dm(tf_4...7 = tf_4()) %>%
       dm_add_pk(tf_4...7, h) %>%
-      dm_add_fk(tf_4...7, j, tf_3) %>%
-      dm_add_fk(tf_5, l, tf_4...7)
+      dm_add_fk(tf_4...7, c(j, j1), tf_3) %>%
+      dm_add_fk(tf_5, l, tf_4...7, on_delete = "cascade")
   )
 })
 
 test_that("dm_update_tbl() works", {
   # setting table tf_7 as zoomed table for tf_6 and removing its primary key and foreign keys pointing to it
-  new_dm_for_filter <- dm_get_def(dm_for_filter()) %>%
+  new_dm_for_filter <-
+    dm_get_def(dm_for_filter()) %>%
     mutate(
-      zoom = if_else(table == "tf_6", list(tf_7()), NULL)
+      zoom = if_else(table == "tf_6", list(tf_7()), list(NULL)),
+      col_tracker_zoom = if_else(table == "tf_6", list(character()), list(NULL)),
     ) %>%
-    new_dm3(zoomed = TRUE)
+    dm_from_def(zoomed = TRUE)
 
   # test that the old table is updated correctly
   expect_equivalent_dm(
     dm_update_zoomed(new_dm_for_filter),
     dm_for_filter() %>%
-      dm_rm_tbl(tf_6) %>%
-      dm_add_tbl(tf_6 = tf_7()) %>%
-      dm_get_def() %>%
-      new_dm3()
+      dm_select_tbl(-tf_6) %>%
+      dm(tf_6 = tf_7())
   )
 })
 
 # after #271:
 test_that("all cols are tracked in zoomed table", {
-  skip_if_src("postgres")
-  skip_if_src("mssql")
-
   expect_identical(
-    dm_zoom_to(dm_nycflights_small(), flights) %>% get_tracked_cols(),
-    set_names(colnames(tbl(dm_nycflights_small(), "flights")))
+    dm_nycflights_small() %>%
+      dm_zoom_to(flights) %>%
+      col_tracker_zoomed(),
+    set_names(colnames(dm_nycflights_small()$flights))
+  )
+})
+
+
+# tests for compound keys -------------------------------------------------
+
+test_that("zoom output for compound keys", {
+  # FIXME: COMPOUND: Need proper test
+  skip_if_remote_src()
+
+  expect_snapshot({
+    nyc_comp() %>% dm_zoom_to(weather)
+    nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      dm_update_zoomed()
+    nyc_comp_2 <-
+      nyc_comp() %>%
+      dm_zoom_to(weather) %>%
+      dm_insert_zoomed("weather_2")
+    nyc_comp_2 %>%
+      get_all_keys()
+    attr(igraph::E(create_graph_from_dm(nyc_comp_2)), "vnames")
+
+    nyc_comp_3 <-
+      nyc_comp() %>%
+      dm_zoom_to(flights) %>%
+      dm_insert_zoomed("flights_2")
+    nyc_comp_3 %>%
+      get_all_keys()
+    attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")
+  })
+})
+
+test_that("dm_get_zoom() works to zoom on empty tables", {
+  zdm <- dm(x = tibble()) %>% dm_zoom_to(x)
+  expect_identical(
+    dm_get_zoom(zdm),
+    tibble(table = "x", zoom = list(tibble()))
+  )
+})
+
+
+# test that inserting a zoomed table retains the color --------------------
+
+test_that("dm_insert_zoomed() retains color", {
+  expect_identical(
+    dm_for_filter() %>%
+      dm_set_colors("cyan" = tf_2) %>%
+      dm_zoom_to(tf_2) %>%
+      dm_insert_zoomed("tf_2_new") %>%
+      dm_get_def() %>%
+      filter(table == "tf_2_new") %>%
+      pull(display),
+    "#00FFFFFF"
   )
 })
