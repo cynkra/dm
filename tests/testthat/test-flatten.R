@@ -269,8 +269,7 @@ test_that("`dm_flatten_to_tbl(.recursive = TRUE)` does the right things", {
 })
 
 test_that("`dm_flatten_to_tbl(.recursive = TRUE)` works with combined primary and foreign key", {
-  # Test for issue where a column serves as both PK and FK
-  skip_if_src_not("df") # Only test on data frame source for now
+  skip_if_src_not(c("df", "duckdb"))
 
   # Create test data as described in the issue
   x <- tibble(a = 1L, b = 2L)
@@ -289,7 +288,7 @@ test_that("`dm_flatten_to_tbl(.recursive = TRUE)` works with combined primary an
   # This should work without throwing "Join columns in `x` must be present in the data. Problem with `c`."
   result <- mydm %>% dm_flatten_to_tbl(x, .recursive = TRUE)
 
-  # Expected result should have all columns from x, y, and z
+  # Join keys from the RHS (c and e) are dropped by dplyr; only non-key columns remain.
   expected <- tibble(
     a = 1L,
     b = 2L,

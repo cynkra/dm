@@ -159,43 +159,38 @@ dm_flatten_to_tbl_impl <- function(
 
   # perform the joins according to the list, starting with table `initial_LHS`
   if (squash && length(order_df$name) > 0) {
-    # For recursive flattening, use an iterative approach to handle
-    # cases where columns serve as both PK and FK
+    # For recursive flattening, use an iterative approach to handle cases where
+    # a column serves as both a PK and FK.
+    # When joining with unequal column names (e.g. `b = c`), dplyr drops the RHS
+    # key (`c`) from the result.
+    # We track these equivalences so that later joins referencing `c` as an LHS
+    # key are remapped to `b`.
     result <- tbl_impl(prep_dm, start)
+    col_equivalences <- character(0)
 
     for (i in seq_along(order_df$name)) {
       table_to_join <- ordered_table_list[[i]]
       join_by <- by[[i]]
 
-      # Additional safety check: verify join columns exist
-      result_cols <- colnames(result)
-      left_cols <- names(join_by)
-      right_cols <- colnames(table_to_join)
-      join_right_cols <- unname(join_by)
-
-      # Check if all required columns exist
-      missing_left <- setdiff(left_cols, result_cols)
-      missing_right <- setdiff(join_right_cols, right_cols)
-
-      if (length(missing_left) > 0) {
-        # This is where the error likely occurs
-        # For recursive joins, we might need to handle column name mapping
-        # Look for disambiguated versions of missing columns
-        mapped_join_by <- join_by
-        for (missing_col in missing_left) {
-          # Look for pattern like "original_name.table_suffix"
-          pattern_matches <- result_cols[grepl(paste0("^", missing_col, "\\."), result_cols)]
-          if (length(pattern_matches) > 0) {
-            # Replace the missing column name with the disambiguated version
-            # Use the first match if multiple exist
-            names(mapped_join_by)[names(mapped_join_by) == missing_col] <- pattern_matches[1]
-          }
-          # If no pattern matches found, keep the original name and let the join fail with a clear error
+      # Remap any LHS join columns that were dropped by a previous join.
+      missing_left <- setdiff(names(join_by), colnames(result))
+      for (missing_col in missing_left) {
+        if (missing_col %in% names(col_equivalences)) {
+          names(join_by)[names(join_by) == missing_col] <- col_equivalences[[missing_col]]
         }
-        join_by <- mapped_join_by
       }
 
       result <- join(result, table_to_join, by = join_by)
+
+      # Record equivalences: when lhs_col != rhs_col, the rhs_col is dropped
+      # from the result and lhs_col is kept.
+      for (j in seq_along(join_by)) {
+        lhs_col <- names(join_by)[[j]]
+        rhs_col <- join_by[[j]]
+        if (lhs_col != rhs_col) {
+          col_equivalences[[rhs_col]] <- lhs_col
+        }
+      }
     }
 
     result
