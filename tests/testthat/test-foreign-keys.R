@@ -181,9 +181,9 @@ test_that("dm_enum_fk_candidates() works as intended?", {
 
   # `anti_join()` doesn't distinguish between `dbl` and `int`
   tbl_fk_candidates_tf_1_tf_4 <- tribble(
-    ~column, ~candidate, ~why,
-    "a", TRUE, "",
-    "b", FALSE, "<reason>"
+    ~column , ~candidate , ~why       ,
+    "a"     , TRUE       , ""         ,
+    "b"     , FALSE      , "<reason>"
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
@@ -198,8 +198,8 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   )
 
   tbl_tf_3_tf_4 <- tibble::tribble(
-    ~column, ~candidate, ~why,
-    "c", FALSE, "<reason>"
+    ~column , ~candidate , ~why       ,
+    "c"     , FALSE      , "<reason>"
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
@@ -213,8 +213,8 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   )
 
   tbl_tf_4_tf_3 <- tibble::tribble(
-    ~column, ~candidate, ~why,
-    "c", TRUE, ""
+    ~column , ~candidate , ~why ,
+    "c"     , TRUE       , ""
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))

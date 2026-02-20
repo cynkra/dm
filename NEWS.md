@@ -1,5 +1,108 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9014
+
+## Continuous integration
+
+- Tweaks (#2354).
+
+
+# dm 1.0.12.9013
+
+## Continuous integration
+
+- Install odbc from GitHub remote to avoid failures on older versions of R.
+
+
+# dm 1.0.12.9012
+
+## Chore
+
+- Better traceback location for selection errors (#2351).
+
+
+# dm 1.0.12.9011
+
+## Continuous integration
+
+- Install binaries from r-universe for dev workflow (#2348).
+
+
+# dm 1.0.12.9010
+
+## Continuous integration
+
+- Fix reviewdog and add commenting workflow (#2345).
+
+
+# dm 1.0.12.9009
+
+## Continuous integration
+
+- Use workflows for fledge (#2343).
+
+
+# dm 1.0.12.9008
+
+## Continuous integration
+
+- Sync (#2341).
+
+
+# dm 1.0.12.9007
+
+## Chore
+
+- Format with air with line length 100 (#2335).
+
+## Continuous integration
+
+- Fix dev pkgdown.
+
+## Documentation
+
+- Agent docs and updated instructions.
+
+## claude
+
+- Fix config.
+
+
+# dm 1.0.12.9006
+
+## Chore
+
+- Adapt to igraph \>= 2.2.0 (#2289).
+
+
+# dm 1.0.12.9005
+
+## Continuous integration
+
+- Use reviewdog for external PRs (#2323).
+
+
+# dm 1.0.12.9004
+
+## Chore
+
+- Auto-update from GitHub Actions (#2321).
+
+
+# dm 1.0.12.9003
+
+## Continuous integration
+
+- Cleanup and fix macOS (#2317).
+
+
+# dm 1.0.12.9002
+
+## Testing
+
+- Add tests for `check_key()` (#2298).
+
+
 # dm 1.0.12.9001
 
 ## Bug fixes
