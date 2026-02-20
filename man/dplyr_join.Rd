@@ -27,10 +27,26 @@
   suffix = NULL,
   ...,
   keep = NULL,
+  na_matches = c("na", "never"),
+  multiple = "all",
+  unmatched = "drop",
+  relationship = NULL,
   select = NULL
 )
 
-\method{left_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
+\method{left_join}{dm_keyed_tbl}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = FALSE,
+  na_matches = c("na", "never"),
+  multiple = "all",
+  unmatched = "drop",
+  relationship = NULL
+)
 
 \method{inner_join}{dm_zoomed}(
   x,
@@ -40,10 +56,26 @@
   suffix = NULL,
   ...,
   keep = NULL,
+  na_matches = c("na", "never"),
+  multiple = "all",
+  unmatched = "drop",
+  relationship = NULL,
   select = NULL
 )
 
-\method{inner_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
+\method{inner_join}{dm_keyed_tbl}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = FALSE,
+  na_matches = c("na", "never"),
+  multiple = "all",
+  unmatched = "drop",
+  relationship = NULL
+)
 
 \method{full_join}{dm_zoomed}(
   x,
@@ -53,10 +85,24 @@
   suffix = NULL,
   ...,
   keep = NULL,
+  na_matches = c("na", "never"),
+  multiple = "all",
+  relationship = NULL,
   select = NULL
 )
 
-\method{full_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
+\method{full_join}{dm_keyed_tbl}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = FALSE,
+  na_matches = c("na", "never"),
+  multiple = "all",
+  relationship = NULL
+)
 
 \method{right_join}{dm_zoomed}(
   x,
@@ -66,20 +112,64 @@
   suffix = NULL,
   ...,
   keep = NULL,
+  na_matches = c("na", "never"),
+  multiple = "all",
+  unmatched = "drop",
+  relationship = NULL,
   select = NULL
 )
 
-\method{right_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
+\method{right_join}{dm_keyed_tbl}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = FALSE,
+  na_matches = c("na", "never"),
+  multiple = "all",
+  unmatched = "drop",
+  relationship = NULL
+)
 
-\method{semi_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, ..., suffix = NULL, select = NULL)
+\method{semi_join}{dm_zoomed}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  ...,
+  na_matches = c("na", "never"),
+  suffix = NULL,
+  select = NULL
+)
 
-\method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
+\method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"))
 
-\method{anti_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, ..., suffix = NULL, select = NULL)
+\method{anti_join}{dm_zoomed}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  ...,
+  na_matches = c("na", "never"),
+  suffix = NULL,
+  select = NULL
+)
 
-\method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
+\method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"))
 
-\method{nest_join}{dm_zoomed}(x, y, by = NULL, copy = FALSE, keep = NULL, name = NULL, ...)
+\method{nest_join}{dm_zoomed}(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  keep = NULL,
+  name = NULL,
+  ...,
+  na_matches = c("na", "never"),
+  unmatched = "drop"
+)
 
 \method{cross_join}{dm_zoomed}(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
 
@@ -98,8 +188,88 @@ If you provide a value (for the syntax see \code{\link[dplyr:mutate-joins]{dplyr
 
 \item{...}{see \code{\link[dplyr:mutate-joins]{dplyr::join}}}
 
-\item{keep}{Should the new list-column contain join keys? The default
-will preserve the join keys for inequality joins.}
+\item{keep}{Should the join keys from both \code{x} and \code{y} be preserved in the
+output?
+\itemize{
+\item If \code{NULL}, the default, joins on equality retain only the keys from \code{x},
+while joins on inequality retain the keys from both inputs.
+\item If \code{TRUE}, all keys from both inputs are retained.
+\item If \code{FALSE}, only keys from \code{x} are retained. For right and full joins,
+the data in key columns corresponding to rows that only exist in \code{y} are
+merged into the key columns from \code{x}. Can't be used when joining on
+inequality conditions.
+}}
+
+\item{na_matches}{Should two \code{NA} or two \code{NaN} values match?
+\itemize{
+\item \code{"na"}, the default, treats two \code{NA} or two \code{NaN} values as equal, like
+\code{\%in\%}, \code{\link[=match]{match()}}, and \code{\link[=merge]{merge()}}.
+\item \code{"never"} treats two \code{NA} or two \code{NaN} values as different, and will
+never match them together or to any other values. This is similar to joins
+for database sources and to \code{base::merge(incomparables = NA)}.
+}}
+
+\item{multiple}{Handling of rows in \code{x} with multiple matches in \code{y}.
+For each row of \code{x}:
+\itemize{
+\item \code{"all"}, the default, returns every match detected in \code{y}. This is the
+same behavior as SQL.
+\item \code{"any"} returns one match detected in \code{y}, with no guarantees on which
+match will be returned. It is often faster than \code{"first"} and \code{"last"}
+if you just need to detect if there is at least one match.
+\item \code{"first"} returns the first match detected in \code{y}.
+\item \code{"last"} returns the last match detected in \code{y}.
+}}
+
+\item{unmatched}{How should unmatched keys that would result in dropped rows
+be handled?
+\itemize{
+\item \code{"drop"} drops unmatched keys from the result.
+\item \code{"error"} throws an error if unmatched keys are detected.
+}
+
+\code{unmatched} is intended to protect you from accidentally dropping rows
+during a join. It only checks for unmatched keys in the input that could
+potentially drop rows.
+\itemize{
+\item For left joins, it checks \code{y}.
+\item For right joins, it checks \code{x}.
+\item For inner joins, it checks both \code{x} and \code{y}. In this case, \code{unmatched} is
+also allowed to be a character vector of length 2 to specify the behavior
+for \code{x} and \code{y} independently.
+}}
+
+\item{relationship}{Handling of the expected relationship between the keys of
+\code{x} and \code{y}. If the expectations chosen from the list below are
+invalidated, an error is thrown.
+\itemize{
+\item \code{NULL}, the default, doesn't expect there to be any relationship between
+\code{x} and \code{y}. However, for equality joins it will check for a many-to-many
+relationship (which is typically unexpected) and will warn if one occurs,
+encouraging you to either take a closer look at your inputs or make this
+relationship explicit by specifying \code{"many-to-many"}.
+
+See the \emph{Many-to-many relationships} section for more details.
+\item \code{"one-to-one"} expects:
+\itemize{
+\item Each row in \code{x} matches at most 1 row in \code{y}.
+\item Each row in \code{y} matches at most 1 row in \code{x}.
+}
+\item \code{"one-to-many"} expects:
+\itemize{
+\item Each row in \code{y} matches at most 1 row in \code{x}.
+}
+\item \code{"many-to-one"} expects:
+\itemize{
+\item Each row in \code{x} matches at most 1 row in \code{y}.
+}
+\item \code{"many-to-many"} doesn't perform any relationship checks, but is provided
+to allow you to be explicit about this relationship if you know it
+exists.
+}
+
+\code{relationship} doesn't handle cases where there are zero matches. For that,
+see \code{unmatched}.}
 
 \item{select}{Select a subset of the \strong{RHS-table}'s columns, the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
 This argument is specific for the \code{join}-methods for \code{dm_zoomed}.
