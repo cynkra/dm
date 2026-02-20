@@ -28,6 +28,19 @@ filter.dm_zoomed <- function(.data, ...) {
 }
 
 #' @export
+filter_out.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+filter_out.dm_zoomed <- function(.data, ...) {
+  tbl <- tbl_zoomed(.data)
+  filtered_tbl <- filter_out(tbl, ...)
+  replace_zoomed_tbl(.data, filtered_tbl)
+}
+
+#' @export
 mutate.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
@@ -305,6 +318,37 @@ summarise.dm_keyed_tbl <- function(.data, ...) {
   new_keyed_tbl(
     summarised_tbl,
     pk = new_pk,
+    uuid = keys_info$uuid
+  )
+}
+
+#' @export
+reframe.dm <- function(.data, ...) {
+  check_zoomed(.data)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+reframe.dm_zoomed <- function(.data, ...) {
+  tbl <- tbl_zoomed(.data)
+  reframed_tbl <- reframe(tbl, ...)
+  # reframe() always returns ungrouped data, no group tracking needed
+  # #663: user responsibility: those columns are tracked whose names remain
+  selected <- set_names(intersect(colnames(tbl_zoomed(.data)), colnames(reframed_tbl)))
+  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
+  replace_zoomed_tbl(.data, reframed_tbl, new_tracked_cols_zoom)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+reframe.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+
+  reframed_tbl <- reframe(tbl, ...)
+
+  new_keyed_tbl(
+    reframed_tbl,
     uuid = keys_info$uuid
   )
 }
@@ -680,6 +724,47 @@ nest_join.dm_zoomed <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, nam
   join_data <- prepare_join(x, {{ y }}, by, NULL, NULL, NULL, disambiguate = FALSE)
   joined_tbl <- nest_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy, keep, name, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+}
+
+#' @export
+cross_join.dm <- function(x, ...) {
+  check_zoomed(x)
+}
+
+#' @rdname dplyr_join
+#' @export
+cross_join.dm_zoomed <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y")) {
+  if (!is_null(copy)) {
+    message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
+  }
+  y_name <- dm_tbl_name(x, {{ y }})
+  zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
+  x_tbl <- zoomed$zoom[[1]]
+  y_tbl <- dm_get_tables_impl(x)[[y_name]]
+  new_col_names <- zoomed$col_tracker_zoom[[1]]
+  joined_tbl <- cross_join(x_tbl, y_tbl, ..., copy = FALSE, suffix = suffix)
+  replace_zoomed_tbl(x, joined_tbl, new_col_names)
+}
+
+#' @rdname dplyr_join
+#' @export
+cross_join.dm_keyed_tbl <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y")) {
+  if (!is_dm_keyed_tbl(y)) {
+    return(NextMethod())
+  }
+
+  joined_tbl <- cross_join(
+    unclass_keyed_tbl(x),
+    unclass_keyed_tbl(y),
+    ...,
+    copy = copy,
+    suffix = suffix
+  )
+
+  new_keyed_tbl(
+    joined_tbl,
+    uuid = keyed_get_info(x)$uuid
+  )
 }
 
 #' @autoglobal

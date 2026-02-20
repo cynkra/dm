@@ -15,6 +15,8 @@
 \alias{anti_join.dm_zoomed}
 \alias{anti_join.dm_keyed_tbl}
 \alias{nest_join.dm_zoomed}
+\alias{cross_join.dm_zoomed}
+\alias{cross_join.dm_keyed_tbl}
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
 \method{left_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
@@ -42,6 +44,10 @@
 \method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
 
 \method{nest_join}{dm_zoomed}(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
+
+\method{cross_join}{dm_zoomed}(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
+
+\method{cross_join}{dm_keyed_tbl}(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
 }
 \arguments{
 \item{x, y}{tbls to join. \code{x} is the \code{dm_zoomed} and \code{y} is another table in the \code{dm}.}

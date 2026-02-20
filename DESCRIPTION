@@ -53,7 +53,7 @@ Depends:
 Imports:
     backports,
     cli (>= 2.2.0),
-    dplyr (>= 1.1.0),
+    dplyr (>= 1.2.0),
     glue,
     igraph (>= 2.2.0),
     lifecycle (>= 1.0.3),

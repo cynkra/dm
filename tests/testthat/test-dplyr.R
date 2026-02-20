@@ -936,3 +936,54 @@ test_that("output for compound keys", {
       nrow()
   })
 })
+
+
+# dplyr 1.2.0 tests -------------------------------------------------------
+
+test_that("basic test: 'filter_out()'-methods work", {
+  skip_if_remote_src()
+
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      filter_out(d < mean(d, na.rm = TRUE)) %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      filter_out(d < mean(d, na.rm = TRUE))
+  )
+
+  expect_dm_error(
+    filter_out(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})
+
+test_that("basic test: 'reframe()'-methods work", {
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      group_by(e) %>%
+      reframe(d_mean = mean(d, na.rm = TRUE)) %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      group_by(e) %>%
+      reframe(d_mean = mean(d, na.rm = TRUE))
+  )
+
+  expect_dm_error(
+    reframe(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})
+
+test_that("basic test: 'cross_join()'-methods for `zoomed.dm` work", {
+  skip_if_remote_src()
+
+  expect_equivalent_tbl(
+    cross_join(dm_zoomed(), tf_3) %>% tbl_zoomed(),
+    cross_join(tf_2(), tf_3())
+  )
+
+  expect_dm_error(
+    cross_join(dm_for_filter()),
+    "only_possible_w_zoom"
+  )
+})

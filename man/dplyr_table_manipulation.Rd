@@ -3,6 +3,7 @@
 \name{dplyr_table_manipulation}
 \alias{dplyr_table_manipulation}
 \alias{filter.dm_zoomed}
+\alias{filter_out.dm_zoomed}
 \alias{mutate.dm_zoomed}
 \alias{transmute.dm_zoomed}
 \alias{select.dm_zoomed}
@@ -16,6 +17,8 @@
 \alias{ungroup.dm_zoomed}
 \alias{summarise.dm_zoomed}
 \alias{summarise.dm_keyed_tbl}
+\alias{reframe.dm_zoomed}
+\alias{reframe.dm_keyed_tbl}
 \alias{count.dm_zoomed}
 \alias{tally.dm_zoomed}
 \alias{pull.dm_zoomed}
@@ -23,6 +26,8 @@
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
 \method{filter}{dm_zoomed}(.data, ...)
+
+\method{filter_out}{dm_zoomed}(.data, ...)
 
 \method{mutate}{dm_zoomed}(.data, ...)
 
@@ -49,6 +54,10 @@
 \method{summarise}{dm_zoomed}(.data, ...)
 
 \method{summarise}{dm_keyed_tbl}(.data, ...)
+
+\method{reframe}{dm_zoomed}(.data, ...)
+
+\method{reframe}{dm_keyed_tbl}(.data, ...)
 
 \method{count}{dm_zoomed}(
   x,
@@ -103,7 +112,7 @@ on to \code{\link[dplyr:group_by]{group_by()}}.
 For \code{count()}: if \code{FALSE} will include counts for empty groups (i.e. for
 levels of factors that don't exist in the data).
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} For \code{add_count()}: deprecated since it
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#defunct}{\figure{lifecycle-defunct.svg}{options: alt='[Defunct]'}}}{\strong{[Defunct]}} For \code{add_count()}: defunct since it
 can't actually affect the output.}
 
 \item{var}{A variable specified as:
