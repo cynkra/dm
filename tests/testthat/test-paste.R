@@ -111,13 +111,8 @@ test_that("chunking behavior for large dm", {
 
   # Create a dm with many tables and foreign keys to trigger chunking
   create_large_dm <- function(n_tables = 55) {
-    # Create main table
     main_table <- tibble(id = integer(0))
-
-    # Create list of tables
     tables <- list(main = main_table)
-
-    # Create many tables that reference the main table
     for (i in 1:n_tables) {
       table_name <- paste0("table_", i)
       tables[[table_name]] <- tibble(
@@ -125,49 +120,24 @@ test_that("chunking behavior for large dm", {
         main_id = integer(0)
       )
     }
-
-    # Create dm
     dm_obj <- do.call(dm, tables)
-
-    # Add primary key to main table
     dm_obj <- dm_obj %>% dm_add_pk(main, id)
-
-    # Add primary keys and foreign keys to all other tables
     for (i in 1:n_tables) {
       table_name <- paste0("table_", i)
       dm_obj <- dm_obj %>%
         dm_add_pk(!!table_name, id) %>%
         dm_add_fk(!!table_name, main_id, main)
     }
-
-    return(dm_obj)
+    dm_obj
   }
 
-  # Create a dm with 55 tables (should generate ~165 operations: 56 PKs + 55 FKs + 54 color ops)
+  # Create a dm with 55 tables (generates 111 operations: 56 PKs + 55 FKs, exceeding the 100-op threshold)
   large_dm <- create_large_dm(55)
 
-  # Capture output
-  output <- capture.output(dm_paste(large_dm))
-  output_text <- paste(output, collapse = "\n")
+  # Use dm_paste_impl() directly, which returns the code as a character string
+  code <- dm:::dm_paste_impl(large_dm, c("keys", "color"), 2)
 
   # Should generate more than 100 operations, triggering chunking
-  # Check for intermediate variable assignments
-  expect_true(
-    grepl("dm_step_", output_text),
-    info = "Expected chunking with intermediate variables for large dm"
-  )
-
-  # Check that we have at least one intermediate step
-  step_count <- length(gregexpr("dm_step_", output_text)[[1]])
-  expect_gt(
-    step_count,
-    0,
-    info = "Expected at least one intermediate step variable"
-  )
-
-  # Verify the final output references an intermediate variable
-  expect_true(
-    grepl("dm_step_\\d+ %>%", output_text),
-    info = "Expected final chunk to reference an intermediate variable"
-  )
+  expect_true(grepl("dm_step_1 <-", code))
+  expect_true(grepl("dm_step_1 %>%", code))
 })
