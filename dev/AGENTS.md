@@ -118,7 +118,12 @@ All new functions must include:
 ## Testing
 
 - Add test cases for all new functionality
-- Test file naming should mirror source file naming
+- Test file naming should mirror source file naming: `R/name.R` →
+  `tests/testthat/test-name.R`
+- Place new tests near existing tests for the same function in the test
+  file
+- Add regression tests for bug fixes directly after the last existing
+  test for the affected function
 - Implement both structured and snapshot tests
 - When testing error behavior, prefer snapshot tests
 - Run tests frequently during development and at the end:

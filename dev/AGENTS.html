@@ -173,7 +173,10 @@
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
 <ul><li>Add test cases for all new functionality</li>
-<li>Test file naming should mirror source file naming</li>
+<li>Test file naming should mirror source file naming: <code>R/name.R</code> → <code>tests/testthat/test-name.R</code>
+</li>
+<li>Place new tests near existing tests for the same function in the test file</li>
+<li>Add regression tests for bug fixes directly after the last existing test for the affected function</li>
 <li>Implement both structured and snapshot tests</li>
 <li>When testing error behavior, prefer snapshot tests</li>
 <li>Run tests frequently during development and at the end: <code>testthat::test_local(reporter = "check")</code>
