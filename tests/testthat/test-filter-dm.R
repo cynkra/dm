@@ -247,10 +247,10 @@ test_that("dm_filter() output for compound keys", {
 
 test_that("dm_apply_filters_impl optimization works correctly", {
   skip_if_remote_src()
-  
+
   # Test that the optimization correctly handles disconnected components
   # and only processes affected tables
-  
+
   # Create a dm with connected and disconnected tables
   dm_mixed <- dm(
     connected_1 = tibble(id = 1:10, value = letters[1:10]),
@@ -263,16 +263,16 @@ test_that("dm_apply_filters_impl optimization works correctly", {
     dm_add_pk(isolated_1, id) %>%
     dm_add_pk(isolated_2, id) %>%
     dm_add_fk(connected_2, ref_id, connected_1)
-  
+
   # Apply filter only to connected component
   filtered_dm <- dm_mixed %>% dm_filter(connected_1 = (id <= 5))
-  
+
   # Check results
   expect_equal(nrow(filtered_dm$connected_1), 5)
-  expect_equal(nrow(filtered_dm$connected_2), 5)  # Should be filtered via FK
-  expect_equal(nrow(filtered_dm$isolated_1), 8)   # Should be unchanged
-  expect_equal(nrow(filtered_dm$isolated_2), 3)   # Should be unchanged
-  
+  expect_equal(nrow(filtered_dm$connected_2), 5) # Should be filtered via FK
+  expect_equal(nrow(filtered_dm$isolated_1), 8) # Should be unchanged
+  expect_equal(nrow(filtered_dm$isolated_2), 3) # Should be unchanged
+
   # Test empty filter case (no filters applied)
   empty_filtered <- dm_mixed %>% dm_filter()
   expect_equivalent_dm(empty_filtered, dm_mixed)

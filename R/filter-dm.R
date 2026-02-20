@@ -185,36 +185,40 @@ dm_apply_filters <- function(dm) {
 
 dm_apply_filters_impl <- function(dm) {
   def <- dm_get_def(dm)
-  
+
   # Get tables that actually have filters
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
     return(dm_reset_all_filters(dm))
   }
-  
+
   filtered_tables <- unique(filters$table)
-  
+
   # Determine which tables are connected to filtered tables
   graph <- create_graph_from_dm(dm)
   affected_tables <- character(0)
-  
+
   for (filtered_table in filtered_tables) {
     distances <- igraph::distances(graph, filtered_table)[1, ]
     connected <- names(distances[is.finite(distances)])
     affected_tables <- union(affected_tables, connected)
   }
-  
+
   # Only update tables that are affected by filters
-  # Use reduce to build up the filtered dm incrementally  
-  def$data <- reduce(def$table, function(data_list, table_name) {
-    table_idx <- which(def$table == table_name)
-    if (table_name %in% affected_tables) {
-      # This table needs to be filtered
-      data_list[[table_idx]] <- dm_get_filtered_table(dm, table_name)
-    }
-    # Otherwise keep existing data
-    data_list
-  }, .init = def$data)
+  # Use reduce to build up the filtered dm incrementally
+  def$data <- reduce(
+    def$table,
+    function(data_list, table_name) {
+      table_idx <- which(def$table == table_name)
+      if (table_name %in% affected_tables) {
+        # This table needs to be filtered
+        data_list[[table_idx]] <- dm_get_filtered_table(dm, table_name)
+      }
+      # Otherwise keep existing data
+      data_list
+    },
+    .init = def$data
+  )
 
   dm_reset_all_filters(dm_from_def(def))
 }
