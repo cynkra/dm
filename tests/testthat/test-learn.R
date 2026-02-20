@@ -157,18 +157,54 @@ test_that("Learning from specific schema works?", {
 })
 
 test_that("Learning from SQLite works (#288)?", {
-  skip("FIXME")
-  src_sqlite <- skip_if_error(src_sqlite()(":memory:", TRUE))
+  con_sqlite <- skip_if_error(DBI::dbConnect(RSQLite::SQLite(), ":memory:"))
+  withr::defer(DBI::dbDisconnect(con_sqlite))
 
-  copy_to(src_sqlite(), tibble(a = 1:3), name = "test")
+  DBI::dbWriteTable(con_sqlite, "test", tibble(a = 1:3))
 
   expect_equivalent_dm(
-    src_sqlite() %>%
-      dm_from_con() %>%
+    dm_from_con(con_sqlite) %>%
       dm_select_tbl(test) %>%
       collect(),
     dm(test = tibble(a = 1:3))
   )
+})
+
+test_that("Learning keys from SQLite works", {
+  con_sqlite <- skip_if_error(DBI::dbConnect(RSQLite::SQLite(), ":memory:"))
+  withr::defer(DBI::dbDisconnect(con_sqlite))
+
+  DBI::dbExecute(con_sqlite, "CREATE TABLE first (id INTEGER PRIMARY KEY)")
+  DBI::dbExecute(
+    con_sqlite,
+    paste(
+      "CREATE TABLE second (",
+      "id INTEGER PRIMARY KEY, first_id INTEGER,",
+      "FOREIGN KEY (first_id) REFERENCES first (id))"
+    )
+  )
+  DBI::dbExecute(
+    con_sqlite,
+    paste(
+      "CREATE TABLE third (",
+      "id INTEGER PRIMARY KEY, first_id INTEGER, second_id INTEGER,",
+      "FOREIGN KEY (first_id) REFERENCES first (id),",
+      "FOREIGN KEY (second_id) REFERENCES second (id))"
+    )
+  )
+
+  learned_dm <- dm_from_con(con_sqlite, learn_keys = TRUE) %>%
+    collect()
+
+  learned_fks <- dm_get_all_fks(learned_dm)
+  expect_equal(nrow(learned_fks), 3)
+  expect_true("second" %in% learned_fks$child_table)
+  expect_true("third" %in% learned_fks$child_table)
+  expect_true("first" %in% learned_fks$parent_table)
+
+  learned_pks <- dm_get_all_pks(learned_dm)
+  expect_equal(nrow(learned_pks), 3)
+  expect_setequal(learned_pks$table, c("first", "second", "third"))
 })
 
 

@@ -1,4 +1,8 @@
 dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE) {
+  if (is_sqlite(con)) {
+    return(dm_meta_sqlite(con))
+  }
+
   need_collect <- FALSE
 
   if (is_mssql(con)) {
@@ -354,6 +358,177 @@ dm_meta_add_keys <- function(dm_meta) {
     ) %>%
     #
     dm_set_colors(green4 = ends_with("_constraints"), orange = ends_with("_usage"))
+}
+
+#' @autoglobal
+dm_meta_sqlite <- function(con) {
+  table_names <- DBI::dbListTables(con)
+  table_names <- table_names[!grepl("^sqlite_", table_names)]
+
+  catalog <- NA_character_
+  schema <- "main"
+
+  schemata <- tibble(catalog_name = catalog, schema_name = schema)
+
+  tables <- tibble(
+    table_catalog = catalog,
+    table_schema = schema,
+    table_name = table_names,
+    table_type = "BASE TABLE"
+  )
+
+  pragma_table_info <- map(set_names(table_names), function(t) {
+    DBI::dbGetQuery(con, paste0("PRAGMA table_info('", t, "')"))
+  })
+
+  pragma_fk_list <- map(set_names(table_names), function(t) {
+    DBI::dbGetQuery(con, paste0("PRAGMA foreign_key_list('", t, "')"))
+  })
+
+  columns <- imap_dfr(pragma_table_info, function(info, tbl) {
+    if (nrow(info) == 0) {
+      return(NULL)
+    }
+    tibble(
+      table_catalog = catalog,
+      table_schema = schema,
+      table_name = tbl,
+      column_name = info$name,
+      ordinal_position = as.integer(info$cid + 1L),
+      column_default = as.character(info$dflt_value),
+      is_nullable = ifelse(info$notnull == 0L, "YES", "NO"),
+      data_type = tolower(info$type),
+      is_autoincrement = FALSE
+    )
+  })
+
+  # PK constraints: one row per table that has PK columns
+
+  pk_constraints <- imap_dfr(pragma_table_info, function(info, tbl) {
+    pk_cols <- info[info$pk > 0, , drop = FALSE]
+    if (nrow(pk_cols) == 0) {
+      return(NULL)
+    }
+    tibble(
+      constraint_catalog = catalog,
+      constraint_schema = schema,
+      constraint_name = paste0("pk_", tbl),
+      table_catalog = catalog,
+      table_schema = schema,
+      table_name = tbl,
+      constraint_type = "PRIMARY KEY",
+      delete_rule = NA_character_
+    )
+  })
+
+  # FK constraints: one row per FK relationship
+  fk_constraints <- imap_dfr(pragma_fk_list, function(fks, tbl) {
+    if (nrow(fks) == 0) {
+      return(NULL)
+    }
+    fks %>%
+      distinct(.data$id, .keep_all = TRUE) %>%
+      transmute(
+        constraint_catalog = catalog,
+        constraint_schema = schema,
+        constraint_name = paste0("fk_", tbl, "_", .data$id),
+        table_catalog = catalog,
+        table_schema = schema,
+        table_name = tbl,
+        constraint_type = "FOREIGN KEY",
+        delete_rule = .data$on_delete
+      )
+  })
+
+  empty_constraints <- tibble(
+    constraint_catalog = character(),
+    constraint_schema = character(),
+    constraint_name = character(),
+    table_catalog = character(),
+    table_schema = character(),
+    table_name = character(),
+    constraint_type = character(),
+    delete_rule = character()
+  )
+  table_constraints <- vec_rbind(empty_constraints, pk_constraints, fk_constraints)
+
+  # key_column_usage: PK columns
+  pk_key_usage <- imap_dfr(pragma_table_info, function(info, tbl) {
+    pk_cols <- info[info$pk > 0, , drop = FALSE]
+    if (nrow(pk_cols) == 0) {
+      return(NULL)
+    }
+    tibble(
+      constraint_catalog = catalog,
+      constraint_schema = schema,
+      constraint_name = paste0("pk_", tbl),
+      table_catalog = catalog,
+      table_schema = schema,
+      table_name = tbl,
+      column_name = pk_cols$name,
+      ordinal_position = as.integer(pk_cols$pk)
+    )
+  })
+
+  # key_column_usage: FK child columns
+  fk_key_usage <- imap_dfr(pragma_fk_list, function(fks, tbl) {
+    if (nrow(fks) == 0) {
+      return(NULL)
+    }
+    tibble(
+      constraint_catalog = catalog,
+      constraint_schema = schema,
+      constraint_name = paste0("fk_", tbl, "_", fks$id),
+      table_catalog = catalog,
+      table_schema = schema,
+      table_name = tbl,
+      column_name = fks$from,
+      ordinal_position = as.integer(fks$seq + 1L)
+    )
+  })
+
+  empty_key_usage <- tibble(
+    constraint_catalog = character(),
+    constraint_schema = character(),
+    constraint_name = character(),
+    table_catalog = character(),
+    table_schema = character(),
+    table_name = character(),
+    column_name = character(),
+    ordinal_position = integer()
+  )
+  key_column_usage <- vec_rbind(empty_key_usage, pk_key_usage, fk_key_usage)
+
+  # constraint_column_usage: FK parent (referenced) columns
+  empty_ccu <- tibble(
+    table_catalog = character(),
+    table_schema = character(),
+    table_name = character(),
+    column_name = character(),
+    constraint_catalog = character(),
+    constraint_schema = character(),
+    constraint_name = character(),
+    ordinal_position = integer()
+  )
+  constraint_column_usage <- imap_dfr(pragma_fk_list, function(fks, tbl) {
+    if (nrow(fks) == 0) {
+      return(NULL)
+    }
+    tibble(
+      table_catalog = catalog,
+      table_schema = schema,
+      table_name = fks$table,
+      column_name = fks$to,
+      constraint_catalog = catalog,
+      constraint_schema = schema,
+      constraint_name = paste0("fk_", tbl, "_", fks$id),
+      ordinal_position = as.integer(fks$seq + 1L)
+    )
+  })
+  constraint_column_usage <- vec_rbind(empty_ccu, constraint_column_usage)
+
+  dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
+    dm_meta_add_keys()
 }
 
 dm_meta_simple_raw <- function(con) {
