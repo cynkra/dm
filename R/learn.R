@@ -5,7 +5,8 @@
 #'
 #' Currently this only works with MSSQL and Postgres/Redshift databases.
 #'
-#' The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
+#' The default database schema is used if `schema` is `NULL`:
+#' `"dbo"` for MSSQL, `"public"` for Postgres/Redshift, and the current database for MariaDB/MySQL.
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #'
@@ -41,6 +42,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
   if (is.null(con)) {
     return()
   }
+
+  schema <- check_schema(con, schema)
 
   info <- dm_meta(con, catalog = dbname, schema = schema)
 
