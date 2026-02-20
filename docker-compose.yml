@@ -1,0 +1,119 @@
+# See .github/CONTRIBUTING.md for details.
+
+# FIXME: Does docker-compose have an include directive so that the file can be split into multiple files?
+
+version: '3'
+volumes:
+  postgres-db:
+    driver: local
+  maria-db:
+    driver: local
+  mssql-db:
+    driver: local
+networks:
+  postgres-network:
+    driver: bridge
+  mssql-network:
+    driver: bridge
+services:
+  # https://www.beekeeperstudio.io/blog/how-to-use-mariadb-with-docker
+  mysql:
+    # FIXME: Still need to add Makefile rules to provision MySQL database
+    container_name: mysql
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "YourStrong!Passw0rd"
+      MYSQL_DATABASE: test
+      MYSQL_USER: compose
+      MYSQL_PASSWORD: "YourStrong!Passw0rd"
+    ports:
+      - "3307:3306"
+  maria:
+    container_name: maria
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: "YourStrong!Passw0rd"
+      MARIADB_DATABASE: test
+      MARIADB_USER: compose
+      MARIADB_PASSWORD: "YourStrong!Passw0rd"
+    volumes:
+      - maria-db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # https://blog.logrocket.com/docker-sql-server/
+  mssql:
+    container_name: mssql
+    image: mcr.microsoft.com/mssql/server:2022-RTM-ubuntu-20.04
+    platform: linux/amd64
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "YourStrong!Passw0rd" -Q "SELECT 1" -b -o /dev/null
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    volumes:
+      - mssql-db:/var/opt/mssql
+    ports:
+      - "1433:1433"
+    networks:
+      - mssql-network
+
+  init_mssql:
+    container_name: init_mssql
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    environment:
+      # FIXME Kirill: Handle differently, perhaps using the default code path
+      DM_TEST_DOCKER_HOST: mssql
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    depends_on:
+      mssql:
+        condition: service_healthy
+    networks:
+      - mssql-network
+    volumes:
+      - .:/root/workspace
+      - mssql-db:/var/opt/mssql
+    command: ["R", "-q", "-e", "suppressMessages(pkgload::load_all()); try(DBI::dbExecute(test_src_mssql(FALSE)[['con']], 'CREATE DATABASE test'))"]
+    # FIXME: Move code to standalone script
+    # FIXME: Wait until mssql is ready (healthcheck enough?=
+    # FIXME: Write a dummy file into the mssql-db value to ensure that the init_mssql container is run only once
+
+  # https://geshan.com.np/blog/2021/12/docker-postgres/
+  postgres:
+    container_name: postgres
+    # FIXME: brittle tests fail with latest PostgreSQL
+    image: postgres:14
+    environment:
+      POSTGRES_USER: compose
+      POSTGRES_PASSWORD: "YourStrong!Passw0rd"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-network
+
+  rdm_mssql:
+    container_name: rdm_mssql
+    image: ghcr.io/cynkra/dm:main
+    platform: linux/amd64
+    environment:
+      DM_TEST_DOCKER_HOST: mssql
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    depends_on:
+      init_mssql:
+        condition: service_completed_successfully
+    networks:
+      - mssql-network
+    volumes:
+      - .:/root/workspace
+    tty: true
+    stdin_open: true
+    entrypoint: ["R"]

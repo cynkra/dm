@@ -61,7 +61,7 @@ Additionally, these functions differ from \code{dm_wrap_tbl()}, which always
 returns a \code{dm} object.
 }
 \examples{
-\dontshow{if (dm:::dm_has_financial()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}
 
 dm_financial() \%>\%
   dm_select_tbl(-loans) \%>\%

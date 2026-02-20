@@ -1,4 +1,3 @@
-
 testthat::test_that("testthat wrappers return the object", {
   expect_equal(
     expect_message_obj(

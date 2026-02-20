@@ -1,3 +1,4 @@
+#' @autoglobal
 dm_disentangle <- function(dm, start, quiet = FALSE) {
   check_not_zoomed(dm)
   start <- dm_tbl_name(dm, {{ start }})
@@ -25,12 +26,12 @@ dm_disentangle <- function(dm, start, quiet = FALSE) {
     rename(new_fks = fks)
 
   dm_get_def(dm) %>%
-    left_join(changed, by = "table") %>%
+    left_join(changed, by = "table", multiple = "all") %>%
     mutate(table = coalesce(new_table, table)) %>%
     select(-new_table) %>%
     left_join(fk_table, by = c("table" = "new_parent_table")) %>%
     select(-fks) %>%
-    relocate(fks = new_fks, .after = pks) %>%
+    relocate(fks = new_fks, .after = uks) %>%
     mutate(fks = vctrs::as_list_of(map(fks, ~ .x %||% new_fk()))) %>%
-    new_dm3()
+    dm_from_def()
 }

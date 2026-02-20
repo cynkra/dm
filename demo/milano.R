@@ -22,8 +22,7 @@
 
 ### (on database or locally)
 
-
-
+##
 ## ----setup, include = FALSE----
 library(tidyverse)
 library(dbplyr)
@@ -37,9 +36,9 @@ library(DBI) # <<
 mydb <- dbConnect(
   RMariaDB::MariaDB(),
   username = "guest",
-  password = "relational",
+  password = "ctu-relational",
   dbname = "Financial_ijs",
-  host = "relational.fit.cvut.cz"
+  host = "relational.fel.cvut.cz"
 )
 
 
@@ -59,35 +58,43 @@ financial_dm <- function(mydb) {
     dm_add_pk(disps, id) %>%
     dm_add_pk(cards, id) %>%
     dm_add_fk(
-      loans, account_id,
+      loans,
+      account_id,
       accounts
     ) %>%
     dm_add_fk(
-      orders, account_id,
+      orders,
+      account_id,
       accounts
     ) %>%
     dm_add_fk(
-      trans, account_id,
+      trans,
+      account_id,
       accounts
     ) %>%
     dm_add_fk(
-      disps, account_id,
+      disps,
+      account_id,
       accounts
     ) %>%
     dm_add_fk(
-      disps, client_id,
+      disps,
+      client_id,
       clients
     ) %>%
     dm_add_fk(
       accounts,
-      district_id, districts
+      district_id,
+      districts
     ) %>%
     dm_add_fk(
       clients,
-      district_id, districts
+      district_id,
+      districts
     ) %>%
     dm_add_fk(
-      cards, disp_id,
+      cards,
+      disp_id,
       disps
     ) %>%
     dm_rm_tbl(tkeys) %>%

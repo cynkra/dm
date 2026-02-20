@@ -12,3 +12,4 @@ dm*.tgz
 CRAN-RELEASE
 *.log
 CRAN-SUBMISSION
+.vscode

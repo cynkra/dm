@@ -9,7 +9,8 @@ dm_nycflights13(
   cycle = FALSE,
   color = TRUE,
   subset = TRUE,
-  compound = TRUE
+  compound = TRUE,
+  table_description = FALSE
 )
 }
 \arguments{
@@ -29,21 +30,27 @@ colors assigned to different tables for visualization with \code{dm_draw()}.}
 
 \item{compound}{Boolean, if \code{FALSE}, no link will be established between tables \code{flights} and \code{weather},
 because this requires compound keys.}
+
+\item{table_description}{Boolean, if \code{TRUE}, a description will be added for each table that will be displayed
+when drawing the table with \code{\link[=dm_draw]{dm_draw()}}.}
 }
 \value{
-A \code{dm} object consisting of {nycflights13} tables, complete with primary and foreign keys and optionally colored.
+A \code{dm} object consisting of \pkg{nycflights13} tables, complete with primary and foreign keys and optionally colored.
 }
 \description{
 Creates an example \code{\link{dm}} object from the tables in \pkg{nycflights13},
 along with the references.
-See \link[nycflights13:flights]{nycflights13::flights} for a description of the data.
-As described in \link[nycflights13:planes]{nycflights13::planes}, the relationship
+See \code{\link[nycflights13:flights]{nycflights13::flights}} for a description of the data.
+As described in \code{\link[nycflights13:planes]{nycflights13::planes}}, the relationship
 between the \code{flights} table and the \code{planes} tables is "weak", it does not satisfy
 data integrity constraints.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("DiagrammeR")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_draw()
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{vignette("howto-dm-df")}
 }

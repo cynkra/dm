@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `dm_financial()` creates an example [`dm`] object from the tables at
-#' https://relational.fit.cvut.cz/dataset/Financial.
+#' https://relational.fel.cvut.cz/dataset/Financial.
 #' The connection is established once per session,
 #' subsequent calls return the same connection.
 #'
@@ -13,10 +13,7 @@
 #' dm_financial() %>%
 #'   dm_draw()
 dm_financial <- function() {
-  check_suggested("RMariaDB",
-    use = TRUE,
-    top_level_fun = "dm_financial"
-  )
+  check_suggested("RMariaDB", "dm_financial")
 
   my_db <- financial_db_con()
 
@@ -44,18 +41,26 @@ dm_financial <- function() {
 
 dm_has_financial <- function() {
   # Not on CRAN:
-  if (Sys.getenv("CI") != "true") return(FALSE)
+  if (Sys.getenv("CI") != "true") {
+    return(FALSE)
+  }
 
   # Crashes observed with R < 3.5:
-  if (getRversion() < 3.5) return(FALSE)
+  if (getRversion() < "3.5") {
+    return(FALSE)
+  }
 
   # Connectivity:
   try_connect <- try(dm_financial(), silent = TRUE)
-  if (inherits(try_connect, "try-error")) return(FALSE)
+  if (inherits(try_connect, "try-error")) {
+    return(FALSE)
+  }
 
   # Accessing the connection:
   try_count <- try(collect(count(dm_financial()$districts)), silent = TRUE)
-  if (inherits(try_connect, "try-error")) return(FALSE)
+  if (inherits(try_connect, "try-error")) {
+    return(FALSE)
+  }
 
   TRUE
 }
@@ -68,10 +73,7 @@ dm_has_financial <- function() {
 #' @rdname dm_financial
 #' @export
 dm_financial_sqlite <- function() {
-  check_suggested("RSQLite",
-    use = TRUE,
-    top_level_fun = "dm_financial_sqlite"
-  )
+  check_suggested("RSQLite", "dm_financial_sqlite")
 
   my_dm <-
     dm_financial() %>%

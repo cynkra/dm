@@ -13,7 +13,7 @@ test_that("dm_bind() works?", {
       dm_get_def(dm_for_flatten()),
       dm_get_def(dm_for_disambiguate())
     ) %>%
-      new_dm3()
+      dm_from_def()
   )
 })
 
@@ -47,8 +47,7 @@ test_that("errors: duplicate table names, src mismatches", {
 test_that("errors: src mismatches", {
   local_options(lifecycle_verbosity = "quiet")
 
-  skip_if_not_installed("dbplyr")
-  skip_if_not_installed("duckdb")
+  skip_if_not(getRversion() >= "4.0")
   expect_dm_error(dm_bind(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
 })
 
@@ -82,7 +81,7 @@ test_that("auto-renaming works", {
         tf_6...17 = tf_6
       ))
     ) %>%
-      new_dm3()
+      dm_from_def()
   )
 
   expect_silent(
@@ -93,7 +92,7 @@ test_that("auto-renaming works", {
 test_that("test error output for src mismatches", {
   local_options(lifecycle_verbosity = "warning")
 
-  skip_if_not_installed("dbplyr")
+  skip_if_not(getRversion() >= "4.0")
 
   expect_snapshot({
     writeLines(conditionMessage(expect_error(
@@ -109,7 +108,8 @@ test_that("output", {
     dm_bind()
     dm_bind(empty_dm())
     dm_bind(dm_for_filter()) %>% collect()
-    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>% collect()
+    dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter(), repair = "unique", quiet = TRUE) %>%
+      collect()
     writeLines(conditionMessage(expect_error(
       dm_bind(dm_for_filter(), dm_for_flatten(), dm_for_filter())
     )))
@@ -129,6 +129,7 @@ test_that("output for compound keys", {
   })
 
   expect_snapshot({
-    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>% dm_paste(options = c("select", "keys"))
+    dm_bind(dm_for_flatten(), dm_for_flatten(), repair = "unique") %>%
+      dm_paste(options = c("select", "keys"))
   })
 })

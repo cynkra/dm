@@ -42,6 +42,7 @@ Defines behavior if a row in the parent table is deleted.
 and the operation is aborted if child rows exist
 - \code{"cascade"} means that the child row is also deleted
 This setting is picked up by \code{\link[=copy_dm_to]{copy_dm_to()}} with \code{set_key_constraints = TRUE},
+and by \code{\link[=dm_sql]{dm_sql()}},
 and might be considered by \code{\link[=dm_rows_delete]{dm_rows_delete()}} in a future version.}
 }
 \value{
@@ -50,13 +51,24 @@ An updated \code{dm} with an additional foreign key relation.
 \description{
 \code{dm_add_fk()} marks the specified \code{columns} as the foreign key of table \code{table} with
 respect to a key of table \code{ref_table}.
-Usually the referenced columns are a primary key in \code{ref_table},
-it is also possible to specify other columns via the \code{ref_columns} argument.
+Usually the referenced columns are a primary key in \code{ref_table}.
+However, it is also possible to specify other columns via the \code{ref_columns} argument.
 If \code{check == TRUE}, then it will first check if the values in \code{columns} are a subset
 of the values of the key in table \code{ref_table}.
 }
+\details{
+It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor
+explicit unique keys (UK).
+This can happen
+\enumerate{
+\item when a FK is added without a corresponding PK or UK being present in the parent table
+\item when the PK or UK is removed (\code{\link[=dm_rm_pk]{dm_rm_pk()}}/\code{\link[=dm_rm_uk]{dm_rm_uk()}}) without first removing the associated FKs.
+}
+
+These columns are then a so-called "implicit unique key" of the referenced table and can be listed via \code{\link[=dm_get_all_uks]{dm_get_all_uks()}}.
+}
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
   flights = nycflights13::flights,

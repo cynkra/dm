@@ -15,9 +15,9 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_dm_error(db_schema_exists(src_db, letters[1:2]), "parameter_not_correct_length")
 
   withr::defer({
-    try(dbExecute(con_db, "DROP TABLE test_schema_1"))
-    try(dbExecute(con_db, SQL('DROP TABLE "1-dm_schema_TEST"."test_schema_2"')))
-    try(dbExecute(con_db, SQL('DROP SCHEMA "1-dm_schema_TEST"')))
+    try(DBI::dbExecute(con_db, "DROP TABLE test_schema_1"))
+    try(DBI::dbExecute(con_db, DBI::SQL('DROP TABLE "1-dm_schema_TEST"."test_schema_2"')))
+    try(DBI::dbExecute(con_db, DBI::SQL('DROP SCHEMA "1-dm_schema_TEST"')))
   })
 
   expect_false(db_schema_exists(con_db, "1-dm_schema_TEST"))
@@ -46,8 +46,7 @@ test_that("schema handling on MSSQL and Postgres works", {
   expect_false("test_schema_1" %in% sql_schema_table_list(con_db)$table_name)
   expect_false("test_schema_1" %in% sql_schema_table_list(src_db)$table_name)
 
-
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(table = "test_schema_1"),
     value = tibble(a = 1:5)
@@ -62,13 +61,13 @@ test_that("schema handling on MSSQL and Postgres works", {
     filter(table_name == "test_schema_1") %>%
     pull(remote_name)
   expect_identical(
-    tbl(src_db, remote_table_1) %>% collect(),
+    tbl(src_db, remote_table_1[[1]]) %>% collect(),
     tibble(a = 1:5)
   )
 
   expect_message(expect_deprecated(db_schema_create(src_db, "1-dm_schema_TEST")), "created")
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(schema = "1-dm_schema_TEST", table = "test_schema_2"),
     value = tibble(b = letters[1:5])
@@ -80,7 +79,7 @@ test_that("schema handling on MSSQL and Postgres works", {
     schema_list,
     tibble(
       table_name = "test_schema_2",
-      remote_name = dbplyr::ident_q("\"1-dm_schema_TEST\".\"test_schema_2\"")
+      remote_name = list(DBI::Id(schema = "1-dm_schema_TEST", table = "test_schema_2"))
     )
   )
 
@@ -90,7 +89,7 @@ test_that("schema handling on MSSQL and Postgres works", {
     pull(remote_name)
 
   expect_identical(
-    tbl(src_db, remote_table_2) %>% collect(),
+    tbl(src_db, remote_table_2[[1]]) %>% collect(),
     tibble(b = letters[1:5])
   )
 })
@@ -102,7 +101,7 @@ test_that("schema handling on Postgres works", {
   con_db <- src_db$con
 
   db_schema_create(con_db, "2-dm_schema_TEST")
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
     DBI::Id(schema = "2-dm_schema_TEST", table = "test_schema_2"),
     value = tibble(b = letters[1:5])
@@ -171,13 +170,13 @@ test_that("schema handling on MSSQL works for different DBs", {
     sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     tibble(
       table_name = character(),
-      remote_name = dbplyr::ident_q()
+      remote_name = list()
     )
   )
 
-  dbWriteTable(
+  DBI::dbWriteTable(
     con_db,
-    DBI::Id(db = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"),
+    DBI::Id(catalog = "test_db_for_schema_dm", schema = "test_schema", table = "test_1"),
     value = tibble(c = c(5L))
   )
 
@@ -192,7 +191,11 @@ test_that("schema handling on MSSQL works for different DBs", {
     sql_schema_table_list_mssql(con_db, schema = "test_schema", dbname = "test_db_for_schema_dm"),
     tibble(
       table_name = "test_1",
-      remote_name = dbplyr::ident_q("\"test_db_for_schema_dm\".\"test_schema\".\"test_1\"")
+      remote_name = list(DBI::Id(
+        catalog = "test_db_for_schema_dm",
+        schema = "test_schema",
+        table = "test_1"
+      ))
     )
   )
 })
@@ -204,19 +207,19 @@ test_that("schema handling on SQLite all throw errors", {
   con_db <- src_db$con
 
   expect_dm_error(
-    db_schema_exists(src_db, "test"),
+    expect_deprecated(db_schema_exists(src_db, "test"), "DBI connection"),
     "no_schemas_supported"
   )
   expect_dm_error(
-    db_schema_list(src_db),
+    expect_deprecated(db_schema_list(src_db), "DBI connection"),
     "no_schemas_supported"
   )
   expect_dm_error(
-    db_schema_drop(src_db, "test"),
+    expect_deprecated(db_schema_drop(src_db, "test"), "DBI connection"),
     "no_schemas_supported"
   )
   expect_dm_error(
-    db_schema_exists(src_db, "test"),
+    expect_deprecated(db_schema_exists(src_db, "test"), "DBI connection"),
     "no_schemas_supported"
   )
 

@@ -1,17 +1,24 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Also included in R-CMD-check.yaml, this workflow only listens to pushes to branches
-# that start with "docs*"
+# that start with "docs*" or "cran-*" and does not need to act on pushes to the main branch.
 on:
   push:
     branches:
       - "docs*"
       - "cran-*"
+      # The main branch is excluded here, it is handled by the R-CMD-check workflow.
+      # This workflow is only for handling pushes to designated branches.
+  workflow_dispatch:
 
 name: pkgdown
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.sha }}-${{ github.base_ref || '' }}
+  cancel-in-progress: true
+
 jobs:
   pkgdown:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     name: "pkgdown"
 
@@ -19,7 +26,7 @@ jobs:
     # End custom: services
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: ./.github/workflows/rate-limit
         with:
@@ -34,8 +41,7 @@ jobs:
       - uses: ./.github/workflows/install
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          install-r: false
-          cache-version: pkgdown-1
+          cache-version: pkgdown-2
           needs: website
           extra-packages: r-lib/pkgdown local::.
 

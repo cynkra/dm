@@ -1,5 +1,7 @@
 ---
-output: downlit::readme_document
+output:
+  github_document:
+    html_preview: false
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -25,19 +27,36 @@ knit_print.grViz <- function(x, ..., options) {
 }
 vctrs::s3_register("knitr::knit_print", "grViz")
 
+clean_output <- function(x, options) {
+  index <- x
+  index <- gsub("─", "-", index)
+  index <- strsplit(paste(index, collapse = "\n"), "\n---\n")[[1]][[2]]
+  writeLines(index, "index.md")
+
+  x <- fansi::strip_sgr(x)
+  x
+}
+
 options(cli.num_colors = 256)
+
+local({
+  hook_source <- knitr::knit_hooks$get("document")
+  knitr::knit_hooks$set(document = clean_output)
+})
+
+# For initial rendering, can be removed
+usethis::use_build_ignore("index.md")
 ```
 
 # [dm](https://dm.cynkra.com/)
 
 <!-- badges: start -->
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R build status](https://github.com/cynkra/dm/workflows/rcc/badge.svg)](https://github.com/cynkra/dm/actions)
-[![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=master)
-<!-- badges: end -->
-
+[![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/main/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
 [![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
+<!-- badges: end -->
 
 > Are you using multiple data frames or database tables in R? Organize them with dm.
 >
@@ -108,7 +127,7 @@ Create a dm object (see [Getting started](https://dm.cynkra.com/articles/dm.html
 
 ```{r}
 library(dm)
-dm <- dm_nycflights13()
+dm <- dm_nycflights13(table_description = TRUE)
 dm
 ```
 
@@ -147,7 +166,7 @@ Learn more in the [Getting started](https://dm.cynkra.com/articles/dm.html) arti
 ## Getting help
 
 If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/cynkra/dm/issues).
-For questions and other discussion, please use [community.rstudio.com](https://community.rstudio.com/).
+For questions and other discussion, please use [community.rstudio.com](https://forum.posit.co/).
 
 
 ---

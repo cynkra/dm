@@ -39,7 +39,7 @@ Calling \code{dm_apply_filters()} or \code{dm_apply_filters_to_tbl()} is no long
 Use \code{\link[=dm_zoom_to]{dm_zoom_to()}} and \code{\link[dplyr:filter]{dplyr::filter()}} to filter rows without affecting related tables.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nyc <- dm_nycflights13()
 dm_nyc \%>\%
   dm_nrow()

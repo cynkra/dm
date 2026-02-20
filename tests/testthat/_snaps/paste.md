@@ -27,12 +27,13 @@
         tf_5,
         tf_6,
       ) %>%
-        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
         dm::dm_add_pk(tf_2, c) %>%
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -50,12 +51,13 @@
           tf_5,
           tf_6,
       ) %>%
-          dm::dm_add_pk(tf_1, a) %>%
+          dm::dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
           dm::dm_add_pk(tf_2, c) %>%
           dm::dm_add_pk(tf_3, c(f, f1)) %>%
           dm::dm_add_pk(tf_4, h) %>%
           dm::dm_add_pk(tf_5, k) %>%
           dm::dm_add_pk(tf_6, o) %>%
+          dm::dm_add_uk(tf_3, g) %>%
           dm::dm_add_fk(tf_2, d, tf_1) %>%
           dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
           dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -73,12 +75,13 @@
         tf_5,
         tf_6,
       ) %>%
-        dm::dm_add_pk(tf_1_new, a) %>%
+        dm::dm_add_pk(tf_1_new, a, autoincrement = TRUE) %>%
         dm::dm_add_pk(tf_2, c) %>%
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_fk(tf_2, d, tf_1_new) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -118,12 +121,13 @@
         tf_5,
         tf_6,
       ) %>%
-        dm::dm_add_pk(tf_1, a) %>%
+        dm::dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
         dm::dm_add_pk(tf_2, c) %>%
         dm::dm_add_pk(tf_3, c(f, f1)) %>%
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -169,6 +173,31 @@
         dm::dm_add_pk(c, x) %>%
         dm::dm_add_fk(b, y, c) %>%
         dm::dm_add_fk(b, z, c, y)
+    Code
+      dm_for_filter() %>% dm_add_uk(tf_5, l) %>% dm_add_uk(tf_6, n) %>% dm_paste()
+    Message
+      dm::dm(
+        tf_1,
+        tf_2,
+        tf_3,
+        tf_4,
+        tf_5,
+        tf_6,
+      ) %>%
+        dm::dm_add_pk(tf_1, a, autoincrement = TRUE) %>%
+        dm::dm_add_pk(tf_2, c) %>%
+        dm::dm_add_pk(tf_3, c(f, f1)) %>%
+        dm::dm_add_pk(tf_4, h) %>%
+        dm::dm_add_pk(tf_5, k) %>%
+        dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
+        dm::dm_add_uk(tf_5, l) %>%
+        dm::dm_add_uk(tf_6, n) %>%
+        dm::dm_add_fk(tf_2, d, tf_1) %>%
+        dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
+        dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
+        dm::dm_add_fk(tf_5, l, tf_4, on_delete = "cascade") %>%
+        dm::dm_add_fk(tf_5, m, tf_6, n)
     Code
       # on_delete if needed
       dm(b, c) %>% dm_add_pk(c, x) %>% dm_add_fk(b, y, c, on_delete = "cascade") %>%

@@ -1,6 +1,5 @@
 # basic tests -------------------------------------------------------------
 
-
 test_that("basic test: 'group_by()'-methods work", {
   expect_equivalent_tbl(
     group_by(dm_zoomed(), e) %>% tbl_zoomed(),
@@ -248,7 +247,6 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work", {
     inner_join(tf_2(), tf_1(), by = c("d" = "a"))
   )
 
-
   expect_equivalent_tbl(
     semi_join(dm_zoomed(), tf_1) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
     semi_join(tf_2(), tf_1(), by = c("d" = "a"))
@@ -290,27 +288,82 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (2)", {
   )
 
   # works, if by is given
-  expect_equivalent_tbl(
-    left_join(dm_zoomed(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
-    left_join(tf_2(), tf_4(), by = c("e" = "j"))
-  )
+  if (is_db(my_test_src())) {
+    expect_equivalent_tbl(
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
+      left_join(tf_2(), tf_4(), by = c("e" = "j"))
+    )
 
-  expect_equivalent_tbl(
-    left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>% dm_update_zoomed() %>% tbl_impl("tf_2"),
-    left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
-  )
+    expect_equivalent_tbl(
+      left_join(dm_zoomed(), tf_4, by = c("e" = "j", "e1" = "j1")) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_2"),
+      left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"))
+    )
 
-  # explicitly select columns from RHS using argument `select`
-  expect_equivalent_tbl(
-    left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
-  )
+    # explicitly select columns from RHS using argument `select`
+    expect_equivalent_tbl(
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1)) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
+      left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"))
+    )
 
-  # explicitly select and rename columns from RHS using argument `select`
-  expect_equivalent_tbl(
-    left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>% dm_update_zoomed() %>% tbl_impl("tf_3"),
-    left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
-  )
+    # explicitly select and rename columns from RHS using argument `select`
+    expect_equivalent_tbl(
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), d_new = d, e, e1)) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
+      left_join(tf_3(), select(tf_2(), c, d_new = d, e, e1), by = c("f" = "e", "f1" = "e1"))
+    )
+  } else {
+    if (utils::packageVersion("dplyr") >= "1.1.0.9000") {
+      expect_equivalent_tbl(
+        left_join(dm_zoomed(), tf_4, by = c("e" = "j"), relationship = "many-to-many") %>%
+          dm_update_zoomed() %>%
+          tbl_impl("tf_2"),
+        left_join(tf_2(), tf_4(), by = c("e" = "j"), relationship = "many-to-many")
+      )
+
+      expect_equivalent_tbl(
+        left_join(
+          dm_zoomed(),
+          tf_4,
+          by = c("e" = "j", "e1" = "j1"),
+          relationship = "many-to-many"
+        ) %>%
+          dm_update_zoomed() %>%
+          tbl_impl("tf_2"),
+        left_join(tf_2(), tf_4(), by = c("e" = "j", "e1" = "j1"), relationship = "many-to-many")
+      )
+    }
+
+    # explicitly select columns from RHS using argument `select`
+    expect_equivalent_tbl(
+      left_join(dm_zoomed_2(), tf_2, select = c(starts_with("c"), e, e1), multiple = "all") %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
+      left_join(tf_3(), select(tf_2(), c, e, e1), by = c("f" = "e", "f1" = "e1"), multiple = "all")
+    )
+
+    # explicitly select and rename columns from RHS using argument `select`
+    expect_equivalent_tbl(
+      left_join(
+        dm_zoomed_2(),
+        tf_2,
+        select = c(starts_with("c"), d_new = d, e, e1),
+        multiple = "all"
+      ) %>%
+        dm_update_zoomed() %>%
+        tbl_impl("tf_3"),
+      left_join(
+        tf_3(),
+        select(tf_2(), c, d_new = d, e, e1),
+        by = c("f" = "e", "f1" = "e1"),
+        multiple = "all"
+      )
+    )
+  }
 
   # a former FK-relation could not be tracked
   expect_dm_error(
@@ -345,7 +398,9 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   expect_equivalent_tbl(
     out,
     left_join(
-      iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.x")) %>% rename(Sepal.Width = Sepal.Width.iris_2.x),
+      iris_2() %>%
+        rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.x")) %>%
+        rename(Sepal.Width = Sepal.Width.iris_2.x),
       iris_2() %>% rename_at(vars(matches("^[PS]")), ~ paste0(., ".iris_2.y")),
       by = c("key", "Sepal.Width" = "Sepal.Width.iris_2.y", "other_col")
     )
@@ -355,19 +410,35 @@ test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
 test_that("basic test: 'join()'-methods for `zoomed.dm` work (3)", {
   skip_if_src("sqlite")
   # test RHS-by name collision
-  expect_equivalent_dm(
-    dm_for_filter() %>%
-      dm_rename(tf_2, "...1" = d) %>%
-      dm_zoom_to(tf_3) %>%
-      right_join(tf_2) %>%
-      dm_update_zoomed(),
-    dm_for_filter() %>%
-      dm_zoom_to(tf_3) %>%
-      right_join(tf_2) %>%
-      dm_update_zoomed() %>%
-      dm_rename(tf_3, "...1" = d) %>%
-      dm_rename(tf_2, "...1" = d)
-  )
+  if (is_db(my_test_src())) {
+    expect_equivalent_dm(
+      dm_for_filter() %>%
+        dm_rename(tf_2, "...1" = d) %>%
+        dm_zoom_to(tf_3) %>%
+        right_join(tf_2) %>%
+        dm_update_zoomed(),
+      dm_for_filter() %>%
+        dm_zoom_to(tf_3) %>%
+        right_join(tf_2) %>%
+        dm_update_zoomed() %>%
+        dm_rename(tf_3, "...1" = d) %>%
+        dm_rename(tf_2, "...1" = d)
+    )
+  } else {
+    expect_equivalent_dm(
+      dm_for_filter() %>%
+        dm_rename(tf_2, "...1" = d) %>%
+        dm_zoom_to(tf_3) %>%
+        right_join(tf_2, multiple = "all") %>%
+        dm_update_zoomed(),
+      dm_for_filter() %>%
+        dm_zoom_to(tf_3) %>%
+        right_join(tf_2, multiple = "all") %>%
+        dm_update_zoomed() %>%
+        dm_rename(tf_3, "...1" = d) %>%
+        dm_rename(tf_2, "...1" = d)
+    )
+  }
 })
 
 test_that("basic test: 'join()'-methods for `dm` throws error", {
@@ -380,7 +451,6 @@ test_that("basic test: 'join()'-methods for `dm` throws error", {
     inner_join(dm_for_filter()),
     "only_possible_w_zoom"
   )
-
 
   expect_dm_error(
     semi_join(dm_for_filter()),
@@ -624,15 +694,14 @@ test_that("key tracking works for distinct() and arrange()", {
 
   # dm_nycflights13() (with FK constraints) doesn't work on DB
   # here, FK constraints are not implemented on the DB
-  skip_if_not_installed("dbplyr")
-  skip_if_not_installed("nycflights13")
 
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
@@ -648,7 +717,8 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE)) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      summarize(avg_wind_speed = mean(wind_speed, na.rm = TRUE))
   )
 
   expect_equivalent_tbl(
@@ -668,19 +738,29 @@ test_that("key tracking works for distinct() and arrange()", {
       dm_zoom_to(weather) %>%
       mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
       tbl_zoomed(),
-    tbl_impl(dm_nycflights_small(), "weather") %>% mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
+    tbl_impl(dm_nycflights_small(), "weather") %>%
+      mutate(time_hour_fmt = format(time_hour, tz = "UTC"))
   )
 })
 
 
 test_that("key tracking works for slice()", {
   skip_if_remote_src()
-  expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(), set_names(c("d", "e", "e1")))
+  expect_identical(
+    slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(),
+    set_names(c("d", "e", "e1"))
+  )
   expect_message(
-    expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1"))),
+    expect_identical(
+      slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(),
+      set_names(c("c", "d", "e", "e1"))
+    ),
     "Keeping PK"
   )
-  expect_identical(slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(), set_names(c("c", "d", "e", "e1")))
+  expect_identical(
+    slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(),
+    set_names(c("c", "d", "e", "e1"))
+  )
 })
 
 
@@ -703,8 +783,6 @@ test_that("can use column as primary and foreign key", {
 })
 
 test_that("'summarize_at()' etc. work", {
-  skip_if_not_installed("nycflights13")
-
   expect_equivalent_tbl(
     dm_nycflights_small() %>%
       dm_zoom_to(airports) %>%
@@ -830,19 +908,19 @@ test_that("output for compound keys", {
 
     # left_join()
     zoomed_comp_dm %>%
-      left_join(flights) %>%
+      left_join(flights, multiple = "all") %>%
       nrow()
     # right_join()
     zoomed_comp_dm %>%
-      right_join(flights) %>%
+      right_join(flights, multiple = "all") %>%
       nrow()
     # inner_join()
     zoomed_comp_dm %>%
-      inner_join(flights) %>%
+      inner_join(flights, multiple = "all") %>%
       nrow()
     # full_join()
     zoomed_comp_dm %>%
-      full_join(flights) %>%
+      full_join(flights, multiple = "all") %>%
       nrow()
     # semi_join()
     zoomed_comp_dm %>%

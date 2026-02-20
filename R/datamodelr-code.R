@@ -1,20 +1,28 @@
 # graph code directly from {datamodelr} -----------------------------------------
 
-bdm_create_graph <- function(data_model,
-                             rankdir = "BT",
-                             graph_name = "Data Model",
-                             graph_attrs = "",
-                             node_attrs = "",
-                             edge_attrs = "",
-                             view_type = "all",
-                             focus = NULL,
-                             col_attr = "column",
-                             columnArrows = FALSE) {
+bdm_create_graph <- function(
+  data_model,
+  rankdir = "BT",
+  graph_name = "Data Model",
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  view_type = "all",
+  focus = NULL,
+  col_attr = "column",
+  columnArrows = FALSE,
+  table_description = NULL,
+  font_size
+) {
   g_list <-
     bdm_create_graph_list(
-      data_model = data_model, view_type = view_type,
-      focus = focus, col_attr = col_attr,
-      columnArrows = columnArrows
+      data_model = data_model,
+      view_type = view_type,
+      focus = focus,
+      col_attr = col_attr,
+      columnArrows = columnArrows,
+      table_description = table_description,
+      font_size = font_size
     )
   if (length(g_list$nodes$nodes) == 0) {
     warning("The number of tables to render is 0.")
@@ -37,23 +45,23 @@ bdm_create_graph <- function(data_model,
 }
 
 bdm_render_graph <- function(graph, width = NULL, height = NULL, top_level_fun = NULL) {
-  check_suggested("DiagrammeR",
-    use = TRUE,
-    top_level_fun = top_level_fun
-  )
+  check_suggested("DiagrammeR", top_level_fun)
 
   if (is.null(graph$dot_code)) {
     graph$dot_code <- dot_graph(graph)
   }
-
   DiagrammeR::grViz(graph$dot_code, allow_subst = FALSE, width, height)
 }
 
-bdm_create_graph_list <- function(data_model,
-                                  view_type = "all",
-                                  focus = NULL,
-                                  col_attr = "column",
-                                  columnArrows = FALSE) {
+bdm_create_graph_list <- function(
+  data_model,
+  view_type = "all",
+  focus = NULL,
+  col_attr = "column",
+  columnArrows = FALSE,
+  table_description = list(),
+  font_size
+) {
   # hidden tables
 
   if (!is.null(focus) && is.list(focus)) {
@@ -62,14 +70,17 @@ bdm_create_graph_list <- function(data_model,
       data_model$columns <- data_model$columns[data_model$columns$table %in% focus$tables, ]
       if (is.null(focus[["external_ref"]]) || !focus[["external_ref"]]) {
         data_model$references <- data_model$references[
-          data_model$references$table %in% focus$tables &
+          data_model$references$table %in%
+            focus$tables &
             data_model$references$ref %in% focus$tables,
         ]
       }
     }
   } else {
     # hide tables with display == "hide" attribute
-    if (is.null(data_model$tables$display)) data_model$tables$display <- NA
+    if (is.null(data_model$tables$display)) {
+      data_model$tables$display <- NA
+    }
     data_model$tables$display[is.na(data_model$tables$display)] <- "show"
     hidden_tables <- data_model$tables[data_model$tables$display == "hide", "table"]
     if (!is.null(hidden_tables)) {
@@ -88,7 +99,8 @@ bdm_create_graph_list <- function(data_model,
 
   tables <- split(data_model$columns, data_model$columns$table)
 
-  switch(view_type,
+  switch(
+    view_type,
     all = {},
     #
     keys_only = {
@@ -110,7 +122,9 @@ bdm_create_graph_list <- function(data_model,
         title = x,
         palette_id = data_model$tables[data_model$tables$table == x, "display"],
         col_attr = col_attr,
-        columnArrows = columnArrows
+        columnArrows = columnArrows,
+        table_description = table_description[[x]],
+        font_size = font_size
       )
     })
 
@@ -124,7 +138,6 @@ bdm_create_graph_list <- function(data_model,
       stringsAsFactors = FALSE
     )
 
-
   if (!is.null(data_model$references)) {
     edges <-
       with(
@@ -135,6 +148,7 @@ bdm_create_graph_list <- function(data_model,
           fromCol = column,
           toCol = ref_col,
           keyId = keyId,
+          uk_col = uk_col,
           stringsAsFactors = FALSE
         )
       )
@@ -187,12 +201,13 @@ dot_graph <- function(graph, columnArrows = FALSE) {
   if (columnArrows) {
     dot_edges <- paste(
       sprintf(
-        '"%s":"%s"->"%s":"%s" [id="%s"]',
+        '"%s":"%s"->"%s":"%s" [id="%s"%s]',
         graph$edges_df$from,
         graph$edges_df$fromCol,
         graph$edges_df$to,
         graph$edges_df$toCol,
-        graph$edges_df$keyId
+        graph$edges_df$keyId,
+        graph$edges_df$uk_col
       ),
       collapse = "\n"
     )
@@ -228,7 +243,9 @@ html_tag <- function(x, tag, ident = 0, nl = TRUE, atrs = NULL, collapse = "") {
   }
   space <- paste(rep("  ", ident), collapse = "")
   atrs <- paste(sprintf('%s="%s"', names(atrs), atrs), collapse = " ")
-  if (nchar(atrs) > 0) atrs <- paste0(" ", atrs)
+  if (nchar(atrs) > 0) {
+    atrs <- paste0(" ", atrs)
+  }
 
   htext <-
     if (nl) {
@@ -239,39 +256,71 @@ html_tag <- function(x, tag, ident = 0, nl = TRUE, atrs = NULL, collapse = "") {
   paste(htext, collapse = "")
 }
 
-to_html_table <- function(x,
-                          title = "Table",
-                          attr_table,
-                          attr_header,
-                          attr_font,
-                          attr_td = NULL,
-                          trans = NULL,
-                          cols = names(x)) {
-  html_table(atrs = attr_table, c(
-    # header
-    html_tr(
-      html_td(
-        html_font(title, atrs = attr_font),
-        atrs = attr_header,
-        collapse = NULL
-      )
-    ),
-    # rows
-    unique(sapply(seq_len(nrow(x)), function(r) {
-      html_tr(c(
-        # cells
-        sapply(cols, function(col_name) {
-          value <- x[r, col_name]
-          if (!is_null(trans)) value <- trans(col_name, x[r, ], value)
-          html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
+to_html_table <- function(
+  x,
+  title = "Table",
+  attr_table,
+  attr_header,
+  attr_font,
+  attr_td = NULL,
+  trans = NULL,
+  cols = names(x),
+  table_description = NULL,
+  font_size,
+  attr_desc
+) {
+  html_table(
+    atrs = attr_table,
+    c(
+      # header
+      html_tr(
+        html_td(
+          html_font(title, atrs = c(attr_font, "POINT-SIZE" = font_size[["header"]])),
+          atrs = attr_header,
+          collapse = NULL
+        )
+      ),
+      if (!is.null(table_description)) {
+        table_description <- strsplit(table_description, "\n")[[1]]
+        map_chr(table_description, function(desc) {
+          html_tr(
+            html_td(
+              html_font(
+                repair_html(desc),
+                atrs = c(attr_desc, "POINT-SIZE" = font_size[["table_description"]] %||% 8L)
+              ),
+              atrs = attr_desc,
+              collapse = NULL
+            )
+          )
         })
-      ))
-    }))
-  ))
+      },
+      # rows
+      unique(sapply(seq_len(nrow(x)), function(r) {
+        html_tr(c(
+          # cells
+          sapply(cols, function(col_name) {
+            value <- x[r, col_name]
+            if (!is_null(trans)) {
+              value <- trans(col_name, x[r, ], value, font_size[["column"]])
+            }
+            html_td(value, if (is.null(attr_td)) NULL else attr_td(col_name, x[r, ], value))
+          })
+        ))
+      }))
+    )
+  )
 }
 
-dot_html_label <- function(x, title, palette_id = "default", col_attr = c("column"),
-                           columnArrows = FALSE) {
+dot_html_label <- function(
+  x,
+  title,
+  palette_id = "default",
+  col_attr = c("column"),
+  columnArrows = FALSE,
+  table_description = NULL,
+  font_size
+) {
   cols <- c("ref", col_attr)
   if (is.null(palette_id) || palette_id == "show") {
     palette_id <- "default"
@@ -284,12 +333,15 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
       line_color = "#555555",
       header_bgcolor = "#EFEBDD",
       header_font = "#000000",
-      bgcolor = "#FFFFFF"
+      bgcolor = "#FFFFFF",
+      desccol = "#F9F8F3"
     )
   } else {
     header_bgcol_rgb <- col2rgb(palette_id, alpha = TRUE)
     bodycol_rgb <- calc_bodycol_rgb(header_bgcol_rgb)
     bodycol <- hex_from_rgb(bodycol_rgb)
+    desccol_rgb <- calc_bodycol_rgb(header_bgcol_rgb, ratio = 0.65)
+    desccol <- hex_from_rgb(desccol_rgb)
     # if header background too dark, use white font color
     header_font <- if (is_dark_color(header_bgcol_rgb)) "#FFFFFF" else "#000000"
     line_color_rgb <- header_bgcol_rgb / 1.5
@@ -299,22 +351,32 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
       line_color = line_color,
       header_bgcolor = palette_id,
       header_font = header_font,
-      bgcolor = bodycol
+      bgcolor = bodycol,
+      desccol = desccol
     )
   }
 
   attr_table <- list(
-    ALIGN = "LEFT", BORDER = border, CELLBORDER = 0, CELLSPACING = 0
+    ALIGN = "LEFT",
+    BORDER = border,
+    CELLBORDER = 0,
+    CELLSPACING = 0
   )
   # border color
   if (border) {
     attr_table[["COLOR"]] <- col[["line_color"]]
   }
   attr_header <- list(
-    COLSPAN = length(cols) - columnArrows, BGCOLOR = col[["header_bgcolor"]], BORDER = 0
+    COLSPAN = length(cols) - columnArrows,
+    BGCOLOR = col[["header_bgcolor"]],
+    BORDER = 0
   )
-  attr_font <- list()
   attr_font <- list(COLOR = col[["header_font"]])
+
+  attr_desc <- attr_header
+  attr_desc[["COLOR"]] <- "#000000"
+  attr_desc[["BGCOLOR"]] <- col[["desccol"]]
+  attr_desc[["BORDER"]] <- 0
 
   attr_td <- function(col_name, row_values, value) {
     ret <- list(ALIGN = "LEFT", BGCOLOR = col[["bgcolor"]])
@@ -329,33 +391,47 @@ dot_html_label <- function(x, title, palette_id = "default", col_attr = c("colum
   }
 
   # value presentation transformation
-  trans <- function(col_name, row_values, value) {
+  trans <- function(col_name, row_values, value, font_size) {
     if (col_name == "ref") {
       value <- ifelse(is.na(value), "", "~")
       if (columnArrows) {
         value <- NULL
       }
     }
-    if (col_name == "column" && row_values[["key"]] == 1) {
+    if (col_name == "column" && row_values[["key"]] == 1 && row_values[["kind"]] == "PK") {
       value <- sprintf("<U>%s</U>", value)
+    } else if (col_name == "column" && row_values[["key"]] == 1 && row_values[["kind"]] != "PK") {
+      value <- sprintf("<I>%s</I>", value)
     }
     if (!is.null(value) && is.na(value)) {
       value <- ""
+    } else if (!is.null(font_size)) {
+      value <- sprintf('<FONT POINT-SIZE=\"%i\">%s</FONT>', font_size, value)
     }
     return(value)
   }
-
-  ret <- to_html_table(x,
+  ret <- to_html_table(
+    x,
     title = title,
     attr_table = attr_table,
     attr_header = attr_header,
     attr_font = attr_font,
     attr_td = attr_td,
     cols = cols,
-    trans = trans
+    trans = trans,
+    table_description = table_description,
+    font_size = font_size,
+    attr_desc
   )
-
   ret <- sprintf("<%s>", trimws(ret))
-
   ret
+}
+
+repair_html <- function(x) {
+  x <- gsub("&", "&amp;", x)
+  x <- gsub("'", "&#39;", x)
+  x <- gsub("<", "&lt;", x)
+  x <- gsub(">", "&gt;", x)
+  x <- gsub("\"", "&#34;", x)
+  x
 }

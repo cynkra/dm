@@ -1,28 +1,3 @@
-#' Loads `dm` objects into one or more registered sources
-#'
-#' @description Works like `dbplyr::test_load()`, just for `dm`_objects.
-#'
-#' @return A list of the same `dm` object on different \pkg{dplyr} sources.
-#'
-#' @noRd
-#' @examples
-#' dbplyr::test_register_src("df", dplyr::src_df(env = new.env()))
-#' dbplyr::test_register_src("sqlite", dplyr::src_sqlite(":memory:", create = TRUE))
-#' @examplesIf rlang::is_installed("nycflights13")
-#'
-#' dm_test_obj <- dm_nycflights13(cycle = TRUE)
-#' dm_test_obj_srcs <- dm_test_load(dm_test_obj)
-dm_test_load <- function(x,
-                         srcs = dbplyr:::test_srcs$get(), # FIXME: not exported from {dplyr}... could also "borrow" source code as new function here!?
-                         ignore = character(),
-                         set_key_constraints = TRUE) {
-  stopifnot(is.character(ignore))
-  srcs <- srcs[setdiff(names(srcs), ignore)]
-
-  map(srcs, ~ copy_dm_to(., dm = x, unique_table_names = TRUE, set_key_constraints = set_key_constraints))
-}
-
-
 # internal helper functions:
 
 # validates, that `table` is character and is part of the `dm` object
@@ -79,7 +54,10 @@ is_this_a_test <- function() {
     map(1) %>%
     map_chr(as_label)
 
-  is_test_call <- any(calls %in% c("devtools::test", "testthat::test_check", "testthat::test_file", "testthis:::test_this"))
+  is_test_call <- any(
+    calls %in%
+      c("devtools::test", "testthat::test_check", "testthat::test_file", "testthis:::test_this")
+  )
 
   is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
 
@@ -89,8 +67,11 @@ is_this_a_test <- function() {
 
 # more general 'check'-type functions -------------------------------------
 
-
-check_param_class <- function(param_value, correct_class, param_name = deparse(substitute(param_value))) {
+check_param_class <- function(
+  param_value,
+  correct_class,
+  param_name = deparse(substitute(param_value))
+) {
   if (!inherits(param_value, correct_class)) {
     abort_parameter_not_correct_class(
       parameter = param_name,
@@ -100,7 +81,11 @@ check_param_class <- function(param_value, correct_class, param_name = deparse(s
   }
 }
 
-check_param_length <- function(param_value, correct_length = 1, param_name = deparse(substitute(param_value))) {
+check_param_length <- function(
+  param_value,
+  correct_length = 1,
+  param_name = deparse(substitute(param_value))
+) {
   if (length(param_value) != correct_length) {
     abort_parameter_not_correct_length(
       parameter = param_name,
@@ -125,5 +110,7 @@ abort_table_not_in_dm <- function(table_name, dm_tables) {
 }
 
 error_txt_table_not_in_dm <- function(table_name, dm_tables) {
-  glue("Table {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}.")
+  glue(
+    "Table {commas(tick(table_name))} not in `dm` object. Available table names: {commas(tick(dm_tables))}."
+  )
 }

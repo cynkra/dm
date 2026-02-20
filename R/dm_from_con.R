@@ -3,7 +3,7 @@
 #' @description
 #' `dm_from_con()` creates a [dm] from some or all tables in a [src]
 #' (a database or an environment) or which are accessible via a DBI-Connection.
-#' For Postgres and SQL Server databases, primary and foreign keys
+#' For Postgres/Redshift and SQL Server databases, primary and foreign keys
 #' are imported from the database.
 #'
 #' @param con A [`DBI::DBIConnection-class`] or a `Pool` object.
@@ -14,17 +14,27 @@
 #'
 #'   Set to `TRUE` to query the definition of primary and
 #'   foreign keys from the database.
-#'   Currently works only for Postgres and SQL Server databases.
+#'   Currently works only for Postgres/Redshift and SQL Server databases.
 #'   The default attempts to query and issues an informative message.
+#' @param .names
+#'   `r lifecycle::badge("experimental")`
+#'
+#'   A glue specification that describes how to name the tables
+#'   within the output, currently only for MSSQL, Postgres/Redshift and MySQL/MariaDB.
+#'   This can use `{.table}` to stand for the table name, and
+#'   `{.schema}` to stand for the name of the schema which the table lives
+#'   within. The default (`NULL`) is equivalent to `"{.table}"` when a single
+#'   schema is specified in `schema`, and `"{.schema}.{.table}"` for the case
+#'   where multiple schemas are given, and may change in future versions.
 #' @param ... `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
 #'
-#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres (default: `"public"`), and MariaDB/MySQL
+#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres/Redshift (default: `"public"`), and MariaDB/MySQL
 #'     (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
 #'     default: active database.
-#'   - `table_type`: supported for Postgres (default: `"BASE TABLE"`). Specify the table type. Options are:
+#'   - `table_type`: supported for Postgres/Redshift (default: `"BASE TABLE"`). Specify the table type. Options are:
 #'     1. `"BASE TABLE"` for a persistent table (normal table type)
 #'     2. `"VIEW"` for a view
 #'     3. `"FOREIGN TABLE"` for a foreign table
@@ -36,12 +46,17 @@
 #' @examplesIf dm:::dm_has_financial()
 #' con <- dm_get_con(dm_financial())
 #'
-#' dm_from_src(con)
-#'
 #' # Avoid DBI::dbDisconnect() here, because we don't own the connection
-dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
-                        ...) {
+dm_from_con <- function(
+  con = NULL,
+  table_names = NULL,
+  learn_keys = NULL,
+  .names = NULL,
+  ...
+) {
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
+
+  check_suggested("dbplyr", "dm_from_con")
 
   if (inherits(con, "Pool")) {
     con <- pool_con <- pool::poolCheckout(con)
@@ -56,7 +71,10 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
       {
         dm_learned <- dm_learn_from_db(con, ...)
         if (is_null(learn_keys)) {
-          inform("Keys queried successfully, use `learn_keys = TRUE` to mute this message.")
+          inform(c(
+            "Keys queried successfully.",
+            i = "Use `learn_keys = TRUE` to mute this message."
+          ))
         }
 
         if (is_null(table_names)) {
@@ -74,32 +92,31 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
       },
       error = function(e) {
         if (isTRUE(learn_keys)) {
-          abort_learn_keys(conditionMessage(e))
+          abort_learn_keys(e)
         }
-        # FIXME: Use new-style error messages.
-        inform(paste0("Keys could not be queried: ", conditionMessage(e), ". Use `learn_keys = FALSE` to mute this message."))
+        inform(
+          "Keys could not be queried.",
+          x = conditionMessage(e),
+          i = "Use `learn_keys = FALSE` to mute this message."
+        )
         NULL
       }
     )
   }
 
   if (is_null(table_names)) {
-    src_tbl_names <- get_src_tbl_names(src, ...)
+    src_tbl_names <- get_src_tbl_names(src, ..., names = .names)
   } else {
     src_tbl_names <- table_names
+    if (is.null(names(src_tbl_names))) {
+      names(src_tbl_names) <- src_tbl_names
+    }
   }
 
-  if (inherits(src_tbl_names, "SQL")) {
-    tbls <-
-      src_tbl_names %>%
-      map(dbplyr::ident_q) %>%
-      map(possibly(tbl, NULL), src = src)
-  } else {
-    tbls <-
-      set_names(src_tbl_names) %>%
-      quote_ids(con) %>%
-      map(possibly(tbl, NULL), src = src)
-  }
+  tbls <-
+    src_tbl_names %>%
+    quote_ids(con) %>%
+    map(possibly(tbl, NULL), src = src)
 
   bad <- map_lgl(tbls, is_null)
   if (any(bad)) {
@@ -123,8 +140,7 @@ dm_from_con <- function(con = NULL, table_names = NULL, learn_keys = NULL,
 #'
 #' @export
 #' @keywords internal
-dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
-                        ...) {
+dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL, ...) {
   if (is_null(src)) {
     return(empty_dm())
   }
@@ -139,29 +155,22 @@ quote_ids <- function(x, con, schema = NULL) {
   }
 
   if (is_null(schema)) {
-    map(
-      x,
-      ~ dbplyr::ident_q(dbplyr::build_sql(dbplyr::ident(.x), con = con))
-    )
+    map_if(x, ~ !inherits(.x, "Id"), ~ DBI::Id(table = .x))
   } else {
-    map(
-      x,
-      ~ dbplyr::ident_q(schema_if(rep(schema, length(.x)), .x, con))
-    )
+    map_if(x, ~ !inherits(.x, "Id"), ~ schema_if(rep(schema, length(.x)), .x, con)[[1]])
   }
 }
 
 # Errors ------------------------------------------------------------------
 
-abort_learn_keys <- function(reason) {
-  abort(error_txt_learn_keys(reason), class = dm_error_full("learn_keys"))
+abort_learn_keys <- function(parent) {
+  abort(error_txt_learn_keys(), class = dm_error_full("learn_keys"), parent = parent)
 }
 
-error_txt_learn_keys <- function(reason) {
-  # FIXME: Use new-style error messages.
-  paste0(
-    "Failed to learn keys from database: ", reason,
-    ". Use `learn_keys = FALSE` to work around, or `dm:::dm_learn_from_db()` to debug."
+error_txt_learn_keys <- function() {
+  c(
+    "Failed to learn keys from database.",
+    i = "Use `learn_keys = FALSE` to work around, or `dm:::dm_meta()` to debug."
   )
 }
 

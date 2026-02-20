@@ -5,7 +5,7 @@
 #' but no data.
 #' All tables are truncated and converted to zero-row tibbles,
 #' also for remote data models.
-#' Column names retain their type.
+#' Columns retain their type.
 #' This is useful for performing creation and population of a database
 #' in separate steps.
 #'
@@ -26,6 +26,6 @@ dm_ptype <- function(dm) {
   dm %>%
     dm_get_def() %>%
     mutate(data = map(data, ~ head(.x, 0))) %>%
-    new_dm3() %>%
+    dm_from_def() %>%
     collect()
 }

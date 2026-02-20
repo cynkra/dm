@@ -13,6 +13,9 @@
 #'   single table, if `FALSE` a partially wrapped dm will be returned.
 #' @param dm A cycle free dm object.
 #' @param root Table to wrap the dm into (unquoted).
+#' @param progress Whether to display a progress bar, if `NA` (the default)
+#'   hide in non-interactive mode, show in interactive mode. Requires the
+#'   'progress' package.
 #'
 #' @details
 #' `dm_wrap_tbl()` is an inverse to `dm_unwrap_tbl()`,
@@ -36,13 +39,20 @@
 #' @examples
 #' dm_nycflights13() %>%
 #'   dm_wrap_tbl(root = airlines)
-dm_wrap_tbl <- function(dm, root, strict = TRUE) {
+dm_wrap_tbl <- function(dm, root, strict = TRUE, progress = NA) {
   wrap_plan <- dm_wrap_tbl_plan(dm, {{ root }})
+
+  ticker <- new_ticker(
+    "Wrapping dm object",
+    n = nrow(wrap_plan),
+    progress = progress,
+    top_level_fun = "dm_wrap_tbl"
+  )
 
   wrapped_dm <- reduce2(
     wrap_plan$action,
     wrap_plan$table,
-    function(dm, f, table) exec(f, dm, table),
+    ticker(function(dm, f, table) exec(f, dm, table)),
     .init = dm
   )
 
@@ -72,14 +82,14 @@ dm_wrap_tbl_plan <- function(dm, root) {
     has_terminal_child <- !is.na(child_name)
     if (has_terminal_child) {
       wrap_plan <- add_row(wrap_plan, action = "dm_nest_tbl", table = child_name)
-      graph <- igraph::delete.vertices(graph, child_name)
+      graph <- igraph::delete_vertices(graph, child_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     parent_name <- names(positions)[positions == "terminal parent"][1]
     has_terminal_parent <- !is.na(parent_name)
     if (has_terminal_parent) {
       wrap_plan <- add_row(wrap_plan, action = "dm_pack_tbl", table = parent_name)
-      graph <- igraph::delete.vertices(graph, parent_name)
+      graph <- igraph::delete_vertices(graph, parent_name)
       positions <- node_type_from_graph(graph, drop = root_name)
     }
     if (!has_terminal_child && !has_terminal_parent) break
@@ -100,6 +110,7 @@ dm_wrap_tbl_plan <- function(dm, root) {
 #'
 #' @param dm A dm.
 #' @param ptype A dm, only used to query names of primary and foreign keys.
+#' @inheritParams dm_wrap_tbl
 #' @return A dm.
 #' @seealso [dm_wrap_tbl()], [dm_unnest_tbl()],
 #'   [dm_examine_constraints()],
@@ -117,13 +128,20 @@ dm_wrap_tbl_plan <- function(dm, root) {
 #' # The roundtrip has the same structure but fewer rows:
 #' dm_nrow(dm_nycflights13())
 #' dm_nrow(roundtrip)
-dm_unwrap_tbl <- function(dm, ptype) {
+dm_unwrap_tbl <- function(dm, ptype, progress = NA) {
   check_dm(ptype)
 
   unwrap_plan <- dm_get_tables(dm) %>%
     imap(dm_unwrap_tbl_plan) %>%
     unlist(recursive = FALSE) %>%
     purrr::discard(~ nrow(.) == 0)
+
+  ticker <- new_ticker(
+    "Unwrapping dm object",
+    n = length(unwrap_plan),
+    progress = progress,
+    top_level_fun = "dm_unwrap_tbl"
+  )
 
   unwrapped_dm <- reduce(
     unwrap_plan,

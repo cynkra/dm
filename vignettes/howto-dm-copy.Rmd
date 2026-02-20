@@ -38,7 +38,6 @@ The steps for this were already introduced in `vignette("howto-dm-db")` and will
 
 ``````{r }
 library(dm)
-library(tidyverse)
 library(dbplyr)
 
 fin_dm <-
@@ -92,7 +91,7 @@ my_dm_total_computed$total_loans %>%
 
 ```{r echo = FALSE, eval = TRUE}
 # https://github.com/tidyverse/dbplyr/issues/639, https://github.com/tidyverse/dbplyr/pull/649
-remote_name_total_loans <- "dbplyr_001"
+remote_name_total_loans <- "dbplyr_"
 stopifnot(grepl(remote_name_total_loans, sql_render(my_dm_total_computed$total_loans), fixed = TRUE))
 ```
 
@@ -105,8 +104,8 @@ The default is to create a **temporary** tables.
 If you want results to persist across sessions in **permanent** tables, `compute()` must be called with the argument `temporary = FALSE` and a table name for the `name` argument.
 See `?compute` for more details.
 
-When called on a whole `dm` object (without zoom), `compute()` materializes all tables into new (temporary or persistent) tables by executing the associated SQL query and storing the full results.
-Depending on the size of your data, this may take considerable time or may even be unfeasible.
+When called on a whole `dm` object (without zoom), `compute()` materializes all tables into new temporary tables by executing the associated SQL query and storing the full results.
+Depending on the size of your data, this may take considerable time or may even be infeasible.
 It may be useful occasionally to create snapshots of data that is subject to change.
 
 ``````{r }

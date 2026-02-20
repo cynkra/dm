@@ -1,5 +1,8 @@
 new_cg_block <- function(cg_input_object = list(), cg_f_list = list()) {
-  structure(list(cg_input_object = cg_input_object, cg_f_list = cg_f_list), class = "dm_cg_code_block")
+  structure(
+    list(cg_input_object = cg_input_object, cg_f_list = cg_f_list),
+    class = "dm_cg_code_block"
+  )
 }
 
 cg_add_call <- function(cg_block, fn_call) {
@@ -51,7 +54,7 @@ cg_eval_block <- function(cg_block) {
   if (is_empty(cg_block$cg_f_list)) {
     eval_tidy(cg_block$cg_input_object)
   } else {
-    freduce(eval_tidy(cg_block$cg_input_object), cg_block$cg_f_list)
+    magrittr::freduce(eval_tidy(cg_block$cg_input_object), cg_block$cg_f_list)
   }
 }
 

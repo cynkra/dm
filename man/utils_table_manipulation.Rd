@@ -13,7 +13,8 @@
 \item{x}{object of class \code{dm_zoomed}}
 
 \item{n}{an integer vector of length up to \code{dim(x)} (or 1,
-    for non-dimensioned objects). Values specify the indices to be
+    for non-dimensioned objects).  A \code{logical} is silently coerced to
+    integer.  Values specify the indices to be
     selected in the corresponding dimension (or along the length) of the
     object. A positive value of \code{n[i]} includes the first/last
     \code{n[i]} indices in that dimension, while a negative value
@@ -36,7 +37,7 @@ The methods for regular \code{dm} objects extract the first or last tables.
 see manual for the corresponding functions in \pkg{utils}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 zoomed <- dm_nycflights13() \%>\%
   dm_zoom_to(flights) \%>\%
   head(4)

@@ -2,6 +2,7 @@ test_that("decompose_table() decomposes tables nicely on chosen source", {
   skip_if_src("maria")
 
   out <- decompose_table(data_ts(), aef_id, a, e, f)
+
   expect_equivalent_tbl(
     out$parent_table,
     list_of_data_ts_parent_and_child()$parent_table,
@@ -71,7 +72,8 @@ test_that("reunite_parent_child() reunites parent and child nicely on chosen sou
 
 test_that("reunite_parent_child_from_list() reunites parent and child nicely on chosen source", {
   out <- reunite_parent_child_from_list(
-    list_of_data_ts_parent_and_child(), aef_id
+    list_of_data_ts_parent_and_child(),
+    aef_id
   )
   ref <-
     left_join(

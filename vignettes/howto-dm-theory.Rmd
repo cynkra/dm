@@ -67,10 +67,9 @@ The information is stored in five tables.
 
 Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of data merging.
 
-In classical {dplyr} notation, you will need three `left_join()` calls to merge the `flights` table gradually to `airlines`, `planes`, `airports`, and `weather` tables to create one wide data frame.
+In classical {dplyr} notation, you will need four `left_join()` calls to gradually merge the `flights` table to the `airlines`, `planes`, `airports`, and `weather` tables to create one wide data frame.
 
 ```{r}
-library(tidyverse)
 library(dm)
 library(nycflights13)
 
@@ -244,7 +243,7 @@ As you can guess from the names of the databases, SQL, short for Structured Quer
 
 In production, the data is stored in a relational database and {dm} is used to work with the data.
 
-Therefore, {dm} can copy data [from and to databases](https://dm.cynkra.com/articles/dm.html), and works transparently with both in-memory data and with relational database systems.
+Therefore, {dm} can copy data [from and to databases](https://dm.cynkra.com/articles/howto-dm-copy.html), and works transparently with both in-memory data and with relational database systems.
 
 For example, let's create a local SQLite database and copy the `dm` object to it:
 

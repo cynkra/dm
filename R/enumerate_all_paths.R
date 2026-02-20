@@ -32,11 +32,13 @@ enumerate_all_paths <- function(dm, start) {
     split_to_list()
 }
 
-enumerate_all_paths_impl <- function(node,
-                                     edge_id = NULL,
-                                     path = set_names(node),
-                                     all_fks,
-                                     helper_env) {
+enumerate_all_paths_impl <- function(
+  node,
+  edge_id = NULL,
+  path = set_names(node),
+  all_fks,
+  helper_env
+) {
   if (!is.null(edge_id)) {
     # increase tbl_node[[node]] by 1, return this index in a suffix
     usage_idx <- inc_tbl_node(node, helper_env)
@@ -65,6 +67,7 @@ enumerate_all_paths_impl <- function(node,
     pwalk(enumerate_all_paths_impl, path, all_fks, helper_env)
 }
 
+#' @autoglobal
 rename_unique <- function(all_paths) {
   node_lookup <-
     bind_rows(
@@ -93,10 +96,7 @@ inc_tbl_node <- function(node, helper_env) {
   out
 }
 
-add_path_to_all_paths <- function(all_fks,
-                                  edge_id,
-                                  node_lookup,
-                                  helper_env) {
+add_path_to_all_paths <- function(all_fks, edge_id, node_lookup, helper_env) {
   all_paths <- helper_env$all_paths
   path_element <-
     all_fks %>%
@@ -112,6 +112,7 @@ add_path_to_all_paths <- function(all_fks,
   )
 }
 
+#' @autoglobal
 split_to_list <- function(all_paths) {
   table_mapping <- bind_rows(
     select(all_paths, new_table = new_child_table, table = child_table),

@@ -14,7 +14,15 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
+
+if (rlang::is_installed("fansi")) {
+  fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message"))
+} else if (default_eval() && Sys.getenv("GITHUB_JOB") != "rcc-suggests") {
+  cli::cli_abort(
+    "{.pkg fansi} required for rendering vignettes but not installed."
+  )
+}
+
 options(crayon.enabled = knitr::is_html_output(excludes = "gfm"), width = 75, cli.width = 75)
 
 knit_print.grViz <- function(x, ...) {
@@ -28,9 +36,6 @@ knit_print.grViz <- function(x, ...) {
 input <- readLines(knitr::current_input())
 if (rlang::has_length(grep('^library[(]"?dm"?[)]', input))) {
   library(dm)
-}
-if (rlang::has_length(grep('^library[(]"?tidyverse"?[)]', input))) {
-  library(tidyverse)
 }
 if (rlang::has_length(grep('^library[(]"?dplyr"?[)]', input))) {
   library(dplyr)

@@ -55,14 +55,15 @@ dm_select_tbl_impl <- function(dm, selected) {
     filter_recode_table_def(selected) %>%
     filter_recode_table_fks(selected)
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 filter_recode_table_fks <- function(def, selected) {
   def$fks <-
     # as_list_of() is needed so that `fks` doesn't become a normal list
     as_list_of(map(
-      def$fks, filter_recode_fks_of_table,
+      def$fks,
+      filter_recode_fks_of_table,
       selected = selected
     ))
   def
@@ -74,19 +75,19 @@ filter_recode_table_def <- function(data, selected) {
   idx <- match(selected, data$table, nomatch = 0L)
 
   data[idx, ] %>%
-    mutate(table = recode(table, !!!prep_recode(selected)))
+    mutate(table = recode_compat(table, prep_recode(selected)))
 }
 
 filter_recode_fks_of_table <- function(data, selected) {
   # data$table can have multiple entries, we don't care about the order
   idx <- data$table %in% selected
   out <- data[idx, ]
-  out$table <- recode(out$table, !!!prep_recode(selected))
+  out$table <- recode_compat(out$table, prep_recode(selected))
   out
 }
 
 prep_recode <- function(x) {
-  set_names(names(x), x)
+  set_names(names2(x), x)
 }
 
 prep_compact_recode <- function(x) {
@@ -99,6 +100,6 @@ recode2 <- function(x, new) {
   if (is_empty(recipe)) {
     x
   } else {
-    recode(x, !!!recipe)
+    recode_compat(x, recipe)
   }
 }

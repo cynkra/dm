@@ -1,15 +1,485 @@
-<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+<!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.3.9000
+# dm 1.0.12.9014
+
+## Continuous integration
+
+- Tweaks (#2354).
+
+
+# dm 1.0.12.9013
+
+## Continuous integration
+
+- Install odbc from GitHub remote to avoid failures on older versions of R.
+
+
+# dm 1.0.12.9012
 
 ## Chore
 
-- Avoid running example without database connection.
+- Better traceback location for selection errors (#2351).
+
+
+# dm 1.0.12.9011
+
+## Continuous integration
+
+- Install binaries from r-universe for dev workflow (#2348).
+
+
+# dm 1.0.12.9010
+
+## Continuous integration
+
+- Fix reviewdog and add commenting workflow (#2345).
+
+
+# dm 1.0.12.9009
+
+## Continuous integration
+
+- Use workflows for fledge (#2343).
+
+
+# dm 1.0.12.9008
+
+## Continuous integration
+
+- Sync (#2341).
+
+
+# dm 1.0.12.9007
+
+## Chore
+
+- Format with air with line length 100 (#2335).
+
+## Continuous integration
+
+- Fix dev pkgdown.
+
+## Documentation
+
+- Agent docs and updated instructions.
+
+## claude
+
+- Fix config.
+
+
+# dm 1.0.12.9006
+
+## Chore
+
+- Adapt to igraph \>= 2.2.0 (#2289).
+
+
+# dm 1.0.12.9005
+
+## Continuous integration
+
+- Use reviewdog for external PRs (#2323).
+
+
+# dm 1.0.12.9004
+
+## Chore
+
+- Auto-update from GitHub Actions (#2321).
+
+
+# dm 1.0.12.9003
+
+## Continuous integration
+
+- Cleanup and fix macOS (#2317).
+
+
+# dm 1.0.12.9002
+
+## Testing
+
+- Add tests for `check_key()` (#2298).
+
+
+# dm 1.0.12.9001
+
+## Bug fixes
+
+- `check_key()` returns input data frame when key is valid (#2221, #2303).
+
+- Correct deprecation warning message for `dm_squash_to_tbl()` (#1364, #2302).
+
+## Chore
+
+- Use summary reporter.
+
+- Support SQL Server, needs image update.
+
+- Fully support MariaDB.
+
+- Support new `DM_TEST_*_HOST` env vars.
+
+- Add MariaDB, do not connect yet.
+
+- Add Postgres to devcontainer.
+
+- Claude settings.
+
+- Claude and Copilot settings.
+
+- Add devcontainer.
+
+- Add Claude Code GitHub Workflow.
+
+## Continuous integration
+
+- Format with air, check detritus, better handling of `extra-packages` (#2308).
+
+## Testing
+
+- Add snapshot test for `dm_squash_to_tbl()` (#1364, #2299).
 
 ## Uncategorized
 
-- Merged cran-1.0.2 into main
+- Feat!: `copy_dm_to()` uses `dm_sql()`. Unique keys and autoincrement primary keys (#1725) are created on the database. Data models with cyclic references are supported on databases that allow adding constraints in `ALTER TABLE` statements (at this time, all except DuckDB and SQLite, #664) (#2022) (@krlmlr, @41898282+github-actions\[bot\], #1887).
 
+
+# dm 1.0.12.9000
+
+## fledge
+
+- CRAN release v1.0.12 (#2295).
+
+
+# dm 1.0.12
+
+## Bug fixes
+
+- Improve detection of foreign-key relationships in Postgres (#1879, #2286).
+
+- Avoid including constraints from a different `constraint_schema` when learning from a database (#2228, #2275).
+
+## Features
+
+- Add support for Redshift connections (@owenjonesuob, #2215).
+
+## Chore
+
+- Remove fansi.
+
+- Suggest package used in demo.
+
+- Bump RMariaDB version (#2244).
+
+- Drop crayon and mockr dependencies (@olivroy, #2220).
+
+## Documentation
+
+- Add cynkra ROR (#2282).
+
+- Fix intended links (@guspan-tanadi, #2278).
+
+- Restore empty space removed by styler (#2269).
+
+- Use `index.md`.
+
+- Tweak formatting (@salim-b, #2232).
+
+- Fix typo (@salim-b, #2218).
+
+## Testing
+
+- Stabilize learning tests (#2291).
+
+- Fix compatibility with waldo \>= 0.6.0 (#2240).
+
+
+# dm 1.0.11
+
+## Features
+
+- Add support for Redshift connections (@owenjonesuob, #2215).
+
+## Chore
+
+- Drop crayon and mockr dependencies (@olivroy, #2220).
+
+## Documentation
+
+- Use `index.md`.
+
+- Tweak formatting (@salim-b, #2232).
+
+- Fix typo (@salim-b, #2218).
+
+## Testing
+
+- Fix compatibility with waldo \>= 0.6.0 (#2240).
+
+
+# dm 1.0.10
+
+## Chore
+
+- Establish compatibility with igraph \>= 2.0.0 (#2187) and withr 3.0.0 (#2184).
+
+- Reexport `tibble::glimpse()` instead of `pillar::glimpse()` to avoid pillar dependency with roxygen2 7.3.0 (#2179).
+
+
+# dm 1.0.9
+
+## Features
+
+- `dm_sql()` now processes `table_names` with `dbplyr::escape()`, therefore also accepting dbplyr objects (#2129).
+
+## Chore
+
+- Adapt to DBI \>= 1.2.0 (#2148, #2155).
+
+
+# dm 1.0.8
+
+## Bug fixes
+
+- `copy_dm_to()` creates string columns of necessary lengths for MariaDB and SQL Server. This worked before for SQL Server in dm 1.0.5, now also works on MariaDB (#311, #2066, #2082).
+
+## Features
+
+- Explicitly fail on `compute(temporary = TRUE)`, which never worked correctly (#2059, #2103).
+
+- Warn about DuckDB not supporting autoincrementing primary keys (#2099).
+
+## Chore
+
+- Make `check_suggested()` a standalone (#2054).
+
+## Documentation
+
+- Tweak vignette for `compute(temporary = TRUE)`.
+
+- Update documentation of `check_suggested()` (@olivroy, #2055).
+
+## Performance
+
+- Speed up `dm()`, `new_dm()`, `as_dm()` and `dm_validate()`. `dm()` and `as_dm()` no longer call `dm_validate()` (#2108).
+
+## Testing
+
+- Add test for `copy_dm_to(table_names = )` (#250, #2101).
+
+- Work around test failures for dbplyr 2.4.0.
+
+- Remove most skips from tests (#2052).
+
+
+# dm 1.0.7
+
+## Features
+
+- `copy_dm_to()` now warns unconditionally on unsupported arguments, and fails if `copy_to` is provided (#1944). Use the new `dm_sql()` function as a replacement for `copy_dm_to(copy_to = )` (#1915, #2011, @jangorecki).
+
+- New `json_unnest()` and `json_unpack()`, currently implemented for data frames only (#991, #997).
+
+- `dm_rows_append()` also works for local dm, with support for autoincrement primary keys (#1727, #1745).
+
+- Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
+
+- Test MySQL on GHA (#1940).
+
+- Improve MySQL compatibility regarding learning of database schemas and checking of constraints (#1938).
+
+## Breaking changes
+
+- Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
+
+## Bug fixes
+
+- Compatibility with duckdb 0.9.1.
+
+- Minor fixes in `dm_pack_tbl()` and `dm_unwrap_tbl()` (#1947).
+
+## Documentation
+
+- Use `rlang::check_installed()` internally to install missing suggested packages on the fly (@olivroy, #1348, #2036, #2039, #2040).
+
+- Use vectorized `rlang::is_installed()`to decide if examples should be run (@olivroy, #2043).
+
+- Recategorize and describe function reference.
+
+- Better error and information messages when querying keys.
+
+- `collect.zoomed_dm()` shows a more helpful error message (#1929, #1945).
+
+- Add information on default font size to `?dm_draw` (#1935).
+
+- Add `db-*` rules to Makefile to simplify Docker-based database setup.
+
+- Remove curly braces, add `\pkg` (@olivroy, #2042).
+
+## Performance
+
+- Replace `tibble()` by `fast_tibble()` (@mgirlich, #1928).
+
+- Replace superseded `dplyr::recode()` (@mgirlich, #1927).
+
+## Testing
+
+- Remove most skips from tests (#2052).
+
+- Add explicit unique key to `dm_for_filter()`.
+
+- Add Postgres test for `dm_sql()`.
+
+- Switch internal testing to MariaDB.
+
+- Fast offline checks with new `"DM_OFFLINE"` environment variable.
+
+- New GHA checks for the case of missing suggested packages (#1952).
+
+## Chore
+
+- Make `check_suggested()` a standalone (#2054).
+
+- Backport changes from attempted CRAN release (#2046).
+
+- Move magrittr (#1975, #1983), DBI (#1974), and pillar (#1976) to `"Suggests"`.
+
+- Require RMariaDB 1.3.0, work around tidyverse/dbplyr#1190 and tidyverse/dbplyr#1195 (#1989).
+
+## Internal
+
+- Prefer `map*()` over `lapply()` and `vapply()`.
+
+- `styler::style_pkg(scope = "tokens")`.
+
+- Rename internal `new_dm3()` to `dm_from_def()` (#1225, #1949).
+
+- Remove dead code (#979, #1950, #1871).
+
+- Reorganize `build_copy_queries()` (#1923).
+
+- Avoid `dbplyr::ident_q()` (#1788).
+
+- Add ellipsis to `tbl_sum()` signature (#1941).
+
+
+# dm 1.0.6
+
+## Bug fixes
+
+- Compare version returned by `getRversion()` with string instead of number.
+
+- Work around vctrs bug in jsonlite 1.8.5.
+
+## Features
+
+- `dm_from_con()` gains `.names` argument for pattern-based construction of table names in the dm object (@owenjonesuob, #1790).
+
+- New `dm_set_table_descriptions()`, `dm_get_table_descriptions()` and `dm_reset_table_descriptions()` to set table labels as persistent attributes of the table object (#1888).
+
+- `dm_from_con()` can retrieve multiple schemas, pass a character vector to the `schema` argument (@owenjonesuob, #1533, #1789).
+
+- `build_copy_queries()` and `db_learn_from_db()` improvements (@samssann, #1642, #1677, #1739).
+
+- UK support for `dm_draw()` (#1731, #1877).
+
+- Allow for additional description of tables in dm_draw() (#1875, #1876).
+
+## Chore
+
+- Establish compatibility with dbplyr 2.3.3 and 2.4.0 (@mgirlich, #1919).
+
+- In `copy_dm_to()`, call `collect()` only when copying data, table by table (@jangorecki, #1900).
+
+- Use roxyglobals (#1838).
+
+- Require purrr \>= 1.0.0 for `list_c()` (#1847, #1848).
+
+## Documentation
+
+- Add table description to diagram in README.
+
+- Tweak testing instructions. Mention `Makefile` in CONTRIBUTING.md. Describe Docker setup (#1898).
+
+- Vignette corrections (@MikeJohnPage, #1882).
+
+- Avoid tidyverse package.
+
+## Testing
+
+- Fix local tests (#1921).
+
+
+# dm 1.0.5
+
+## Features
+
+- Progress bars for `dm_wrap_tbl()` and `dm_unwrap_tbl()` (#835, #1450).
+
+## Documentation
+
+- Add cheat sheet as a vignette (#1653).
+
+- Suggest creating a function for your database `dm` object (#1827, #1828).
+
+- Add alternative text to author images for pkgdown website (#1804).
+
+## Chore
+
+- Compatibility with dev jsonlite (#1837).
+
+- Remove tidyverse dependency (#1798, #1834).
+
+- Minimal patch to fix multiple match updates (@DavisVaughan, #1806).
+
+- Adapt to rlang 1.1.0 changes (#1817).
+
+- Make sure `{dm}` passes "noSuggests" workflow (#1659).
+
+
+# dm 1.0.4
+
+## Features
+
+- `dm_add_pk()` gains `autoincrement` argument (#1689), autoincrement primary keys are configured on the database with `copy_dm_to()` (#1696).
+
+- New `dm_add_uk()`, `dm_rm_uk()` and `dm_get_all_uks()` functions for explicit support of unique keys (#622, #1716).
+
+- `dm_get_all_pks()` and `dm_get_all_fks()` return output in the order of `table` or `parent_table` argument (#1707).
+
+- Improve error message for `dm_add_pk()` when the `columns` argument is missing (#1644, #1646).
+
+## Breaking changes
+
+- `dm_get_all_pks()`, `dm_get_all_fks()`, and `dm_get_all_uks()` require unquoted table names as input, for consistency with other parts of the API (#1741).
+
+## Bug fixes
+
+- `dm_examine_constraints()` works for `dm` objects on the database with compound keys (#1713).
+
+## Documentation
+
+- Update pkgdown URL to <https://dm.cynkra.com/> (#1652).
+
+- Fix link rot (#1671).
+
+## Internal
+
+- Require dplyr >= 1.1.0 and lifecycle >= 1.0.3 (#1771, #1637).
+
+- Checks pass if all suggested packages are missing (#1659).
+
+- Fix r-devel builds (#1776).
+
+- `dm_unpack_tbl()` sets PK before FK (#1715).
+
+- Clean up `dm_rows_append()` implementation (#1714).
+
+- `dm()` accepts tables that are of class `"tbl_sql"` but not `"tbl_dbi"` (#1695, #1710).
+
+- Use correctly typed missing value for lists (@DavisVaughan, #1686).
 
 
 # dm 1.0.3
@@ -145,7 +615,7 @@
 - `nest_join()` and `pack_join()` support `zoomed_df` objects (#1119, @IndrajeetPatil).
 
 
-## API 
+## API
 
 - Marked stable functions as stable, in particular `dm()` and related functions (#1032, #1040).
 
@@ -224,7 +694,7 @@
 ## Features
 
 - New `dm_wrap_tbl()`, `dm_unwrap_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()`, `dm_pack_tbl()` and `dm_unpack_tbl()` (#595, #733, #737).
-- New `dm_examine_cardinality()` (#264, #735). 
+- New `dm_examine_cardinality()` (#264, #735).
 - New `pack_join()` generic and method for data frames, the same to `tidyr::pack()` as `dplyr::nest_join()` is to `tidyr::nest()` (#721, #722).
 - `dm_pixarfilms()` is exported and gains a `consistent = FALSE` argument; if `TRUE` the data is modified so that all referential constraints are satisfied (#703, #707, #708, @erictleung).
 

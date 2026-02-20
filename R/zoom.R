@@ -1,4 +1,3 @@
-
 #' Mark table for manipulation
 #'
 #' @description
@@ -32,13 +31,13 @@
 #' Calling [filter()] on a zoomed `dm` is different from calling [dm_filter()]:
 #' only with the latter, the filter expression is added to the list of table filters stored in the dm.
 #'
-#' Furthermore, different `join()`-variants from {dplyr} are also supported,
+#' Furthermore, different `join()`-variants from \pkg{dplyr} are also supported,
 #' e.g. [left_join()] and [semi_join()].
 #' (Support for [nest_join()] is planned.)
 #' The join-methods for `dm_zoomed` infer the columns to join by from the primary and foreign keys,
 #' and have an extra argument `select` that allows choosing the columns of the RHS table.
 #'
-#' And -- last but not least -- also the {tidyr}-functions [unite()] and [separate()] are supported for `dm_zoomed`.
+#' And -- last but not least -- also the \pkg{tidyr}-functions [unite()] and [separate()] are supported for `dm_zoomed`.
 #'
 #' @rdname dm_zoom_to
 #' @aliases zoomed_df
@@ -47,7 +46,7 @@
 #' @return For `dm_zoom_to()`: A `dm_zoomed` object.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' flights_zoomed <- dm_zoom_to(dm_nycflights13(), flights)
 #'
 #' flights_zoomed
@@ -87,7 +86,7 @@ dm_zoom_to <- function(dm, table) {
   def$zoom[[where]] <- zoomed_tbl
   def$col_tracker_zoom[[where]] <- set_names(colnames(zoomed_tbl))
 
-  new_dm3(def, zoomed = TRUE)
+  dm_from_def(def, zoomed = TRUE)
 }
 
 is_zoomed <- function(dm) {
@@ -129,7 +128,8 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   names_list <- repair_table_names(
     old_names = src_tbls_impl(dm),
     new_names = new_tbl_name_chr,
-    repair, quiet
+    repair,
+    quiet
   )
 
   dm_unzoomed <-
@@ -144,11 +144,15 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   dm_wo_outgoing_fks <-
     dm_unzoomed %>%
     dm_add_tbl_impl(
-      new_tbl, new_tbl_name_chr,
+      new_tbl,
+      new_tbl_name_chr,
       filters = list_of(new_filters),
 
       # PK: either the same primary key as in the old table, renamed in the new table, or no primary key if none available
       pks = list_of(update_zoomed_pk(dm)),
+
+      # UK: either the same unique key as in the old table, renamed in the new table, or no unique key if none available
+      uks = list_of(update_zoomed_uk(dm)),
 
       # incoming FKs: in the new row, based on the old table;
       # if PK available, foreign key relations can be copied from the old table
@@ -193,6 +197,7 @@ dm_update_zoomed <- function(dm) {
 
   if (upd_keys) {
     new_def$pks[[where]] <- update_zoomed_pk(dm)
+    new_def$uks[[where]] <- update_zoomed_uk(dm)
     new_def$fks[[where]] <- update_zoomed_incoming_fks(dm)
 
     tracked_cols <- new_def$col_tracker_zoom[[where]]
@@ -201,11 +206,12 @@ dm_update_zoomed <- function(dm) {
 
   new_def %>%
     clean_zoom() %>%
-    new_dm3()
+    dm_from_def()
 }
 
 #' @rdname dm_zoom_to
 #' @export
+#' @autoglobal
 dm_discard_zoomed <- function(dm) {
   if (!is_zoomed(dm)) {
     return(dm)
@@ -223,14 +229,14 @@ dm_discard_zoomed <- function(dm) {
 
   def %>%
     clean_zoom() %>%
-    new_dm3()
+    dm_from_def()
 }
 
 dm_clean_zoomed <- function(dm) {
   dm %>%
     dm_get_def() %>%
     clean_zoom() %>%
-    new_dm3()
+    dm_from_def()
 }
 
 clean_zoom <- function(def) {
@@ -254,6 +260,21 @@ update_zoomed_pk <- function(dm) {
   upd_pk
 }
 
+update_zoomed_uk <- function(dm) {
+  old_tbl_name <- orig_name_zoomed(dm)
+  tracked_cols <- col_tracker_zoomed(dm)
+  orig_uk <- dm %>%
+    dm_get_def() %>%
+    dm_get_all_uks_def_impl(old_tbl_name)
+  if (has_length(orig_uk$uk_col) && all(get_key_cols(orig_uk$uk_col) %in% tracked_cols)) {
+    upd_uk <- new_uk(map(orig_uk$uk_col, ~ recode2(get_key_cols(.x), tracked_cols)))
+  } else {
+    upd_uk <- new_uk()
+  }
+
+  upd_uk
+}
+
 update_zoomed_incoming_fks <- function(dm) {
   old_tbl_name <- orig_name_zoomed(dm)
   tracked_cols <- col_tracker_zoomed(dm)
@@ -262,13 +283,16 @@ update_zoomed_incoming_fks <- function(dm) {
   orig_idx <- which(def$table == old_tbl_name)
   orig_fk <- def$fks[[orig_idx]]
 
-  orig_fk$ref_column <- map(orig_fk$ref_column, ~ {
-    if (all(.x %in% tracked_cols)) {
-      recode2(.x, tracked_cols)
-    } else {
-      NULL
+  orig_fk$ref_column <- map(
+    orig_fk$ref_column,
+    ~ {
+      if (all(.x %in% tracked_cols)) {
+        recode2(.x, tracked_cols)
+      } else {
+        NULL
+      }
     }
-  })
+  )
 
   orig_fk[lengths(orig_fk$ref_column) > 0, ]
 }
@@ -295,7 +319,12 @@ update_zoomed_fks <- function(dm, old_tbl_name, tracked_cols) {
     filter(child_table == !!old_tbl_name) %>%
     filter(map_lgl(child_fk_cols, ~ all(.x %in% !!tracked_cols))) %>%
     distinct() %>%
-    mutate(child_fk_cols = new_keys(map(child_fk_cols, ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)])))
+    mutate(
+      child_fk_cols = new_keys(map(
+        child_fk_cols,
+        ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)]
+      ))
+    )
 }
 
 dm_insert_zoomed_outgoing_fks <- function(dm, new_tbl_name, old_tbl_name, tracked_cols) {
@@ -336,7 +365,7 @@ replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_cols = NULL) {
   if (!is_null(tracked_cols)) {
     def$col_tracker_zoom[[where]] <- tracked_cols
   }
-  new_dm3(def, zoomed = TRUE)
+  dm_from_def(def, zoomed = TRUE)
 }
 
 check_zoomed <- function(dm) {

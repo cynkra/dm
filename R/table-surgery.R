@@ -60,7 +60,9 @@ decompose_table <- function(.data, new_id_column, ...) {
     select(.data, !!!sel_vars$indices) %>%
     distinct() %>%
     # Without as.integer(), RPostgres creates integer64 column (#15)
-    mutate(!!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))) %>%
+    mutate(
+      !!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))
+    ) %>%
     select(!!id_col_q, everything())
 
   non_key_indices <-
@@ -144,13 +146,9 @@ reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_colum
   id_col_chr <-
     as_name(id_col_q)
 
-  child_table <-
-    list_of_parent_child_tables %>%
-    extract2("child_table")
+  child_table <- list_of_parent_child_tables[["child_table"]]
 
-  parent_table <-
-    list_of_parent_child_tables %>%
-    extract2("parent_table")
+  parent_table <- list_of_parent_child_tables[["parent_table"]]
 
   child_table %>%
     left_join(parent_table, by = id_col_chr) %>%

@@ -12,10 +12,8 @@ register_pkgdown_methods <- function() {
     return()
   }
 
-  check_suggested(c("DiagrammeR", "DiagrammeRsvg"),
-    use = TRUE,
-    message = "DiagrammeR and DiagrammeRsvg packages needed for this function to work. Please install it."
-  )
+  # FIXME Should we use Config/Needs/website in DESCRIPTION instead?
+  check_suggested(c("DiagrammeR", "DiagrammeRsvg"), "register_pkgdown_methods")
 
   # For dev pkgdown
   s3_register("downlit::replay_html", "dm_draw", replay_html_dm_draw)

@@ -27,9 +27,18 @@
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
 #'   Pass this value explicitly if your code not only uses this function
 #'   to display a data model but relies on the type of the return value.
+#' @param font_size `r lifecycle::badge("experimental")`
 #'
+#'   Font size for:
+#'
+#'   - `header`, defaults to `16`
+#'   - `column`, defaults to `16`
+#'   - `table_description`, defaults to `8`
+#'
+#'   Can be set as a named integer vector, e.g. `c(table_headers = 18L, table_description = 6L)`.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
+#' @seealso [dm_set_table_description()] for adding details to one or more tables in the diagram
 #'
 #' @export
 #'
@@ -38,7 +47,7 @@
 #' Currently, this is an object of class `grViz` (see also
 #' [DiagrammeR::grViz()]), but this is subject to change.
 #'
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13() %>%
 #'   dm_draw()
 #'
@@ -50,22 +59,31 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_get_colors()
-dm_draw <- function(dm,
-                    rankdir = "LR",
-                    ...,
-                    col_attr = NULL,
-                    view_type = c("keys_only", "all", "title_only"),
-                    columnArrows = TRUE,
-                    graph_attrs = "",
-                    node_attrs = "",
-                    edge_attrs = "",
-                    focus = NULL,
-                    graph_name = "Data Model",
-                    column_types = NULL,
-                    backend = "DiagrammeR") {
-  #
+dm_draw <- function(
+  dm,
+  rankdir = "LR",
+  ...,
+  col_attr = NULL,
+  view_type = c("keys_only", "all", "title_only"),
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model",
+  column_types = NULL,
+  backend = "DiagrammeR",
+  font_size = NULL
+) {
   check_not_zoomed(dm)
   check_dots_empty()
+
+  tbl_names <- src_tbls_impl(dm, quiet = TRUE)
+  table_description <- dm_get_table_description_impl(
+    dm,
+    set_names(seq_along(tbl_names), tbl_names)
+  ) %>%
+    prep_recode()
 
   view_type <- arg_match(view_type)
 
@@ -97,7 +115,9 @@ dm_draw <- function(dm,
     node_attrs = node_attrs,
     edge_attrs = edge_attrs,
     focus = focus,
-    graph_name = graph_name
+    graph_name = graph_name,
+    table_description = as.list(table_description),
+    font_size = as.list(font_size)
   )
   bdm_render_graph(graph, top_level_fun = "dm_draw")
 }
@@ -108,6 +128,7 @@ dm_draw <- function(dm,
 #' data model object for drawing.
 #'
 #' @noRd
+#' @autoglobal
 dm_get_data_model <- function(x, column_types = FALSE) {
   def <- dm_get_def(x)
 
@@ -118,25 +139,36 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     stringsAsFactors = FALSE
   )
 
-  references_for_columns <-
-    dm_get_all_fks_impl(x, id = TRUE) %>%
-    transmute(table = child_table, column = format(child_fk_cols), ref = parent_table, ref_col = format(parent_key_cols), keyId = id)
+  all_uks <- dm_get_all_uks_impl(x)
+  references_for_columns <- dm_get_all_fks_impl(x, id = TRUE) %>%
+    left_join(all_uks, by = c("parent_table" = "table", "parent_key_cols" = "uk_col")) %>%
+    rename(uk_col = kind) %>%
+    transmute(
+      table = child_table,
+      column = format(child_fk_cols),
+      ref = parent_table,
+      ref_col = format(parent_key_cols),
+      keyId = id,
+      uk_col = if_else(uk_col != "PK", ", style=\"dashed\"", "")
+    )
 
   references <-
     references_for_columns %>%
     mutate(ref_id = row_number(), ref_col_num = 1L)
 
   keys_pk <-
-    dm_get_all_pks_impl(x) %>%
-    mutate(column = format(pk_col)) %>%
-    select(table, column) %>%
+    all_uks %>%
+    mutate(column = format(uk_col)) %>%
+    select(table, column, kind) %>%
     mutate(key = 1L)
 
   keys_fk <-
     dm_get_all_fks_impl(x) %>%
     mutate(column = format(parent_key_cols)) %>%
     select(table = parent_table, column) %>%
-    mutate(key_fk = 2L)
+    mutate(key_fk = 2L) %>%
+    # `parent_table` and `column` can be referenced by multiple child tables
+    distinct()
 
   if (column_types) {
     types <- dm_get_all_column_types(x)
@@ -148,7 +180,12 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     types %>%
     full_join(keys_pk, by = c("table", "column")) %>%
     full_join(keys_fk, by = c("table", "column")) %>%
-    full_join(references_for_columns, by = c("table", "column")) %>%
+    # there is a legitimate interest to have duplicates in `table` and `column`
+    # in table `references_for_columns`.
+    # When using a dplyr version >= 1.1.0, we get a warning in that case, thus
+    # we need `multiple = "all"`.
+    # FIXME: is there another way? like this we need a min dplyr version 1.1.0.
+    full_join(references_for_columns, by = c("table", "column"), multiple = "all") %>%
     # Order matters: key == 2 if foreign key points to non-default primary key
     mutate(key = coalesce(key, key_fk, 0L)) %>%
     select(-key_fk) %>%
@@ -174,6 +211,7 @@ dm_get_all_columns <- function(x) {
     select(table, column, id)
 }
 
+#' @autoglobal
 dm_get_all_column_types <- function(x) {
   x %>%
     dm_get_tables_impl() %>%
@@ -192,10 +230,10 @@ dm_get_all_column_types <- function(x) {
 #'
 #' @description
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
-#' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+#' The colors can either be specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
 #' the bottom of
-#' [http://rpubs.com/krlmlr/colors](http://rpubs.com/krlmlr/colors).
+#' [https://rpubs.com/krlmlr/colors](https://rpubs.com/krlmlr/colors).
 #'
 #' @inheritParams dm_draw
 #' @param ... Colors to set in the form `color = table`.
@@ -204,7 +242,7 @@ dm_get_all_column_types <- function(x) {
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
 #'     darkblue = starts_with("air"),
@@ -221,12 +259,17 @@ dm_get_all_column_types <- function(x) {
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(!!!nyc_cols) %>%
 #'   dm_draw()
+#' @autoglobal
 dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
-  if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
+  if (any(names(quos) == "")) {
+    abort_only_named_args("dm_set_colors", "the colors")
+  }
   cols <- names(quos)
-  if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
-    all(cols %in% src_tbls_impl(dm))) {
+  if (
+    !all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
+      all(cols %in% src_tbls_impl(dm))
+  ) {
     abort_wrong_syntax_set_cols()
   }
 
@@ -249,7 +292,7 @@ dm_set_colors <- function(dm, ...) {
     mutate(display = coalesce(new_display, display)) %>%
     select(-new_display)
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 color_quos_to_display <- function(...) {

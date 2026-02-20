@@ -63,18 +63,37 @@
 dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_join) {
   check_not_zoomed(dm)
   join_name <- as_label(enexpr(.join))
-  if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) abort_squash_limited()
+  if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) {
+    abort_squash_limited()
+  }
 
   start <- dm_tbl_name(dm, {{ .start }})
 
   vars <- setdiff(src_tbls_impl(dm), start)
   list_of_pts <- eval_select_table(quo(c(...)), vars)
 
-  dm_flatten_to_tbl_impl(dm, start, list_of_pts, join = .join, join_name = join_name, squash = .recursive)
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    list_of_pts,
+    join = .join,
+    join_name = join_name,
+    squash = .recursive
+  )
 }
 
-dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squash, .position = "suffix") {
-  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
+dm_flatten_to_tbl_impl <- function(
+  dm,
+  start,
+  list_of_pts,
+  join,
+  join_name,
+  squash,
+  .position = "suffix"
+) {
+  if (join_name == "nest_join") {
+    abort_no_flatten_with_nest_join()
+  }
 
   force(join)
   stopifnot(is_function(join))
@@ -101,20 +120,21 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
 
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
-  dfs <- igraph::dfs(g, start, unreachable = FALSE, father = TRUE, dist = TRUE)
+  dfs <- igraph::dfs(g, start, unreachable = FALSE, parent = TRUE, dist = TRUE)
 
   # compute all table names
   order_df <-
     tibble(
       name = names(dfs[["order"]]),
-      pred = names(V(g))[unclass(dfs[["father"]])[name]]
+      pred = names(V(g))[unclass(dfs[["parent"]])[name]]
     )
 
   # function to detect any reason for abort()
   check_flatten_to_tbl(
     join_name,
     (nrow(dm_get_filters_impl(dm)) > 0) && !is_empty(list_of_pts),
-    anyNA(order_df$name),
+    # igraph 2.0.0
+    anyNA(order_df$name) || nrow(order_df) < igraph::vcount(g),
     g,
     auto_detect,
     nrow(order_df) > 2,
@@ -134,10 +154,7 @@ dm_flatten_to_tbl_impl <- function(dm, start, list_of_pts, join, join_name, squa
   order_df <- left_join(tibble(name = unname(list_of_pts)), order_df, by = "name")
 
   # list of join partners
-  ordered_table_list <-
-    prep_dm %>%
-    dm_get_tables() %>%
-    extract(order_df$name)
+  ordered_table_list <- dm_get_tables(prep_dm)[order_df$name]
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
   # perform the joins according to the list, starting with table `initial_LHS`
@@ -170,7 +187,15 @@ dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
   start <- rel$child_table
   other <- rel$parent_table
 
-  dm_flatten_to_tbl_impl(dm, start, other, join = join, join_name = join_name, squash = FALSE, .position = "prefix")
+  dm_flatten_to_tbl_impl(
+    dm,
+    start,
+    other,
+    join = join,
+    join_name = join_name,
+    squash = FALSE,
+    .position = "prefix"
+  )
 }
 
 parent_child_table <- function(dm, table_1, table_2) {
@@ -195,14 +220,16 @@ parent_child_table <- function(dm, table_1, table_2) {
   rel
 }
 
-check_flatten_to_tbl <- function(join_name,
-                                 part_cond_abort_filters,
-                                 any_not_reachable,
-                                 g,
-                                 auto_detect,
-                                 more_than_1_pt,
-                                 has_grandparent,
-                                 squash) {
+check_flatten_to_tbl <- function(
+  join_name,
+  part_cond_abort_filters,
+  any_not_reachable,
+  g,
+  auto_detect,
+  more_than_1_pt,
+  has_grandparent,
+  squash
+) {
   # argument checking, or filter and recompute induced subgraph
   # for subsequent check
   if (any_not_reachable) {
@@ -213,11 +240,14 @@ check_flatten_to_tbl <- function(join_name,
   if (length(V(g)) - 1 != length(E(g))) {
     abort_no_cycles(g)
   }
-  if (join_name == "nest_join") abort_no_flatten_with_nest_join()
-  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) abort_apply_filters_first(join_name)
+  if (join_name == "nest_join") {
+    abort_no_flatten_with_nest_join()
+  }
+  if (part_cond_abort_filters && join_name %in% c("full_join", "right_join")) {
+    abort_apply_filters_first(join_name)
+  }
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
-
 
   # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbors to table `.start`).
@@ -266,5 +296,5 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename, position = "suffix"
 
   def <- dm_get_def(clean_dm)
   def$data[[which(def$table == start)]] <- start_tbl
-  new_dm3(def)
+  dm_from_def(def)
 }

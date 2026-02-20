@@ -1,3 +1,6 @@
+# Run at installation time
+boilerplate <- new_dm_def()
+
 #' Validator
 #'
 #' `dm_validate()` checks the internal consistency of a `dm` object.
@@ -17,6 +20,7 @@
 #'
 #' bad_dm <- structure(list(bad = "dm"), class = "dm")
 #' try(dm_validate(bad_dm))
+#' @autoglobal
 dm_validate <- function(x) {
   check_dm(x)
 
@@ -26,14 +30,14 @@ dm_validate <- function(x) {
 
   def <- dm_get_def(x)
 
-  boilerplate <- new_dm_def()
-
   table_names <- def$table
-  if (any(table_names == "")) abort_dm_invalid("Not all tables are named.")
+  if (any(table_names == "")) {
+    abort_dm_invalid("Not all tables are named.")
+  }
 
   check_df_structure(def, boilerplate, "dm definition")
 
-  if (!all(map_lgl(def$data, ~ inherits(., "data.frame") || inherits(., "tbl_dbi")))) {
+  if (!all(map_lgl(def$data, ~ inherits(., "data.frame") || inherits(., "tbl_sql")))) {
     abort_dm_invalid(
       "Not all entries in `def$data` are of class `data.frame` or `tbl_dbi`. Check `dm_get_tables()`."
     )
@@ -64,7 +68,11 @@ dm_validate <- function(x) {
     select(table = ref_table, column = ref_column) %>%
     check_colnames(dm_col_names, "Parent key")
 
-  stopifnot(lengths(def$pks) %in% 0:1)
+  if (!all(map_int(def$pks, vctrs::vec_size) %in% 0:1)) {
+    abort_dm_invalid(
+      "Not all tables have maximally 1 primary key."
+    )
+  }
 
   pks <-
     def %>%
@@ -82,6 +90,14 @@ dm_validate <- function(x) {
     )
   }
 
+  uks <- def %>%
+    select(table, uks) %>%
+    unnest_list_of_df("uks")
+
+  uks %>%
+    unnest_col("column", character()) %>%
+    check_colnames(dm_col_names, "UK")
+
   check_no_nulls(def)
 
   invisible(x)
@@ -89,7 +105,7 @@ dm_validate <- function(x) {
 
 #' Validator
 #'
-#' `validate_dm()` has been replaced by `dm_validate()` for consistency.
+#' `validate_dm()` has been replaced by [dm_validate()] for consistency.
 #'
 #' @param x An object.
 #'
@@ -107,9 +123,9 @@ debug_dm_validate <- function(dm) {
   dm
 }
 
-check_dm <- function(dm) {
-  if (!is_dm(dm)) {
-    abort_is_not_dm(class(dm))
+check_dm <- function(x) {
+  if (!is_dm(x)) {
+    abort_is_not_dm(class(x))
   }
 }
 
@@ -117,7 +133,9 @@ check_df_structure <- function(check, boilerplate, where) {
   force(where)
 
   if (!identical(names(check), names(boilerplate))) {
-    abort_dm_invalid(glue("Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."))
+    abort_dm_invalid(glue(
+      "Inconsistent column names in {where}: {commas(names(check), Inf)} vs. {commas(names(boilerplate), Inf)}."
+    ))
   }
 
   if (!identical(check[0, ], boilerplate[0, ])) {
@@ -140,7 +158,9 @@ check_colnames <- function(key_tibble, dm_col_names, which) {
   good <- map2_lgl(key_tibble$table, key_tibble$column, ~ ..2 %in% dm_col_names[[..1]])
   if (!all(good)) {
     bad_key <- key_tibble[which(!good)[[1]], ]
-    abort_dm_invalid(glue("{which} column name not in `dm` tables' column names: `{bad_key$table}`$`{bad_key$column}`"))
+    abort_dm_invalid(glue(
+      "{which} column name not in `dm` tables' column names: `{bad_key$table}`$`{bad_key$column}`"
+    ))
   }
 }
 

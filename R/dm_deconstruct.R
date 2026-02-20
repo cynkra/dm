@@ -17,7 +17,7 @@
 #'   generated code.
 #'
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("DiagrammeR")
 #' dm <- dm_nycflights13()
 #' dm_deconstruct(dm)
 #' airlines <- pull_tbl(dm, "airlines", keyed = TRUE)
@@ -46,8 +46,12 @@ dm_deconstruct <- function(dm, dm_name = NULL) {
 
   names <- names(dm)
   code <- paste0(
-    tick_if_needed(names), " <- pull_tbl(", dm_name, ", ",
-    map_chr(names, deparse), ", keyed = TRUE)",
+    tick_if_needed(names),
+    " <- pull_tbl(",
+    dm_name,
+    ", ",
+    map_chr(names, deparse),
+    ", keyed = TRUE)",
     collapse = "\n"
   )
 

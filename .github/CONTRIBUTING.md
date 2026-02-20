@@ -1,6 +1,6 @@
 # Contributing to dm
 
-This outlines how to propose a change to dm. 
+This outlines how to propose a change to dm and how to set up a local development environment with test databases.
 
 ## Fixing typos
 
@@ -66,6 +66,97 @@ See vignette [function naming logic](https://cynkra.github.io/dm/articles/tech-d
 ### Error messages
 
 We strive to standardise error messages in {dm}. A failure should be triggered by `abort()` through a function defined in "error-helpers.R" where the error class is defined with `dm_error_full()` and the error message is created by a separate function. Please follow the pattern used in `"error-helpers.R"`.  Exceptions might exist but they are mostly waiting to be harmonised.
+
+## Test databases
+
+This repository comes with a `docker-compose.yml` file that sets up the databases required for testing.
+All shell commands are expected to be run from the top-level directory of a clone of this repository.
+
+### macOS only: Install colima to run Docker containers
+
+```sh
+brew install colima docker-compose
+colima start -c 4 -m 4 --vm-type vz --vz-rosetta --network-address
+colima status
+#  INFO[0000] colima is running using macOS Virtualization.Framework
+#  INFO[0000] arch: aarch64
+#  INFO[0000] runtime: docker
+#  INFO[0000] mountType: virtiofs
+#  INFO[0000] address: 192.168.64.2
+#  INFO[0000] socket: unix:///Users/kirill/.colima/default/docker.sock
+```
+
+Take note of the `address` in the output, it will be used later.
+
+See also <https://docs.google.com/document/d/1axInaYK6oK6riRio72uTAeQazuork1X0clY9UL9gYoE/edit?usp=sharing> for more details on colima.
+
+### mssql: ODBC drivers
+
+- Linux: <https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver16&tabs=ubuntu18-install%2Calpine17-install%2Cdebian8-install%2Credhat7-13-install%2Crhel7-offline>
+
+- macOS: <https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16>
+
+### Start new database containers
+
+```sh
+make db-start
+# May take several minutes to pull the images
+```
+
+### Start database containers without forcing recreation
+
+```sh
+make db-restart
+# May take several minutes to pull the images
+```
+
+### Connectivity test
+
+macOS:
+
+```sh
+DM_TEST_DOCKER_HOST=192.168.64.2 make connect
+```
+
+Linux:
+
+```sh
+DM_TEST_DOCKER_HOST=127.0.0.1 make connect
+```
+
+Controlled with environment variables:
+
+- `DM_TEST_DOCKER_HOST`: `127.0.0.1` or `localhost` on Linux, see output of `colima status` on macOS
+
+    (On Linux, using `localhost` instead of `127.0.0.1` may cause problems for MariaDB.)
+
+See also the `Makefile`.
+
+It is recommended to adapt your `.Renviron` once connectivity has been established.
+The subsequent instructions omit setting the environment variables explicitly.
+
+
+### Test against a specific database backend
+
+```sh
+make test-postgres
+```
+
+
+### Test against all backends
+
+```sh
+make -j1 test
+```
+
+
+### Test on Docker
+
+```sh
+# make docker-build # not necessary, image available on ghcr.io
+make docker-test
+```
+
 
 ## Code of Conduct
 

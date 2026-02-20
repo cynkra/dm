@@ -62,7 +62,7 @@ dm(trees, mtcars)
 new_dm(list(trees = trees, mtcars = mtcars))
 
 as_dm(list(trees = trees, mtcars = mtcars))
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("dbplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "dbplyr"))) withAutoprint(\{ # examplesIf}
 
 is_dm(dm_nycflights13())
 
@@ -74,6 +74,7 @@ dm_nycflights13()[["airports"]]
 
 dm_nycflights13() \%>\% names()
 \dontshow{\}) # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 library(dm)
 library(nycflights13)
 
@@ -89,7 +90,7 @@ y2 <- dm$flights \%>\%
   left_join(dm$airlines, by = "carrier")
 
 new_dm(list("tbl1" = y1, "tbl2" = y2))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

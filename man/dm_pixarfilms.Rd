@@ -18,7 +18,7 @@ have colors assigned to different tables for visualization with
 Set to \code{TRUE} to remove those records.}
 }
 \value{
-A \code{dm} object consisting of {pixarfilms} tables, complete with
+A \code{dm} object consisting of \pkg{pixarfilms} tables, complete with
 primary and foreign keys and optionally colored.
 }
 \description{
@@ -26,7 +26,7 @@ Creates an example \code{\link{dm}} object from the tables in
 \pkg{pixarfilms}, along with the references.
 }
 \examples{
-\dontshow{if (rlang::is_installed("pixarfilms") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("pixarfilms", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_pixarfilms()
 dm_pixarfilms() \%>\%
   dm_draw()

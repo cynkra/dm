@@ -13,7 +13,7 @@
 #'     derived from [dm_ptype()], overrides `"select"`.
 #'   - `"select"`: [dm_select()] statements for columns that are part
 #'     of the dm.
-#'   - `"keys"`: [dm_add_pk()] and [dm_add_fk()] statements for adding keys.
+#'   - `"keys"`: [dm_add_pk()], [dm_add_fk()] and [dm_add_uk()] statements for adding keys.
 #'   - `"color"`: [dm_set_colors()] statements to set color.
 #'   - `"all"`: All options above except `"select"`
 #'
@@ -39,17 +39,13 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_paste(options = "select")
-dm_paste <- function(dm, select = NULL, ..., tab_width = 2,
-                     options = NULL, path = NULL) {
+dm_paste <- function(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL) {
   check_dots_empty(action = warn)
 
   options <- check_paste_options(options, select, caller_env())
 
   if (!is.null(path)) {
-    check_suggested("brio",
-      use = TRUE,
-      top_level_fun = "dm_paste"
-    )
+    check_suggested("brio", "dm_paste")
   }
 
   code <- dm_paste_impl(dm = dm, options, tab_width = tab_width)
@@ -74,7 +70,12 @@ check_paste_options <- function(options, select, env) {
   }
 
   if (!is.null(select)) {
-    deprecate_soft("0.1.2", "dm::dm_paste(select = )", "dm::dm_paste(options = 'select')", env = env)
+    deprecate_soft(
+      "0.1.2",
+      "dm::dm_paste(select = )",
+      "dm::dm_paste(options = 'select')",
+      env = env
+    )
     if (isTRUE(select)) {
       options <- c(options, "select")
     }
@@ -109,6 +110,9 @@ dm_paste_impl <- function(dm, options, tab_width) {
   # adding code for establishing PKs
   code_pks <- if ("keys" %in% options) dm_paste_pks(dm)
 
+  # adding code for establishing UKs
+  code_uks <- if ("keys" %in% options) dm_paste_uks(dm)
+
   # adding code for establishing FKs
   code_fks <- if ("keys" %in% options) dm_paste_fks(dm)
 
@@ -121,6 +125,7 @@ dm_paste_impl <- function(dm, options, tab_width) {
       code_construct,
       code_select,
       code_pks,
+      code_uks,
       code_fks,
       code_color
     ),
@@ -155,6 +160,7 @@ dm_paste_construct <- function(dm, tab) {
   )
 }
 
+#' @autoglobal
 dm_paste_select <- function(dm) {
   tbl_select <-
     dm %>%
@@ -168,7 +174,23 @@ dm_paste_select <- function(dm) {
 dm_paste_pks <- function(dm) {
   dm %>%
     dm_get_all_pks_impl() %>%
-    mutate(code = glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")) %>%
+    mutate(
+      code = if_else(
+        !is.na(autoincrement) & autoincrement,
+        glue(
+          "dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"
+        ),
+        glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")
+      )
+    ) %>%
+    pull()
+}
+
+dm_paste_uks <- function(dm) {
+  dm %>%
+    dm_get_def() %>%
+    dm_get_all_uks_def_impl() %>%
+    mutate(code = glue("dm::dm_add_uk({tick_if_needed(table)}, {deparse_keys(uk_col)})")) %>%
     pull()
 }
 
@@ -176,7 +198,7 @@ dm_paste_fks <- function(dm) {
   pks <-
     dm %>%
     dm_get_all_pks_impl() %>%
-    set_names(c("parent_table", "parent_default_pk_cols"))
+    set_names(c("parent_table", "parent_default_pk_cols", "autoincrement"))
 
   fks <-
     dm %>%
@@ -187,7 +209,10 @@ dm_paste_fks <- function(dm) {
 
   need_non_default <- !map2_lgl(fpks$parent_key_cols, fpks$parent_default_pk_cols, identical)
   fpks$non_default_parent_key_cols <- ""
-  fpks$non_default_parent_key_cols[need_non_default] <- paste0(", ", deparse_keys(fpks$parent_key_cols[need_non_default]))
+  fpks$non_default_parent_key_cols[need_non_default] <- paste0(
+    ", ",
+    deparse_keys(fpks$parent_key_cols[need_non_default])
+  )
 
   on_delete <- if_else(
     fpks$on_delete != "no_action",
@@ -195,7 +220,9 @@ dm_paste_fks <- function(dm) {
     ""
   )
 
-  glue("dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})")
+  glue(
+    "dm::dm_add_fk({tick_if_needed(fpks$child_table)}, {deparse_keys(fpks$child_fk_cols)}, {tick_if_needed(fpks$parent_table)}{fpks$non_default_parent_key_cols}{on_delete})"
+  )
 }
 
 dm_paste_color <- function(dm) {
@@ -249,5 +276,7 @@ abort_unknown_option <- function(options, all_options) {
 
 error_txt_unknown_option <- function(options, all_options) {
   bad_options <- setdiff(options, all_options)
-  glue("Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}.")
+  glue(
+    "Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}."
+  )
 }

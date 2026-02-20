@@ -56,7 +56,7 @@ info_local <-
   collect()
 
 quote_fq_schema <- function(con, catalog, schema) {
-  if (is_postgres(con) || is_mssql(con)) {
+  if (is_postgres(con) || is_redshift(con) || is_mssql(con)) {
     catalog <- dbQuoteIdentifier(con, catalog)
     schema <- dbQuoteIdentifier(con, schema)
     paste0(catalog, ".", schema)
@@ -107,18 +107,31 @@ info_local_named <-
 
   # FIXME: Simplify with rekey, https://github.com/cynkra/dm/issues/519
   dm_zoom_to(schemata) %>%
-  mutate(fq_schema_name = quote_fq_schema(!!con, catalog_name, schema_name), .before = catalog_name) %>%
+  mutate(
+    fq_schema_name = quote_fq_schema(!!con, catalog_name, schema_name),
+    .before = catalog_name
+  ) %>%
   dm_update_zoomed() %>%
 
   dm_zoom_to(tables) %>%
   left_join(schemata, select = fq_schema_name) %>%
-  mutate(fq_table_name = quote_fq_table(!!con, fq_schema_name, table_name), .before = table_catalog) %>%
+  mutate(
+    fq_table_name = quote_fq_table(!!con, fq_schema_name, table_name),
+    .before = table_catalog
+  ) %>%
   mutate(r_table_name = fq_r_table_if_needed(table_catalog, table_schema, table_name)) %>%
   dm_update_zoomed() %>%
 
   dm_zoom_to(table_constraints) %>%
   left_join(tables, select = fq_table_name) %>%
-  mutate(fq_constraint_name = quote_fq_table(!!con, quote_fq_schema(!!con, constraint_catalog, constraint_schema), constraint_name), .before = constraint_catalog) %>%
+  mutate(
+    fq_constraint_name = quote_fq_table(
+      !!con,
+      quote_fq_schema(!!con, constraint_catalog, constraint_schema),
+      constraint_name
+    ),
+    .before = constraint_catalog
+  ) %>%
   select(fq_constraint_name, fq_table_name, everything()) %>%
   dm_update_zoomed() %>%
 
@@ -173,7 +186,12 @@ info_simple <-
   dm_select(key_column_usage, -c(constraint_catalog, constraint_schema, constraint_name)) %>%
   dm_select(constraint_column_usage, -c(table_catalog, table_schema, table_name)) %>%
   dm_select(constraint_column_usage, -c(constraint_catalog, constraint_schema, constraint_name)) %>%
-  dm_set_colors(brown = c(tables, columns), blue = schemata, green4 = ends_with("_constraints"), orange = ends_with("_usage"))
+  dm_set_colors(
+    brown = c(tables, columns),
+    blue = schemata,
+    green4 = ends_with("_constraints"),
+    orange = ends_with("_usage")
+  )
 
 info_simple %>%
   dm_draw()

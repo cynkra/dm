@@ -9,8 +9,9 @@ dm_get_all_fks(dm, parent_table = NULL, ...)
 \arguments{
 \item{dm}{A \code{dm} object.}
 
-\item{parent_table}{One or more table names, as character vector,
+\item{parent_table}{One or more table names, unquoted,
 to return foreign key information for.
+If given, foreign keys are returned in that order.
 The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -29,7 +30,7 @@ A tibble with the following columns:
 Get a summary of all foreign key relations in a \code{\link{dm}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_get_all_fks()
 \dontshow{\}) # examplesIf}

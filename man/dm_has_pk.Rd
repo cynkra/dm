@@ -20,7 +20,7 @@ A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} 
 \code{dm_has_pk()} checks if a given table has columns marked as its primary key.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_has_pk(flights)
 dm_nycflights13() \%>\%
@@ -30,8 +30,11 @@ dm_nycflights13() \%>\%
 \seealso{
 Other primary key functions: 
 \code{\link{dm_add_pk}()},
+\code{\link{dm_add_uk}()},
 \code{\link{dm_get_all_pks}()},
+\code{\link{dm_get_all_uks}()},
 \code{\link{dm_rm_pk}()},
+\code{\link{dm_rm_uk}()},
 \code{\link{enum_pk_candidates}()}
 }
 \concept{primary key functions}
