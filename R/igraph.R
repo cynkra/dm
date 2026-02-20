@@ -20,7 +20,7 @@ new_dm_graph <- function(directed, vnames, from, to) {
 
 # graph_from_data_frame -------------------------------------------------------
 
-dm_graph_from_data_frame <- function(d, directed, vertices = NULL) {
+graph_from_data_frame <- function(d, directed, vertices = NULL) {
   if (igraph_available()) {
     return(igraph::graph_from_data_frame(d, directed = directed, vertices = vertices))
   }
@@ -38,7 +38,7 @@ dm_graph_from_data_frame <- function(d, directed, vertices = NULL) {
 # V: vertex accessor -----------------------------------------------------------
 # Returns a named integer vector: values are 1-based indices, names are vertex names.
 
-dm_V <- function(g) {
+graph_vertices <- function(g) {
   if (igraph_available()) {
     return(igraph::V(g))
   }
@@ -48,7 +48,7 @@ dm_V <- function(g) {
 # E: edge accessor -------------------------------------------------------------
 # Returns an integer vector with a "vnames" attribute (e.g. "from|to").
 
-dm_E <- function(g) {
+graph_edges <- function(g) {
   if (igraph_available()) {
     return(igraph::E(g))
   }
@@ -60,7 +60,7 @@ dm_E <- function(g) {
 # dfs -------------------------------------------------------------------------
 # Returns a list with $order (named integer), $dist (named numeric), $parent (named integer).
 
-dm_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
+graph_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
   if (igraph_available()) {
     return(igraph::dfs(g, root, unreachable = unreachable, parent = parent, dist = dist))
   }
@@ -110,7 +110,7 @@ dm_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
 # mode = "out": for edge u→v, u comes before v (children before parents in FK graph).
 # mode = "in":  for edge u→v, v comes before u (parents before children in FK graph).
 
-dm_topo_sort <- function(g, mode = "out") {
+graph_topo_sort <- function(g, mode = "out") {
   if (igraph_available()) {
     return(igraph::topo_sort(g, mode = mode))
   }
@@ -145,9 +145,9 @@ dm_topo_sort <- function(g, mode = "out") {
 
 # distances -------------------------------------------------------------------
 # Returns a matrix: rows = sources, columns = all vertices.
-# dm_distances(g, v)[1, ] gives distances from v to all vertices.
+# graph_distances(g, v)[1, ] gives distances from v to all vertices.
 
-dm_distances <- function(g, v = NULL) {
+graph_distances <- function(g, v = NULL) {
   if (igraph_available()) {
     return(igraph::distances(g, v))
   }
@@ -188,7 +188,7 @@ dm_distances <- function(g, v = NULL) {
 # induced_subgraph ------------------------------------------------------------
 # Returns a new graph containing only the specified vertices and edges between them.
 
-dm_induced_subgraph <- function(g, vids) {
+graph_induced_subgraph <- function(g, vids) {
   if (igraph_available()) {
     return(igraph::induced_subgraph(g, vids))
   }
@@ -208,7 +208,7 @@ dm_induced_subgraph <- function(g, vids) {
 # predecessor of each vertex on the BFS shortest path from `from`.
 # names(result$predecessors) are the predecessor vertex names (NA for source vertex).
 
-dm_shortest_paths <- function(g, from, to, predecessors = FALSE) {
+graph_shortest_paths <- function(g, from, to, predecessors = FALSE) {
   if (igraph_available()) {
     return(igraph::shortest_paths(g, from, to, predecessors = predecessors))
   }
@@ -254,11 +254,11 @@ dm_shortest_paths <- function(g, from, to, predecessors = FALSE) {
 # delete_vertices -------------------------------------------------------------
 # Returns a new graph with the specified vertices (and their incident edges) removed.
 
-dm_delete_vertices <- function(g, v) {
+graph_delete_vertices <- function(g, v) {
   if (igraph_available()) {
     return(igraph::delete_vertices(g, v))
   }
-  dm_induced_subgraph(g, setdiff(g$vnames, v))
+  graph_induced_subgraph(g, setdiff(g$vnames, v))
 }
 
 # neighbors -------------------------------------------------------------------
@@ -267,7 +267,7 @@ dm_delete_vertices <- function(g, v) {
 # mode = "out": vertices with edges FROM v
 # mode = "all": both
 
-dm_neighbors <- function(g, v, mode = "all") {
+graph_neighbors <- function(g, v, mode = "all") {
   if (igraph_available()) {
     return(igraph::neighbors(g, v, mode = mode))
   }
@@ -285,7 +285,7 @@ dm_neighbors <- function(g, v, mode = "all") {
 # vcount ----------------------------------------------------------------------
 # Returns the number of vertices in the graph.
 
-dm_vcount <- function(g) {
+graph_vcount <- function(g) {
   if (igraph_available()) {
     return(igraph::vcount(g))
   }
@@ -296,7 +296,7 @@ dm_vcount <- function(g) {
 # Returns a list with $circle: a named integer vector of vertices forming the shortest cycle.
 # names($circle) are vertex names.
 
-dm_girth <- function(g) {
+graph_girth <- function(g) {
   if (igraph_available()) {
     return(igraph::girth(g))
   }

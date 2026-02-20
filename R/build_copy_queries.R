@@ -10,7 +10,7 @@ build_copy_queries <- function(
 
   ## Reorder queries according to topological sort so pks are created before associated fks
   graph <- create_graph_from_dm(dm, directed = TRUE)
-  topo <- names(dm_topo_sort(graph, mode = "in"))
+  topo <- names(graph_topo_sort(graph, mode = "in"))
 
   if (length(topo) == length(dm)) {
     dm <- dm[topo]

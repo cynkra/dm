@@ -116,24 +116,24 @@ dm_flatten_to_tbl_impl <- function(
     list_of_pts <- get_names_of_connected(g, start, squash)
   }
   # We use the induced subgraph right away
-  g <- dm_induced_subgraph(g, c(start, list_of_pts))
+  g <- graph_induced_subgraph(g, c(start, list_of_pts))
 
   # each next table needs to be accessible from the former table (note: directed relations)
   # we achieve this with a depth-first-search (DFS) with param `unreachable = FALSE`
-  dfs <- dm_dfs(g, start, unreachable = FALSE, parent = TRUE, dist = TRUE)
+  dfs <- graph_dfs(g, start, unreachable = FALSE, parent = TRUE, dist = TRUE)
 
   # compute all table names
   order_df <-
     tibble(
       name = names(dfs[["order"]]),
-      pred = names(dm_V(g))[unclass(dfs[["parent"]])[name]]
+      pred = names(graph_vertices(g))[unclass(dfs[["parent"]])[name]]
     )
 
   # function to detect any reason for abort()
   check_flatten_to_tbl(
     join_name,
     (nrow(dm_get_filters_impl(dm)) > 0) && !is_empty(list_of_pts),
-    anyNA(order_df$name) || nrow(order_df) < dm_vcount(g),
+    anyNA(order_df$name) || nrow(order_df) < graph_vcount(g),
     g,
     auto_detect,
     nrow(order_df) > 2,
@@ -236,7 +236,7 @@ check_flatten_to_tbl <- function(
   }
 
   # Cycles not yet supported
-  if (length(dm_V(g)) - 1 != length(dm_E(g))) {
+  if (length(graph_vertices(g)) - 1 != length(graph_edges(g))) {
     abort_no_cycles(g)
   }
   if (join_name == "nest_join") {

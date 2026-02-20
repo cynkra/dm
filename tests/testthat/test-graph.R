@@ -16,7 +16,7 @@ test_that("functions working with graphs do the right thing?", {
   )
 
   expect_identical_graph(
-    dm_graph_from_data_frame(
+    graph_from_data_frame(
       tibble(
         tables = c("tf_1", "tf_2", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6"),
         ref_tables = c("tf_2", "tf_7", "tf_3", "tf_4", "tf_5", "tf_6", "tf_7")
@@ -27,24 +27,17 @@ test_that("functions working with graphs do the right thing?", {
   )
 
   expect_snapshot({
-    attr(dm_E(create_graph_from_dm(nyc_comp())), "vnames")
+    attr(graph_edges(create_graph_from_dm(nyc_comp())), "vnames")
   })
 })
 
 test_that("empty graph", {
-  if (igraph_available()) {
-    opt <- igraph::igraph_options(print.id = FALSE)
-    on.exit(igraph::igraph_options(opt))
-    expect_snapshot({
-      create_graph_from_dm(empty_dm())
-      create_graph_from_dm(dm(x = tibble(a = 1)))
-    })
-  }
-
   g0 <- create_graph_from_dm(empty_dm())
   g1 <- create_graph_from_dm(dm(x = tibble(a = 1)))
-  expect_equal(length(dm_V(g0)), 0L)
-  expect_equal(length(dm_V(g1)), 1L)
-  expect_equal(length(dm_E(g0)), 0L)
-  expect_equal(length(dm_E(g1)), 0L)
+  expect_snapshot({
+    names(graph_vertices(g0))
+    names(graph_vertices(g1))
+    attr(graph_edges(g0), "vnames")
+    attr(graph_edges(g1), "vnames")
+  })
 })
