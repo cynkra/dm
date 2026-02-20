@@ -22,7 +22,7 @@ runs:
     - uses: ankane/setup-mysql@v1
       if: env.DM_TEST_SRC == 'test-mysql'
       with:
-        mysql-version: "8.0"
+        mysql-version: "8.4"
 
     - name: Create database (MariaDB), set it to UTF-8, add time zone info
       if: env.DM_TEST_SRC == 'test-maria' || env.DM_TEST_SRC == 'test-mysql'
