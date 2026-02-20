@@ -112,7 +112,8 @@ mutate.dm_keyed_tbl <- function(
   .after = NULL
 ) {
   keys_info <- keyed_get_info(.data)
-  out <- NextMethod()
+  tbl <- unclass_keyed_tbl(.data)
+  out <- mutate(tbl, ..., .by = {{ .by }}, .keep = .keep, .before = {{ .before }}, .after = {{ .after }})
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -140,7 +141,8 @@ transmute.dm_zoomed <- function(.data, ...) {
 #' @export
 transmute.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
-  out <- NextMethod()
+  tbl <- unclass_keyed_tbl(.data)
+  out <- transmute(tbl, ...)
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -165,7 +167,8 @@ select.dm_zoomed <- function(.data, ...) {
 #' @export
 select.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
-  out <- NextMethod()
+  tbl <- unclass_keyed_tbl(.data)
+  out <- select(tbl, ...)
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -214,7 +217,8 @@ rename.dm_zoomed <- function(.data, ...) {
 #' @export
 rename.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
-  out <- NextMethod()
+  tbl <- unclass_keyed_tbl(.data)
+  out <- rename(tbl, ...)
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -440,7 +444,7 @@ summarise.dm_keyed_tbl <- function(.data, ..., .by = NULL, .groups = NULL) {
     new_pk <- NULL
   }
 
-  summarised_tbl <- NextMethod()
+  summarised_tbl <- summarise(tbl, ..., .by = {{ .by }}, .groups = .groups)
 
   # FIXME: Add original FKs for the remaining columns
   # (subsets of the grouped columns), use new UUID

@@ -149,3 +149,17 @@ All dm methods now match their dplyr data.frame method signatures. Named argumen
 
 - Minimum dplyr version bumped from 1.1.0 to 1.2.0.
 - Tests added for all new methods.
+
+## tidyr method alignment
+
+### `unite()`
+
+- tidyr data.frame: `(data, col, ..., sep, remove, na.rm)`
+- Before: `unite.dm(data, ...)`, `unite.dm_keyed_tbl(data, ...)`
+- After: all methods now `(data, col, ..., sep, remove, na.rm)` — full data.frame signature. keyed_tbl method no longer uses `NextMethod()`.
+
+### `separate()`
+
+- tidyr data.frame: `(data, col, into, sep, remove, convert, extra, fill, ...)`
+- Before: `separate.dm(data, ...)`, `separate.dm_zoomed(data, col, into, sep, remove, ...)`, `separate.dm_keyed_tbl(data, ...)`
+- After: all methods now `(data, col, into, sep, remove, convert, extra, fill, ...)` — `convert`, `extra`, `fill` forwarded. keyed_tbl method no longer uses `NextMethod()`.
