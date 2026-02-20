@@ -65,15 +65,36 @@ filter_out.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 }
 
 #' @export
-mutate.dm <- function(.data, ..., .by = NULL, .keep = c("all", "used", "unused", "none"), .before = NULL, .after = NULL) {
+mutate.dm <- function(
+  .data,
+  ...,
+  .by = NULL,
+  .keep = c("all", "used", "unused", "none"),
+  .before = NULL,
+  .after = NULL
+) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
-mutate.dm_zoomed <- function(.data, ..., .by = NULL, .keep = c("all", "used", "unused", "none"), .before = NULL, .after = NULL) {
+mutate.dm_zoomed <- function(
+  .data,
+  ...,
+  .by = NULL,
+  .keep = c("all", "used", "unused", "none"),
+  .before = NULL,
+  .after = NULL
+) {
   tbl <- tbl_zoomed(.data)
-  mutated_tbl <- mutate(tbl, ..., .by = {{ .by }}, .keep = .keep, .before = {{ .before }}, .after = {{ .after }})
+  mutated_tbl <- mutate(
+    tbl,
+    ...,
+    .by = {{ .by }},
+    .keep = .keep,
+    .before = {{ .before }},
+    .after = {{ .after }}
+  )
   # #663: user responsibility: those columns are tracked whose names remain
   selected <- set_names(intersect(colnames(tbl), colnames(mutated_tbl)))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
@@ -82,7 +103,14 @@ mutate.dm_zoomed <- function(.data, ..., .by = NULL, .keep = c("all", "used", "u
 
 #' @rdname dplyr_table_manipulation
 #' @export
-mutate.dm_keyed_tbl <- function(.data, ..., .by = NULL, .keep = c("all", "used", "unused", "none"), .before = NULL, .after = NULL) {
+mutate.dm_keyed_tbl <- function(
+  .data,
+  ...,
+  .by = NULL,
+  .keep = c("all", "used", "unused", "none"),
+  .before = NULL,
+  .after = NULL
+) {
   keys_info <- keyed_get_info(.data)
   out <- NextMethod()
   new_keyed_tbl_from_keys_info(out, keys_info)
@@ -458,7 +486,14 @@ reframe.dm_keyed_tbl <- function(.data, ..., .by = NULL) {
 }
 
 #' @export
-count.dm <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = group_by_drop_default(x)) {
+count.dm <- function(
+  x,
+  ...,
+  wt = NULL,
+  sort = FALSE,
+  name = NULL,
+  .drop = group_by_drop_default(x)
+) {
   check_zoomed(x)
 }
 
@@ -496,7 +531,14 @@ count.dm_zoomed <- function(
 
 #' @rdname dplyr_table_manipulation
 #' @export
-count.dm_keyed_tbl <- function(x, ..., wt = NULL, sort = FALSE, name = NULL, .drop = group_by_drop_default(x)) {
+count.dm_keyed_tbl <- function(
+  x,
+  ...,
+  wt = NULL,
+  sort = FALSE,
+  name = NULL,
+  .drop = group_by_drop_default(x)
+) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
   counted_tbl <- count(tbl, ..., wt = {{ wt }}, sort = sort, name = name, .drop = .drop)
@@ -961,16 +1003,39 @@ semi_join.dm <- function(x, y, by = NULL, copy = FALSE, ..., na_matches = c("na"
 
 #' @rdname dplyr_join
 #' @export
-semi_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"), suffix = NULL, select = NULL) {
+semi_join.dm_zoomed <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  ...,
+  na_matches = c("na", "never"),
+  suffix = NULL,
+  select = NULL
+) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
-  joined_tbl <- semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., na_matches = na_matches)
+  joined_tbl <- semi_join(
+    join_data$x_tbl,
+    join_data$y_tbl,
+    join_data$by,
+    copy = FALSE,
+    ...,
+    na_matches = na_matches
+  )
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
 #' @rdname dplyr_join
 #' @export
-semi_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never")) {
+semi_join.dm_keyed_tbl <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  ...,
+  na_matches = c("na", "never")
+) {
   if (!is_dm_keyed_tbl(y)) {
     return(NextMethod())
   }
@@ -997,16 +1062,39 @@ anti_join.dm <- function(x, y, by = NULL, copy = FALSE, ..., na_matches = c("na"
 
 #' @rdname dplyr_join
 #' @export
-anti_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"), suffix = NULL, select = NULL) {
+anti_join.dm_zoomed <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  ...,
+  na_matches = c("na", "never"),
+  suffix = NULL,
+  select = NULL
+) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
-  joined_tbl <- anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., na_matches = na_matches)
+  joined_tbl <- anti_join(
+    join_data$x_tbl,
+    join_data$y_tbl,
+    join_data$by,
+    copy = FALSE,
+    ...,
+    na_matches = na_matches
+  )
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
 #' @rdname dplyr_join
 #' @export
-anti_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never")) {
+anti_join.dm_keyed_tbl <- function(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  ...,
+  na_matches = c("na", "never")
+) {
   if (!is_dm_keyed_tbl(y)) {
     return(NextMethod())
   }
@@ -1027,14 +1115,34 @@ anti_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ..., na_matches
 }
 
 #' @export
-nest_join.dm <- function(x, y, by = NULL, copy = FALSE, keep = NULL, name = NULL, ..., na_matches = c("na", "never"), unmatched = "drop") {
+nest_join.dm <- function(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  keep = NULL,
+  name = NULL,
+  ...,
+  na_matches = c("na", "never"),
+  unmatched = "drop"
+) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
 #' @inheritParams dplyr::nest_join
 #' @export
-nest_join.dm_zoomed <- function(x, y, by = NULL, copy = FALSE, keep = NULL, name = NULL, ..., na_matches = c("na", "never"), unmatched = "drop") {
+nest_join.dm_zoomed <- function(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  keep = NULL,
+  name = NULL,
+  ...,
+  na_matches = c("na", "never"),
+  unmatched = "drop"
+) {
   y_name <- as_string(enexpr(y))
   name <- name %||% y_name
   join_data <- prepare_join(x, {{ y }}, by, NULL, NULL, NULL, disambiguate = FALSE)
