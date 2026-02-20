@@ -378,11 +378,13 @@ dm_meta_sqlite <- function(con) {
   )
 
   pragma_table_info <- map(set_names(table_names), function(t) {
-    DBI::dbGetQuery(con, paste0("PRAGMA table_info('", t, "')"))
+    t_quoted <- DBI::dbQuoteIdentifier(con, t)
+    DBI::dbGetQuery(con, paste0("PRAGMA table_info(", t_quoted, ")"))
   })
 
   pragma_fk_list <- map(set_names(table_names), function(t) {
-    DBI::dbGetQuery(con, paste0("PRAGMA foreign_key_list('", t, "')"))
+    t_quoted <- DBI::dbQuoteIdentifier(con, t)
+    DBI::dbGetQuery(con, paste0("PRAGMA foreign_key_list(", t_quoted, ")"))
   })
 
   columns <- imap_dfr(pragma_table_info, function(info, tbl) {
