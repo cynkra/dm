@@ -3,53 +3,88 @@
 \name{dplyr_table_manipulation}
 \alias{dplyr_table_manipulation}
 \alias{filter.dm_zoomed}
+\alias{filter.dm_keyed_tbl}
 \alias{filter_out.dm_zoomed}
+\alias{filter_out.dm_keyed_tbl}
 \alias{mutate.dm_zoomed}
+\alias{mutate.dm_keyed_tbl}
 \alias{transmute.dm_zoomed}
+\alias{transmute.dm_keyed_tbl}
 \alias{select.dm_zoomed}
+\alias{select.dm_keyed_tbl}
 \alias{relocate.dm_zoomed}
+\alias{relocate.dm_keyed_tbl}
 \alias{rename.dm_zoomed}
+\alias{rename.dm_keyed_tbl}
 \alias{distinct.dm_zoomed}
+\alias{distinct.dm_keyed_tbl}
 \alias{arrange.dm_zoomed}
+\alias{arrange.dm_keyed_tbl}
 \alias{slice.dm_zoomed}
+\alias{slice.dm_keyed_tbl}
 \alias{group_by.dm_zoomed}
 \alias{group_by.dm_keyed_tbl}
 \alias{ungroup.dm_zoomed}
+\alias{ungroup.dm_keyed_tbl}
 \alias{summarise.dm_zoomed}
 \alias{summarise.dm_keyed_tbl}
 \alias{reframe.dm_zoomed}
 \alias{reframe.dm_keyed_tbl}
 \alias{count.dm_zoomed}
+\alias{count.dm_keyed_tbl}
 \alias{tally.dm_zoomed}
+\alias{tally.dm_keyed_tbl}
 \alias{pull.dm_zoomed}
 \alias{compute.dm_zoomed}
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
 \method{filter}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE)
 
+\method{filter}{dm_keyed_tbl}(.data, ..., .by = NULL, .preserve = FALSE)
+
 \method{filter_out}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE)
+
+\method{filter_out}{dm_keyed_tbl}(.data, ..., .by = NULL, .preserve = FALSE)
 
 \method{mutate}{dm_zoomed}(.data, ...)
 
+\method{mutate}{dm_keyed_tbl}(.data, ...)
+
 \method{transmute}{dm_zoomed}(.data, ...)
+
+\method{transmute}{dm_keyed_tbl}(.data, ...)
 
 \method{select}{dm_zoomed}(.data, ...)
 
+\method{select}{dm_keyed_tbl}(.data, ...)
+
 \method{relocate}{dm_zoomed}(.data, ..., .before = NULL, .after = NULL)
+
+\method{relocate}{dm_keyed_tbl}(.data, ..., .before = NULL, .after = NULL)
 
 \method{rename}{dm_zoomed}(.data, ...)
 
+\method{rename}{dm_keyed_tbl}(.data, ...)
+
 \method{distinct}{dm_zoomed}(.data, ..., .keep_all = FALSE)
+
+\method{distinct}{dm_keyed_tbl}(.data, ..., .keep_all = FALSE)
 
 \method{arrange}{dm_zoomed}(.data, ..., .by_group = FALSE)
 
+\method{arrange}{dm_keyed_tbl}(.data, ..., .by_group = FALSE)
+
 \method{slice}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL)
+
+\method{slice}{dm_keyed_tbl}(.data, ..., .by = NULL, .preserve = FALSE)
 
 \method{group_by}{dm_zoomed}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
 
 \method{group_by}{dm_keyed_tbl}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
 
 \method{ungroup}{dm_zoomed}(x, ...)
+
+\method{ungroup}{dm_keyed_tbl}(x, ...)
 
 \method{summarise}{dm_zoomed}(.data, ..., .by = NULL, .groups = NULL)
 
@@ -68,7 +103,11 @@
   .drop = group_by_drop_default(x)
 )
 
+\method{count}{dm_keyed_tbl}(x, ..., wt = NULL, sort = FALSE, name = NULL)
+
 \method{tally}{dm_zoomed}(x, wt = NULL, sort = FALSE, name = NULL)
+
+\method{tally}{dm_keyed_tbl}(x, wt = NULL, sort = FALSE, name = NULL)
 
 \method{pull}{dm_zoomed}(.data, var = -1, name = NULL, ...)
 

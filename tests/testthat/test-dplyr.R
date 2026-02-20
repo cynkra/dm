@@ -987,3 +987,27 @@ test_that("basic test: 'cross_join()'-methods for `zoomed.dm` work", {
     "only_possible_w_zoom"
   )
 })
+
+# dm_keyed_tbl tests -------------------------------------------------------
+
+test_that("dm_keyed_tbl methods preserve keyed class", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl <- keyed_tbl_impl(dm, "tf_2")
+
+  expect_s3_class(filter(tbl, d > 5), "dm_keyed_tbl")
+  expect_s3_class(filter_out(tbl, d > 5), "dm_keyed_tbl")
+  expect_s3_class(mutate(tbl, d2 = d * 2), "dm_keyed_tbl")
+  expect_s3_class(transmute(tbl, d2 = d * 2), "dm_keyed_tbl")
+  expect_s3_class(select(tbl, c, d), "dm_keyed_tbl")
+  expect_s3_class(relocate(tbl, e, .before = c), "dm_keyed_tbl")
+  expect_s3_class(rename(tbl, c2 = c), "dm_keyed_tbl")
+  expect_s3_class(distinct(tbl, e), "dm_keyed_tbl")
+  expect_s3_class(arrange(tbl, desc(d)), "dm_keyed_tbl")
+  expect_s3_class(slice(tbl, 1:2), "dm_keyed_tbl")
+  expect_s3_class(ungroup(group_by(tbl, e)), "dm_keyed_tbl")
+  expect_s3_class(count(tbl, e), "dm_keyed_tbl")
+  expect_s3_class(tally(tbl), "dm_keyed_tbl")
+  expect_s3_class(reframe(group_by(tbl, e), d_mean = mean(d, na.rm = TRUE)), "dm_keyed_tbl")
+})

@@ -2,11 +2,24 @@
 
 ## New methods
 
-- `filter_out()` methods for `dm` and `dm_zoomed`: Companion to `filter()` for specifying rows to drop. The `dm` method raises an informative error directing users to zoom first, consistent with `filter()`.
+- `filter_out()` methods for `dm`, `dm_zoomed`, and `dm_keyed_tbl`: Companion to `filter()` for specifying rows to drop. The `dm` method raises an informative error directing users to zoom first, consistent with `filter()`.
 
 - `reframe()` methods for `dm`, `dm_zoomed`, and `dm_keyed_tbl`: Now stable in dplyr 1.2.0. Works like `summarise()` but can return any number of rows per group. The `dm` method raises an informative error directing users to zoom first.
 
 - `cross_join()` methods for `dm`, `dm_zoomed`, and `dm_keyed_tbl`: Performs a cross join (Cartesian product) between the zoomed table and another table in the dm. The `dm` method raises an informative error directing users to zoom first.
+
+## New `dm_keyed_tbl` methods
+
+The following `dm_keyed_tbl` methods have been added to preserve the keyed class through dplyr operations. Each strips the keyed class, applies the dplyr verb, and re-wraps the result:
+
+- `filter.dm_keyed_tbl()`, `filter_out.dm_keyed_tbl()` — row filtering, keys preserved
+- `mutate.dm_keyed_tbl()`, `transmute.dm_keyed_tbl()` — column transformation, keys preserved
+- `select.dm_keyed_tbl()`, `relocate.dm_keyed_tbl()`, `rename.dm_keyed_tbl()` — column selection/reordering, keys preserved
+- `distinct.dm_keyed_tbl()` — duplicate removal, keys preserved
+- `arrange.dm_keyed_tbl()` — row ordering, keys preserved
+- `slice.dm_keyed_tbl()` — row slicing, keys preserved
+- `ungroup.dm_keyed_tbl()` — remove grouping, keys preserved
+- `count.dm_keyed_tbl()`, `tally.dm_keyed_tbl()` — aggregation, PK dropped (structure changes)
 
 ## Signature alignment
 
@@ -16,58 +29,58 @@ All dm methods now match the dplyr 1.2.0 generic signatures. Named arguments fro
 
 - dplyr generic: `(.data, ..., .by, .preserve)`
 - Before: `filter.dm(.data, ...)`, `filter.dm_zoomed(.data, ...)`
-- After: `filter.dm(.data, ..., .by, .preserve)`, `filter.dm_zoomed(.data, ..., .by, .preserve)`
+- After: `filter.dm(.data, ..., .by, .preserve)`, `filter.dm_zoomed(.data, ..., .by, .preserve)`, `filter.dm_keyed_tbl(.data, ..., .by, .preserve)` (new)
 
 ### `filter_out()` (new)
 
 - dplyr generic: `(.data, ..., .by, .preserve)`
-- `filter_out.dm(.data, ..., .by, .preserve)`, `filter_out.dm_zoomed(.data, ..., .by, .preserve)`
+- `filter_out.dm(.data, ..., .by, .preserve)`, `filter_out.dm_zoomed(.data, ..., .by, .preserve)`, `filter_out.dm_keyed_tbl(.data, ..., .by, .preserve)`
 
 ### `mutate()`
 
 - dplyr generic: `(.data, ...)`
-- No change needed, signatures already match.
+- Signatures already match. Added `mutate.dm_keyed_tbl(.data, ...)`.
 
 ### `transmute()`
 
 - dplyr generic: `(.data, ...)`
-- No change needed, signatures already match.
+- Signatures already match. Added `transmute.dm_keyed_tbl(.data, ...)`.
 
 ### `select()`
 
 - dplyr generic: `(.data, ...)`
-- No change needed, signatures already match.
+- Signatures already match. Added `select.dm_keyed_tbl(.data, ...)`.
 
 ### `relocate()`
 
 - dplyr generic: `(.data, ..., .before, .after)`
 - Before: `relocate.dm(.data, ...)`
-- After: `relocate.dm(.data, ..., .before, .after)`
+- After: `relocate.dm(.data, ..., .before, .after)`, added `relocate.dm_keyed_tbl(.data, ..., .before, .after)` (new)
 - `relocate.dm_zoomed` already matched.
 
 ### `rename()`
 
 - dplyr generic: `(.data, ...)`
-- No change needed, signatures already match.
+- Signatures already match. Added `rename.dm_keyed_tbl(.data, ...)`.
 
 ### `distinct()`
 
 - dplyr generic: `(.data, ..., .keep_all)`
 - Before: `distinct.dm(.data, ...)`
-- After: `distinct.dm(.data, ..., .keep_all)`
+- After: `distinct.dm(.data, ..., .keep_all)`, added `distinct.dm_keyed_tbl(.data, ..., .keep_all)` (new)
 - `distinct.dm_zoomed` already matched.
 
 ### `arrange()`
 
 - dplyr generic: `(.data, ..., .by_group)`
 - Before: `arrange.dm(.data, ...)`, `arrange.dm_zoomed(.data, ...)`
-- After: `arrange.dm(.data, ..., .by_group)`, `arrange.dm_zoomed(.data, ..., .by_group)` — `.by_group` forwarded
+- After: `arrange.dm(.data, ..., .by_group)`, `arrange.dm_zoomed(.data, ..., .by_group)`, `arrange.dm_keyed_tbl(.data, ..., .by_group)` (new) — `.by_group` forwarded
 
 ### `slice()`
 
 - dplyr generic: `(.data, ..., .by, .preserve)`
 - Before: `slice.dm(.data, ...)`, `slice.dm_zoomed(.data, ..., .keep_pk)`
-- After: `slice.dm(.data, ..., .by, .preserve)`, `slice.dm_zoomed(.data, ..., .by, .preserve, .keep_pk)` — `.by` and `.preserve` forwarded, `.keep_pk` retained as dm extension
+- After: `slice.dm(.data, ..., .by, .preserve)`, `slice.dm_zoomed(.data, ..., .by, .preserve, .keep_pk)`, `slice.dm_keyed_tbl(.data, ..., .by, .preserve)` (new) — `.by` and `.preserve` forwarded, `.keep_pk` retained as dm extension on zoomed only
 
 ### `group_by()`
 
@@ -77,7 +90,8 @@ All dm methods now match the dplyr 1.2.0 generic signatures. Named arguments fro
 
 ### `group_data()`, `group_keys()`, `group_indices()`, `group_vars()`, `groups()`, `ungroup()`
 
-- No change needed, signatures already match.
+- No change needed for existing methods, signatures already match.
+- Added `ungroup.dm_keyed_tbl(x, ...)` (new).
 
 ### `summarise()`
 
@@ -94,14 +108,14 @@ All dm methods now match the dplyr 1.2.0 generic signatures. Named arguments fro
 
 - dplyr generic: `(x, ..., wt, sort, name)`
 - Before: `count.dm(x, ...)`
-- After: `count.dm(x, ..., wt, sort, name)`
+- After: `count.dm(x, ..., wt, sort, name)`, `count.dm_keyed_tbl(x, ..., wt, sort, name)` (new)
 - `count.dm_zoomed` already matched (extends with `.drop`).
 
 ### `tally()`
 
 - dplyr generic: `(x, wt, sort, name)`
 - Before: `tally.dm(x, ...)`, `tally.dm_zoomed(x, ...)`
-- After: `tally.dm(x, wt, sort, name)`, `tally.dm_zoomed(x, wt, sort, name)` — `wt`, `sort`, `name` forwarded
+- After: `tally.dm(x, wt, sort, name)`, `tally.dm_zoomed(x, wt, sort, name)`, `tally.dm_keyed_tbl(x, wt, sort, name)` (new) — `wt`, `sort`, `name` forwarded
 
 ### `pull()`
 

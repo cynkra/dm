@@ -28,6 +28,15 @@ filter.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   replace_zoomed_tbl(.data, filtered_tbl)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+filter.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  filtered_tbl <- filter(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  new_keyed_tbl_from_keys_info(filtered_tbl, keys_info)
+}
+
 #' @export
 filter_out.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   check_zoomed(.data)
@@ -39,6 +48,15 @@ filter_out.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   tbl <- tbl_zoomed(.data)
   filtered_tbl <- filter_out(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
   replace_zoomed_tbl(.data, filtered_tbl)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+filter_out.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  filtered_tbl <- filter_out(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  new_keyed_tbl_from_keys_info(filtered_tbl, keys_info)
 }
 
 #' @export
@@ -55,6 +73,14 @@ mutate.dm_zoomed <- function(.data, ...) {
   selected <- set_names(intersect(colnames(tbl), colnames(mutated_tbl)))
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
   replace_zoomed_tbl(.data, mutated_tbl, new_tracked_cols_zoom)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+mutate.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  out <- NextMethod()
+  new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
 #' @export
@@ -77,6 +103,14 @@ transmute.dm_zoomed <- function(.data, ...) {
   replace_zoomed_tbl(.data, transmuted_tbl, new_tracked_cols_zoom)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+transmute.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  out <- NextMethod()
+  new_keyed_tbl_from_keys_info(out, keys_info)
+}
+
 #' @export
 select.dm <- function(.data, ...) {
   check_zoomed(.data)
@@ -94,6 +128,14 @@ select.dm_zoomed <- function(.data, ...) {
   replace_zoomed_tbl(.data, selected_tbl, new_tracked_cols_zoom)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+select.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  out <- NextMethod()
+  new_keyed_tbl_from_keys_info(out, keys_info)
+}
+
 #' @export
 relocate.dm <- function(.data, ..., .before = NULL, .after = NULL) {
   check_zoomed(.data)
@@ -107,6 +149,15 @@ relocate.dm_zoomed <- function(.data, ..., .before = NULL, .after = NULL) {
 
   relocated_tbl <- relocate(tbl, ..., .before = {{ .before }}, .after = {{ .after }})
   replace_zoomed_tbl(.data, relocated_tbl)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+relocate.dm_keyed_tbl <- function(.data, ..., .before = NULL, .after = NULL) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  relocated_tbl <- relocate(tbl, ..., .before = {{ .before }}, .after = {{ .after }})
+  new_keyed_tbl_from_keys_info(relocated_tbl, keys_info)
 }
 
 #' @export
@@ -124,6 +175,14 @@ rename.dm_zoomed <- function(.data, ...) {
   new_tracked_cols_zoom <- new_tracked_cols(.data, renamed$all_names)
 
   replace_zoomed_tbl(.data, renamed_tbl, new_tracked_cols_zoom)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+rename.dm_keyed_tbl <- function(.data, ...) {
+  keys_info <- keyed_get_info(.data)
+  out <- NextMethod()
+  new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
 #' @export
@@ -145,6 +204,15 @@ distinct.dm_zoomed <- function(.data, ..., .keep_all = FALSE) {
   replace_zoomed_tbl(.data, distinct_tbl, new_tracked_cols_zoom)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+distinct.dm_keyed_tbl <- function(.data, ..., .keep_all = FALSE) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
+  new_keyed_tbl_from_keys_info(distinct_tbl, keys_info)
+}
+
 #' @export
 arrange.dm <- function(.data, ..., .by_group = FALSE) {
   check_zoomed(.data)
@@ -156,6 +224,15 @@ arrange.dm_zoomed <- function(.data, ..., .by_group = FALSE) {
   tbl <- tbl_zoomed(.data)
   arranged_tbl <- arrange(tbl, ..., .by_group = .by_group)
   replace_zoomed_tbl(.data, arranged_tbl)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+arrange.dm_keyed_tbl <- function(.data, ..., .by_group = FALSE) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  arranged_tbl <- arrange(tbl, ..., .by_group = .by_group)
+  new_keyed_tbl_from_keys_info(arranged_tbl, keys_info)
 }
 
 #' @export
@@ -185,6 +262,15 @@ slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk 
     tracked_cols <- discard(tracked_cols, tracked_cols == orig_pk)
   }
   replace_zoomed_tbl(.data, sliced_tbl, tracked_cols)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+slice.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
+  keys_info <- keyed_get_info(.data)
+  tbl <- unclass_keyed_tbl(.data)
+  sliced_tbl <- slice(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  new_keyed_tbl_from_keys_info(sliced_tbl, keys_info)
 }
 
 #' @export
@@ -281,6 +367,15 @@ ungroup.dm_zoomed <- function(x, ...) {
   ungrouped_tbl <- ungroup(tbl, ...)
 
   replace_zoomed_tbl(x, ungrouped_tbl)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+ungroup.dm_keyed_tbl <- function(x, ...) {
+  keys_info <- keyed_get_info(x)
+  tbl <- unclass_keyed_tbl(x)
+  ungrouped_tbl <- ungroup(tbl, ...)
+  new_keyed_tbl_from_keys_info(ungrouped_tbl, keys_info)
 }
 
 #' @export
@@ -394,6 +489,18 @@ count.dm_zoomed <- function(
   replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
 }
 
+#' @rdname dplyr_table_manipulation
+#' @export
+count.dm_keyed_tbl <- function(x, ..., wt = NULL, sort = FALSE, name = NULL) {
+  keys_info <- keyed_get_info(x)
+  tbl <- unclass_keyed_tbl(x)
+  counted_tbl <- count(tbl, ..., wt = {{ wt }}, sort = sort, name = name)
+  new_keyed_tbl(
+    counted_tbl,
+    uuid = keys_info$uuid
+  )
+}
+
 #' @export
 tally.dm <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   check_zoomed(x)
@@ -414,6 +521,18 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
 
   new_tracked_cols_zoom <- new_tracked_cols(x, groups)
   replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+tally.dm_keyed_tbl <- function(x, wt = NULL, sort = FALSE, name = NULL) {
+  keys_info <- keyed_get_info(x)
+  tbl <- unclass_keyed_tbl(x)
+  tallied_tbl <- tally(tbl, wt = {{ wt }}, sort = sort, name = name)
+  new_keyed_tbl(
+    tallied_tbl,
+    uuid = keys_info$uuid
+  )
 }
 
 #' @export
