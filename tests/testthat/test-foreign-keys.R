@@ -176,6 +176,21 @@ test_that("dm_rm_fk() works with partial matching", {
 })
 
 
+test_that("dm_rm_fk() produces no message when removing FK to PK in presence of FK to non-PK", {
+  p <- tibble(p_id = 1, p2_id = 1)
+  c1 <- tibble(p_id = 1)
+  c2 <- tibble(p2_id = 1)
+
+  my_dm <-
+    dm(p, c1, c2) %>%
+    dm_add_pk(p, p_id) %>%
+    dm_add_fk(c1, p_id, p) %>%
+    dm_add_fk(c2, p2_id, p, p2_id)
+
+  expect_silent(my_dm %>% dm_rm_fk(c1, p_id, p))
+})
+
+
 test_that("dm_enum_fk_candidates() works as intended?", {
   skip_if_ide()
 
