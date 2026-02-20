@@ -129,8 +129,8 @@ compute(x, ...)
   For `count()`: if `FALSE` will include counts for empty groups (i.e.
   for levels of factors that don't exist in the data).
 
-  **\[deprecated\]** For `add_count()`: deprecated since it can't
-  actually affect the output.
+  **\[defunct\]** For `add_count()`: defunct since it can't actually
+  affect the output.
 
 - var:
 

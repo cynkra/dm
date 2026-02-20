@@ -1,5 +1,11 @@
 # Changelog
 
+## dm 1.0.12.9014
+
+### Continuous integration
+
+- Tweaks ([\#2354](https://github.com/cynkra/dm/issues/2354)).
+
 ## dm 1.0.12.9013
 
 ### Continuous integration
@@ -1789,7 +1795,7 @@ CRAN release: 2020-07-03
 - Cycles in other connected components don’t affect filtering in a
   cycle-free component.
 - Avoid
-  [`src_sqlite()`](https://dplyr.tidyverse.org/reference/src_dbi.html)
+  [`src_sqlite()`](https://dplyr.tidyverse.org/reference/defunct.html)
   in examples ([\#372](https://github.com/cynkra/dm/issues/372)).
 
 ### Internal
@@ -1859,7 +1865,7 @@ CRAN release: 2020-06-07
 CRAN release: 2020-05-25
 
 - Avoid
-  [`src_sqlite()`](https://dplyr.tidyverse.org/reference/src_dbi.html)
+  [`src_sqlite()`](https://dplyr.tidyverse.org/reference/defunct.html)
   in vignettes ([\#372](https://github.com/cynkra/dm/issues/372)).
 - Rename vignettes ([\#349](https://github.com/cynkra/dm/issues/349)).
 - Rename error class `"dm_error_tables_not_neighbours"` to
@@ -1959,7 +1965,7 @@ CRAN release: 2020-05-04
 ### Compatibility
 
 - Remove use of deprecated
-  [`src_df()`](https://dplyr.tidyverse.org/reference/src_local.html)
+  [`src_df()`](https://dplyr.tidyverse.org/reference/defunct.html)
   ([\#336](https://github.com/cynkra/dm/issues/336)).
 - Fix compatibility with dplyr 1.0.0
   ([\#203](https://github.com/cynkra/dm/issues/203)).

@@ -1,7 +1,7 @@
 # Copy data model to data source
 
 `copy_dm_to()` takes a
-[`dplyr::src_dbi`](https://dplyr.tidyverse.org/reference/src_dbi.html)
+[`dbplyr::src_dbi`](https://dbplyr.tidyverse.org/reference/src_dbi.html)
 object or a
 [`DBI::DBIConnection`](https://dbi.r-dbi.org/reference/DBIConnection-class.html)
 object as its first argument and a
