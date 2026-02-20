@@ -1,20 +1,27 @@
 # g6R backend for dm_draw() ------------------------------------------------
 
+#' Escape special HTML characters to prevent XSS
+#' @noRd
+html_escape <- function(x) {
+  x <- gsub("&", "&amp;", x, fixed = TRUE)
+  x <- gsub("<", "&lt;", x, fixed = TRUE)
+  x <- gsub(">", "&gt;", x, fixed = TRUE)
+  x <- gsub("\"", "&quot;", x, fixed = TRUE)
+  x <- gsub("'", "&#39;", x, fixed = TRUE)
+  x
+}
+
 #' Render dm graph using g6R
 #'
 #' @param data_model Data model from `dm_get_data_model()`.
 #' @param rankdir Graph direction: "LR" (left-right), "TB" (top-bottom), etc.
 #' @param view_type Column display level.
-#' @param columnArrows Show column-to-column arrows.
-#' @param graph_name Name shown in tooltip.
 #' @param top_level_fun Name of calling function for error messages
 #' @noRd
 bdm_render_g6r <- function(
   data_model,
   rankdir = "LR",
   view_type = "keys_only",
-  columnArrows = TRUE,
-  graph_name = "Data Model",
   top_level_fun = NULL
 ) {
   check_suggested("g6R", top_level_fun)
@@ -117,19 +124,43 @@ g6r_nodes_from_data_model <- function(data_model, view_type = "keys_only") {
   )
 
   # Create column HTML for each table with PK/FK markers
-  node_columns_html <- vapply(
+  # Returns list with `html` (for rendering) and `plain` (for size calculation)
+  node_columns_data <- lapply(
     node_ids,
     function(tbl) {
       cols <- columns_by_table[[tbl]]
       if (is.null(cols) || nrow(cols) == 0) {
-        return("")
+        return(list(html = "", plain = character(0)))
       }
-      col_names <- cols$column
+      # Escape column names to prevent XSS
+      col_names_safe <- html_escape(cols$column)
+      plain_labels <- cols$column
+
+      # Append column type when available
+      if (!is.null(cols$type) && !all(is.na(cols$type))) {
+        type_safe <- html_escape(ifelse(is.na(cols$type), "", cols$type))
+        col_names_safe <- ifelse(
+          is.na(cols$type) | cols$type == "",
+          col_names_safe,
+          paste0(
+            col_names_safe,
+            " <span style='opacity:0.7;font-size:0.85em;'>",
+            type_safe,
+            "</span>"
+          )
+        )
+        plain_labels <- ifelse(
+          is.na(cols$type) | cols$type == "",
+          plain_labels,
+          paste0(plain_labels, " ", cols$type)
+        )
+      }
 
       # Mark primary keys with key symbol
       pk_idx <- which(cols$key == 1 & !is.na(cols$kind) & cols$kind == "PK")
       if (length(pk_idx) > 0) {
-        col_names[pk_idx] <- paste0("\U0001F511 ", col_names[pk_idx])
+        col_names_safe[pk_idx] <- paste0("\U0001F511 ", col_names_safe[pk_idx])
+        plain_labels[pk_idx] <- paste0("# ", plain_labels[pk_idx])
       }
 
       # Mark foreign keys with arrow symbol (columns that reference other tables)
@@ -137,20 +168,27 @@ g6r_nodes_from_data_model <- function(data_model, view_type = "keys_only") {
       if (length(fk_idx) > 0) {
         # Don't double-mark if already marked as PK
         fk_only <- setdiff(fk_idx, pk_idx)
-        col_names[fk_only] <- paste0("\U2192 ", col_names[fk_only])
+        col_names_safe[fk_only] <- paste0("\U2192 ", col_names_safe[fk_only])
+        plain_labels[fk_only] <- paste0("> ", plain_labels[fk_only])
       }
 
-      paste(col_names, collapse = "<br/>")
-    },
-    character(1)
+      list(
+        html = paste(col_names_safe, collapse = "<br/>"),
+        plain = plain_labels
+      )
+    }
   )
 
-  # Calculate node sizes based on content
+  node_columns_html <- vapply(node_columns_data, `[[`, character(1), "html")
+
+  # Calculate node sizes based on plain text content (not HTML markup)
   node_sizes <- Map(
-    function(tbl, cols_html) {
-      cols <- if (nchar(cols_html) > 0) strsplit(cols_html, "<br/>")[[1]] else character(0)
-      n_cols <- length(cols)
-      max_chars <- max(c(nchar(tbl), nchar(cols)), na.rm = TRUE)
+    function(tbl, col_data) {
+      plain_cols <- col_data$plain
+      n_cols <- length(plain_cols)
+      tbl_width <- nchar(tbl, type = "width")
+      col_widths <- if (length(plain_cols) > 0) nchar(plain_cols, type = "width") else integer(0)
+      max_chars <- max(c(tbl_width, col_widths), na.rm = TRUE)
       # Width: ~7px per character + padding
       width <- max(70, max_chars * 7 + 20)
       # Height: header (25px) + columns (16px each) + padding
@@ -158,7 +196,7 @@ g6r_nodes_from_data_model <- function(data_model, view_type = "keys_only") {
       list(width = width, height = height)
     },
     node_ids,
-    node_columns_html
+    node_columns_data
   )
 
   # Create g6R nodes with data for HTML template
@@ -167,7 +205,7 @@ g6r_nodes_from_data_model <- function(data_model, view_type = "keys_only") {
       g6R::g6_node(
         id = id,
         data = list(
-          name = id,
+          name = html_escape(id),
           columns = cols_html,
           color = fill,
           headerColor = darken_color(fill, 0.85),
