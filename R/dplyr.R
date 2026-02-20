@@ -16,27 +16,28 @@
 NULL
 
 #' @export
-filter.dm <- function(.data, ...) {
+filter.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
-filter.dm_zoomed <- function(.data, ...) {
-  .data %>%
-    dm_filter_impl(..., set_filter = FALSE)
-}
-
-#' @export
-filter_out.dm <- function(.data, ...) {
-  check_zoomed(.data)
-}
-
-#' @rdname dplyr_table_manipulation
-#' @export
-filter_out.dm_zoomed <- function(.data, ...) {
+filter.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   tbl <- tbl_zoomed(.data)
-  filtered_tbl <- filter_out(tbl, ...)
+  filtered_tbl <- filter(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  replace_zoomed_tbl(.data, filtered_tbl)
+}
+
+#' @export
+filter_out.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
+  check_zoomed(.data)
+}
+
+#' @rdname dplyr_table_manipulation
+#' @export
+filter_out.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
+  tbl <- tbl_zoomed(.data)
+  filtered_tbl <- filter_out(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
   replace_zoomed_tbl(.data, filtered_tbl)
 }
 
@@ -94,7 +95,7 @@ select.dm_zoomed <- function(.data, ...) {
 }
 
 #' @export
-relocate.dm <- function(.data, ...) {
+relocate.dm <- function(.data, ..., .before = NULL, .after = NULL) {
   check_zoomed(.data)
 }
 
@@ -126,7 +127,7 @@ rename.dm_zoomed <- function(.data, ...) {
 }
 
 #' @export
-distinct.dm <- function(.data, ...) {
+distinct.dm <- function(.data, ..., .keep_all = FALSE) {
   check_zoomed(.data)
 }
 
@@ -145,20 +146,20 @@ distinct.dm_zoomed <- function(.data, ..., .keep_all = FALSE) {
 }
 
 #' @export
-arrange.dm <- function(.data, ...) {
+arrange.dm <- function(.data, ..., .by_group = FALSE) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
-arrange.dm_zoomed <- function(.data, ...) {
+arrange.dm_zoomed <- function(.data, ..., .by_group = FALSE) {
   tbl <- tbl_zoomed(.data)
-  arranged_tbl <- arrange(tbl, ...)
+  arranged_tbl <- arrange(tbl, ..., .by_group = .by_group)
   replace_zoomed_tbl(.data, arranged_tbl)
 }
 
 #' @export
-slice.dm <- function(.data, ...) {
+slice.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   check_zoomed(.data)
 }
 
@@ -167,8 +168,8 @@ slice.dm <- function(.data, ...) {
 #' By default, the value is `NULL`, which causes the function to issue a message in case a primary key is available for the zoomed table.
 #' This argument is specific for the `slice.dm_zoomed()` method.
 #' @export
-slice.dm_zoomed <- function(.data, ..., .keep_pk = NULL) {
-  sliced_tbl <- slice(tbl_zoomed(.data), ...)
+slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL) {
+  sliced_tbl <- slice(tbl_zoomed(.data), ..., .by = {{ .by }}, .preserve = .preserve)
   orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
   tracked_cols <- col_tracker_zoomed(.data)
   if (is_null(.keep_pk)) {
@@ -187,25 +188,25 @@ slice.dm_zoomed <- function(.data, ..., .keep_pk = NULL) {
 }
 
 #' @export
-group_by.dm <- function(.data, ...) {
+group_by.dm <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
-group_by.dm_zoomed <- function(.data, ...) {
+group_by.dm_zoomed <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
   tbl <- tbl_zoomed(.data)
-  grouped_tbl <- group_by(tbl, ...)
+  grouped_tbl <- group_by(tbl, ..., .add = .add, .drop = .drop)
 
   replace_zoomed_tbl(.data, grouped_tbl)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
-group_by.dm_keyed_tbl <- function(.data, ...) {
+group_by.dm_keyed_tbl <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  grouped_tbl <- group_by(tbl, ...)
+  grouped_tbl <- group_by(tbl, ..., .add = .add, .drop = .drop)
   new_keyed_tbl_from_keys_info(grouped_tbl, keys_info)
 }
 
@@ -283,18 +284,18 @@ ungroup.dm_zoomed <- function(x, ...) {
 }
 
 #' @export
-summarise.dm <- function(.data, ...) {
+summarise.dm <- function(.data, ..., .by = NULL, .groups = NULL) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
-summarise.dm_zoomed <- function(.data, ...) {
+summarise.dm_zoomed <- function(.data, ..., .by = NULL, .groups = NULL) {
   tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
   # #663: user responsibility: if group columns are manipulated, they are still tracked
   groups <- set_names(map_chr(groups(tbl), as_string))
-  summarized_tbl <- summarize(tbl, ...)
+  summarized_tbl <- summarize(tbl, ..., .by = {{ .by }}, .groups = .groups)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
 }
@@ -302,7 +303,7 @@ summarise.dm_zoomed <- function(.data, ...) {
 
 #' @rdname dplyr_table_manipulation
 #' @export
-summarise.dm_keyed_tbl <- function(.data, ...) {
+summarise.dm_keyed_tbl <- function(.data, ..., .by = NULL, .groups = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
 
@@ -323,15 +324,15 @@ summarise.dm_keyed_tbl <- function(.data, ...) {
 }
 
 #' @export
-reframe.dm <- function(.data, ...) {
+reframe.dm <- function(.data, ..., .by = NULL) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
-reframe.dm_zoomed <- function(.data, ...) {
+reframe.dm_zoomed <- function(.data, ..., .by = NULL) {
   tbl <- tbl_zoomed(.data)
-  reframed_tbl <- reframe(tbl, ...)
+  reframed_tbl <- reframe(tbl, ..., .by = {{ .by }})
   # reframe() always returns ungrouped data, no group tracking needed
   # #663: user responsibility: those columns are tracked whose names remain
   selected <- set_names(intersect(colnames(tbl_zoomed(.data)), colnames(reframed_tbl)))
@@ -341,11 +342,11 @@ reframe.dm_zoomed <- function(.data, ...) {
 
 #' @rdname dplyr_table_manipulation
 #' @export
-reframe.dm_keyed_tbl <- function(.data, ...) {
+reframe.dm_keyed_tbl <- function(.data, ..., .by = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
 
-  reframed_tbl <- reframe(tbl, ...)
+  reframed_tbl <- reframe(tbl, ..., .by = {{ .by }})
 
   # reframe() can return any number of rows per group,
 
@@ -357,7 +358,7 @@ reframe.dm_keyed_tbl <- function(.data, ...) {
 }
 
 #' @export
-count.dm <- function(x, ...) {
+count.dm <- function(x, ..., wt = NULL, sort = FALSE, name = NULL) {
   check_zoomed(x)
 }
 
@@ -394,17 +395,17 @@ count.dm_zoomed <- function(
 }
 
 #' @export
-tally.dm <- function(x, ...) {
+tally.dm <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
-tally.dm_zoomed <- function(x, ...) {
+tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   tbl <- tbl_zoomed(x)
   groups <- set_names(map_chr(groups(tbl), as_string))
 
-  out <- tally(tbl, ...)
+  out <- tally(tbl, wt = {{ wt }}, sort = sort, name = name)
 
   # Ensure grouping is transient
   if (is.data.frame(tbl)) {
@@ -423,9 +424,9 @@ pull.dm <- function(.data, var = -1, name = NULL, ...) {
 #' @rdname dplyr_table_manipulation
 #' @inheritParams dplyr::pull
 #' @export
-pull.dm_zoomed <- function(.data, var = -1, ...) {
+pull.dm_zoomed <- function(.data, var = -1, name = NULL, ...) {
   tbl <- tbl_zoomed(.data)
-  pull(tbl, var = {{ var }}, ...)
+  pull(tbl, var = {{ var }}, name = {{ name }}, ...)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -462,16 +463,16 @@ compute.dm_zoomed <- function(x, ...) {
 NULL
 
 #' @export
-left_join.dm <- function(x, ...) {
+left_join.dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ..., keep = NULL) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
 #' @export
-left_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
+left_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = NULL, select = NULL) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  joined_tbl <- left_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., keep = keep)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -503,16 +504,16 @@ left_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
 }
 
 #' @export
-inner_join.dm <- function(x, ...) {
+inner_join.dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ..., keep = NULL) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
 #' @export
-inner_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
+inner_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = NULL, select = NULL) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  joined_tbl <- inner_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., keep = keep)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -552,16 +553,16 @@ inner_join.dm_keyed_tbl <- function(
 }
 
 #' @export
-full_join.dm <- function(x, ...) {
+full_join.dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ..., keep = NULL) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
 #' @export
-full_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
+full_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = NULL, select = NULL) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  joined_tbl <- full_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., keep = keep)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -593,16 +594,16 @@ full_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, suffix = NULL, 
 }
 
 #' @export
-right_join.dm <- function(x, ...) {
+right_join.dm <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ..., keep = NULL) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
 #' @export
-right_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
+right_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = NULL, select = NULL) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
+  joined_tbl <- right_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ..., keep = keep)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -642,13 +643,13 @@ right_join.dm_keyed_tbl <- function(
 }
 
 #' @export
-semi_join.dm <- function(x, ...) {
+semi_join.dm <- function(x, y, by = NULL, copy = FALSE, ...) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
 #' @export
-semi_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
+semi_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, ..., suffix = NULL, select = NULL) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
   joined_tbl <- semi_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
@@ -678,13 +679,13 @@ semi_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ...) {
 }
 
 #' @export
-anti_join.dm <- function(x, ...) {
+anti_join.dm <- function(x, y, by = NULL, copy = FALSE, ...) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
 #' @export
-anti_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...) {
+anti_join.dm_zoomed <- function(x, y, by = NULL, copy = NULL, ..., suffix = NULL, select = NULL) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
   joined_tbl <- anti_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy = FALSE, ...)
@@ -714,14 +715,14 @@ anti_join.dm_keyed_tbl <- function(x, y, by = NULL, copy = NULL, ...) {
 }
 
 #' @export
-nest_join.dm <- function(x, ...) {
+nest_join.dm <- function(x, y, by = NULL, copy = FALSE, keep = NULL, name = NULL, ...) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
 #' @inheritParams dplyr::nest_join
 #' @export
-nest_join.dm_zoomed <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...) {
+nest_join.dm_zoomed <- function(x, y, by = NULL, copy = FALSE, keep = NULL, name = NULL, ...) {
   y_name <- as_string(enexpr(y))
   name <- name %||% y_name
   join_data <- prepare_join(x, {{ y }}, by, NULL, NULL, NULL, disambiguate = FALSE)
@@ -730,7 +731,7 @@ nest_join.dm_zoomed <- function(x, y, by = NULL, copy = FALSE, keep = FALSE, nam
 }
 
 #' @export
-cross_join.dm <- function(x, ...) {
+cross_join.dm <- function(x, y, ..., copy = FALSE, suffix = c(".x", ".y")) {
   check_zoomed(x)
 }
 

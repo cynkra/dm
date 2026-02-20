@@ -25,9 +25,9 @@
 \alias{compute.dm_zoomed}
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
-\method{filter}{dm_zoomed}(.data, ...)
+\method{filter}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE)
 
-\method{filter_out}{dm_zoomed}(.data, ...)
+\method{filter_out}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE)
 
 \method{mutate}{dm_zoomed}(.data, ...)
 
@@ -41,23 +41,23 @@
 
 \method{distinct}{dm_zoomed}(.data, ..., .keep_all = FALSE)
 
-\method{arrange}{dm_zoomed}(.data, ...)
+\method{arrange}{dm_zoomed}(.data, ..., .by_group = FALSE)
 
-\method{slice}{dm_zoomed}(.data, ..., .keep_pk = NULL)
+\method{slice}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL)
 
-\method{group_by}{dm_zoomed}(.data, ...)
+\method{group_by}{dm_zoomed}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
 
-\method{group_by}{dm_keyed_tbl}(.data, ...)
+\method{group_by}{dm_keyed_tbl}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
 
 \method{ungroup}{dm_zoomed}(x, ...)
 
-\method{summarise}{dm_zoomed}(.data, ...)
+\method{summarise}{dm_zoomed}(.data, ..., .by = NULL, .groups = NULL)
 
-\method{summarise}{dm_keyed_tbl}(.data, ...)
+\method{summarise}{dm_keyed_tbl}(.data, ..., .by = NULL, .groups = NULL)
 
-\method{reframe}{dm_zoomed}(.data, ...)
+\method{reframe}{dm_zoomed}(.data, ..., .by = NULL)
 
-\method{reframe}{dm_keyed_tbl}(.data, ...)
+\method{reframe}{dm_keyed_tbl}(.data, ..., .by = NULL)
 
 \method{count}{dm_zoomed}(
   x,
@@ -68,9 +68,9 @@
   .drop = group_by_drop_default(x)
 )
 
-\method{tally}{dm_zoomed}(x, ...)
+\method{tally}{dm_zoomed}(x, wt = NULL, sort = FALSE, name = NULL)
 
-\method{pull}{dm_zoomed}(.data, var = -1, ...)
+\method{pull}{dm_zoomed}(.data, var = -1, name = NULL, ...)
 
 \method{compute}{dm_zoomed}(x, ...)
 }
@@ -89,6 +89,15 @@ left-hand side; specifying both is an error.}
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.
 This argument is specific for the \code{slice.dm_zoomed()} method.}
 
+\item{.drop}{Handling of factor levels that don't appear in the data, passed
+on to \code{\link[dplyr:group_by]{group_by()}}.
+
+For \code{count()}: if \code{FALSE} will include counts for empty groups (i.e. for
+levels of factors that don't exist in the data).
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#defunct}{\figure{lifecycle-defunct.svg}{options: alt='[Defunct]'}}}{\strong{[Defunct]}} For \code{add_count()}: defunct since it
+can't actually affect the output.}
+
 \item{x}{For \code{ungroup.dm_zoomed}: object of class \code{dm_zoomed}}
 
 \item{wt}{<\code{\link[rlang:args_data_masking]{data-masking}}> Frequency weights.
@@ -105,15 +114,6 @@ Can be \code{NULL} or a variable:
 If omitted, it will default to \code{n}. If there's already a column called \code{n},
 it will use \code{nn}. If there's a column called \code{n} and \code{nn}, it'll use
 \code{nnn}, and so on, adding \code{n}s until it gets a new name.}
-
-\item{.drop}{Handling of factor levels that don't appear in the data, passed
-on to \code{\link[dplyr:group_by]{group_by()}}.
-
-For \code{count()}: if \code{FALSE} will include counts for empty groups (i.e. for
-levels of factors that don't exist in the data).
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#defunct}{\figure{lifecycle-defunct.svg}{options: alt='[Defunct]'}}}{\strong{[Defunct]}} For \code{add_count()}: defunct since it
-can't actually affect the output.}
 
 \item{var}{A variable specified as:
 \itemize{

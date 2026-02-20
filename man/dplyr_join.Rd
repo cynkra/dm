@@ -19,31 +19,67 @@
 \alias{cross_join.dm_keyed_tbl}
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
-\method{left_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{left_join}{dm_zoomed}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = NULL,
+  select = NULL
+)
 
 \method{left_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
-\method{inner_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{inner_join}{dm_zoomed}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = NULL,
+  select = NULL
+)
 
 \method{inner_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
-\method{full_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{full_join}{dm_zoomed}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = NULL,
+  select = NULL
+)
 
 \method{full_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
-\method{right_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{right_join}{dm_zoomed}(
+  x,
+  y,
+  by = NULL,
+  copy = NULL,
+  suffix = NULL,
+  ...,
+  keep = NULL,
+  select = NULL
+)
 
 \method{right_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, suffix = NULL, ..., keep = FALSE)
 
-\method{semi_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{semi_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, ..., suffix = NULL, select = NULL)
 
 \method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
 
-\method{anti_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, suffix = NULL, select = NULL, ...)
+\method{anti_join}{dm_zoomed}(x, y, by = NULL, copy = NULL, ..., suffix = NULL, select = NULL)
 
 \method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ...)
 
-\method{nest_join}{dm_zoomed}(x, y, by = NULL, copy = FALSE, keep = FALSE, name = NULL, ...)
+\method{nest_join}{dm_zoomed}(x, y, by = NULL, copy = FALSE, keep = NULL, name = NULL, ...)
 
 \method{cross_join}{dm_zoomed}(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
 
@@ -60,14 +96,14 @@ If you provide a value (for the syntax see \code{\link[dplyr:mutate-joins]{dplyr
 
 \item{suffix}{Disabled, since columns are disambiguated automatically if necessary, changing the column names to \code{table_name.column_name}.}
 
-\item{select}{Select a subset of the \strong{RHS-table}'s columns, the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
-This argument is specific for the \code{join}-methods for \code{dm_zoomed}.
-The table's \code{by} column(s) are automatically added if missing in the selection.}
-
 \item{...}{see \code{\link[dplyr:mutate-joins]{dplyr::join}}}
 
 \item{keep}{Should the new list-column contain join keys? The default
 will preserve the join keys for inequality joins.}
+
+\item{select}{Select a subset of the \strong{RHS-table}'s columns, the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
+This argument is specific for the \code{join}-methods for \code{dm_zoomed}.
+The table's \code{by} column(s) are automatically added if missing in the selection.}
 
 \item{name}{The name of the list-column created by the join. If \code{NULL},
 the default, the name of \code{y} is used.}
