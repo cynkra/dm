@@ -374,7 +374,7 @@ dm_meta_sqlite <- function(con) {
     table_catalog = catalog,
     table_schema = schema,
     table_name = table_names,
-    table_type = "BASE TABLE"
+    table_type = "BASE TABLE",
   )
 
   pragma_table_info <- map(set_names(table_names), function(t) {
@@ -400,7 +400,7 @@ dm_meta_sqlite <- function(con) {
       column_default = as.character(info$dflt_value),
       is_nullable = ifelse(info$notnull == 0L, "YES", "NO"),
       data_type = tolower(info$type),
-      is_autoincrement = FALSE
+      is_autoincrement = FALSE,
     )
   })
 
@@ -419,7 +419,7 @@ dm_meta_sqlite <- function(con) {
       table_schema = schema,
       table_name = tbl,
       constraint_type = "PRIMARY KEY",
-      delete_rule = NA_character_
+      delete_rule = NA_character_,
     )
   })
 
@@ -438,7 +438,7 @@ dm_meta_sqlite <- function(con) {
         table_schema = schema,
         table_name = tbl,
         constraint_type = "FOREIGN KEY",
-        delete_rule = .data$on_delete
+        delete_rule = .data$on_delete,
       )
   })
 
@@ -450,7 +450,7 @@ dm_meta_sqlite <- function(con) {
     table_schema = character(),
     table_name = character(),
     constraint_type = character(),
-    delete_rule = character()
+    delete_rule = character(),
   )
   table_constraints <- vec_rbind(empty_constraints, pk_constraints, fk_constraints)
 
@@ -485,7 +485,7 @@ dm_meta_sqlite <- function(con) {
       table_schema = schema,
       table_name = tbl,
       column_name = fks$from,
-      ordinal_position = as.integer(fks$seq + 1L)
+      ordinal_position = as.integer(fks$seq + 1L),
     )
   })
 
@@ -497,7 +497,7 @@ dm_meta_sqlite <- function(con) {
     table_schema = character(),
     table_name = character(),
     column_name = character(),
-    ordinal_position = integer()
+    ordinal_position = integer(),
   )
   key_column_usage <- vec_rbind(empty_key_usage, pk_key_usage, fk_key_usage)
 
@@ -510,7 +510,7 @@ dm_meta_sqlite <- function(con) {
     constraint_catalog = character(),
     constraint_schema = character(),
     constraint_name = character(),
-    ordinal_position = integer()
+    ordinal_position = integer(),
   )
   constraint_column_usage <- imap_dfr(pragma_fk_list, function(fks, tbl) {
     if (nrow(fks) == 0) {
@@ -524,7 +524,7 @@ dm_meta_sqlite <- function(con) {
       constraint_catalog = catalog,
       constraint_schema = schema,
       constraint_name = paste0("fk_", tbl, "_", fks$id),
-      ordinal_position = as.integer(fks$seq + 1L)
+      ordinal_position = as.integer(fks$seq + 1L),
     )
   })
   constraint_column_usage <- vec_rbind(empty_ccu, constraint_column_usage)
