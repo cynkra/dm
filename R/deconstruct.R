@@ -238,8 +238,11 @@ keyed_build_join_spec <- function(x, y, by = NULL, suffix = NULL) {
 
   if (is.null(by)) {
     by <- keyed_by(x, y)
-  } else if (!is_named2(by)) {
-    by <- set_names(by, by)
+  } else {
+    by <- flatten_join_by(by)
+    if (!is_named2(by)) {
+      by <- set_names(by, by)
+    }
   }
 
   if (is.null(suffix)) {

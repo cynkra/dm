@@ -46,6 +46,13 @@ repair_by <- function(by) {
   by
 }
 
+flatten_join_by <- function(by) {
+  if (!inherits(by, "dplyr_join_by")) {
+    return(by)
+  }
+  set_names(by$y, by$x)
+}
+
 update_filter <- function(dm, table_name, filters) {
   def <- dm_get_def(dm)
   def$filters[def$table == table_name] <- filters

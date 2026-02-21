@@ -1011,3 +1011,298 @@ test_that("dm_keyed_tbl methods preserve keyed class", {
   expect_s3_class(tally(tbl), "dm_keyed_tbl")
   expect_s3_class(reframe(group_by(tbl, e), d_mean = mean(d, na.rm = TRUE)), "dm_keyed_tbl")
 })
+
+# Signature alignment tests ------------------------------------------------
+
+test_that("dm method signatures match dplyr data.frame method signatures", {
+  skip_on_cran()
+
+  dplyr_ns <- asNamespace("dplyr")
+  dm_ns <- asNamespace("dm")
+
+  # All dplyr verbs for which we provide methods, mapped to their classes
+  verbs <- c(
+    "filter", "filter_out", "mutate", "transmute", "select", "relocate",
+    "rename", "distinct", "arrange", "slice", "group_by", "ungroup",
+    "summarise", "reframe", "count", "tally", "pull",
+    "left_join", "right_join", "inner_join", "full_join",
+    "semi_join", "anti_join", "nest_join", "cross_join"
+  )
+
+  for (verb in verbs) {
+    df_method <- tryCatch(
+      get(paste0(verb, ".data.frame"), envir = dplyr_ns),
+      error = function(e) NULL
+    )
+    if (is.null(df_method)) next
+
+    df_args <- names(formals(df_method))
+
+    for (cls in c("dm", "dm_zoomed", "dm_keyed_tbl")) {
+      method_name <- paste0(verb, ".", cls)
+      dm_method <- tryCatch(
+        get(method_name, envir = dm_ns),
+        error = function(e) NULL
+      )
+      if (is.null(dm_method)) next
+
+      dm_args <- names(formals(dm_method))
+      missing_args <- setdiff(df_args, dm_args)
+      expect_true(
+        length(missing_args) == 0,
+        label = paste0(
+          method_name, " is missing args from ", verb,
+          ".data.frame: ", paste(missing_args, collapse = ", ")
+        )
+      )
+    }
+  }
+})
+
+# join_by() tests ----------------------------------------------------------
+
+test_that("zoomed joins work with join_by()", {
+  skip_if_remote_src()
+
+  # left_join with join_by() using FK column mapping (tf_2.e,e1 -> tf_3.f,f1)
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      left_join(tf_3, by = join_by(e == f, e1 == f1)) %>%
+      tbl_zoomed(),
+    left_join(tf_2(), tf_3(), by = join_by(e == f, e1 == f1))
+  )
+
+  # semi_join with join_by()
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      semi_join(tf_3, by = join_by(e == f, e1 == f1)) %>%
+      tbl_zoomed(),
+    semi_join(tf_2(), tf_3(), by = join_by(e == f, e1 == f1))
+  )
+
+  # anti_join with join_by()
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      anti_join(tf_3, by = join_by(e == f, e1 == f1)) %>%
+      tbl_zoomed(),
+    anti_join(tf_2(), tf_3(), by = join_by(e == f, e1 == f1))
+  )
+})
+
+test_that("keyed joins work with join_by()", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl_2 <- keyed_tbl_impl(dm, "tf_2")
+  tbl_3 <- keyed_tbl_impl(dm, "tf_3")
+
+  result <- left_join(tbl_2, tbl_3, by = join_by(e == f, e1 == f1))
+  expect_s3_class(result, "dm_keyed_tbl")
+  expect_true(nrow(result) > 0)
+
+  result <- inner_join(tbl_2, tbl_3, by = join_by(e == f, e1 == f1))
+  expect_s3_class(result, "dm_keyed_tbl")
+  expect_true(nrow(result) > 0)
+})
+
+# dplyr 1.2.0 compatibility tests -----------------------------------------
+
+test_that(".by works with zoomed filter()", {
+  skip_if_remote_src()
+
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      filter(d == max(d), .by = e) %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      filter(d == max(d), .by = e)
+  )
+})
+
+test_that(".by works with keyed filter()", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl <- keyed_tbl_impl(dm, "tf_2")
+
+  result <- filter(tbl, d == max(d), .by = e)
+  expect_s3_class(result, "dm_keyed_tbl")
+
+  expected <- filter(tibble::as_tibble(tbl), d == max(d), .by = e)
+  expect_equal(nrow(result), nrow(expected))
+})
+
+test_that(".by works with zoomed mutate()", {
+  skip_if_remote_src()
+
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      mutate(d_mean = mean(d, na.rm = TRUE), .by = e) %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      mutate(d_mean = mean(d, na.rm = TRUE), .by = e)
+  )
+})
+
+test_that(".by works with keyed mutate()", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl <- keyed_tbl_impl(dm, "tf_2")
+
+  result <- mutate(tbl, d_mean = mean(d, na.rm = TRUE), .by = e)
+  expect_s3_class(result, "dm_keyed_tbl")
+  expect_true("d_mean" %in% colnames(result))
+})
+
+test_that(".by works with zoomed summarise()", {
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      summarise(d_mean = mean(d, na.rm = TRUE), .by = e) %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      summarise(d_mean = mean(d, na.rm = TRUE), .by = e)
+  )
+})
+
+test_that(".by works with keyed summarise()", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl <- keyed_tbl_impl(dm, "tf_2")
+
+  result <- summarise(tbl, d_mean = mean(d, na.rm = TRUE), .by = e)
+  expect_s3_class(result, "dm_keyed_tbl")
+  expect_true("d_mean" %in% colnames(result))
+})
+
+test_that(".by works with zoomed reframe()", {
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      reframe(d_mean = mean(d, na.rm = TRUE), .by = e) %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      reframe(d_mean = mean(d, na.rm = TRUE), .by = e)
+  )
+})
+
+test_that(".by works with keyed slice()", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl <- keyed_tbl_impl(dm, "tf_2")
+
+  result <- slice(tbl, 1, .by = e)
+  expect_s3_class(result, "dm_keyed_tbl")
+  expect_true(nrow(result) > 0)
+})
+
+test_that("mutate .keep and .before/.after work with zoomed dm", {
+  skip_if_remote_src()
+
+  # .keep = "used"
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      mutate(d2 = d * 2, .keep = "used") %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      mutate(d2 = d * 2, .keep = "used")
+  )
+
+  # .after
+  result <- dm_zoomed() %>%
+    mutate(d2 = d * 2, .after = d) %>%
+    tbl_zoomed()
+  expected <- tf_2() %>%
+    mutate(d2 = d * 2, .after = d)
+  expect_equivalent_tbl(result, expected)
+  expect_equal(colnames(result), colnames(expected))
+})
+
+test_that("mutate .before/.after work with keyed tbl", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl <- keyed_tbl_impl(dm, "tf_2")
+
+  result <- mutate(tbl, d2 = d * 2, .after = d)
+  expect_s3_class(result, "dm_keyed_tbl")
+  d_pos <- which(colnames(result) == "d")
+  d2_pos <- which(colnames(result) == "d2")
+  expect_equal(d2_pos, d_pos + 1)
+})
+
+test_that("arrange .locale works with zoomed dm", {
+  skip_if_remote_src()
+
+  result <- dm_zoomed() %>%
+    arrange(e1, .locale = "en") %>%
+    tbl_zoomed()
+  expected <- tf_2() %>%
+    arrange(e1, .locale = "en")
+  expect_equivalent_tbl(result, expected)
+})
+
+test_that("cross_join works with keyed tables", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl_2 <- keyed_tbl_impl(dm, "tf_2")
+  tbl_3 <- keyed_tbl_impl(dm, "tf_3")
+
+  result <- cross_join(tbl_2, tbl_3)
+  expect_s3_class(result, "dm_keyed_tbl")
+  expect_equal(nrow(result), nrow(tbl_2) * nrow(tbl_3))
+})
+
+test_that("filter_out works correctly with zoomed dm", {
+  skip_if_remote_src()
+
+  # filter_out should drop matching rows, keeping NAs
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      filter_out(d > 5) %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      filter_out(d > 5)
+  )
+})
+
+test_that("filter_out works correctly with keyed tbl", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+  tbl <- keyed_tbl_impl(dm, "tf_2")
+
+  result <- filter_out(tbl, d > 5)
+  expect_s3_class(result, "dm_keyed_tbl")
+
+  expected <- filter_out(tibble::as_tibble(tbl), d > 5)
+  expect_equal(nrow(result), nrow(expected))
+})
+
+test_that("reframe returns any number of rows per group", {
+  skip_if_remote_src()
+
+  # reframe can return multiple rows per group
+  expect_equivalent_tbl(
+    dm_zoomed() %>%
+      group_by(e) %>%
+      reframe(d_vals = range(d, na.rm = TRUE)) %>%
+      tbl_zoomed(),
+    tf_2() %>%
+      group_by(e) %>%
+      reframe(d_vals = range(d, na.rm = TRUE))
+  )
+})
+
+test_that("count .drop works with zoomed dm", {
+  skip_if_remote_src()
+
+  result <- dm_zoomed() %>%
+    count(e, .drop = FALSE) %>%
+    tbl_zoomed()
+  expected <- tf_2() %>%
+    count(e, .drop = FALSE)
+  expect_equivalent_tbl(result, expected)
+})

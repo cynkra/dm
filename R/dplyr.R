@@ -1245,6 +1245,7 @@ prepare_join <- function(
     if (!all(names(by) %in% new_col_names)) abort_fk_not_tracked(x_orig_name, y_name)
   }
 
+  by <- flatten_join_by(by)
   by <- repair_by(by)
 
   # selection without RHS `by`; only this is needed for disambiguation and by-columns are added later on for all join-types
