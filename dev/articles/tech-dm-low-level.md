@@ -53,6 +53,16 @@ function can be used:
 
 ``` r
 check_subset(data_1, a, data_2, a)
+#> Warning: The `c1` argument of `check_subset()` is deprecated as of dm 1.0.0.
+#> ℹ Please use the `x_select` argument instead.
+#> ℹ Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and
+#>   `t2`.
+#> ℹ Using `by_position = TRUE` for compatibility.
+#> ℹ The deprecated feature was likely used in the dm package.
+#>   Please report the issue at <https://github.com/cynkra/dm/issues>.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
 This function is important for determining if a column is a foreign key
@@ -91,6 +101,16 @@ the function
 
 ``` r
 check_set_equality(data_1, a, data_2, a)
+#> Warning: The `c1` argument of `check_set_equality()` is deprecated as of dm 1.0.0.
+#> ℹ Please use the `x_select` argument instead.
+#> ℹ Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and
+#>   `t2`.
+#> ℹ Using `by_position = TRUE` for compatibility.
+#> ℹ The deprecated feature was likely used in the dm package.
+#>   Please report the issue at <https://github.com/cynkra/dm/issues>.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
 ``` fansi
@@ -188,6 +208,17 @@ used:
 ``` r
 # This does not pass, `c` is not unique key of d2:
 check_cardinality_0_n(d2, c, d1, a)
+#> Warning: The `pk_column` argument of `check_cardinality_0_n()` is deprecated as of
+#> dm 1.0.0.
+#> ℹ Please use the `x_select` argument instead.
+#> • Use `y_select` instead of `fk_column`, and `x` and `y` instead of
+#>   `parent_table` and `child_table`.
+#> • Using `by_position = TRUE` for compatibility.
+#> ℹ The deprecated feature was likely used in the dm package.
+#>   Please report the issue at <https://github.com/cynkra/dm/issues>.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> Error in `abort_not_unique_key()` at dm/R/key-helpers.R:66:5:
 #> ! (`c`) not a unique key of `d2`.
 
@@ -196,11 +227,33 @@ check_cardinality_0_n(d1, a, d2, c)
 
 # This does not pass, injectivity is violated:
 check_cardinality_1_1(d1, a, d2, c)
+#> Warning: The `pk_column` argument of `check_cardinality_1_1()` is deprecated as of
+#> dm 1.0.0.
+#> ℹ Please use the `x_select` argument instead.
+#> • Use `y_select` instead of `fk_column`, and `x` and `y` instead of
+#>   `parent_table` and `child_table`.
+#> • Using `by_position = TRUE` for compatibility.
+#> ℹ The deprecated feature was likely used in the dm package.
+#>   Please report the issue at <https://github.com/cynkra/dm/issues>.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> Error in `abort_not_bijective()` at dm/R/check-cardinalities.R:158:3:
 #> ! 1..1 cardinality (bijectivity) is not given: Column (`c`) in table `d2` contains duplicate values.
 
 # This passes:
 check_cardinality_0_1(d1, a, d3, c)
+#> Warning: The `pk_column` argument of `check_cardinality_0_1()` is deprecated as of
+#> dm 1.0.0.
+#> ℹ Please use the `x_select` argument instead.
+#> • Use `y_select` instead of `fk_column`, and `x` and `y` instead of
+#>   `parent_table` and `child_table`.
+#> • Using `by_position = TRUE` for compatibility.
+#> ℹ The deprecated feature was likely used in the dm package.
+#>   Please report the issue at <https://github.com/cynkra/dm/issues>.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
 [`examine_cardinality()`](https://dm.cynkra.com/dev/reference/examine_cardinality.md)
@@ -208,6 +261,17 @@ returns the type of relation, e.g.:
 
 ``` r
 examine_cardinality(d1, a, d3, c)
+#> Warning: The `pk_column` argument of `examine_cardinality()` is deprecated as of dm
+#> 1.0.0.
+#> ℹ Please use the `x_select` argument instead.
+#> • Use `y_select` instead of `fk_column`, and `x` and `y` instead of
+#>   `parent_table` and `child_table`.
+#> • Using `by_position = TRUE` for compatibility.
+#> ℹ The deprecated feature was likely used in the dm package.
+#>   Please report the issue at <https://github.com/cynkra/dm/issues>.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> [1] "injective mapping (child: 0 or 1 -> parent: 1)"
 examine_cardinality(d1, a, d2, c)
 #> [1] "surjective mapping (child: 1 to n -> parent: 1)"
