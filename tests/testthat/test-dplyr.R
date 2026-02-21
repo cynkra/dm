@@ -147,6 +147,54 @@ test_that("basic test: 'tally()'-method works", {
   )
 })
 
+test_that("count on zoomed dm sets counted columns as pk", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+
+  # count by non-PK column should set it as new PK
+  result <- dm %>%
+    dm_zoom_to(tf_2) %>%
+    count(e) %>%
+    dm_update_zoomed()
+  expect_identical(dm_get_pk(result, tf_2)[[1]], "e")
+
+  # count by PK column should keep it as PK
+  result2 <- dm %>%
+    dm_zoom_to(tf_2) %>%
+    count(c) %>%
+    dm_update_zoomed()
+  expect_identical(dm_get_pk(result2, tf_2)[[1]], "c")
+
+  # count with no args should drop PK
+  result3 <- dm %>%
+    dm_zoom_to(tf_2) %>%
+    count() %>%
+    dm_update_zoomed()
+  expect_identical(length(dm_get_pk(result3, tf_2)), 0L)
+})
+
+test_that("tally on zoomed dm sets group vars as pk", {
+  skip_if_remote_src()
+
+  dm <- dm_for_filter()
+
+  # tally on grouped zoomed dm should set group vars as PK
+  result <- dm %>%
+    dm_zoom_to(tf_2) %>%
+    group_by(e) %>%
+    tally() %>%
+    dm_update_zoomed()
+  expect_identical(dm_get_pk(result, tf_2)[[1]], "e")
+
+  # tally without groups should drop PK
+  result2 <- dm %>%
+    dm_zoom_to(tf_2) %>%
+    tally() %>%
+    dm_update_zoomed()
+  expect_identical(length(dm_get_pk(result2, tf_2)), 0L)
+})
+
 test_that("basic test: 'filter()'-methods work", {
   skip_if_src("maria")
 

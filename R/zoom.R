@@ -251,6 +251,16 @@ update_zoomed_pk <- function(dm) {
   tracked_cols <- col_tracker_zoomed(dm)
   orig_pk <- dm_get_pk_impl(dm, old_tbl_name)
 
+  # Check for new PK set by count/tally
+  new_pk_cols <- attr(tracked_cols, "new_pk")
+  if (!is.null(new_pk_cols)) {
+    if (length(new_pk_cols) > 0) {
+      return(new_pk(list(new_pk_cols)))
+    } else {
+      return(new_pk())
+    }
+  }
+
   if (has_length(orig_pk) && all(get_key_cols(orig_pk) %in% tracked_cols)) {
     upd_pk <- new_pk(list(recode2(get_key_cols(orig_pk), tracked_cols)))
   } else {
@@ -360,6 +370,16 @@ replace_zoomed_tbl <- function(dm, new_zoomed_tbl, tracked_cols = NULL) {
   table <- orig_name_zoomed(dm)
   def <- dm_get_def(dm)
   where <- which(def$table == table)
+
+  # Transfer new_pk attribute from zoomed table to tracked_cols
+  new_pk_attr <- attr(new_zoomed_tbl, "new_pk")
+  if (!is.null(new_pk_attr)) {
+    attr(new_zoomed_tbl, "new_pk") <- NULL
+    if (!is.null(tracked_cols)) {
+      attr(tracked_cols, "new_pk") <- new_pk_attr
+    }
+  }
+
   def$zoom[[where]] <- new_zoomed_tbl
   # the tracked columns are only replaced if they changed, otherwise this function is called with default `NULL`
   if (!is_null(tracked_cols)) {

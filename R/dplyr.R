@@ -536,6 +536,9 @@ count.dm_zoomed <- function(
     out <- dplyr_reconstruct(out, tbl)
   }
 
+  # Set counted columns as new PK
+  attr(out, "new_pk") <- unname(groups)
+
   new_tracked_cols_zoom <- new_tracked_cols(x, groups)
   replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
 }
@@ -589,6 +592,9 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   if (is.data.frame(tbl)) {
     out <- dplyr_reconstruct(out, tbl)
   }
+
+  # Set group vars as new PK
+  attr(out, "new_pk") <- unname(groups)
 
   new_tracked_cols_zoom <- new_tracked_cols(x, groups)
   replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
