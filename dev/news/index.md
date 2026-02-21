@@ -1,5 +1,25 @@
 # Changelog
 
+## dm 1.0.12.9015
+
+### Bug fixes
+
+- Fix bogus message for
+  [`dm_rm_fk()`](https://dm.cynkra.com/dev/reference/dm_rm_fk.md) in
+  presence of FKs to non-PKs
+  ([\#1270](https://github.com/cynkra/dm/issues/1270),
+  [\#2367](https://github.com/cynkra/dm/issues/2367)).
+
+### Chore
+
+- Don’t refer to removed `dplyr::src_dbi()`
+  ([@DavisVaughan](https://github.com/DavisVaughan),
+  [\#2356](https://github.com/cynkra/dm/issues/2356)).
+
+### Continuous integration
+
+- Use robust way to show payload.
+
 ## dm 1.0.12.9014
 
 ### Continuous integration
