@@ -70,7 +70,7 @@
       5 flights     origin, time_hour weather_2    origin, time_hour no_action
       
     Code
-      attr(graph_edges(create_graph_from_dm(nyc_comp_2)), "vnames")
+      attr(igraph::E(create_graph_from_dm(nyc_comp_2)), "vnames")
     Output
       [1] "airlines|flights"  "airports|flights"  "flights|planes"   
       [4] "flights|weather"   "flights|weather_2"
@@ -102,7 +102,7 @@
       8 flights_2   origin, time_hour weather      origin, time_hour no_action
       
     Code
-      attr(graph_edges(create_graph_from_dm(nyc_comp_3)), "vnames")
+      attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")
     Output
       [1] "airlines|flights"   "airlines|flights_2" "airports|flights"  
       [4] "airports|flights_2" "flights|planes"     "planes|flights_2"  

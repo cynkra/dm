@@ -141,7 +141,7 @@ error_txt_last_col_missing <- function() {
 
 abort_no_cycles <- function(g) {
   shortest_cycle <-
-    graph_girth(g) %>%
+    igraph::girth(g) %>%
     pluck("circle") %>%
     names()
   # add the first element after the last element, so it's more clear that it's a cycle
