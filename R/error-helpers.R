@@ -236,7 +236,7 @@ abort_only_parents <- function() {
 error_txt_only_parents <- function() {
   paste0(
     "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `.start` ",
-    "have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
+    "have to be its direct neighbors. For 'flattening' with `dplyr::left_join()`, `dplyr::inner_join()` or `dplyr::full_join()` ",
     "use `dm_flatten_to_tbl(.recursive = TRUE)` as an alternative."
   )
 }

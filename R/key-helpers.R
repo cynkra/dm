@@ -38,7 +38,7 @@ check_key_impl <- function(.data, ...) {
 
   selected_data <- original_data
   if (dots_n(...) > 0) {
-    selected_data <- selected_data %>% select(...)
+    selected_data <- selected_data %>% dplyr::select(...)
   }
 
   check_key_impl0(selected_data, as_label(data_q))
@@ -55,10 +55,10 @@ check_key_impl0 <- function(x, x_label) {
     duplicate_rows <-
       x %>%
       safe_count(!!!cols_chosen) %>%
-      select(n) %>%
-      filter(n > 1) %>%
+      dplyr::select(n) %>%
+      dplyr::filter(n > 1) %>%
       head(1) %>%
-      collect()
+      dplyr::collect()
     any_duplicate_rows <- nrow(duplicate_rows) != 0
   }
 
@@ -89,10 +89,10 @@ is_unique_key_se <- function(.data, colname) {
   if (inherits(.data, "data.frame")) {
     count_tbl <-
       .data %>%
-      select(!!!col_syms) %>%
+      dplyr::select(!!!col_syms) %>%
       vctrs::vec_count() %>%
-      unpack(key) %>%
-      rename(n = count)
+      tidyr::unpack(key) %>%
+      dplyr::rename(n = count)
   } else {
     count_tbl <-
       .data %>%
@@ -100,11 +100,11 @@ is_unique_key_se <- function(.data, colname) {
   }
   res_tbl <-
     count_tbl %>%
-    mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
-    filter(n != 1 | any_na != 0L) %>%
-    arrange(desc(n), !!!syms(val_names)) %>%
+    dplyr::mutate(any_na = dplyr::if_else(!!any_value_na_expr, 1L, 0L)) %>%
+    dplyr::filter(n != 1 | any_na != 0L) %>%
+    dplyr::arrange(dplyr::desc(n), !!!syms(val_names)) %>%
     utils::head(MAX_COMMAS + 1) %>%
-    collect()
+    dplyr::collect()
 
   res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
   res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
@@ -118,7 +118,7 @@ is_unique_key_se <- function(.data, colname) {
       # https://github.com/tidyverse/tidyr/issues/734
       tibble(data = list(.))
     } %>%
-    mutate(unique = map_lgl(data, ~ nrow(.) == 0))
+    dplyr::mutate(unique = map_lgl(data, ~ nrow(.) == 0))
 
   duplicate_rows
 }
@@ -229,13 +229,13 @@ check_subset <- function(x, y, ..., x_select = NULL, y_select = NULL, by_positio
 check_subset_impl0 <- function(x, y, x_label, y_label) {
   # not using `is_subset()`, since then we would do the same job of finding
   # missing values/combinations twice
-  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
-  if (pull(count(head(res, 1))) == 0) {
+  res <- dplyr::anti_join(x, y, by = set_names(colnames(y), colnames(x)))
+  if (dplyr::pull(dplyr::count(head(res, 1))) == 0) {
     return()
   }
 
   # collect() for robust test output
-  print(collect(head(res, n = 10)))
+  print(dplyr::collect(head(res, n = 10)))
 
   abort_not_subset_of(x_label, colnames(x), y_label, colnames(y))
 }
@@ -245,15 +245,15 @@ is_subset <- function(t1, c1, t2, c2) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
-  t1s <- eval_tidy(t1q) %>% select({{ c1 }})
-  t2s <- eval_tidy(t2q) %>% select({{ c2 }})
+  t1s <- eval_tidy(t1q) %>% dplyr::select({{ c1 }})
+  t2s <- eval_tidy(t2q) %>% dplyr::select({{ c2 }})
 
   is_subset_se(t1s, t2s)
 }
 
 is_subset_se <- function(x, y) {
-  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
-  pull(count(head(res, 1))) == 0
+  res <- dplyr::anti_join(x, y, by = set_names(colnames(y), colnames(x)))
+  dplyr::pull(dplyr::count(head(res, 1))) == 0
 }
 
 check_api <- function(
@@ -306,11 +306,11 @@ check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
   c2q <- enquo(c2)
 
   if (!quo_is_null(c1q)) {
-    t1 <- t1 %>% select(!!c1q)
+    t1 <- t1 %>% dplyr::select(!!c1q)
   }
 
   if (!quo_is_null(c2q)) {
-    t2 <- t2 %>% select(!!c2q)
+    t2 <- t2 %>% dplyr::select(!!c2q)
   }
 
   if (!isTRUE(by_position)) {
@@ -323,7 +323,7 @@ check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
 
     t2 <-
       t2 %>%
-      select(!!y_idx)
+      dplyr::select(!!y_idx)
   }
 
   target(x = t1, y = t2, x_label = as_label(t1q), y_label = as_label(t2q))

@@ -25,7 +25,7 @@ dm_ptype <- function(dm) {
   # collect() requires n > 0: https://github.com/tidyverse/dbplyr/issues/415
   dm %>%
     dm_get_def() %>%
-    mutate(data = map(data, ~ head(.x, 0))) %>%
+    dplyr::mutate(data = map(data, ~ head(.x, 0))) %>%
     dm_from_def() %>%
-    collect()
+    dplyr::collect()
 }

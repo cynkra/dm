@@ -144,7 +144,7 @@ dm_filter_impl <- function(dm_zoomed, ..., set_filter) {
   }
 
   tbl <- tbl_zoomed(dm_zoomed)
-  filtered_tbl <- filter(tbl, ...)
+  filtered_tbl <- dplyr::filter(tbl, ...)
 
   # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
   # in case of `dm_insert_zoomed()` the filter exprs needs to be transferred
@@ -227,15 +227,15 @@ dm_get_filtered_table <- function(dm, from) {
 
   fc_children <-
     fc %>%
-    filter(node != parent) %>%
-    select(-distance) %>%
-    nest(semi_join = -parent) %>%
-    rename(table = parent)
+    dplyr::filter(node != parent) %>%
+    dplyr::select(-distance) %>%
+    tidyr::nest(semi_join = -parent) %>%
+    dplyr::rename(table = parent)
 
   recipe <-
     fc %>%
-    select(table = node) %>%
-    left_join(fc_children, by = "table")
+    dplyr::select(table = node) %>%
+    dplyr::left_join(fc_children, by = "table")
 
   list_of_tables <- dm_get_tables(dm)
 
@@ -245,13 +245,13 @@ dm_get_filtered_table <- function(dm, from) {
 
     semi_joins <- recipe$semi_join[[i]]
     if (!is_null(semi_joins)) {
-      semi_joins <- pull(semi_joins)
+      semi_joins <- dplyr::pull(semi_joins)
       semi_joins_tbls <- list_of_tables[semi_joins]
       table <-
         reduce2(
           semi_joins_tbls,
           semi_joins,
-          ~ semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
+          ~ dplyr::semi_join(..1, ..2, by = get_by(dm, table_name, ..3)),
           .init = table
         )
     }
@@ -316,7 +316,7 @@ dm_get_filters <- function(dm) {
 dm_get_filters_impl <- function(dm) {
   filter_df <-
     dm_get_def(dm) %>%
-    select(table, filters) %>%
+    dplyr::select(table, filters) %>%
     unnest_list_of_df("filters")
 
   # FIXME: Should work better with dplyr 0.9.0
@@ -325,8 +325,8 @@ dm_get_filters_impl <- function(dm) {
   # }
 
   filter_df %>%
-    rename(filter = filter_expr) %>%
-    mutate(filter = unname(filter))
+    dplyr::rename(filter = filter_expr) %>%
+    dplyr::mutate(filter = unname(filter))
 }
 
 get_all_filtered_connected <- function(dm, table) {
@@ -374,7 +374,7 @@ get_all_filtered_connected <- function(dm, table) {
   # from all nodes
   edges <-
     all_edges %>%
-    filter(node %in% !!c(filtered_tables, table))
+    dplyr::filter(node %in% !!c(filtered_tables, table))
 
   # Recursive join
   repeat {
@@ -383,13 +383,13 @@ get_all_filtered_connected <- function(dm, table) {
       break
     }
 
-    edges <- bind_rows(edges, filter(all_edges, node %in% !!missing))
+    edges <- dplyr::bind_rows(edges, dplyr::filter(all_edges, node %in% !!missing))
   }
 
   # Keeping the sentinel row (node == parent) to simplify further processing
   # and testing
   edges %>%
-    arrange(-distance)
+    dplyr::arrange(-distance)
 }
 
 new_filtered_edges <- function(node, parent = node, distance = 0) {

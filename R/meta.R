@@ -34,7 +34,7 @@ dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE) {
   if (need_collect) {
     out <-
       out %>%
-      collect()
+      dplyr::collect()
   }
 
   out
@@ -99,26 +99,26 @@ dm_meta_raw <- function(con, catalog) {
   # add is_autoincrement column to columns table
   if (is_mssql(src)) {
     columns <- columns %>%
-      mutate(
+      dplyr::mutate(
         is_autoincrement = sql(
           "CAST(COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity') AS BIT)"
         )
       )
   } else if (is_postgres(src) || is_redshift(src)) {
     columns <- columns %>%
-      mutate(
+      dplyr::mutate(
         is_autoincrement = sql(
           "CASE WHEN column_default IS NULL THEN FALSE ELSE column_default SIMILAR TO '%nextval%' END"
         )
       )
   } else if (is_mariadb(src)) {
     columns <- columns %>%
-      mutate(is_autoincrement = sql("extra REGEXP 'auto_increment'")) %>%
-      select(-extra)
+      dplyr::mutate(is_autoincrement = sql("extra REGEXP 'auto_increment'")) %>%
+      dplyr::select(-extra)
   } else {
     cli::cli_alert_warning("unable to fetch autoincrement metadata for src '{class(src)[1]}'")
     columns <- columns %>%
-      mutate(is_autoincrement = NA)
+      dplyr::mutate(is_autoincrement = NA)
   }
 
   if (is_mariadb(src)) {
@@ -133,19 +133,19 @@ dm_meta_raw <- function(con, catalog) {
         "constraint_type"
       )
     ) %>%
-      mutate(
+      dplyr::mutate(
         table_catalog = constraint_catalog,
         table_schema = constraint_schema,
         .before = table_name
       ) %>%
-      mutate(
-        constraint_name = if_else(
+      dplyr::mutate(
+        constraint_name = dplyr::if_else(
           constraint_type == "PRIMARY KEY",
           paste0("pk_", table_name),
           constraint_name
         )
       ) %>%
-      left_join(
+      dplyr::left_join(
         tbl_lc(
           src,
           "information_schema.referential_constraints",
@@ -177,7 +177,7 @@ dm_meta_raw <- function(con, catalog) {
         "initially_deferred",
       )
     ) %>%
-      left_join(
+      dplyr::left_join(
         tbl_lc(
           src,
           "information_schema.referential_constraints",
@@ -212,7 +212,7 @@ dm_meta_raw <- function(con, catalog) {
   if (is_postgres(src)) {
     # Need hand-crafted query for now
     constraint_column_usage <-
-      tbl(
+      dplyr::tbl(
         src,
         sql(postgres_column_constraints),
         vars = c(
@@ -242,14 +242,14 @@ dm_meta_raw <- function(con, catalog) {
           "ordinal_position"
         )
       ) %>%
-      filter(!is.na(table_name))
+      dplyr::filter(!is.na(table_name))
   } else if (is_mssql(src)) {
     constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints, catalog)
   } else {
     # Alternate constraint names for uniqueness
     key_column_usage <-
       key_column_usage %>%
-      left_join(
+      dplyr::left_join(
         tbl_lc(
           src,
           "information_schema.table_constraints",
@@ -268,14 +268,14 @@ dm_meta_raw <- function(con, catalog) {
           "table_name",
         )
       ) %>%
-      mutate(
-        constraint_name = if_else(
+      dplyr::mutate(
+        constraint_name = dplyr::if_else(
           constraint_type == "PRIMARY KEY",
           paste0("pk_", table_name),
           constraint_name
         )
       ) %>%
-      select(-constraint_type)
+      dplyr::select(-constraint_type)
 
     constraint_column_usage <-
       tbl_lc(
@@ -292,8 +292,8 @@ dm_meta_raw <- function(con, catalog) {
           "ordinal_position"
         )
       ) %>%
-      filter(!is.na(referenced_table_name)) %>%
-      rename(
+      dplyr::filter(!is.na(referenced_table_name)) %>%
+      dplyr::rename(
         table_schema = referenced_table_schema,
         table_name = referenced_table_name,
         column_name = referenced_column_name,
@@ -425,11 +425,11 @@ tbl_lc <- function(con, name, vars) {
     ))
   }
 
-  out <- tbl(con, from, vars = vars)
+  out <- dplyr::tbl(con, from, vars = vars)
   if (is.null(vars)) {
     out <-
       out %>%
-      rename(!!!set_names(colnames(out), tolower(colnames(out))))
+      dplyr::rename(!!!set_names(colnames(out), tolower(colnames(out))))
   }
   out
 }
@@ -503,30 +503,30 @@ filter_dm_meta <- function(dm_meta, catalog = NULL, schema = NULL) {
   constraint_column_usage <- dm_meta$constraint_column_usage
 
   if (!is.null(catalog) && !is.na(catalog)) {
-    schemata <- schemata %>% filter(catalog_name %in% !!catalog)
-    tables <- tables %>% filter(table_catalog %in% !!catalog)
-    columns <- columns %>% filter(table_catalog %in% !!catalog)
-    table_constraints <- table_constraints %>% filter(table_catalog %in% !!catalog)
-    key_column_usage <- key_column_usage %>% filter(table_catalog %in% !!catalog)
-    constraint_column_usage <- constraint_column_usage %>% filter(table_catalog %in% !!catalog)
+    schemata <- schemata %>% dplyr::filter(catalog_name %in% !!catalog)
+    tables <- tables %>% dplyr::filter(table_catalog %in% !!catalog)
+    columns <- columns %>% dplyr::filter(table_catalog %in% !!catalog)
+    table_constraints <- table_constraints %>% dplyr::filter(table_catalog %in% !!catalog)
+    key_column_usage <- key_column_usage %>% dplyr::filter(table_catalog %in% !!catalog)
+    constraint_column_usage <- constraint_column_usage %>% dplyr::filter(table_catalog %in% !!catalog)
   }
 
   if (!is.null(schema) && !anyNA(schema)) {
-    schemata <- schemata %>% filter(schema_name %in% !!schema)
-    tables <- tables %>% filter(table_schema %in% !!schema)
-    columns <- columns %>% filter(table_schema %in% !!schema)
-    table_constraints <- table_constraints %>% filter(table_schema %in% !!schema)
-    key_column_usage <- key_column_usage %>% filter(table_schema %in% !!schema)
-    constraint_column_usage <- constraint_column_usage %>% filter(table_schema %in% !!schema)
+    schemata <- schemata %>% dplyr::filter(schema_name %in% !!schema)
+    tables <- tables %>% dplyr::filter(table_schema %in% !!schema)
+    columns <- columns %>% dplyr::filter(table_schema %in% !!schema)
+    table_constraints <- table_constraints %>% dplyr::filter(table_schema %in% !!schema)
+    key_column_usage <- key_column_usage %>% dplyr::filter(table_schema %in% !!schema)
+    constraint_column_usage <- constraint_column_usage %>% dplyr::filter(table_schema %in% !!schema)
   } else if (!isTRUE(is.na(schema)) && is_mariadb(dm_get_con(dm_meta))) {
-    schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
-    tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    schemata <- schemata %>% dplyr::filter(schema_name == DATABASE() | is.na(DATABASE()))
+    tables <- tables %>% dplyr::filter(table_schema == DATABASE() | is.na(DATABASE()))
+    columns <- columns %>% dplyr::filter(table_schema == DATABASE() | is.na(DATABASE()))
     table_constraints <- table_constraints %>%
-      filter(table_schema == DATABASE() | is.na(DATABASE()))
-    key_column_usage <- key_column_usage %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+      dplyr::filter(table_schema == DATABASE() | is.na(DATABASE()))
+    key_column_usage <- key_column_usage %>% dplyr::filter(table_schema == DATABASE() | is.na(DATABASE()))
     constraint_column_usage <- constraint_column_usage %>%
-      filter(table_schema == DATABASE() | is.na(DATABASE()))
+      dplyr::filter(table_schema == DATABASE() | is.na(DATABASE()))
   }
 
   dm(
@@ -550,19 +550,19 @@ filter_dm_meta_simple <- function(dm_meta, catalog = NULL, schema = NULL) {
   columns <- dm_meta$columns
 
   if (!is.null(catalog) && !is.na(catalog)) {
-    schemata <- schemata %>% filter(catalog_name %in% !!catalog)
-    tables <- tables %>% filter(table_catalog %in% !!catalog)
-    columns <- columns %>% filter(table_catalog %in% !!catalog)
+    schemata <- schemata %>% dplyr::filter(catalog_name %in% !!catalog)
+    tables <- tables %>% dplyr::filter(table_catalog %in% !!catalog)
+    columns <- columns %>% dplyr::filter(table_catalog %in% !!catalog)
   }
 
   if (!is.null(schema)) {
-    schemata <- schemata %>% filter(schema_name %in% !!schema)
-    tables <- tables %>% filter(table_schema %in% !!schema)
-    columns <- columns %>% filter(table_schema %in% !!schema)
+    schemata <- schemata %>% dplyr::filter(schema_name %in% !!schema)
+    tables <- tables %>% dplyr::filter(table_schema %in% !!schema)
+    columns <- columns %>% dplyr::filter(table_schema %in% !!schema)
   } else if (!is.null(schema) && !is.na(schema) && is_mariadb(dm_get_con(dm_meta))) {
-    schemata <- schemata %>% filter(schema_name == DATABASE() | is.na(DATABASE()))
-    tables <- tables %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
-    columns <- columns %>% filter(table_schema == DATABASE() | is.na(DATABASE()))
+    schemata <- schemata %>% dplyr::filter(schema_name == DATABASE() | is.na(DATABASE()))
+    tables <- tables %>% dplyr::filter(table_schema == DATABASE() | is.na(DATABASE()))
+    columns <- columns %>% dplyr::filter(table_schema == DATABASE() | is.na(DATABASE()))
   }
 
   dm(schemata, tables, columns) %>%

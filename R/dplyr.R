@@ -29,7 +29,7 @@ filter.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 #' @exportS3Method dplyr::filter
 filter.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   tbl <- tbl_zoomed(.data)
-  filtered_tbl <- filter(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  filtered_tbl <- dplyr::filter(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
   replace_zoomed_tbl(.data, filtered_tbl)
 }
 
@@ -38,7 +38,7 @@ filter.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 filter.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  filtered_tbl <- filter(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  filtered_tbl <- dplyr::filter(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
   new_keyed_tbl_from_keys_info(filtered_tbl, keys_info)
 }
 
@@ -51,7 +51,7 @@ filter_out.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 #' @exportS3Method dplyr::filter_out
 filter_out.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   tbl <- tbl_zoomed(.data)
-  filtered_tbl <- filter_out(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  filtered_tbl <- dplyr::filter_out(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
   replace_zoomed_tbl(.data, filtered_tbl)
 }
 
@@ -60,7 +60,7 @@ filter_out.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 filter_out.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  filtered_tbl <- filter_out(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  filtered_tbl <- dplyr::filter_out(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
   new_keyed_tbl_from_keys_info(filtered_tbl, keys_info)
 }
 
@@ -87,7 +87,7 @@ mutate.dm_zoomed <- function(
   .after = NULL
 ) {
   tbl <- tbl_zoomed(.data)
-  mutated_tbl <- mutate(
+  mutated_tbl <- dplyr::mutate(
     tbl,
     ...,
     .by = {{ .by }},
@@ -113,7 +113,7 @@ mutate.dm_keyed_tbl <- function(
 ) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  out <- mutate(
+  out <- dplyr::mutate(
     tbl,
     ...,
     .by = {{ .by }},
@@ -134,8 +134,8 @@ transmute.dm <- function(.data, ...) {
 transmute.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
-  groups <- set_names(map_chr(groups(tbl), as_string))
-  transmuted_tbl <- transmute(tbl, ...)
+  groups <- set_names(map_chr(dplyr::groups(tbl), as_string))
+  transmuted_tbl <- dplyr::transmute(tbl, ...)
 
   # #663: user responsibility: those columns are tracked whose names remain
   selected <- set_names(intersect(colnames(tbl), colnames(transmuted_tbl)))
@@ -149,7 +149,7 @@ transmute.dm_zoomed <- function(.data, ...) {
 transmute.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  out <- transmute(tbl, ...)
+  out <- dplyr::transmute(tbl, ...)
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -164,7 +164,7 @@ select.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
 
   selected <- eval_select_both(quo(c(...)), colnames(tbl))
-  selected_tbl <- select(tbl, !!!selected$indices)
+  selected_tbl <- dplyr::select(tbl, !!!selected$indices)
   new_tracked_cols_zoom <- new_tracked_cols(.data, selected$names)
 
   replace_zoomed_tbl(.data, selected_tbl, new_tracked_cols_zoom)
@@ -175,7 +175,7 @@ select.dm_zoomed <- function(.data, ...) {
 select.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  out <- select(tbl, ...)
+  out <- dplyr::select(tbl, ...)
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -190,7 +190,7 @@ relocate.dm <- function(.data, ..., .before = NULL, .after = NULL) {
 relocate.dm_zoomed <- function(.data, ..., .before = NULL, .after = NULL) {
   tbl <- tbl_zoomed(.data)
 
-  relocated_tbl <- relocate(tbl, ..., .before = {{ .before }}, .after = {{ .after }})
+  relocated_tbl <- dplyr::relocate(tbl, ..., .before = {{ .before }}, .after = {{ .after }})
   replace_zoomed_tbl(.data, relocated_tbl)
 }
 
@@ -199,7 +199,7 @@ relocate.dm_zoomed <- function(.data, ..., .before = NULL, .after = NULL) {
 relocate.dm_keyed_tbl <- function(.data, ..., .before = NULL, .after = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  relocated_tbl <- relocate(tbl, ..., .before = {{ .before }}, .after = {{ .after }})
+  relocated_tbl <- dplyr::relocate(tbl, ..., .before = {{ .before }}, .after = {{ .after }})
   new_keyed_tbl_from_keys_info(relocated_tbl, keys_info)
 }
 
@@ -214,7 +214,7 @@ rename.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
 
   renamed <- eval_rename_both(quo(c(...)), colnames(tbl))
-  renamed_tbl <- rename(tbl, !!!renamed$indices)
+  renamed_tbl <- dplyr::rename(tbl, !!!renamed$indices)
   new_tracked_cols_zoom <- new_tracked_cols(.data, renamed$all_names)
 
   replace_zoomed_tbl(.data, renamed_tbl, new_tracked_cols_zoom)
@@ -225,7 +225,7 @@ rename.dm_zoomed <- function(.data, ...) {
 rename.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  out <- rename(tbl, ...)
+  out <- dplyr::rename(tbl, ...)
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -239,7 +239,7 @@ distinct.dm <- function(.data, ..., .keep_all = FALSE) {
 #' @exportS3Method dplyr::distinct
 distinct.dm_zoomed <- function(.data, ..., .keep_all = FALSE) {
   tbl <- tbl_zoomed(.data)
-  distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
+  distinct_tbl <- dplyr::distinct(tbl, ..., .keep_all = .keep_all)
 
   # #663: user responsibility: those columns are tracked whose names remain
   selected <- set_names(intersect(colnames(tbl), colnames(distinct_tbl)))
@@ -253,7 +253,7 @@ distinct.dm_zoomed <- function(.data, ..., .keep_all = FALSE) {
 distinct.dm_keyed_tbl <- function(.data, ..., .keep_all = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
+  distinct_tbl <- dplyr::distinct(tbl, ..., .keep_all = .keep_all)
   new_keyed_tbl_from_keys_info(distinct_tbl, keys_info)
 }
 
@@ -266,7 +266,7 @@ arrange.dm <- function(.data, ..., .by_group = FALSE, .locale = NULL) {
 #' @exportS3Method dplyr::arrange
 arrange.dm_zoomed <- function(.data, ..., .by_group = FALSE, .locale = NULL) {
   tbl <- tbl_zoomed(.data)
-  arranged_tbl <- arrange(tbl, ..., .by_group = .by_group, .locale = .locale)
+  arranged_tbl <- dplyr::arrange(tbl, ..., .by_group = .by_group, .locale = .locale)
   replace_zoomed_tbl(.data, arranged_tbl)
 }
 
@@ -275,7 +275,7 @@ arrange.dm_zoomed <- function(.data, ..., .by_group = FALSE, .locale = NULL) {
 arrange.dm_keyed_tbl <- function(.data, ..., .by_group = FALSE, .locale = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  arranged_tbl <- arrange(tbl, ..., .by_group = .by_group, .locale = .locale)
+  arranged_tbl <- dplyr::arrange(tbl, ..., .by_group = .by_group, .locale = .locale)
   new_keyed_tbl_from_keys_info(arranged_tbl, keys_info)
 }
 
@@ -290,7 +290,7 @@ slice.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 #' This argument is specific for the `slice.dm_zoomed()` method.
 #' @exportS3Method dplyr::slice
 slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL) {
-  sliced_tbl <- slice(tbl_zoomed(.data), ..., .by = {{ .by }}, .preserve = .preserve)
+  sliced_tbl <- dplyr::slice(tbl_zoomed(.data), ..., .by = {{ .by }}, .preserve = .preserve)
   orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
   tracked_cols <- col_tracker_zoomed(.data)
   if (is_null(.keep_pk)) {
@@ -313,7 +313,7 @@ slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk 
 slice.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  sliced_tbl <- slice(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
+  sliced_tbl <- dplyr::slice(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
   new_keyed_tbl_from_keys_info(sliced_tbl, keys_info)
 }
 
@@ -326,7 +326,7 @@ group_by.dm <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(
 #' @exportS3Method dplyr::group_by
 group_by.dm_zoomed <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
   tbl <- tbl_zoomed(.data)
-  grouped_tbl <- group_by(tbl, ..., .add = .add, .drop = .drop)
+  grouped_tbl <- dplyr::group_by(tbl, ..., .add = .add, .drop = .drop)
 
   replace_zoomed_tbl(.data, grouped_tbl)
 }
@@ -336,7 +336,7 @@ group_by.dm_zoomed <- function(.data, ..., .add = FALSE, .drop = group_by_drop_d
 group_by.dm_keyed_tbl <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  grouped_tbl <- group_by(tbl, ..., .add = .add, .drop = .drop)
+  grouped_tbl <- dplyr::group_by(tbl, ..., .add = .add, .drop = .drop)
   new_keyed_tbl_from_keys_info(grouped_tbl, keys_info)
 }
 
@@ -348,7 +348,7 @@ group_data.dm <- function(.data) {
 #' @exportS3Method dplyr::group_data
 group_data.dm_zoomed <- function(.data) {
   tbl <- tbl_zoomed(.data)
-  group_data(tbl)
+  dplyr::group_data(tbl)
 }
 
 #' @exportS3Method dplyr::group_keys
@@ -360,7 +360,7 @@ group_keys.dm <- function(.tbl, ...) {
 group_keys.dm_zoomed <- function(.tbl, ...) {
   .data <- .tbl
   tbl <- tbl_zoomed(.data)
-  group_keys(tbl, ...)
+  dplyr::group_keys(tbl, ...)
 }
 
 #' @exportS3Method dplyr::group_indices
@@ -371,7 +371,7 @@ group_indices.dm <- function(.data, ...) {
 #' @exportS3Method dplyr::group_indices
 group_indices.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
-  group_indices(tbl, ...)
+  dplyr::group_indices(tbl, ...)
 }
 
 #' @exportS3Method dplyr::group_vars
@@ -383,7 +383,7 @@ group_vars.dm <- function(x) {
 group_vars.dm_zoomed <- function(x) {
   .data <- x
   tbl <- tbl_zoomed(.data)
-  group_vars(tbl)
+  dplyr::group_vars(tbl)
 }
 
 #' @exportS3Method dplyr::groups
@@ -395,7 +395,7 @@ groups.dm <- function(x) {
 groups.dm_zoomed <- function(x) {
   .data <- x
   tbl <- tbl_zoomed(.data)
-  groups(tbl)
+  dplyr::groups(tbl)
 }
 
 #' @exportS3Method dplyr::ungroup
@@ -408,7 +408,7 @@ ungroup.dm <- function(x, ...) {
 #' @exportS3Method dplyr::ungroup
 ungroup.dm_zoomed <- function(x, ...) {
   tbl <- tbl_zoomed(x)
-  ungrouped_tbl <- ungroup(tbl, ...)
+  ungrouped_tbl <- dplyr::ungroup(tbl, ...)
 
   replace_zoomed_tbl(x, ungrouped_tbl)
 }
@@ -418,7 +418,7 @@ ungroup.dm_zoomed <- function(x, ...) {
 ungroup.dm_keyed_tbl <- function(x, ...) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
-  ungrouped_tbl <- ungroup(tbl, ...)
+  ungrouped_tbl <- dplyr::ungroup(tbl, ...)
   new_keyed_tbl_from_keys_info(ungrouped_tbl, keys_info)
 }
 
@@ -433,8 +433,8 @@ summarise.dm_zoomed <- function(.data, ..., .by = NULL, .groups = NULL) {
   tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
   # #663: user responsibility: if group columns are manipulated, they are still tracked
-  groups <- set_names(map_chr(groups(tbl), as_string))
-  summarized_tbl <- summarize(tbl, ..., .by = {{ .by }}, .groups = .groups)
+  groups <- set_names(map_chr(dplyr::groups(tbl), as_string))
+  summarized_tbl <- dplyr::summarize(tbl, ..., .by = {{ .by }}, .groups = .groups)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
 }
@@ -446,12 +446,12 @@ summarise.dm_keyed_tbl <- function(.data, ..., .by = NULL, .groups = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
 
-  new_pk <- group_vars(.data)
+  new_pk <- dplyr::group_vars(.data)
   if (length(new_pk) == 0) {
     new_pk <- NULL
   }
 
-  summarised_tbl <- summarise(tbl, ..., .by = {{ .by }}, .groups = .groups)
+  summarised_tbl <- dplyr::summarise(tbl, ..., .by = {{ .by }}, .groups = .groups)
 
   # FIXME: Add original FKs for the remaining columns
   # (subsets of the grouped columns), use new UUID
@@ -471,7 +471,7 @@ reframe.dm <- function(.data, ..., .by = NULL) {
 #' @exportS3Method dplyr::reframe
 reframe.dm_zoomed <- function(.data, ..., .by = NULL) {
   tbl <- tbl_zoomed(.data)
-  reframed_tbl <- reframe(tbl, ..., .by = {{ .by }})
+  reframed_tbl <- dplyr::reframe(tbl, ..., .by = {{ .by }})
   # reframe() always returns ungrouped data, no group tracking needed
   # #663: user responsibility: those columns are tracked whose names remain
   selected <- set_names(intersect(colnames(tbl_zoomed(.data)), colnames(reframed_tbl)))
@@ -485,7 +485,7 @@ reframe.dm_keyed_tbl <- function(.data, ..., .by = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
 
-  reframed_tbl <- reframe(tbl, ..., .by = {{ .by }})
+  reframed_tbl <- dplyr::reframe(tbl, ..., .by = {{ .by }})
 
   # reframe() can return any number of rows per group,
 
@@ -522,14 +522,14 @@ count.dm_zoomed <- function(
   tbl <- tbl_zoomed(x)
 
   if (!missing(...)) {
-    out <- group_by(tbl, ..., .add = TRUE, .drop = .drop)
+    out <- dplyr::group_by(tbl, ..., .add = TRUE, .drop = .drop)
   } else {
     out <- tbl
   }
 
-  groups <- set_names(map_chr(groups(out), as_string))
+  groups <- set_names(map_chr(dplyr::groups(out), as_string))
 
-  out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
+  out <- dplyr::tally(out, wt = !!enquo(wt), sort = sort, name = name)
 
   # Ensure grouping is transient
   if (is.data.frame(tbl)) {
@@ -552,7 +552,7 @@ count.dm_keyed_tbl <- function(
 ) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
-  counted_tbl <- count(tbl, ..., wt = {{ wt }}, sort = sort, name = name, .drop = .drop)
+  counted_tbl <- dplyr::count(tbl, ..., wt = {{ wt }}, sort = sort, name = name, .drop = .drop)
   new_keyed_tbl(
     counted_tbl,
     uuid = keys_info$uuid
@@ -568,9 +568,9 @@ tally.dm <- function(x, wt = NULL, sort = FALSE, name = NULL) {
 #' @exportS3Method dplyr::tally
 tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   tbl <- tbl_zoomed(x)
-  groups <- set_names(map_chr(groups(tbl), as_string))
+  groups <- set_names(map_chr(dplyr::groups(tbl), as_string))
 
-  out <- tally(tbl, wt = {{ wt }}, sort = sort, name = name)
+  out <- dplyr::tally(tbl, wt = {{ wt }}, sort = sort, name = name)
 
   # Ensure grouping is transient
   if (is.data.frame(tbl)) {
@@ -586,7 +586,7 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
 tally.dm_keyed_tbl <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
-  tallied_tbl <- tally(tbl, wt = {{ wt }}, sort = sort, name = name)
+  tallied_tbl <- dplyr::tally(tbl, wt = {{ wt }}, sort = sort, name = name)
   new_keyed_tbl(
     tallied_tbl,
     uuid = keys_info$uuid
@@ -603,7 +603,7 @@ pull.dm <- function(.data, var = -1, name = NULL, ...) {
 #' @exportS3Method dplyr::pull
 pull.dm_zoomed <- function(.data, var = -1, name = NULL, ...) {
   tbl <- tbl_zoomed(.data)
-  pull(tbl, var = {{ var }}, name = {{ name }}, ...)
+  dplyr::pull(tbl, var = {{ var }}, name = {{ name }}, ...)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -611,7 +611,7 @@ pull.dm_zoomed <- function(.data, var = -1, name = NULL, ...) {
 compute.dm_zoomed <- function(x, ...) {
   dm_zoomed_df <-
     tbl_zoomed(x) %>%
-    compute(...)
+    dplyr::compute(...)
   replace_zoomed_tbl(x, dm_zoomed_df)
 }
 
@@ -675,7 +675,7 @@ left_join.dm_zoomed <- function(
 ) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- left_join(
+  joined_tbl <- dplyr::left_join(
     join_data$x_tbl,
     join_data$y_tbl,
     join_data$by,
@@ -710,7 +710,7 @@ left_join.dm_keyed_tbl <- function(
   }
 
   join_spec <- keyed_build_join_spec(x, y, by, suffix)
-  joined_tbl <- left_join(
+  joined_tbl <- dplyr::left_join(
     join_spec$x_tbl,
     join_spec$y_tbl,
     deframe(join_spec$by),
@@ -768,7 +768,7 @@ inner_join.dm_zoomed <- function(
 ) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- inner_join(
+  joined_tbl <- dplyr::inner_join(
     join_data$x_tbl,
     join_data$y_tbl,
     join_data$by,
@@ -803,7 +803,7 @@ inner_join.dm_keyed_tbl <- function(
   }
 
   join_spec <- keyed_build_join_spec(x, y, by, suffix)
-  joined_tbl <- inner_join(
+  joined_tbl <- dplyr::inner_join(
     join_spec$x_tbl,
     join_spec$y_tbl,
     deframe(join_spec$by),
@@ -859,7 +859,7 @@ full_join.dm_zoomed <- function(
 ) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- full_join(
+  joined_tbl <- dplyr::full_join(
     join_data$x_tbl,
     join_data$y_tbl,
     join_data$by,
@@ -892,7 +892,7 @@ full_join.dm_keyed_tbl <- function(
   }
 
   join_spec <- keyed_build_join_spec(x, y, by, suffix)
-  joined_tbl <- full_join(
+  joined_tbl <- dplyr::full_join(
     join_spec$x_tbl,
     join_spec$y_tbl,
     deframe(join_spec$by),
@@ -949,7 +949,7 @@ right_join.dm_zoomed <- function(
 ) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy)
-  joined_tbl <- right_join(
+  joined_tbl <- dplyr::right_join(
     join_data$x_tbl,
     join_data$y_tbl,
     join_data$by,
@@ -984,7 +984,7 @@ right_join.dm_keyed_tbl <- function(
   }
 
   join_spec <- keyed_build_join_spec(x, y, by, suffix)
-  joined_tbl <- right_join(
+  joined_tbl <- dplyr::right_join(
     join_spec$x_tbl,
     join_spec$y_tbl,
     deframe(join_spec$by),
@@ -1026,7 +1026,7 @@ semi_join.dm_zoomed <- function(
 ) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
-  joined_tbl <- semi_join(
+  joined_tbl <- dplyr::semi_join(
     join_data$x_tbl,
     join_data$y_tbl,
     join_data$by,
@@ -1055,7 +1055,7 @@ semi_join.dm_keyed_tbl <- function(
     by <- keyed_by(x, y)
   }
 
-  joined_tbl <- semi_join(
+  joined_tbl <- dplyr::semi_join(
     unclass_keyed_tbl(x),
     unclass_keyed_tbl(y),
     by,
@@ -1085,7 +1085,7 @@ anti_join.dm_zoomed <- function(
 ) {
   y_name <- as_string(enexpr(y))
   join_data <- prepare_join(x, {{ y }}, by, {{ select }}, suffix, copy, disambiguate = FALSE)
-  joined_tbl <- anti_join(
+  joined_tbl <- dplyr::anti_join(
     join_data$x_tbl,
     join_data$y_tbl,
     join_data$by,
@@ -1114,7 +1114,7 @@ anti_join.dm_keyed_tbl <- function(
     by <- keyed_by(x, y)
   }
 
-  joined_tbl <- anti_join(
+  joined_tbl <- dplyr::anti_join(
     unclass_keyed_tbl(x),
     unclass_keyed_tbl(y),
     by,
@@ -1157,7 +1157,7 @@ nest_join.dm_zoomed <- function(
   y_name <- as_string(enexpr(y))
   name <- name %||% y_name
   join_data <- prepare_join(x, {{ y }}, by, NULL, NULL, NULL, disambiguate = FALSE)
-  joined_tbl <- nest_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy, keep, name, ...)
+  joined_tbl <- dplyr::nest_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy, keep, name, ...)
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
@@ -1177,7 +1177,7 @@ cross_join.dm_zoomed <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
   x_tbl <- zoomed$zoom[[1]]
   y_tbl <- dm_get_tables_impl(x)[[y_name]]
   new_col_names <- zoomed$col_tracker_zoom[[1]]
-  joined_tbl <- cross_join(x_tbl, y_tbl, ..., copy = FALSE, suffix = suffix)
+  joined_tbl <- dplyr::cross_join(x_tbl, y_tbl, ..., copy = FALSE, suffix = suffix)
   replace_zoomed_tbl(x, joined_tbl, new_col_names)
 }
 
@@ -1188,7 +1188,7 @@ cross_join.dm_keyed_tbl <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y
     return(NextMethod())
   }
 
-  joined_tbl <- cross_join(
+  joined_tbl <- dplyr::cross_join(
     unclass_keyed_tbl(x),
     unclass_keyed_tbl(y),
     ...,
@@ -1269,15 +1269,15 @@ prepare_join <- function(
 
     x_renames <-
       recipe %>%
-      filter(table == x_disambig_name) %>%
-      pull(renames)
+      dplyr::filter(table == x_disambig_name) %>%
+      dplyr::pull(renames)
     y_renames <-
       recipe %>%
-      filter(table == y_disambig_name) %>%
-      pull(renames)
+      dplyr::filter(table == y_disambig_name) %>%
+      dplyr::pull(renames)
 
     if (has_length(x_renames)) {
-      x_tbl <- x_tbl %>% rename(!!!x_renames[[1]])
+      x_tbl <- x_tbl %>% dplyr::rename(!!!x_renames[[1]])
       names(by) <- recode_compat(names2(by), prep_recode(x_renames[[1]]))
       names(new_col_names) <- recode_compat(names(new_col_names), prep_recode(x_renames[[1]]))
     }
@@ -1301,7 +1301,7 @@ prepare_join <- function(
   # complete vector of selection consisting of selection without by and the newly named by-columns
   selected_repaired <- c(selected_wo_by, by_rhs_rename)
 
-  y_tbl <- select(y_tbl, !!!selected_repaired)
+  y_tbl <- dplyr::select(y_tbl, !!!selected_repaired)
 
   # the `by` argument needs to be updated: LHS stays, RHS needs to be replaced with new names
   repaired_by <- set_names(recode_compat(by, prep_recode(by_rhs_rename)), names(by))
@@ -1337,22 +1337,22 @@ safe_count <- function(
     if (any(named)) {
       quos <- as.list(quos)
       named_quos <- quos[named]
-      x <- mutate(x, !!!named_quos)
+      x <- dplyr::mutate(x, !!!named_quos)
       quos[named] <- syms(names2(quos)[named])
       names(quos) <- NULL
     }
-    out <- group_by(x, !!!quos, .add = FALSE, .drop = .drop)
+    out <- dplyr::group_by(x, !!!quos, .add = FALSE, .drop = .drop)
   } else {
-    out <- ungroup(x)
+    out <- dplyr::ungroup(x)
   }
 
   # Compatibility for dplyr < 1.0.0
   if (is.null(name)) {
-    out <- tally(out, wt = !!enquo(wt), sort = sort)
+    out <- dplyr::tally(out, wt = !!enquo(wt), sort = sort)
   } else {
-    out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
+    out <- dplyr::tally(out, wt = !!enquo(wt), sort = sort, name = name)
   }
-  ungroup(out)
+  dplyr::ungroup(out)
 }
 
 new_tracked_cols <- function(dm, selected) {

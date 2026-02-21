@@ -57,7 +57,7 @@ db_schema_list.src_dbi <- function(con, include_default = TRUE, ...) {
     check_param_length(dbname)
     paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
   }
-  default_if_true <- if_else(include_default, "", " AND NOT s.name = 'dbo'")
+  default_if_true <- dplyr::if_else(include_default, "", " AND NOT s.name = 'dbo'")
   # ignore built-in schemas for backward compatibility:
   # https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver15
   DBI::dbGetQuery(
@@ -76,7 +76,7 @@ db_schema_list.src_dbi <- function(con, include_default = TRUE, ...) {
 
 #' @export
 db_schema_list.PqConnection <- function(con, include_default = TRUE, ...) {
-  default_if_true <- if_else(include_default, "", ", 'public'")
+  default_if_true <- dplyr::if_else(include_default, "", ", 'public'")
   DBI::dbGetQuery(
     con,
     glue::glue(

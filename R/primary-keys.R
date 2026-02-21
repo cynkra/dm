@@ -366,8 +366,8 @@ enum_pk_candidates <- function(table, ...) {
 
   table %>%
     enum_pk_candidates_impl() %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
+    dplyr::rename(columns = column) %>%
+    dplyr::mutate(columns = new_keys(columns))
 }
 
 #' @description `dm_enum_pk_candidates()` performs these checks
@@ -394,17 +394,17 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
   table <- dm_get_tables_impl(dm)[[table_name]]
   table %>%
     enum_pk_candidates_impl() %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
+    dplyr::rename(columns = column) %>%
+    dplyr::mutate(columns = new_keys(columns))
 }
 
 #' @autoglobal
 enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
   tibble(column = new_keys(columns)) %>%
-    mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
-    mutate(candidate = (why == "")) %>%
-    select(column, candidate, why) %>%
-    arrange(desc(candidate), column)
+    dplyr::mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
+    dplyr::mutate(candidate = (why == "")) %>%
+    dplyr::select(column, candidate, why) %>%
+    dplyr::arrange(dplyr::desc(candidate), column)
 }
 
 check_pk <- function(table, columns) {

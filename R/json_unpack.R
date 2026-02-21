@@ -31,8 +31,8 @@ json_unpack.data.frame <- function(
     abort("The `cols` argument must be provided")
   }
   data %>%
-    mutate(across({{ cols }}, ~ map_dfr(., ~ jsonlite::fromJSON(.) %>% as_tibble()))) %>%
-    unpack(
+    dplyr::mutate(dplyr::across({{ cols }}, ~ map_dfr(., ~ jsonlite::fromJSON(.) %>% as_tibble()))) %>%
+    tidyr::unpack(
       {{ cols }},
       names_sep = names_sep,
       names_repair = names_repair

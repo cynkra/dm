@@ -118,11 +118,11 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   new_tbl <- zoomed$zoom
   # filters need to be split: old_filters belong to the old table, new filters to the inserted table
   all_filters <- zoomed$filters[[1]]
-  old_filters <- all_filters %>% filter(!zoomed)
+  old_filters <- all_filters %>% dplyr::filter(!zoomed)
   new_filters <-
     all_filters %>%
-    filter(zoomed) %>%
-    mutate(zoomed = FALSE)
+    dplyr::filter(zoomed) %>%
+    dplyr::mutate(zoomed = FALSE)
 
   # rename dm in case of name repair
   names_list <- repair_table_names(
@@ -223,7 +223,7 @@ dm_discard_zoomed <- function(dm) {
   old_tbl_name <- def$table[[where]]
   upd_filter <-
     def$filters[[where]] %>%
-    filter(zoomed == FALSE)
+    dplyr::filter(zoomed == FALSE)
 
   def$filters[[where]] <- upd_filter
 
@@ -316,10 +316,10 @@ update_zoomed_outgoing <- function(fks, tbl_name, tracked_cols) {
 
 update_zoomed_fks <- function(dm, old_tbl_name, tracked_cols) {
   dm_get_all_fks_impl(dm) %>%
-    filter(child_table == !!old_tbl_name) %>%
-    filter(map_lgl(child_fk_cols, ~ all(.x %in% !!tracked_cols))) %>%
-    distinct() %>%
-    mutate(
+    dplyr::filter(child_table == !!old_tbl_name) %>%
+    dplyr::filter(map_lgl(child_fk_cols, ~ all(.x %in% !!tracked_cols))) %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(
       child_fk_cols = new_keys(map(
         child_fk_cols,
         ~ (!!names(tracked_cols))[match(.x, !!tracked_cols, nomatch = 0L)]
@@ -397,8 +397,8 @@ get_orig_in_fks <- function(dm_zoomed, orig_table) {
   # FIXME: maybe there is a more efficient implementation possible?
   dm_zoomed %>%
     dm_get_all_fks_impl() %>%
-    filter(parent_table == orig_table) %>%
-    select(-parent_table)
+    dplyr::filter(parent_table == orig_table) %>%
+    dplyr::select(-parent_table)
 }
 
 get_all_cols <- function(dm, table_name) {

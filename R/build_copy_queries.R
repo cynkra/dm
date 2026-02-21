@@ -44,15 +44,15 @@ build_copy_queries <- function(
   }
 
   ## fetch types, keys and uniques
-  pks <- dm_get_all_pks_impl(dm) %>% rename(name = table)
+  pks <- dm_get_all_pks_impl(dm) %>% dplyr::rename(name = table)
   fks <- dm_get_all_fks_impl(dm)
 
   # if a that doesn't match a pk, this non-pk col should be unique
   uniques <-
     fks %>%
-    select(name = parent_table, pk_col = parent_key_cols) %>%
-    anti_join(pks, by = c("name", "pk_col")) %>%
-    distinct()
+    dplyr::select(name = parent_table, pk_col = parent_key_cols) %>%
+    dplyr::anti_join(pks, by = c("name", "pk_col")) %>%
+    dplyr::distinct()
 
   ## build sql definitions to use in `CREATE TABLE ...`
 
@@ -63,8 +63,8 @@ build_copy_queries <- function(
     pk_col <-
       dm %>%
       dm_get_all_pks(!!x) %>%
-      filter(autoincrement) %>%
-      pull(pk_col)
+      dplyr::filter(autoincrement) %>%
+      dplyr::pull(pk_col)
 
     tbl <- tbl_impl(dm, x)
     types <- DBI::dbDataType(con, tbl)
@@ -120,13 +120,13 @@ build_copy_queries <- function(
     }
     df_col_types <-
       enframe(types, "col", "type") %>%
-      mutate(autoincrement_attribute = "")
+      dplyr::mutate(autoincrement_attribute = "")
 
     if (length(pk_col) > 0L) {
       df_col_types <-
         df_col_types %>%
-        mutate(
-          autoincrement_attribute = if_else(
+        dplyr::mutate(
+          autoincrement_attribute = dplyr::if_else(
             col == pk_col,
             !!autoincrement_attribute,
             autoincrement_attribute
@@ -144,9 +144,9 @@ build_copy_queries <- function(
     src_tbls_impl() %>%
     set_names() %>%
     map_dfr(get_sql_col_types, .id = "name") %>%
-    mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}{autoincrement_attribute}")) %>%
-    group_by(name) %>%
-    summarize(
+    dplyr::mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}{autoincrement_attribute}")) %>%
+    dplyr::group_by(name) %>%
+    dplyr::summarize(
       col_defs = paste(col_def, collapse = ",\n  "),
       columns = list(col)
     )
@@ -165,7 +165,7 @@ build_copy_queries <- function(
     # primary key definitions
     pk_defs <-
       pks %>%
-      transmute(
+      dplyr::transmute(
         name,
         pk_defs = paste0("PRIMARY KEY (", quote_enum_col(pk_col), ")")
       )
@@ -173,7 +173,7 @@ build_copy_queries <- function(
     # unique constraint definitions
     unique_defs <-
       uniques %>%
-      transmute(
+      dplyr::transmute(
         name,
         unique_def = paste0(
           "UNIQUE (",
@@ -181,8 +181,8 @@ build_copy_queries <- function(
           ")"
         )
       ) %>%
-      group_by(name) %>%
-      summarize(unique_defs = paste(unique_def, collapse = ",\n  "))
+      dplyr::group_by(name) %>%
+      dplyr::summarize(unique_defs = paste(unique_def, collapse = ",\n  "))
 
     # foreign key definitions and indexing queries
     # https://github.com/r-lib/rlang/issues/1422
@@ -195,7 +195,7 @@ build_copy_queries <- function(
     } else {
       fk_defs <-
         fks %>%
-        transmute(
+        dplyr::transmute(
           name = child_table,
           fk_def = paste0(
             "FOREIGN KEY (",
@@ -208,12 +208,12 @@ build_copy_queries <- function(
             set_on_delete_col(on_delete)
           )
         ) %>%
-        group_by(name) %>%
-        summarize(fk_defs = paste(fk_def, collapse = ",\n  "))
+        dplyr::group_by(name) %>%
+        dplyr::summarize(fk_defs = paste(fk_def, collapse = ",\n  "))
 
       index_queries <-
         fks %>%
-        mutate(
+        dplyr::mutate(
           name = child_table,
           index_name = map_chr(child_fk_cols, paste, collapse = "_"),
           remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
@@ -223,8 +223,8 @@ build_copy_queries <- function(
           ),
           index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
         ) %>%
-        group_by(name) %>%
-        summarize(
+        dplyr::group_by(name) %>%
+        dplyr::summarize(
           sql_index = list(DBI::SQL(paste0(
             "CREATE INDEX ",
             index_name,
@@ -242,12 +242,12 @@ build_copy_queries <- function(
   ## compile `CREATE TABLE ...` queries
   create_table_queries <-
     tbl_defs %>%
-    left_join(col_defs, by = "name") %>%
-    left_join(pk_defs, by = "name") %>%
-    left_join(unique_defs, by = "name") %>%
-    left_join(fk_defs, by = "name") %>%
-    group_by(name, columns) %>%
-    mutate(
+    dplyr::left_join(col_defs, by = "name") %>%
+    dplyr::left_join(pk_defs, by = "name") %>%
+    dplyr::left_join(unique_defs, by = "name") %>%
+    dplyr::left_join(fk_defs, by = "name") %>%
+    dplyr::group_by(name, columns) %>%
+    dplyr::mutate(
       remote_name = table_names[name],
       all_defs = paste(
         Filter(
@@ -257,8 +257,8 @@ build_copy_queries <- function(
         collapse = ",\n  "
       )
     ) %>%
-    ungroup() %>%
-    transmute(
+    dplyr::ungroup() %>%
+    dplyr::transmute(
       name,
       remote_name,
       columns,
@@ -269,8 +269,8 @@ build_copy_queries <- function(
 
   queries <-
     tbl_defs %>%
-    left_join(create_table_queries, by = "name") %>%
-    left_join(index_queries, by = "name")
+    dplyr::left_join(create_table_queries, by = "name") %>%
+    dplyr::left_join(index_queries, by = "name")
 
   queries
 }

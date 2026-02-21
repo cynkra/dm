@@ -74,16 +74,16 @@ dm_examine_cardinalities <- function(
 dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NULL) {
   fks <-
     dm_get_all_fks_impl(dm) %>%
-    select(-on_delete)
+    dplyr::select(-on_delete)
 
   dm_def <- as.list(dm)
   fks_data <-
     fks %>%
-    transmute(
+    dplyr::transmute(
       x_label = parent_table,
       y_label = child_table,
-      x = map2(dm_def[x_label], parent_key_cols, ~ select(.x, all_of(.y))),
-      y = map2(dm_def[y_label], child_fk_cols, ~ select(.x, all_of(.y))),
+      x = map2(dm_def[x_label], parent_key_cols, ~ dplyr::select(.x, all_of(.y))),
+      y = map2(dm_def[y_label], child_fk_cols, ~ dplyr::select(.x, all_of(.y))),
     )
   ticker <- new_ticker(
     "checking fk cardinalities",
@@ -93,7 +93,7 @@ dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NUL
   )
 
   fks %>%
-    mutate(cardinality = pmap_chr(fks_data, ticker(examine_cardinality_impl0)))
+    dplyr::mutate(cardinality = pmap_chr(fks_data, ticker(examine_cardinality_impl0)))
 }
 
 new_dm_examine_cardinalities <- function(x) {
@@ -108,7 +108,7 @@ print.dm_examine_cardinalities <- function(x, ...) {
     return(invisible(x))
   }
   x %>%
-    mutate(
+    dplyr::mutate(
       cardinalities = pmap_chr(
         x,
         function(parent_table, parent_key_cols, child_table, child_fk_cols, cardinality) {
@@ -132,11 +132,11 @@ print.dm_examine_cardinalities <- function(x, ...) {
 
 #' @autoglobal
 bullets_cardinalities <- function(x) {
-  x <- mutate(
+  x <- dplyr::mutate(
     x,
-    col = if_else(grepl("mapping", cardinality), "black", "red")
+    col = dplyr::if_else(grepl("mapping", cardinality), "black", "red")
   ) %>%
-    arrange(col)
+    dplyr::arrange(col)
   walk2(x$cardinalities, x$col, ~ cli::cat_bullet(.x, bullet_col = .y))
   if (sum(x$col == "red") > 0) {
     cli::cli_alert_warning(

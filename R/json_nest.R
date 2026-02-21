@@ -30,7 +30,7 @@ json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
     abort("All elements of `...` must be named.")
   }
   tidyr::nest(.data, ..., .names_sep = .names_sep) %>%
-    mutate(across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
+    dplyr::mutate(dplyr::across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
 }
 
 #' @export
@@ -68,9 +68,9 @@ json_nest_aggregate.default <- function(con, data, id_cols, sql_exprs, ...) {
   check_dots_empty()
 
   data %>%
-    group_by(across(!!!syms(id_cols))) %>%
-    summarize(!!!sql_exprs) %>%
-    ungroup()
+    dplyr::group_by(dplyr::across(!!!syms(id_cols))) %>%
+    dplyr::summarize(!!!sql_exprs) %>%
+    dplyr::ungroup()
 }
 
 sql_json_nest <- function(con, cols, names_sep, packed_col, id_cols, data, ...) {
@@ -157,5 +157,5 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     .con = con
   )
 
-  tbl(con, sql(out_query), vars = c(id_cols, nesting_plan$nesting_name))
+  dplyr::tbl(con, sql(out_query), vars = c(id_cols, nesting_plan$nesting_name))
 }

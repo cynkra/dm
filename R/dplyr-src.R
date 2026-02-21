@@ -86,7 +86,7 @@ copy_to.dm <- function(
   deprecate_soft(
     "0.2.0",
     "dm::copy_to.dm()",
-    details = "Use `copy_to(dm_get_con(dm), ...)` and `dm()`."
+    details = "Use `dplyr::copy_to(dm_get_con(dm), ...)` and `dm()`."
   )
 
   check_not_zoomed(dest)
@@ -105,10 +105,10 @@ copy_to.dm <- function(
   # if `df_list` is local and `dest` is on DB, copy `df_list` to respective DB
   dest_src <- dm_get_src_impl(dest)
   if (is.null(dest_src)) {
-    df <- as_tibble(collect(df))
+    df <- as_tibble(dplyr::collect(df))
   } else {
     # FIXME: should we allow `overwrite` argument?
-    df <- copy_to(dest_src, df, unique_db_table_name(name), temporary = temporary, ...)
+    df <- dplyr::copy_to(dest_src, df, unique_db_table_name(name), temporary = temporary, ...)
   }
   names_list <- repair_table_names(src_tbls_impl(dest), name, repair, quiet)
   # rename old tables with potentially new names

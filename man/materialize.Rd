@@ -13,7 +13,7 @@
 \arguments{
 \item{x}{A \code{dm} object.}
 
-\item{...}{Passed on to \code{\link[=compute]{compute()}}.}
+\item{...}{Passed on to \code{\link[dplyr:compute]{dplyr::compute()}}.}
 
 \item{temporary}{Must remain \code{TRUE}.}
 

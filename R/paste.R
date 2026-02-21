@@ -166,17 +166,17 @@ dm_paste_select <- function(dm) {
   tbl_select <-
     dm %>%
     dm_get_def() %>%
-    mutate(cols = map(data, colnames)) %>%
-    mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) %>%
-    mutate(code = glue("dm::dm_select({tick_if_needed(table)}{cols})")) %>%
-    pull()
+    dplyr::mutate(cols = map(data, colnames)) %>%
+    dplyr::mutate(cols = map_chr(cols, ~ glue_collapse1(glue(", {tick_if_needed(.x)}")))) %>%
+    dplyr::mutate(code = glue("dm::dm_select({tick_if_needed(table)}{cols})")) %>%
+    dplyr::pull()
 }
 
 dm_paste_pks <- function(dm) {
   dm %>%
     dm_get_all_pks_impl() %>%
-    mutate(
-      code = if_else(
+    dplyr::mutate(
+      code = dplyr::if_else(
         !is.na(autoincrement) & autoincrement,
         glue(
           "dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)}, autoincrement = TRUE)"
@@ -184,15 +184,15 @@ dm_paste_pks <- function(dm) {
         glue("dm::dm_add_pk({tick_if_needed(table)}, {deparse_keys(pk_col)})")
       )
     ) %>%
-    pull()
+    dplyr::pull()
 }
 
 dm_paste_uks <- function(dm) {
   dm %>%
     dm_get_def() %>%
     dm_get_all_uks_def_impl() %>%
-    mutate(code = glue("dm::dm_add_uk({tick_if_needed(table)}, {deparse_keys(uk_col)})")) %>%
-    pull()
+    dplyr::mutate(code = glue("dm::dm_add_uk({tick_if_needed(table)}, {deparse_keys(uk_col)})")) %>%
+    dplyr::pull()
 }
 
 dm_paste_fks <- function(dm) {
@@ -206,7 +206,7 @@ dm_paste_fks <- function(dm) {
     dm_get_all_fks_impl()
 
   fpks <-
-    left_join(fks, pks, by = "parent_table")
+    dplyr::left_join(fks, pks, by = "parent_table")
 
   need_non_default <- !map2_lgl(fpks$parent_key_cols, fpks$parent_default_pk_cols, identical)
   fpks$non_default_parent_key_cols <- ""
@@ -215,7 +215,7 @@ dm_paste_fks <- function(dm) {
     deparse_keys(fpks$parent_key_cols[need_non_default])
   )
 
-  on_delete <- if_else(
+  on_delete <- dplyr::if_else(
     fpks$on_delete != "no_action",
     glue(", on_delete = \"{fpks$on_delete}\""),
     ""

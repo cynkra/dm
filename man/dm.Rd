@@ -41,7 +41,7 @@ The \code{dm} class holds a list of tables and their relationships.
 It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
 and extends the idea by offering operations to access the data in the tables.
 
-\code{dm()} creates a \code{dm} object from \link{tbl} objects
+\code{dm()} creates a \code{dm} object from \link[dplyr:tbl]{dplyr::tbl} objects
 (tibbles or lazy data objects).
 
 \code{new_dm()} is a low-level constructor that creates a new \code{dm} object.

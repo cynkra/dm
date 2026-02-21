@@ -33,7 +33,7 @@ dm_rename <- function(dm, table, ...) {
 
   dm %>%
     dm_zoom_to(!!table_name) %>%
-    rename(...) %>%
+    dplyr::rename(...) %>%
     dm_update_zoomed()
 }
 
@@ -58,6 +58,6 @@ dm_select <- function(dm, table, ...) {
 
   dm %>%
     dm_zoom_to(!!table_name) %>%
-    select(...) %>%
+    dplyr::select(...) %>%
     dm_update_zoomed()
 }

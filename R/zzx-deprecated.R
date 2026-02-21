@@ -10,10 +10,10 @@ check_if_subset <- function(t1, c1, t2, c2) {
   if (is_subset(eval_tidy(t1q), !!c1q, eval_tidy(t2q), !!c2q)) {
     return(invisible(eval_tidy(t1q)))
   }
-  v1 <- pull(eval_tidy(t1q), !!ensym(c1q))
-  v2 <- pull(eval_tidy(t2q), !!ensym(c2q))
+  v1 <- dplyr::pull(eval_tidy(t1q), !!ensym(c1q))
+  v2 <- dplyr::pull(eval_tidy(t2q), !!ensym(c2q))
   setdiff_v1_v2 <- setdiff(v1, v2)
-  print(filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
+  print(dplyr::filter(eval_tidy(t1q), !!c1q %in% setdiff_v1_v2))
   abort_not_subset_of(
     as_name(t1q),
     as_name(c1q),
@@ -44,7 +44,7 @@ check_cardinality <- function(parent_table, pk_column, child_table, fk_column) {
     ))
   }
   min_1 <- is_subset(!!pt, !!pkc, !!ct, !!fkc)
-  max_1 <- pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
+  max_1 <- dplyr::pull(is_unique_key(eval_tidy(ct), !!fkc), unique)
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
   } else if (min_1) {
@@ -382,8 +382,8 @@ cdm_get_all_fks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_fks()", "dm::dm_get_all_fks()")
   dm %>%
     dm_get_all_fks_impl() %>%
-    mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
-    mutate(parent_key_cols = as.character(unclass(parent_key_cols)))
+    dplyr::mutate(child_fk_cols = as.character(unclass(child_fk_cols))) %>%
+    dplyr::mutate(parent_key_cols = as.character(unclass(parent_key_cols)))
 }
 
 #' @rdname deprecated
@@ -434,8 +434,8 @@ cdm_enum_fk_candidates <- function(dm, table, ref_table) {
     ref_tbl,
     ref_tbl_pk
   ) %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
+    dplyr::rename(columns = column) %>%
+    dplyr::mutate(columns = new_keys(columns))
 }
 
 #' @rdname deprecated
@@ -533,7 +533,7 @@ cdm_get_all_pks <- function(dm) {
   deprecate_soft("0.1.0", "dm::cdm_get_all_pks()", "dm::dm_get_all_pks()")
   dm %>%
     dm_get_all_pks_impl() %>%
-    mutate(pk_col = as.character(unclass(pk_col)))
+    dplyr::mutate(pk_col = as.character(unclass(pk_col)))
 }
 
 #' @rdname deprecated
@@ -592,7 +592,7 @@ cdm_select <- function(dm, table, ...) {
 
   dm %>%
     dm_zoom_to(!!table_name) %>%
-    select(...) %>%
+    dplyr::select(...) %>%
     dm_update_zoomed()
 }
 
@@ -606,7 +606,7 @@ cdm_rename <- function(dm, table, ...) {
 
   dm %>%
     dm_zoom_to(!!table_name) %>%
-    rename(...) %>%
+    dplyr::rename(...) %>%
     dm_update_zoomed()
 }
 
@@ -621,9 +621,9 @@ cdm_zoom_to_tbl <- function(dm, table) {
   cols <- list(get_all_cols(dm, zoom))
   dm %>%
     dm_get_def() %>%
-    mutate(
-      zoom = if_else(table == !!zoom, data, list(NULL)),
-      col_tracker_zoom = if_else(table == !!zoom, cols, list(NULL))
+    dplyr::mutate(
+      zoom = dplyr::if_else(table == !!zoom, data, list(NULL)),
+      col_tracker_zoom = dplyr::if_else(table == !!zoom, cols, list(NULL))
     ) %>%
     dm_from_def(zoomed = TRUE)
 }
@@ -654,11 +654,11 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
   old_tbl_name <- orig_name_zoomed(dm)
   new_tbl <- list(tbl_zoomed(dm))
   all_filters <- filters_zoomed(dm)
-  old_filters <- all_filters %>% filter(!zoomed)
+  old_filters <- all_filters %>% dplyr::filter(!zoomed)
   new_filters <-
     all_filters %>%
-    filter(zoomed) %>%
-    mutate(zoomed = FALSE)
+    dplyr::filter(zoomed) %>%
+    dplyr::mutate(zoomed = FALSE)
   upd_pk <- list_of(update_zoomed_pk(dm))
   upd_inc_fks <- list_of(update_zoomed_incoming_fks(dm))
   dm_wo_outgoing_fks <-
@@ -666,9 +666,9 @@ cdm_insert_zoomed_tbl <- function(dm, new_tbl_name = NULL, repair = "unique", qu
     update_filter(old_tbl_name, list_of(old_filters)) %>%
     dm_add_tbl_zoomed_impl(new_tbl, new_tbl_name_chr, list_of(new_filters)) %>%
     dm_get_def() %>%
-    mutate(
-      pks = if_else(table == new_tbl_name_chr, !!upd_pk, pks),
-      fks = if_else(table == new_tbl_name_chr, !!upd_inc_fks, fks)
+    dplyr::mutate(
+      pks = dplyr::if_else(table == new_tbl_name_chr, !!upd_pk, pks),
+      fks = dplyr::if_else(table == new_tbl_name_chr, !!upd_inc_fks, fks)
     ) %>%
     dm_from_def(zoomed = TRUE, validate = FALSE)
 
@@ -873,7 +873,7 @@ rows_truncate.tbl_sql <- function(x, ..., in_place = NULL) {
     invisible(x)
   } else {
     x %>%
-      filter(0L == 1L)
+      dplyr::filter(0L == 1L)
   }
 }
 

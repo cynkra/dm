@@ -567,7 +567,7 @@ str.dm <- function(object, ...) {
   # for both dm and dm_zoomed
   object <-
     dm_get_def(object, quiet = TRUE) %>%
-    select(table, pks, fks, filters)
+    dplyr::select(table, pks, fks, filters)
   str(object)
 }
 
@@ -576,8 +576,8 @@ str.dm <- function(object, ...) {
 str.dm_zoomed <- function(object, ...) {
   object <-
     dm_get_def(object, quiet = TRUE) %>%
-    mutate(zoom = if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
-    select(zoom, table, pks, fks, filters)
+    dplyr::mutate(zoom = dplyr::if_else(map_lgl(zoom, is_null), NA_character_, table)) %>%
+    dplyr::select(zoom, table, pks, fks, filters)
   str(object)
 }
 
@@ -616,7 +616,7 @@ tbl_def_impl <- function(def, idx, keyed) {
 
   fks_in_def <-
     def$fks[[idx]] %>%
-    left_join(uuid_lookup, by = "table")
+    dplyr::left_join(uuid_lookup, by = "table")
 
   fks_in <- new_fks_in(
     fks_in_def$uuid,
@@ -626,8 +626,8 @@ tbl_def_impl <- function(def, idx, keyed) {
 
   fks_out_def <-
     map2_dfr(def$uuid, def$fks, ~ tibble(ref_uuid = .x, .y)) %>%
-    filter(table == !!def$table[[idx]]) %>%
-    select(ref_uuid, ref_column, column)
+    dplyr::filter(table == !!def$table[[idx]]) %>%
+    dplyr::select(ref_uuid, ref_column, column)
 
   fks_out <- new_fks_out(
     fks_out_def$column,
@@ -701,7 +701,7 @@ compute.dm <- function(x, ..., temporary = TRUE) {
   x %>%
     dm_apply_filters_impl() %>%
     dm_get_def() %>%
-    mutate(data = map(data, compute, ...)) %>%
+    dplyr::mutate(data = map(data, compute, ...)) %>%
     dm_from_def()
 }
 
@@ -730,10 +730,10 @@ collect.dm_zoomed <- function(x, ...) {
 
   inform(c(
     "Detaching table from dm.",
-    i = "Use `. %>% pull_tbl() %>% collect()` instead to silence this message."
+    i = "Use `. %>% pull_tbl() %>% dplyr::collect()` instead to silence this message."
   ))
 
-  collect(pull_tbl(x))
+  dplyr::collect(pull_tbl(x))
 }
 
 
@@ -757,7 +757,7 @@ tbl_vars.dm <- function(x) {
 
 #' @exportS3Method dplyr::tbl_vars
 tbl_vars.dm_zoomed <- function(x) {
-  tbl_vars(tbl_zoomed(x))
+  dplyr::tbl_vars(tbl_zoomed(x))
 }
 
 dm_reset_all_filters <- function(dm) {
@@ -993,7 +993,7 @@ print_glimpse_table_pk <- function(x, table_name, width) {
   if (is_zoomed(x)) {
     pk <-
       update_zoomed_pk(x) %>%
-      pull(column)
+      dplyr::pull(column)
   }
 
   pk <- pk %>%
@@ -1026,8 +1026,8 @@ print_glimpse_table_fk <- function(x, table_name, width) {
   }
 
   fk <- all_fks %>%
-    filter(child_table == !!table_name) %>%
-    select(-child_table) %>%
+    dplyr::filter(child_table == !!table_name) %>%
+    dplyr::select(-child_table) %>%
     pmap_chr(
       function(child_fk_cols, parent_table, parent_key_cols, on_delete) {
         trim_width(

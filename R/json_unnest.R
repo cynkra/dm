@@ -33,8 +33,8 @@ json_unnest.data.frame <- function(
     abort("The `cols` argument must be provided")
   }
   data %>%
-    mutate(across({{ cols }}, ~ map(., ~ jsonlite::fromJSON(.) %>% as_tibble()))) %>%
-    unnest(
+    dplyr::mutate(dplyr::across({{ cols }}, ~ map(., ~ jsonlite::fromJSON(.) %>% as_tibble()))) %>%
+    tidyr::unnest(
       {{ cols }},
       keep_empty = keep_empty,
       ptype = ptype,

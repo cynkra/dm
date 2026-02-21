@@ -38,9 +38,9 @@ dm_get_referencing_tables <- function(dm, table) {
 create_graph_from_dm <- function(dm, directed = FALSE) {
   def <- dm_get_def(dm)
   def %>%
-    select(ref_table = table, fks) %>%
+    dplyr::select(ref_table = table, fks) %>%
     unnest_list_of_df("fks") %>%
-    select(table, ref_table) %>%
+    dplyr::select(table, ref_table) %>%
     igraph::graph_from_data_frame(directed = directed, vertices = def$table)
 }
 

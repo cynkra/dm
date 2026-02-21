@@ -54,7 +54,7 @@ dm_validate <- function(x) {
 
   fks <-
     def %>%
-    select(ref_table = table, fks) %>%
+    dplyr::select(ref_table = table, fks) %>%
     unnest_list_of_df("fks")
 
   check_fk_child_tables(fks$table, table_names)
@@ -65,7 +65,7 @@ dm_validate <- function(x) {
 
   fks %>%
     unnest_col("ref_column", character()) %>%
-    select(table = ref_table, column = ref_column) %>%
+    dplyr::select(table = ref_table, column = ref_column) %>%
     check_colnames(dm_col_names, "Parent key")
 
   if (!all(map_int(def$pks, vctrs::vec_size) %in% 0:1)) {
@@ -76,7 +76,7 @@ dm_validate <- function(x) {
 
   pks <-
     def %>%
-    select(table, pks) %>%
+    dplyr::select(table, pks) %>%
     unnest_list_of_df("pks")
 
   pks %>%
@@ -91,7 +91,7 @@ dm_validate <- function(x) {
   }
 
   uks <- def %>%
-    select(table, uks) %>%
+    dplyr::select(table, uks) %>%
     unnest_list_of_df("uks")
 
   uks %>%

@@ -44,21 +44,21 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
 
   child_pk_names <-
     dm_get_all_pks(ptype) %>%
-    filter(table == new_child_table_name) %>%
-    pull(pk_col) %>%
+    dplyr::filter(table == new_child_table_name) %>%
+    dplyr::pull(pk_col) %>%
     unlist()
   fk <-
     dm_get_all_fks(ptype) %>%
-    filter(child_table == new_child_table_name, parent_table == parent_table_name)
+    dplyr::filter(child_table == new_child_table_name, parent_table == parent_table_name)
   parent_fk_names <- unlist(fk$parent_key_cols)
   child_fk_names <- unlist(fk$child_fk_cols)
 
   # extract nested table
   new_table <-
     table %>%
-    select(!!!set_names(parent_fk_names, child_fk_names), !!new_child_table_name) %>%
-    unnest(!!new_child_table_name) %>%
-    distinct()
+    dplyr::select(!!!set_names(parent_fk_names, child_fk_names), !!new_child_table_name) %>%
+    tidyr::unnest(!!new_child_table_name) %>%
+    dplyr::distinct()
 
   # update the dm by adding new table, removing nested col and setting keys
   dm <- dm(dm, !!new_child_table_name := new_table)
@@ -124,20 +124,20 @@ dm_unpack_tbl <- function(dm, child_table, col, ptype) {
   new_parent_table_name <- names(eval_select_indices(col_expr, colnames(table)))
 
   parent_pk_names <- dm_get_all_pks(ptype) %>%
-    filter(table == new_parent_table_name) %>%
-    pull(pk_col) %>%
+    dplyr::filter(table == new_parent_table_name) %>%
+    dplyr::pull(pk_col) %>%
     unlist()
   fk <- dm_get_all_fks(ptype) %>%
-    filter(child_table == child_table_name, parent_table == new_parent_table_name)
+    dplyr::filter(child_table == child_table_name, parent_table == new_parent_table_name)
   child_fk_names <- unlist(fk$child_fk_cols)
   parent_fk_names <- unlist(fk$parent_key_cols)
 
   # extract packed table
   new_table <-
     table %>%
-    select(!!!set_names(child_fk_names, parent_fk_names), !!new_parent_table_name) %>%
-    unpack(!!new_parent_table_name) %>%
-    distinct()
+    dplyr::select(!!!set_names(child_fk_names, parent_fk_names), !!new_parent_table_name) %>%
+    tidyr::unpack(!!new_parent_table_name) %>%
+    dplyr::distinct()
 
   # update the dm by adding new table, removing packed col and setting keys
   dm <- dm(dm, !!new_parent_table_name := new_table)

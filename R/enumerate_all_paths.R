@@ -2,8 +2,8 @@ enumerate_all_paths <- function(dm, start) {
   all_fks <-
     dm %>%
     dm_get_all_fks() %>%
-    rename(child_cols = child_fk_cols, parent_cols = parent_key_cols) %>%
-    mutate(edge_id = row_number())
+    dplyr::rename(child_cols = child_fk_cols, parent_cols = parent_key_cols) %>%
+    dplyr::mutate(edge_id = dplyr::row_number())
 
   helper_env <- new_environment()
   helper_env$tbl_node <- list()
@@ -20,15 +20,15 @@ enumerate_all_paths <- function(dm, start) {
 
   all_paths <- helper_env$all_paths
   # need to take into account FKs from unconnected components (graph representation)
-  fks_from_unconnected <- anti_join(
+  fks_from_unconnected <- dplyr::anti_join(
     all_fks,
     all_paths,
     by = c("child_table", "parent_table")
   ) %>%
-    mutate(new_child_table = child_table, new_parent_table = parent_table)
+    dplyr::mutate(new_child_table = child_table, new_parent_table = parent_table)
   all_paths %>%
     rename_unique() %>%
-    bind_rows(fks_from_unconnected) %>%
+    dplyr::bind_rows(fks_from_unconnected) %>%
     split_to_list()
 }
 
@@ -53,36 +53,36 @@ enumerate_all_paths_impl <- function(
 
   in_edges <-
     all_fks %>%
-    filter(parent_table == !!node) %>%
-    filter(!(child_table %in% !!path)) %>%
-    select(node = child_table, edge_id)
+    dplyr::filter(parent_table == !!node) %>%
+    dplyr::filter(!(child_table %in% !!path)) %>%
+    dplyr::select(node = child_table, edge_id)
 
   out_edges <-
     all_fks %>%
-    filter(child_table == !!node) %>%
-    filter(!(parent_table %in% !!path)) %>%
-    select(node = parent_table, edge_id)
+    dplyr::filter(child_table == !!node) %>%
+    dplyr::filter(!(parent_table %in% !!path)) %>%
+    dplyr::select(node = parent_table, edge_id)
 
-  bind_rows(in_edges, out_edges) %>%
+  dplyr::bind_rows(in_edges, out_edges) %>%
     pwalk(enumerate_all_paths_impl, path, all_fks, helper_env)
 }
 
 #' @autoglobal
 rename_unique <- function(all_paths) {
   node_lookup <-
-    bind_rows(
-      select(all_paths, new_table = new_child_table, table = child_table),
-      select(all_paths, new_table = new_parent_table, table = parent_table)
+    dplyr::bind_rows(
+      dplyr::select(all_paths, new_table = new_child_table, table = child_table),
+      dplyr::select(all_paths, new_table = new_parent_table, table = parent_table)
     ) %>%
-    distinct() %>%
-    arrange(table, new_table) %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(table, new_table) %>%
     add_count(table) %>%
-    mutate(table = if_else(n == 1L, table, new_table)) %>%
-    select(new_table, table) %>%
+    dplyr::mutate(table = dplyr::if_else(n == 1L, table, new_table)) %>%
+    dplyr::select(new_table, table) %>%
     deframe()
 
   all_paths %>%
-    mutate(
+    dplyr::mutate(
       new_child_table = (!!node_lookup)[new_child_table],
       new_parent_table = (!!node_lookup)[new_parent_table]
     )
@@ -100,12 +100,12 @@ add_path_to_all_paths <- function(all_fks, edge_id, node_lookup, helper_env) {
   all_paths <- helper_env$all_paths
   path_element <-
     all_fks %>%
-    filter(edge_id == !!edge_id)
+    dplyr::filter(edge_id == !!edge_id)
 
-  helper_env$all_paths <- bind_rows(
+  helper_env$all_paths <- dplyr::bind_rows(
     all_paths,
     path_element %>%
-      mutate(
+      dplyr::mutate(
         new_child_table = (!!node_lookup)[child_table],
         new_parent_table = (!!node_lookup)[parent_table]
       )
@@ -114,16 +114,16 @@ add_path_to_all_paths <- function(all_fks, edge_id, node_lookup, helper_env) {
 
 #' @autoglobal
 split_to_list <- function(all_paths) {
-  table_mapping <- bind_rows(
-    select(all_paths, new_table = new_child_table, table = child_table),
-    select(all_paths, new_table = new_parent_table, table = parent_table)
+  table_mapping <- dplyr::bind_rows(
+    dplyr::select(all_paths, new_table = new_child_table, table = child_table),
+    dplyr::select(all_paths, new_table = new_parent_table, table = parent_table)
   ) %>%
-    filter(new_table != table) %>%
-    distinct() %>%
-    mutate(new_table = unname(new_table)) %>%
-    arrange()
+    dplyr::filter(new_table != table) %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(new_table = unname(new_table)) %>%
+    dplyr::arrange()
 
-  new_fks <- select(
+  new_fks <- dplyr::select(
     all_paths,
     new_child_table,
     child_cols,

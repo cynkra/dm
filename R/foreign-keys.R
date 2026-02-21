@@ -304,9 +304,9 @@ dm_get_all_fks_def_impl <- function(
   if (id) {
     out <-
       out %>%
-      group_by(child_table) %>%
-      mutate(id = paste0(child_table, "_", row_number())) %>%
-      ungroup()
+      dplyr::group_by(child_table) %>%
+      dplyr::mutate(id = paste0(child_table, "_", dplyr::row_number())) %>%
+      dplyr::ungroup()
   }
   out
 }
@@ -483,15 +483,15 @@ dm_rm_fk_impl <- function(
 
     disambiguation <-
       def_rm %>%
-      select(ref_table = table, fks) %>%
-      unnest(-ref_table) %>%
-      mutate(ref_col_text = if_else(need_ref, glue(", {deparse_keys(ref_column)})"), "")) %>%
-      mutate(
+      dplyr::select(ref_table = table, fks) %>%
+      tidyr::unnest(-ref_table) %>%
+      dplyr::mutate(ref_col_text = dplyr::if_else(need_ref, glue(", {deparse_keys(ref_column)})"), "")) %>%
+      dplyr::mutate(
         text = glue(
           "dm_rm_fk({tick_if_needed(table)}, {deparse_keys(column)}, {tick_if_needed(ref_table)}{ref_col_text})"
         )
       ) %>%
-      pull()
+      dplyr::pull()
 
     message("Removing foreign keys: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
   }
@@ -566,8 +566,8 @@ dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
 
   table_name %>%
     enum_fk_candidates_impl(tbl, ref_table_name, ref_tbl, ref_tbl_pk) %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
+    dplyr::rename(columns = column) %>%
+    dplyr::mutate(columns = new_keys(columns))
 }
 
 #' @details `enum_fk_candidates()` works like `dm_enum_fk_candidates()` with the zoomed table as `table`.
@@ -593,8 +593,8 @@ enum_fk_candidates <- function(dm_zoomed, ref_table, ...) {
     ref_tbl,
     ref_tbl_pk
   ) %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns))
+    dplyr::rename(columns = column) %>%
+    dplyr::mutate(columns = new_keys(columns))
 }
 
 #' @autoglobal
@@ -609,9 +609,9 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
     column = tbl_colnames,
     why = map_chr(column, ~ check_fk(tbl, table_name, .x, ref_tbl, ref_table_name, ref_tbl_cols))
   ) %>%
-    mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
-    select(column, candidate, why) %>%
-    arrange(desc(candidate))
+    dplyr::mutate(candidate = ifelse(why == "", TRUE, FALSE)) %>%
+    dplyr::select(column, candidate, why) %>%
+    dplyr::arrange(dplyr::desc(candidate))
 }
 
 check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
@@ -625,12 +625,12 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 
   t1_join <-
     t1 %>%
-    count(!!!t1_vals) %>%
-    ungroup()
+    dplyr::count(!!!t1_vals) %>%
+    dplyr::ungroup()
   t2_join <-
     t2 %>%
-    count(!!!t2_vals) %>%
-    ungroup()
+    dplyr::count(!!!t2_vals) %>%
+    dplyr::ungroup()
 
   val_names_na_expr <- map(syms(val_names), ~ call("is.na", .x))
   any_value_na_expr <- reduce(val_names_na_expr, ~ call("|", .x, .y))
@@ -643,11 +643,11 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   res_tbl <- tryCatch(
     t1_join %>%
       # if value* is NULL, this also counts as a match -- consistent with fk semantics
-      filter(!(!!any_value_na_expr)) %>%
-      anti_join(t2_join, by = val_names) %>%
-      arrange(desc(n), !!!syms(val_names)) %>%
+      dplyr::filter(!(!!any_value_na_expr)) %>%
+      dplyr::anti_join(t2_join, by = val_names) %>%
+      dplyr::arrange(dplyr::desc(n), !!!syms(val_names)) %>%
       head(MAX_COMMAS + 1L) %>%
-      collect(),
+      dplyr::collect(),
     error = identity
   )
 
@@ -683,8 +683,8 @@ fk_table_to_def_fks <- function(
   parent_key_cols = "parent_key_cols"
 ) {
   table %>%
-    group_by(!!ensym(parent_table)) %>%
-    summarize(
+    dplyr::group_by(!!ensym(parent_table)) %>%
+    dplyr::summarize(
       fks = list_of(new_fk(
         ref_column = as.list(!!ensym(parent_key_cols)),
         table = !!ensym(child_table),

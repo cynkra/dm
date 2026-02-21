@@ -194,6 +194,6 @@ warn_tbl_access <- function(bad) {
 error_txt_tbl_access <- function(bad) {
   c(
     glue("Table(s) {commas(tick(bad))} cannot be accessed."),
-    i = "Use `tbl(src, ...)` to troubleshoot."
+    i = "Use `dplyr::tbl(src, ...)` to troubleshoot."
   )
 }

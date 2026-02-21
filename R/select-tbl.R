@@ -75,7 +75,7 @@ filter_recode_table_def <- function(data, selected) {
   idx <- match(selected, data$table, nomatch = 0L)
 
   data[idx, ] %>%
-    mutate(table = recode_compat(table, prep_recode(selected)))
+    dplyr::mutate(table = recode_compat(table, prep_recode(selected)))
 }
 
 filter_recode_fks_of_table <- function(data, selected) {

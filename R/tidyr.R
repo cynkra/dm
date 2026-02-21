@@ -27,7 +27,7 @@ unite.dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
 #' @exportS3Method tidyr::unite
 unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   tbl <- tbl_zoomed(data)
-  united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
+  united_tbl <- tidyr::unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
 
   # all columns that are not not removed count as "selected"; names of "selected" are identical to "selected"
   if (remove) {
@@ -46,7 +46,7 @@ unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
 unite.dm_keyed_tbl <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   keys_info <- keyed_get_info(data)
   tbl <- unclass_keyed_tbl(data)
-  out <- unite(tbl, col = {{ col }}, ..., sep = sep, remove = remove, na.rm = na.rm)
+  out <- tidyr::unite(tbl, col = {{ col }}, ..., sep = sep, remove = remove, na.rm = na.rm)
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -80,7 +80,7 @@ separate.dm_zoomed <- function(
 ) {
   tbl <- tbl_zoomed(data)
   col <- tidyselect::vars_pull(names(tbl), !!enquo(col))
-  separated_tbl <- separate(
+  separated_tbl <- tidyr::separate(
     tbl,
     col = !!col,
     into = into,
@@ -113,7 +113,7 @@ separate.dm_keyed_tbl <- function(
 ) {
   keys_info <- keyed_get_info(data)
   tbl <- unclass_keyed_tbl(data)
-  out <- separate(
+  out <- tidyr::separate(
     tbl,
     col = {{ col }},
     into = into,

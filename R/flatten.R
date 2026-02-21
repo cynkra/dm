@@ -151,7 +151,7 @@ dm_flatten_to_tbl_impl <- function(
   order_df <- order_df[-1, ]
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
   # `unname()` to avoid warning (tibble version ‘2.99.99.9012’ retains names in column vectors)
-  order_df <- left_join(tibble(name = unname(list_of_pts)), order_df, by = "name")
+  order_df <- dplyr::left_join(tibble(name = unname(list_of_pts)), order_df, by = "name")
 
   # list of join partners
   ordered_table_list <- dm_get_tables(prep_dm)[order_df$name]
@@ -204,7 +204,7 @@ parent_child_table <- function(dm, table_1, table_2) {
 
   rel <-
     dm_get_all_fks(dm) %>%
-    filter(
+    dplyr::filter(
       (child_table == t1_name & parent_table == t2_name) |
         (child_table == t2_name & parent_table == t1_name)
     )
@@ -258,7 +258,7 @@ check_flatten_to_tbl <- function(
   if (join_name == "right_join" && auto_detect && more_than_1_pt) {
     warning(
       paste0(
-        "Result for `dm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
+        "Result for `dm_flatten_to_tbl()` with `dplyr::right_join()` dependend on order of tables in `dm`, when ",
         "more than 2 tables involved and no explicit order given in `...`."
       )
     )
@@ -287,7 +287,7 @@ prepare_dm_for_flatten <- function(dm, tables, gotta_rename, position = "suffix"
     # therefore we need a named variable containing the new and old names
     renames <-
       pluck(recipe$renames[recipe$table == start], 1)
-    start_tbl <- start_tbl %>% rename(!!!renames)
+    start_tbl <- start_tbl %>% dplyr::rename(!!!renames)
   } else {
     # for `anti_join()` and `semi_join()` no renaming necessary
     clean_dm <- red_dm

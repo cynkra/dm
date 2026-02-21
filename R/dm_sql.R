@@ -128,7 +128,7 @@ dm_ddl_pre <- function(
 
   ## use 0-rows object if from database
   if (is_src_db(dm)) {
-    ptype_dm <- collect(dm_ptype(dm))
+    ptype_dm <- dplyr::collect(dm_ptype(dm))
   } else {
     ptype_dm <- dm
   }
@@ -149,11 +149,11 @@ dm_ddl_pre <- function(
     ptype_dm %>%
     dm_get_tables() %>%
     ddl_get_col_defs(con, table_names, pks) %>%
-    group_by(name) %>%
-    summarize(
+    dplyr::group_by(name) %>%
+    dplyr::summarize(
       col_defs = paste(col_def, collapse = ",\n  ")
     ) %>%
-    ungroup()
+    dplyr::ungroup()
 
   # primary key definitions
   pk_defs <-
@@ -169,26 +169,26 @@ dm_ddl_pre <- function(
   uk_defs <-
     uks %>%
     ddl_get_uk_defs(con, table_names) %>%
-    group_by(name) %>%
-    summarize(uk_defs = paste(uk_def, collapse = ",\n  ")) %>%
-    ungroup()
+    dplyr::group_by(name) %>%
+    dplyr::summarize(uk_defs = paste(uk_def, collapse = ",\n  ")) %>%
+    dplyr::ungroup()
 
   fk_defs <-
     fks %>%
     ddl_get_fk_defs(con, table_names) %>%
-    group_by(name) %>%
-    summarize(fk_defs = paste(fk_def, collapse = ",\n  ")) %>%
-    ungroup()
+    dplyr::group_by(name) %>%
+    dplyr::summarize(fk_defs = paste(fk_def, collapse = ",\n  ")) %>%
+    dplyr::ungroup()
 
   ## compile `CREATE TABLE ...` queries
   create_table_queries <-
     tbl_defs %>%
-    left_join(col_defs, by = "name") %>%
-    left_join(pk_defs, by = "name") %>%
-    left_join(uk_defs, by = "name") %>%
-    left_join(fk_defs, by = "name") %>%
+    dplyr::left_join(col_defs, by = "name") %>%
+    dplyr::left_join(pk_defs, by = "name") %>%
+    dplyr::left_join(uk_defs, by = "name") %>%
+    dplyr::left_join(fk_defs, by = "name") %>%
     rowwise() %>%
-    mutate(
+    dplyr::mutate(
       remote_name = table_names[name],
       all_defs = paste(
         Filter(
@@ -198,8 +198,8 @@ dm_ddl_pre <- function(
         collapse = ",\n  "
       )
     ) %>%
-    ungroup() %>%
-    transmute(
+    dplyr::ungroup() %>%
+    dplyr::transmute(
       name,
       remote_name,
       sql_table = DBI::SQL(glue(
@@ -252,7 +252,7 @@ dm_ddl_post <- function(
   table_names <- ddl_quote_table_names(table_names, dm, dest)
 
   ## use 0-rows object
-  ptype_dm <- collect(dm_ptype(dm))
+  ptype_dm <- dplyr::collect(dm_ptype(dm))
 
   con <- con_from_src_or_con(dest)
 
@@ -276,8 +276,8 @@ dm_ddl_post <- function(
 
   uk_defs <-
     ddl_get_uk_defs(uks, con, table_names) %>%
-    group_by(name) %>%
-    summarize(
+    dplyr::group_by(name) %>%
+    dplyr::summarize(
       uk_defs = if (length(remote_name) == 0) {
         list(NULL)
       } else {
@@ -287,7 +287,7 @@ dm_ddl_post <- function(
         )))
       }
     ) %>%
-    ungroup()
+    dplyr::ungroup()
 
   # foreign key definitions and indexing queries
   # https://github.com/r-lib/rlang/issues/1422
@@ -306,8 +306,8 @@ dm_ddl_post <- function(
 
   fk_defs <-
     ddl_get_fk_defs(fks, con, table_names) %>%
-    group_by(name) %>%
-    summarize(
+    dplyr::group_by(name) %>%
+    dplyr::summarize(
       fk_defs = if (length(remote_name) == 0) {
         list(NULL)
       } else {
@@ -317,13 +317,13 @@ dm_ddl_post <- function(
         )))
       }
     ) %>%
-    ungroup()
+    dplyr::ungroup()
 
   queries <-
     tbl_defs %>%
-    left_join(uk_defs, by = "name") %>%
-    left_join(fk_defs, by = "name") %>%
-    left_join(index_defs, by = "name")
+    dplyr::left_join(uk_defs, by = "name") %>%
+    dplyr::left_join(fk_defs, by = "name") %>%
+    dplyr::left_join(index_defs, by = "name")
 
   list(
     uk = compact(set_names(queries$uk_defs, queries$name)),
@@ -415,7 +415,7 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
   tables %>%
     imap(get_sql_col_types) %>%
     list_rbind(names_to = "name") %>%
-    mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}"))
+    dplyr::mutate(col_def = glue("{DBI::dbQuoteIdentifier(con, col)} {type}"))
 }
 
 ddl_get_pk_def <- function(pks, con, table_names) {
@@ -430,8 +430,8 @@ ddl_get_pk_def <- function(pks, con, table_names) {
 
   out <-
     pks %>%
-    rename(name = table) %>%
-    transmute(
+    dplyr::rename(name = table) %>%
+    dplyr::transmute(
       name,
       remote_name = unname(table_names[name]),
       pk_def = paste0("PRIMARY KEY (", ddl_quote_enum_col(pk_col, con), ")")
@@ -453,8 +453,8 @@ ddl_get_uk_defs <- function(uks, con, table_names) {
 
   out <-
     uks %>%
-    rename(name = table) %>%
-    transmute(
+    dplyr::rename(name = table) %>%
+    dplyr::transmute(
       name,
       remote_name = unname(table_names[name]),
       uk_def = paste0("UNIQUE (", ddl_quote_enum_col(uk_col, con), ")")
@@ -496,7 +496,7 @@ ddl_get_fk_defs <- function(fks, con, table_names) {
 
   out <-
     fks %>%
-    transmute(
+    dplyr::transmute(
       name = child_table,
       remote_name = unname(table_names[name]),
       fk_def = paste0(
@@ -516,7 +516,7 @@ ddl_get_fk_defs <- function(fks, con, table_names) {
 }
 
 dml_tbl_load <- function(tbl_name, dm, table_names, pks, dest) {
-  tbl <- collect(dm[[tbl_name]])
+  tbl <- dplyr::collect(dm[[tbl_name]])
   if (nrow(tbl) == 0) {
     return(NULL)
   }
@@ -568,7 +568,7 @@ ddl_get_index_defs <- function(fks, con, table_names) {
 
   out <-
     fks %>%
-    mutate(
+    dplyr::mutate(
       name = child_table,
       index_name = map_chr(child_fk_cols, paste, collapse = "_"),
       remote_name = table_names[name],
@@ -578,8 +578,8 @@ ddl_get_index_defs <- function(fks, con, table_names) {
       ),
       index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
     ) %>%
-    group_by(name) %>%
-    summarize(
+    dplyr::group_by(name) %>%
+    dplyr::summarize(
       index_defs = list(DBI::SQL(paste0(
         "CREATE INDEX ",
         index_name,

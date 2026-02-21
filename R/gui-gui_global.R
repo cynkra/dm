@@ -10,7 +10,7 @@ null_to_character0 <- function(x) {
 get_child_fk_cols <- function(dm, table_name = "flights") {
   child_fk_cols <-
     dm_get_all_fks(dm) %>%
-    filter(child_table == table_name) %>%
+    dplyr::filter(child_table == table_name) %>%
     dplyr::pull(child_fk_cols)
   null_to_character0(unlist(child_fk_cols))
 }
@@ -18,7 +18,7 @@ get_child_fk_cols <- function(dm, table_name = "flights") {
 get_parent_key_cols <- function(dm, table_name = "flights") {
   parent_key_cols <-
     dm_get_all_fks(dm) %>%
-    filter(parent_table == table_name) %>%
+    dplyr::filter(parent_table == table_name) %>%
     dplyr::pull(parent_key_cols)
   null_to_character0(unlist(parent_key_cols))
 }
@@ -26,7 +26,7 @@ get_parent_key_cols <- function(dm, table_name = "flights") {
 get_pk_cols <- function(dm, table_name = "flights") {
   pk_cols <-
     dm_get_all_pks(dm) %>%
-    filter(table == table_name) %>%
+    dplyr::filter(table == table_name) %>%
     dplyr::pull(pk_col)
   null_to_character0(unlist(pk_cols))
 }

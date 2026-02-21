@@ -230,7 +230,7 @@ examine_cardinality_impl0 <- function(x, y, x_label, y_label) {
     )
   }
   min_1 <- is_subset_se(x, y)
-  max_1 <- pull(is_unique_key_se(y, colnames(y)), unique)
+  max_1 <- dplyr::pull(is_unique_key_se(y, colnames(y)), unique)
 
   if (min_1 && max_1) {
     return("bijective mapping (child: 1 -> parent: 1)")
@@ -301,11 +301,11 @@ check_card_api_impl <- function(
   fkcq <- enquo(fk_column)
 
   if (!quo_is_null(pkcq)) {
-    parent_table <- parent_table %>% select(!!pkcq)
+    parent_table <- parent_table %>% dplyr::select(!!pkcq)
   }
 
   if (!quo_is_null(fkcq)) {
-    child_table <- child_table %>% select(!!fkcq)
+    child_table <- child_table %>% dplyr::select(!!fkcq)
   }
 
   if (!isTRUE(by_position)) {
@@ -318,7 +318,7 @@ check_card_api_impl <- function(
 
     child_table <-
       child_table %>%
-      select(!!y_idx)
+      dplyr::select(!!y_idx)
   }
 
   target(parent_table, child_table, as_label(ptq), as_label(ctq))

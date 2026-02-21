@@ -141,34 +141,34 @@ dm_get_data_model <- function(x, column_types = FALSE) {
 
   all_uks <- dm_get_all_uks_impl(x)
   references_for_columns <- dm_get_all_fks_impl(x, id = TRUE) %>%
-    left_join(all_uks, by = c("parent_table" = "table", "parent_key_cols" = "uk_col")) %>%
-    rename(uk_col = kind) %>%
-    transmute(
+    dplyr::left_join(all_uks, by = c("parent_table" = "table", "parent_key_cols" = "uk_col")) %>%
+    dplyr::rename(uk_col = kind) %>%
+    dplyr::transmute(
       table = child_table,
       column = format(child_fk_cols),
       ref = parent_table,
       ref_col = format(parent_key_cols),
       keyId = id,
-      uk_col = if_else(uk_col != "PK", ", style=\"dashed\"", "")
+      uk_col = dplyr::if_else(uk_col != "PK", ", style=\"dashed\"", "")
     )
 
   references <-
     references_for_columns %>%
-    mutate(ref_id = row_number(), ref_col_num = 1L)
+    dplyr::mutate(ref_id = dplyr::row_number(), ref_col_num = 1L)
 
   keys_pk <-
     all_uks %>%
-    mutate(column = format(uk_col)) %>%
-    select(table, column, kind) %>%
-    mutate(key = 1L)
+    dplyr::mutate(column = format(uk_col)) %>%
+    dplyr::select(table, column, kind) %>%
+    dplyr::mutate(key = 1L)
 
   keys_fk <-
     dm_get_all_fks_impl(x) %>%
-    mutate(column = format(parent_key_cols)) %>%
-    select(table = parent_table, column) %>%
-    mutate(key_fk = 2L) %>%
+    dplyr::mutate(column = format(parent_key_cols)) %>%
+    dplyr::select(table = parent_table, column) %>%
+    dplyr::mutate(key_fk = 2L) %>%
     # `parent_table` and `column` can be referenced by multiple child tables
-    distinct()
+    dplyr::distinct()
 
   if (column_types) {
     types <- dm_get_all_column_types(x)
@@ -178,19 +178,19 @@ dm_get_data_model <- function(x, column_types = FALSE) {
 
   columns <-
     types %>%
-    full_join(keys_pk, by = c("table", "column")) %>%
-    full_join(keys_fk, by = c("table", "column")) %>%
+    dplyr::full_join(keys_pk, by = c("table", "column")) %>%
+    dplyr::full_join(keys_fk, by = c("table", "column")) %>%
     # there is a legitimate interest to have duplicates in `table` and `column`
     # in table `references_for_columns`.
     # When using a dplyr version >= 1.1.0, we get a warning in that case, thus
     # we need `multiple = "all"`.
     # FIXME: is there another way? like this we need a min dplyr version 1.1.0.
-    full_join(references_for_columns, by = c("table", "column"), multiple = "all") %>%
+    dplyr::full_join(references_for_columns, by = c("table", "column"), multiple = "all") %>%
     # Order matters: key == 2 if foreign key points to non-default primary key
-    mutate(key = coalesce(key, key_fk, 0L)) %>%
-    select(-key_fk) %>%
+    dplyr::mutate(key = dplyr::coalesce(key, key_fk, 0L)) %>%
+    dplyr::select(-key_fk) %>%
     # I don't understand why this is necessary
-    distinct() %>%
+    dplyr::distinct() %>%
     # for compatibility with print method from {datamodelr}
     as.data.frame()
 
@@ -208,7 +208,7 @@ dm_get_all_columns <- function(x) {
     map(~ enframe(., "id", "column")) %>%
     enframe("table") %>%
     unnest_df("value", tibble(id = integer(), column = character())) %>%
-    select(table, column, id)
+    dplyr::select(table, column, id)
 }
 
 #' @autoglobal
@@ -216,14 +216,14 @@ dm_get_all_column_types <- function(x) {
   x %>%
     dm_get_tables_impl() %>%
     map(
-      ~ mutate(
-        enframe(as.list(collect(head(.x, 0))), "column"),
-        id = row_number()
+      ~ dplyr::mutate(
+        enframe(as.list(dplyr::collect(head(.x, 0))), "column"),
+        id = dplyr::row_number()
       )
     ) %>%
     enframe("table") %>%
     unnest_df("value", tibble(column = character(), value = list(), id = integer())) %>%
-    mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
+    dplyr::mutate(type = map_chr(value, vec_ptype_abbr), .keep = "unused")
 }
 
 #' Color in database diagrams
@@ -284,13 +284,13 @@ dm_set_colors <- function(dm, ...) {
     selected_tables %>%
     enframe(name = "new_display", value = "table") %>%
     # needs to be done like this, `distinct()` would keep the first one
-    filter(!duplicated(table, fromLast = TRUE))
+    dplyr::filter(!duplicated(table, fromLast = TRUE))
 
   def <-
     dm_get_def(dm) %>%
-    left_join(display_df, by = "table") %>%
-    mutate(display = coalesce(new_display, display)) %>%
-    select(-new_display)
+    dplyr::left_join(display_df, by = "table") %>%
+    dplyr::mutate(display = dplyr::coalesce(new_display, display)) %>%
+    dplyr::select(-new_display)
 
   dm_from_def(def)
 }
@@ -322,9 +322,9 @@ color_quos_to_display <- function(...) {
 dm_get_colors <- function(dm) {
   dm %>%
     dm_get_def() %>%
-    select(table, display) %>%
-    select(display, table) %>%
-    mutate(display = coalesce(display, "default")) %>%
+    dplyr::select(table, display) %>%
+    dplyr::select(display, table) %>%
+    dplyr::mutate(display = dplyr::coalesce(display, "default")) %>%
     deframe()
 }
 

@@ -55,8 +55,8 @@ gui_server <- function(input, output, session) {
   r_edge_table <- shiny::reactive({
     dm <- shiny::req(r_dm())
     all_fks <- dm_get_all_fks_impl(r_dm(), id = TRUE) %>%
-      filter(id %in% r_edge_names()) %>%
-      select(-on_delete, -id)
+      dplyr::filter(id %in% r_edge_names()) %>%
+      dplyr::select(-on_delete, -id)
   })
 
   # table selector -------------------------------------------------------------

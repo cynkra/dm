@@ -148,7 +148,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
     warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "Redshift", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
-    tables <- src_tbls(src)
+    tables <- dplyr::src_tbls(src)
     out <- purrr::map(tables, ~ DBI::Id(table = .x))
 
     return(set_names(out, tables))
@@ -194,12 +194,12 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   }
 
   names_table <- names_table %>%
-    filter(
+    dplyr::filter(
       schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)
     ) %>%
-    collect() %>%
+    dplyr::collect() %>%
     # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(
+    dplyr::mutate(
       local_name = glue(names_pattern, .table = table_name, .schema = schema_name),
       remote_name = schema_if(schema_name, table_name, con, dbname)
     )
@@ -211,8 +211,8 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
   if (length(schema) > 1) {
     # Order according to ordering of `schema`, so that in a moment we can keep "first" table in event of a clash
     names_table <- names_table %>%
-      mutate(schema_name = factor(schema_name, levels = schema)) %>%
-      arrange(schema_name)
+      dplyr::mutate(schema_name = factor(schema_name, levels = schema)) %>%
+      dplyr::arrange(schema_name)
 
     clashes <- with(names_table, find_name_clashes(remote_name, local_name))
 
@@ -230,12 +230,12 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
       ))
 
       # Keep only first schema for each local_name
-      names_table <- slice_head(names_table, by = local_name)
+      names_table <- dplyr::slice_head(names_table, by = local_name)
     }
   }
 
   names_table %>%
-    select(local_name, remote_name) %>%
+    dplyr::select(local_name, remote_name) %>%
     deframe()
 }
 
@@ -276,7 +276,7 @@ dbname_mssql <- function(con, dbname) {
 
 
 get_names_table_mssql <- function(con, dbname_sql) {
-  tbl(
+  dplyr::tbl(
     con,
     sql(glue::glue(
       "
@@ -290,7 +290,7 @@ get_names_table_mssql <- function(con, dbname_sql) {
 }
 
 get_names_table_postgres <- function(con) {
-  tbl(
+  dplyr::tbl(
     con,
     sql(
       "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"

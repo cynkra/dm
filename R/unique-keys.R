@@ -133,20 +133,20 @@ dm_get_all_uks_impl <- function(dm, table = NULL) {
   }
 
   all_pks <- dm_get_all_pks_def_impl(def, table) %>%
-    select(-autoincrement) %>%
-    rename(uk_col = pk_col)
+    dplyr::select(-autoincrement) %>%
+    dplyr::rename(uk_col = pk_col)
 
   all_explicit_uks <- dm_get_all_uks_def_impl(def)
 
-  all_explicit <- bind_rows(
-    mutate(all_pks, kind = "PK"),
-    mutate(all_explicit_uks, kind = "explicit UK")
+  all_explicit <- dplyr::bind_rows(
+    dplyr::mutate(all_pks, kind = "PK"),
+    dplyr::mutate(all_explicit_uks, kind = "explicit UK")
   )
 
   all_implicit <- dm_get_all_implicit_uks_def_impl(def, table, all_explicit) %>%
-    mutate(kind = "implicit UK")
+    dplyr::mutate(kind = "implicit UK")
 
-  bind_rows(
+  dplyr::bind_rows(
     all_explicit,
     all_implicit
   )
@@ -160,7 +160,7 @@ dm_get_all_uks_def_impl <- function(def, table = NULL) {
     def_sub %>%
     unnest_df("uks", tibble(column = list())) %>%
     set_names(c("table", "uk_col")) %>%
-    mutate(kind = "explicit UK")
+    dplyr::mutate(kind = "explicit UK")
 
   out$uk_col <- new_keys(out$uk_col)
   out
@@ -168,10 +168,10 @@ dm_get_all_uks_def_impl <- function(def, table = NULL) {
 
 dm_get_all_implicit_uks_def_impl <- function(def, table = NULL, all_explicit) {
   dm_get_all_fks_def_impl(def) %>%
-    select(table = parent_table, uk_col = parent_key_cols) %>%
-    distinct() %>%
+    dplyr::select(table = parent_table, uk_col = parent_key_cols) %>%
+    dplyr::distinct() %>%
     # rm those that are PKs or explicit UKs
-    anti_join(all_explicit, c("table", "uk_col"))
+    dplyr::anti_join(all_explicit, c("table", "uk_col"))
 }
 
 
@@ -267,7 +267,7 @@ dm_rm_uk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
   def$uks[i] <- if (length(i) > 1) {
     list_of(new_uk())
   } else {
-    list_of(filter(def$uks[[i]], !ii))
+    list_of(dplyr::filter(def$uks[[i]], !ii))
   }
 
   dm_from_def(def)

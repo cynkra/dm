@@ -253,12 +253,12 @@ get_dm_rows_op <- function(operation_name) {
 
 do_rows_insert <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   stopifnot(is.null(autoinc_col))
-  rows_insert(x, y, by = by, ..., conflict = "ignore")
+  dplyr::rows_insert(x, y, by = by, ..., conflict = "ignore")
 }
 
 do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col = NULL) {
   if (is.null(autoinc_col)) {
-    return(rows_append(x, y, ..., in_place = in_place))
+    return(dplyr::rows_append(x, y, ..., in_place = in_place))
   } else if (inherits(x, "data.frame")) {
     return(rows_append_ai_local(x, y, ..., autoinc_col))
   }
@@ -271,9 +271,9 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
   returning <- sym(autoinc_col)
   key_values <-
     y %>%
-    select(!!returning) %>%
-    collect() %>%
-    pull()
+    dplyr::select(!!returning) %>%
+    dplyr::collect() %>%
+    dplyr::pull()
 
   if (anyDuplicated(key_values)) {
     abort(paste0("Duplicate values for autoincrement primary key ", autoinc_col, "."))
@@ -287,7 +287,7 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
     ))
   }
 
-  source_rows <- map(key_values, ~ select(filter(y, !!returning == !!.x), -!!returning))
+  source_rows <- map(key_values, ~ dplyr::select(dplyr::filter(y, !!returning == !!.x), -!!returning))
 
   con <- dbplyr::remote_con(x)
   # FIXME can be removed after depending on dbplyr >= 2.4.0
@@ -331,7 +331,7 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
   insert_res <- map(insert_queries, ~ DBI::dbGetQuery(con, .x))
 
   out <- tibble(
-    bind_rows(!!!insert_res),
+    dplyr::bind_rows(!!!insert_res),
     !!sym(autoinc_col_orig) := !!key_values
   )
 
@@ -340,22 +340,22 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
 
 do_rows_update <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   stopifnot(is.null(autoinc_col))
-  rows_update(x, y, by = by, ..., unmatched = "ignore")
+  dplyr::rows_update(x, y, by = by, ..., unmatched = "ignore")
 }
 
 do_rows_patch <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   stopifnot(is.null(autoinc_col))
-  rows_patch(x, y, by = by, ..., unmatched = "ignore")
+  dplyr::rows_patch(x, y, by = by, ..., unmatched = "ignore")
 }
 
 do_rows_upsert <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   stopifnot(is.null(autoinc_col))
-  rows_upsert(x, y, by = by, ...)
+  dplyr::rows_upsert(x, y, by = by, ...)
 }
 
 do_rows_delete <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   stopifnot(is.null(autoinc_col))
-  rows_delete(x, y, by = by, ..., unmatched = "ignore")
+  dplyr::rows_delete(x, y, by = by, ..., unmatched = "ignore")
 }
 
 dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA) {
@@ -495,9 +495,9 @@ align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
     if (child_fk_col %in% colnames(tbl)) {
       tbls[[child_table]] <-
         tbl %>%
-        left_join(align_tbl, by = vec_c(!!child_fk_col := pk_col)) %>%
-        select(-!!sym(child_fk_col), !!sym(child_fk_col) := sym(new_pk_col)) %>%
-        select(!!!colnames(tbl))
+        dplyr::left_join(align_tbl, by = vec_c(!!child_fk_col := pk_col)) %>%
+        dplyr::select(-!!sym(child_fk_col), !!sym(child_fk_col) := sym(new_pk_col)) %>%
+        dplyr::select(!!!colnames(tbl))
     }
   }
 
@@ -530,13 +530,13 @@ rows_append_ai_local <- function(x, y, autoinc_col) {
   )
   y_new <-
     y %>%
-    mutate(!!new_col_name := !!ai_lu[[new_col_name]]) %>%
-    select(
+    dplyr::mutate(!!new_col_name := !!ai_lu[[new_col_name]]) %>%
+    dplyr::select(
       -!!intersect(colnames(y), autoinc_col),
       !!autoinc_col := !!new_col_name,
       !!setdiff(colnames(x), autoinc_col)
     )
-  list(x_new = rows_append(x, y_new), ai_lookup = ai_lu)
+  list(x_new = dplyr::rows_append(x, y_new), ai_lookup = ai_lu)
 }
 
 # Errors ------------------------------------------------------------------

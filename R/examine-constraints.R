@@ -63,19 +63,19 @@ dm_examine_constraints <- function(
   check_not_zoomed(.dm)
   .dm %>%
     dm_examine_constraints_impl(progress = .progress, top_level_fun = "dm_examine_constraints") %>%
-    rename(columns = column) %>%
-    mutate(columns = new_keys(columns)) %>%
+    dplyr::rename(columns = column) %>%
+    dplyr::mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()
 }
 
 dm_examine_constraints_impl <- function(dm, progress = NA, top_level_fun = NULL) {
   pk_results <- check_pk_constraints(dm, progress, top_level_fun = top_level_fun)
   fk_results <- check_fk_constraints(dm, progress, top_level_fun = top_level_fun)
-  bind_rows(
+  dplyr::bind_rows(
     pk_results,
     fk_results
   ) %>%
-    arrange(is_key, desc(kind), table)
+    dplyr::arrange(is_key, dplyr::desc(kind), table)
 }
 
 new_dm_examine_constraints <- function(x) {
@@ -91,7 +91,7 @@ print.dm_examine_constraints <- function(x, ...) {
     as_tibble()
   problem_df <-
     key_df %>%
-    filter(problem != "")
+    dplyr::filter(problem != "")
 
   if (nrow(key_df) == 0) {
     cli::cli_alert_info("No constraints defined.")
@@ -101,11 +101,11 @@ print.dm_examine_constraints <- function(x, ...) {
     cli::cli_alert_warning("Unsatisfied constraints:")
 
     problem_df %>%
-      mutate(
-        into = if_else(kind == "FK", paste0(" into table ", tick(ref_table)), "")
+      dplyr::mutate(
+        into = dplyr::if_else(kind == "FK", paste0(" into table ", tick(ref_table)), "")
       ) %>%
       # FIXME: Use cli styles
-      mutate(
+      dplyr::mutate(
         text = paste0(
           "Table ",
           tick(table),
@@ -118,7 +118,7 @@ print.dm_examine_constraints <- function(x, ...) {
           problem
         )
       ) %>%
-      pull(text) %>%
+      dplyr::pull(text) %>%
       cli::cat_bullet(bullet_col = "red")
   }
 
@@ -126,7 +126,7 @@ print.dm_examine_constraints <- function(x, ...) {
 }
 
 kind_to_long <- function(kind) {
-  case_when(
+  dplyr::case_when(
     kind == "PK" ~ "primary key",
     kind == "UK" ~ "unique key",
     # FIXME: `case_when()` gets the `.default` arg in v1.1.0, then:
@@ -137,14 +137,14 @@ kind_to_long <- function(kind) {
 
 #' @autoglobal
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
-  pks <- bind_rows(
+  pks <- dplyr::bind_rows(
     list(
       PK = dm_get_all_pks_impl(dm),
-      UK = dm_get_all_uks_impl(dm) %>% rename(pk_col = uk_col) %>% select(-kind)
+      UK = dm_get_all_uks_impl(dm) %>% dplyr::rename(pk_col = uk_col) %>% dplyr::select(-kind)
     ),
     .id = "kind"
   ) %>%
-    distinct(table, pk_col, .keep_all = TRUE)
+    dplyr::distinct(table, pk_col, .keep_all = TRUE)
   if (nrow(pks) == 0) {
     return(tibble(
       table = character(),
@@ -182,7 +182,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
       "candidate",
       tibble(column = new_keys(), candidate = logical(), why = character())
     ) %>%
-    rename(is_key = candidate, problem = why)
+    dplyr::rename(is_key = candidate, problem = why)
 
   tibble(
     table = table_names,
@@ -190,7 +190,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     column = pks$pk_col,
     ref_table = NA_character_
   ) %>%
-    left_join(tbl_is_pk, by = c("table", "column"))
+    dplyr::left_join(tbl_is_pk, by = c("table", "column"))
 }
 
 #' @autoglobal
@@ -199,8 +199,8 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   pts <- map(fks$parent_table, tbl_impl, dm = dm)
   cts <- map(fks$child_table, tbl_impl, dm = dm)
   fks_tibble <-
-    mutate(fks, t1 = cts, t2 = pts) %>%
-    select(
+    dplyr::mutate(fks, t1 = cts, t2 = pts) %>%
+    dplyr::select(
       t1,
       t1_name = child_table,
       colname = child_fk_cols,
@@ -217,10 +217,10 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   )
 
   fks_tibble %>%
-    mutate(
+    dplyr::mutate(
       problem = pmap_chr(fks_tibble, ticker(check_fk)),
       is_key = (problem == ""),
       kind = "FK"
     ) %>%
-    select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
+    dplyr::select(table = t1_name, kind, column = colname, ref_table = t2_name, is_key, problem)
 }

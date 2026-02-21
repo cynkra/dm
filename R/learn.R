@@ -47,58 +47,58 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
   df_info <-
     info %>%
     dm_select_tbl(-schemata) %>%
-    collect()
+    dplyr::collect()
 
   dm_name <-
     df_info$tables %>%
-    select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
-    mutate(name = glue(!!name_format)) %>%
-    pull() %>%
+    dplyr::select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
+    dplyr::mutate(name = glue(!!name_format)) %>%
+    dplyr::pull() %>%
     unclass() %>%
     vec_as_names(repair = "unique")
 
   from <-
     df_info$tables %>%
-    select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
+    dplyr::select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
     pmap_chr(~ DBI::dbQuoteIdentifier(con, DBI::Id(...)))
 
   df_key_info <-
     df_info %>%
     dm_zoom_to(tables) %>%
-    mutate(dm_name = !!dm_name, from = !!from) %>%
+    dplyr::mutate(dm_name = !!dm_name, from = !!from) %>%
     dm_update_zoomed() %>%
     dm_zoom_to(columns) %>%
-    arrange(ordinal_position) %>%
-    select(-ordinal_position) %>%
-    left_join(tables) %>%
+    dplyr::arrange(ordinal_position) %>%
+    dplyr::select(-ordinal_position) %>%
+    dplyr::left_join(tables) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(constraint_column_usage, key_column_usage, columns, table_constraints)
 
   table_info <-
     df_key_info %>%
     dm_zoom_to(columns) %>%
-    group_by(dm_name, from) %>%
-    summarize(vars = list(column_name)) %>%
-    ungroup() %>%
+    dplyr::group_by(dm_name, from) %>%
+    dplyr::summarize(vars = list(column_name)) %>%
+    dplyr::ungroup() %>%
     pull_tbl()
 
   table_info$from_id <- DBI::dbUnquoteIdentifier(con, DBI::SQL(table_info$from))
-  tables <- map2(table_info$from_id, table_info$vars, ~ tbl(con, .x, vars = .y))
+  tables <- map2(table_info$from_id, table_info$vars, ~ dplyr::tbl(con, .x, vars = .y))
   names(tables) <- table_info$dm_name
 
   pks_df <-
     df_key_info %>%
     dm_zoom_to(table_constraints) %>%
-    filter(constraint_type == "PRIMARY KEY") %>%
+    dplyr::filter(constraint_type == "PRIMARY KEY") %>%
     dm_update_zoomed() %>%
     dm_zoom_to(key_column_usage) %>%
-    semi_join(table_constraints) %>%
-    anti_join(constraint_column_usage) %>%
-    arrange(ordinal_position) %>%
+    dplyr::semi_join(table_constraints) %>%
+    dplyr::anti_join(constraint_column_usage) %>%
+    dplyr::arrange(ordinal_position) %>%
     dm_update_zoomed() %>%
     dm_select_tbl(-table_constraints) %>%
     dm_flatten_to_tbl(key_column_usage, .recursive = TRUE) %>%
-    select(
+    dplyr::select(
       constraint_catalog,
       constraint_schema,
       constraint_name,
@@ -106,25 +106,25 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
       column_name,
       is_autoincrement
     ) %>%
-    group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
-    summarize(
+    dplyr::group_by(constraint_catalog, constraint_schema, constraint_name, dm_name) %>%
+    dplyr::summarize(
       pks = list(tibble(
         column = list(column_name),
         autoincrement = any(as.logical(is_autoincrement))
       ))
     ) %>%
-    ungroup() %>%
-    select(table = dm_name, pks)
+    dplyr::ungroup() %>%
+    dplyr::select(table = dm_name, pks)
 
   fks_df <-
     df_key_info %>%
     dm_zoom_to(table_constraints) %>%
-    filter(constraint_type == "FOREIGN KEY") %>%
+    dplyr::filter(constraint_type == "FOREIGN KEY") %>%
     dm_update_zoomed() %>%
     dm_zoom_to(key_column_usage) %>%
-    semi_join(table_constraints) %>%
-    left_join(table_constraints, select = c(delete_rule)) %>%
-    left_join(
+    dplyr::semi_join(table_constraints) %>%
+    dplyr::left_join(table_constraints, select = c(delete_rule)) %>%
+    dplyr::left_join(
       columns,
       select = c(column_name, dm_name, table_catalog, table_schema, table_name)
     ) %>%
@@ -133,7 +133,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_zoom_to(constraint_column_usage) %>%
     #
     # inner_join(): Matching column sometimes not found on Postgres
-    inner_join(
+    dplyr::inner_join(
       columns,
       select = c(column_name, dm_name, table_catalog, table_schema, table_name)
     ) %>%
@@ -152,7 +152,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
     dm_rename(key_column_usage, key_column_usage.dm_name = dm_name) %>%
     # inner_join: Sometimes, constraint_schema is different, https://github.com/cynkra/dm/issues/2228
     dm_flatten_to_tbl(constraint_column_usage, .join = inner_join) %>%
-    select(
+    dplyr::select(
       constraint_catalog,
       constraint_schema,
       constraint_name,
@@ -163,27 +163,27 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
       table = key_column_usage.dm_name,
       column = key_column_usage.column_name,
     ) %>%
-    arrange(
+    dplyr::arrange(
       constraint_catalog,
       constraint_schema,
       constraint_name,
       ordinal_position,
     ) %>%
-    select(-ordinal_position) %>%
+    dplyr::select(-ordinal_position) %>%
     # FIXME: Where to learn this in INFORMATION_SCHEMA?
-    group_by(
+    dplyr::group_by(
       constraint_catalog,
       constraint_schema,
       constraint_name,
       ref_table,
     ) %>%
-    summarize(
+    dplyr::summarize(
       fks = list(tibble(
         ref_column = list(ref_column),
         table = if (length(table) > 0) table[[1]] else NA_character_,
         column = list(column),
         on_delete = {
-          x <- case_when(
+          x <- dplyr::case_when(
             delete_rule == "CASCADE" ~ "cascade",
             .default = "no_action"
           ) %>%
@@ -195,11 +195,11 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
         }
       ))
     ) %>%
-    ungroup() %>%
-    select(-(1:3)) %>%
-    group_by(table = ref_table) %>%
-    summarize(fks = list(bind_rows(fks))) %>%
-    ungroup()
+    dplyr::ungroup() %>%
+    dplyr::select(-(1:3)) %>%
+    dplyr::group_by(table = ref_table) %>%
+    dplyr::summarize(fks = list(dplyr::bind_rows(fks))) %>%
+    dplyr::ungroup()
 
   # FIXME: add uks_df
   def <- new_dm_def(tables, pks_df, fks_df = fks_df)

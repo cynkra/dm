@@ -38,17 +38,17 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   fks <- dm_get_all_fks(dm)
   children <-
     fks %>%
-    filter(parent_table == !!table_name) %>%
-    pull(child_table)
-  fk <- filter(fks, child_table == !!table_name)
+    dplyr::filter(parent_table == !!table_name) %>%
+    dplyr::pull(child_table)
+  fk <- dplyr::filter(fks, child_table == !!table_name)
   parent_fk <- unlist(fk$parent_key_cols)
   child_fk <- unlist(fk$child_fk_cols)
   child_pk <-
     dm_get_all_pks(dm) %>%
-    filter(table == !!table_name) %>%
-    pull(pk_col) %>%
+    dplyr::filter(table == !!table_name) %>%
+    dplyr::pull(pk_col) %>%
     unlist()
-  parent_name <- pull(fk, parent_table)
+  parent_name <- dplyr::pull(fk, parent_table)
 
   # make sure we have a terminal child
   if (length(children) || !length(parent_name) || length(parent_name) > 1) {
@@ -80,7 +80,7 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   def <- dm_get_def(dm, quiet = TRUE)
   table_data <- def$data[def$table == table_name][[1]]
   parent_data <- def$data[def$table == parent_name][[1]]
-  nested_data <- nest_join(
+  nested_data <- dplyr::nest_join(
     parent_data,
     table_data,
     by = set_names(child_fk, parent_fk),
@@ -91,7 +91,7 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
   # update def and rebuild dm
   def$data[def$table == parent_name] <- list(nested_data)
   old_parent_table_fk <- def[def$table == parent_name, ][["fks"]][[1]]
-  new_parent_table_fk <- filter(old_parent_table_fk, table != table_name)
+  new_parent_table_fk <- dplyr::filter(old_parent_table_fk, table != table_name)
   def[def$table == parent_name, ][["fks"]][[1]] <- new_parent_table_fk
   def <- def[def$table != table_name, ]
 
@@ -131,14 +131,14 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   table_name <- dm_tbl_name(dm, {{ parent_table }})
 
   fks <- dm_get_all_fks(dm)
-  fk <- filter(fks, parent_table == !!table_name)
-  children_names <- pull(fk, child_table)
+  fk <- dplyr::filter(fks, parent_table == !!table_name)
+  children_names <- dplyr::pull(fk, child_table)
 
   check_table_can_be_packed(table_name, children_names, fks)
   child_name <- children_names # we checked we had only one
 
   pks <- dm_get_all_pks(dm)
-  pk <- filter(pks, table == !!table_name)
+  pk <- dplyr::filter(pks, table == !!table_name)
   child_fk <- unlist(fk$child_fk_cols)
   parent_fk <- unlist(fk$parent_key_cols)
   parent_pk <- unlist(pk$pk_col)
@@ -174,8 +174,8 @@ check_table_can_be_packed <- function(table_name, children_names, fks) {
   # make sure we have a terminal parent
   parents <-
     fks %>%
-    filter(child_table == !!table_name) %>%
-    pull(parent_table)
+    dplyr::filter(child_table == !!table_name) %>%
+    dplyr::pull(parent_table)
 
   table_has_parents <- length(parents) > 0
   table_has_one_child <- length(children_names) == 1

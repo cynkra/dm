@@ -79,7 +79,7 @@ get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
       table_colnames %>%
       # in case of flattening, the primary key columns will never be responsible for the name
       # of the resulting column in the end, so they do not need to be disambiguated
-      anti_join(keep_colnames, by = c("table", "column"))
+      dplyr::anti_join(keep_colnames, by = c("table", "column"))
   }
 
   table_colnames
@@ -115,7 +115,7 @@ compute_disambiguate_cols_recipe <- function(table_colnames, sep, position = "su
     set_names("table", "renames")
 
   dup_nested$names <- map(dup_nested$renames, select, new_name, column)
-  dup_nested$renames <- map(dup_nested$renames, ~ deframe(select(., -column)))
+  dup_nested$renames <- map(dup_nested$renames, ~ deframe(dplyr::select(., -column)))
   as_tibble(dup_nested)
 }
 
@@ -132,13 +132,13 @@ explain_col_rename <- function(recipe) {
 
   disambiguation <-
     recipe %>%
-    unnest(names) %>%
-    mutate(
+    tidyr::unnest(names) %>%
+    dplyr::mutate(
       text = glue(
         "dm_rename({tick_if_needed(table)}, {tick_if_needed(new_name)} = {tick_if_needed(column)})"
       )
     ) %>%
-    pull(text)
+    dplyr::pull(text)
 
   message("Renaming ambiguous columns: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
 }

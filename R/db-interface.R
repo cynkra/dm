@@ -163,7 +163,7 @@ copy_dm_to <- function(
   }
 
   # Must be done here because table types may depend on string length, #2066
-  dm <- collect(dm, progress = progress)
+  dm <- dplyr::collect(dm, progress = progress)
 
   if (isTRUE(set_key_constraints)) {
     dm_for_sql <- dm
@@ -244,7 +244,7 @@ copy_dm_to <- function(
   remote_tables <- map2(
     table_names_out,
     map(def$data, colnames),
-    ~ tbl(dest_con, .x, vars = .y)
+    ~ dplyr::tbl(dest_con, .x, vars = .y)
   )
 
   def$data <- unname(remote_tables)

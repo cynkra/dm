@@ -57,7 +57,7 @@ dm_has_financial <- function() {
   }
 
   # Accessing the connection:
-  try_count <- try(collect(count(dm_financial()$districts)), silent = TRUE)
+  try_count <- try(dplyr::collect(dplyr::count(dm_financial()$districts)), silent = TRUE)
   if (inherits(try_connect, "try-error")) {
     return(FALSE)
   }

@@ -25,7 +25,7 @@ json_pack.data.frame <- function(.data, ..., .names_sep = NULL) {
   check_suggested("jsonlite", "json_pack")
   dot_nms <- ...names()
   tidyr::pack(.data, ..., .names_sep = .names_sep) %>%
-    mutate(across(all_of(dot_nms), to_packed_json))
+    dplyr::mutate(dplyr::across(all_of(dot_nms), to_packed_json))
 }
 
 to_packed_json <- function(x) {
@@ -58,7 +58,7 @@ json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   )
 
   .data %>%
-    transmute(!!!syms(id_cols), !!!sql_exprs)
+    dplyr::transmute(!!!syms(id_cols), !!!sql_exprs)
 }
 
 sql_json_pack <- function(con, cols, names_sep, packed_col, data, ...) {
@@ -143,5 +143,5 @@ remove_prefix_and_sep <- function(x, prefix, sep) {
     .con = con
   )
 
-  tbl(con, sql(out_query), vars = c(id_cols, packing_plan$packing_name))
+  dplyr::tbl(con, sql(out_query), vars = c(id_cols, packing_plan$packing_name))
 }

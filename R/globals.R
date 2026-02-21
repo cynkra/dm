@@ -28,6 +28,7 @@ utils::globalVariables(c(
   "parent_data", # <fks_df_from_keys_info>
   "parent_table", # <fks_df_from_keys_info>
   "child_table", # <fks_df_from_keys_info>
+  "select", # <compute_disambiguate_cols_recipe>
   "new_name", # <compute_disambiguate_cols_recipe>
   "column", # <compute_disambiguate_cols_recipe>
   "text", # <explain_col_rename>
@@ -69,6 +70,7 @@ utils::globalVariables(c(
   "new_parent_table", # <rename_unique>
   "parent_table", # <rename_unique>
   "new_table", # <rename_unique>
+  "n", # <rename_unique>
   "new_child_table", # <split_to_list>
   "child_table", # <split_to_list>
   "new_parent_table", # <split_to_list>
@@ -114,6 +116,7 @@ utils::globalVariables(c(
   "distance", # <dm_get_filtered_table>
   "filters", # <dm_get_filters_impl>
   "filter_expr", # <dm_get_filters_impl>
+  "filter", # <dm_get_filters_impl>
   "fks", # <dm_rm_fk_impl>
   "ref_table", # <dm_rm_fk_impl>
   "need_ref", # <dm_rm_fk_impl>
@@ -126,6 +129,8 @@ utils::globalVariables(c(
   "JSON_BUILD_OBJECT", # <sql_json_nest.PqConnection>
   "JSON_BUILD_OBJECT", # <sql_json_pack.PqConnection>
   "key", # <is_unique_key_se>
+  "count", # <is_unique_key_se>
+  "n", # <is_unique_key_se>
   "any_na", # <is_unique_key_se>
   ".", # <is_unique_key_se>
   "data", # <is_unique_key_se>
@@ -146,6 +151,7 @@ utils::globalVariables(c(
   "is_autoincrement", # <dm_learn_from_db>
   "pks", # <dm_learn_from_db>
   "delete_rule", # <dm_learn_from_db>
+  "inner_join", # <dm_learn_from_db>
   "constraint_column_usage.dm_name", # <dm_learn_from_db>
   "constraint_column_usage.column_name", # <dm_learn_from_db>
   "key_column_usage.dm_name", # <dm_learn_from_db>
@@ -243,6 +249,7 @@ utils::globalVariables(c(
   "column", # <enum_pk_candidates_impl>
   "why", # <enum_pk_candidates_impl>
   "candidate", # <enum_pk_candidates_impl>
+  "mutate", # <dm_upgrade>
   "pks", # <dm_upgrade>
   "ref_table", # <dm_validate>
   "ref_column", # <dm_validate>

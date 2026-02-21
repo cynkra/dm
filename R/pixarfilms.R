@@ -51,7 +51,7 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE, version = "v1")
   }
 
   if (consistent) {
-    pixar_films <- filter(pixar_films, !is.na(film))
+    pixar_films <- dplyr::filter(pixar_films, !is.na(film))
   }
 
   # Create dm object

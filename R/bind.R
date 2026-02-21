@@ -24,7 +24,7 @@ dm_bind_impl <- function(dms, repair, quiet, repair_arg = "", caller = caller_en
   dms_indices <- map(ntables_dms, seq_len)
   renaming_recipe <- map2(
     dms_indices,
-    lag(cumsum(ntables_dms), default = 0),
+    dplyr::lag(cumsum(ntables_dms), default = 0),
     ~ set_names(.x, new_table_names[.x + .y])
   )
 
