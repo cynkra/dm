@@ -211,38 +211,24 @@ test_that("`dm_flatten()` with tidyselect via parent_tables", {
   )
 
   # Select helpers
-  result3 <- expect_message_obj(
-    dm_flatten(dm_for_flatten(), fact, parent_tables = c(ends_with("3"), ends_with("1")))
-  )
-  result4 <- expect_message_obj(
-    dm_flatten(dm_for_flatten(), fact, parent_tables = c(dim_3, dim_1))
-  )
-
-  expect_equivalent_tbl(
-    pull_tbl(result3, fact),
-    pull_tbl(result4, fact)
-  )
+  expect_snapshot({
+    dm_flatten(dm_for_flatten(), fact, parent_tables = c(ends_with("3"), ends_with("1"))) %>%
+      dm_paste(options = c("select", "keys"))
+  })
 })
 
 test_that("`dm_flatten()` handles column disambiguation correctly", {
-  # All tables share "something" column
-  result <- expect_message_obj(
-    dm_flatten(dm_for_flatten(), fact, parent_tables = c(dim_1, dim_2))
-  )
-
-  fact_result <- pull_tbl(result, fact)
-  # Start table keeps its "something" column name
-  expect_true("something" %in% colnames(fact_result))
-  # Parent columns get suffixed
-  expect_true("something.dim_1" %in% colnames(fact_result))
-  expect_true("something.dim_2" %in% colnames(fact_result))
+  expect_snapshot({
+    dm_flatten(dm_for_flatten(), fact, parent_tables = c(dim_1, dim_2)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
 })
 
 test_that("`dm_flatten()` reports renames", {
-  expect_message(
-    dm_flatten(dm_for_flatten(), fact, parent_tables = c(dim_1, dim_2)),
-    "Renaming"
-  )
+  expect_snapshot({
+    dm_flatten(dm_for_flatten(), fact, parent_tables = c(dim_1, dim_2)) %>%
+      dm_paste(options = c("select", "keys"))
+  })
 })
 
 test_that("`dm_flatten()` errors on zoomed dm", {

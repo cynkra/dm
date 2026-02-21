@@ -57,8 +57,8 @@ dm_flatten <- function(
   check_dots_empty()
 
   if (recursive && allow_deep) {
-    abort(
-      "`allow_deep` can't be `TRUE` when `recursive` is `TRUE`.",
+    cli::cli_abort(
+      "{.arg allow_deep} can't be {.code TRUE} when {.arg recursive} is {.code TRUE}.",
       class = dm_error_full("recursive_and_allow_deep")
     )
   }
@@ -118,6 +118,8 @@ dm_flatten_impl <- function(dm, start, list_of_pts, recursive, allow_deep) {
     }
   }
 
+  all_renames <- list()
+
   if (recursive) {
     # Run DFS upfront to determine join order and detect cycles
     g <- create_graph_from_dm(dm, directed = TRUE)
@@ -129,45 +131,44 @@ dm_flatten_impl <- function(dm, start, list_of_pts, recursive, allow_deep) {
     dfs <- graph_dfs(g_sub, start, unreachable = FALSE, dist = TRUE)
     dfs_order <- names(dfs$order) %>% discard(is.na)
 
-    # Recursively flatten each direct parent that is in list_of_pts,
-    # then join sequentially into start
-    dm_flatten_recursive_reduce(dm, start, list_of_pts, dfs_order)
+    # Up-front reduction: recursively flatten each direct parent's ancestors
+    out <- dm_flatten_reduce_parents(dm, start, list_of_pts, direct_parents, dfs_order)
+    dm <- out$dm
+    all_renames <- out$all_renames
   } else {
     # Non-recursive: check for deeper hierarchy
-    for (pt in list_of_pts) {
-      pt_parents <- all_fks %>%
-        filter(child_table == pt) %>%
-        nrow()
-      if (pt_parents > 0 && !allow_deep) {
-        abort_only_parents()
-      }
+    has_parents <- all_fks %>%
+      filter(child_table %in% list_of_pts) %>%
+      nrow()
+    if (has_parents > 0 && !allow_deep) {
+      abort_only_parents()
     }
-
-    dm_flatten_join(dm, start, list_of_pts, allow_deep)
   }
-}
 
-#' @autoglobal
-dm_flatten_recursive_reduce <- function(dm, start, list_of_pts, dfs_order) {
-  all_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
-
-  # Direct parents of start that are in list_of_pts
-  direct_parents <- all_fks %>%
+  # Determine which direct parents to join into start
+  current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
+  parents_to_join <- current_fks %>%
     filter(child_table == start) %>%
     pull(parent_table) %>%
     unique()
-  parents_to_join <- intersect(direct_parents, list_of_pts)
+  parents_to_join <- intersect(parents_to_join, intersect(direct_parents, list_of_pts))
+  parents_to_join <- intersect(parents_to_join, src_tbls_impl(dm))
 
-  # Order parents by DFS order
-  parents_to_join <- intersect(dfs_order, parents_to_join)
+  out <- dm_flatten_join(dm, start, parents_to_join, allow_deep)
+  out$all_renames <- c(all_renames, out$all_renames)
+  out
+}
 
-  # For each direct parent, recursively flatten it first, then join into start
-  # Accumulate both dm and renames in the reduce result
-  acc <- reduce(
-    parents_to_join,
+#' @autoglobal
+dm_flatten_reduce_parents <- function(dm, start, list_of_pts, direct_parents, dfs_order) {
+  parents_to_process <- intersect(direct_parents, list_of_pts)
+  parents_to_process <- intersect(dfs_order, parents_to_process)
+
+  # For each direct parent, recursively flatten its ancestors first
+  reduce(
+    parents_to_process,
     function(acc, pt) {
       dm <- acc$dm
-      # Find what pt's ancestors are (those in list_of_pts but not start's direct parents)
       current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
       pt_parents <- current_fks %>%
         filter(child_table == pt) %>%
@@ -177,7 +178,6 @@ dm_flatten_recursive_reduce <- function(dm, start, list_of_pts, dfs_order) {
       pt_parents_in_list <- intersect(pt_parents_in_list, src_tbls_impl(dm))
 
       if (length(pt_parents_in_list) > 0) {
-        # Recursively flatten pt's parents into pt
         out <- dm_flatten_impl(dm, pt, pt_parents_in_list, recursive = TRUE, allow_deep = FALSE)
         list(dm = out$dm, all_renames = c(acc$all_renames, out$all_renames))
       } else {
@@ -186,26 +186,6 @@ dm_flatten_recursive_reduce <- function(dm, start, list_of_pts, dfs_order) {
     },
     .init = list(dm = dm, all_renames = list())
   )
-
-  dm <- acc$dm
-  all_renames <- acc$all_renames
-
-  # Now join all (possibly flattened) direct parents into start
-  current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
-  remaining_parents <- current_fks %>%
-    filter(child_table == start) %>%
-    pull(parent_table) %>%
-    unique()
-  remaining_parents <- intersect(remaining_parents, parents_to_join)
-  remaining_parents <- intersect(remaining_parents, src_tbls_impl(dm))
-
-  if (is_empty(remaining_parents)) {
-    return(list(dm = dm, all_renames = all_renames))
-  }
-
-  out <- dm_flatten_join(dm, start, remaining_parents, allow_deep = FALSE)
-  out$all_renames <- c(all_renames, out$all_renames)
-  out
 }
 
 #' @autoglobal

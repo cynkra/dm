@@ -36,8 +36,8 @@ utils::globalVariables(c(
   "uks", # <dm_disentangle>
   "child_table", # <dm_flatten_impl>
   "parent_table", # <dm_flatten_impl>
-  "child_table", # <dm_flatten_recursive_reduce>
-  "parent_table", # <dm_flatten_recursive_reduce>
+  "child_table", # <dm_flatten_reduce_parents>
+  "parent_table", # <dm_flatten_reduce_parents>
   "child_table", # <dm_flatten_join>
   "parent_table", # <dm_flatten_join>
   "child_table", # <dm_flatten_transfer_fks>
