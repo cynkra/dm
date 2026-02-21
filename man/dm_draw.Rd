@@ -10,15 +10,16 @@ dm_draw(
   ...,
   col_attr = NULL,
   view_type = c("keys_only", "all", "title_only"),
-  columnArrows = TRUE,
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  focus = NULL,
-  graph_name = "Data Model",
   column_types = NULL,
-  backend = "DiagrammeR",
-  font_size = NULL
+  backend = c("DiagrammeR", "g6R"),
+  backend_opts = list(),
+  columnArrows = lifecycle::deprecated(),
+  graph_attrs = lifecycle::deprecated(),
+  node_attrs = lifecycle::deprecated(),
+  edge_attrs = lifecycle::deprecated(),
+  focus = lifecycle::deprecated(),
+  graph_name = lifecycle::deprecated(),
+  font_size = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -34,40 +35,60 @@ dm_draw(
 It defines the level of details for rendering tables
 (only primary and foreign keys, all columns, or no columns).}
 
-\item{columnArrows}{Edges from columns to columns (default: \code{TRUE}).}
-
-\item{graph_attrs}{Additional graph attributes.}
-
-\item{node_attrs}{Additional node attributes.}
-
-\item{edge_attrs}{Additional edge attributes.}
-
-\item{focus}{A list of parameters for rendering (table filter).}
-
-\item{graph_name}{The name of the graph.}
-
 \item{column_types}{Set to \code{TRUE} to show column types.}
 
-\item{backend}{Currently, only the default \code{"DiagrammeR"} is accepted.
-Pass this value explicitly if your code not only uses this function
-to display a data model but relies on the type of the return value.}
-
-\item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-Font size for:
+\item{backend}{The rendering backend to use. Options are:
 \itemize{
-\item \code{header}, defaults to \code{16}
-\item \code{column}, defaults to \code{16}
-\item \code{table_description}, defaults to \code{8}
-}
+\item \code{"DiagrammeR"} (default): Uses DiagrammeR/Graphviz for rendering.
+Returns a \code{grViz} object.
+\item \code{"g6R"}: Uses g6R for interactive rendering with pan/zoom support.
+Returns a \code{g6} htmlwidget.
+Pass this value explicitly if your code relies on the type of the return value.
+}}
 
-Can be set as a named integer vector, e.g. \code{c(table_headers = 18L, table_description = 6L)}.}
+\item{backend_opts}{A named list of backend-specific options.
+For the \code{"DiagrammeR"} backend, supported options are:
+\itemize{
+\item \code{graph_attrs}: Additional graph attributes (default \code{""}).
+\item \code{node_attrs}: Additional node attributes (default \code{""}).
+\item \code{edge_attrs}: Additional edge attributes (default \code{""}).
+\item \code{focus}: A list of parameters for rendering (table filter).
+\item \code{graph_name}: The name of the graph (default \code{"Data Model"}).
+\item \code{columnArrows}: Edges from columns to columns (default \code{TRUE}).
+\item \code{font_size}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Font size for \code{header} (default \code{16}), \code{column} (default \code{16}),
+and \code{table_description} (default \code{8}).
+Can be set as a named integer vector, e.g.
+\code{c(table_headers = 18L, table_description = 6L)}.
+}}
+
+\item{columnArrows}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
+\code{backend_opts = list(columnArrows = ...)} instead.}
+
+\item{graph_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
+\code{backend_opts = list(graph_attrs = ...)} instead.}
+
+\item{node_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
+\code{backend_opts = list(node_attrs = ...)} instead.}
+
+\item{edge_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
+\code{backend_opts = list(edge_attrs = ...)} instead.}
+
+\item{focus}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
+\code{backend_opts = list(focus = ...)} instead.}
+
+\item{graph_name}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
+\code{backend_opts = list(graph_name = ...)} instead.}
+
+\item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
+\code{backend_opts = list(font_size = ...)} instead.}
 }
 \value{
 An object with a \code{\link[=print]{print()}} method, which,
 when printed, produces the output seen in the viewer as a side effect.
-Currently, this is an object of class \code{grViz} (see also
-\code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), but this is subject to change.
+For the \code{"DiagrammeR"} backend this is an object of class \code{grViz}
+(see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}).
+For the \code{"g6R"} backend this is an object of class \code{g6}.
 }
 \description{
 \code{dm_draw()} draws a diagram, a visual representation of the data model.

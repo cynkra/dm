@@ -77,6 +77,7 @@ Suggests:
     duckdb (>= 0.4.0),
     fansi,
     forcats,
+    g6R,
     htmltools,
     htmlwidgets,
     jsonlite,
