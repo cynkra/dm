@@ -116,3 +116,50 @@ test_that("output for compound keys", {
       dm_update_zoomed()
   })
 })
+
+# Signature alignment tests ------------------------------------------------
+
+test_that("dm tidyr method signatures match tidyr data.frame method signatures", {
+  skip_on_cran()
+
+  tidyr_ns <- asNamespace("tidyr")
+  dm_ns <- asNamespace("dm")
+
+  verbs <- c("unite", "separate")
+
+  for (verb in verbs) {
+    df_method <- tryCatch(
+      get(paste0(verb, ".data.frame"), envir = tidyr_ns),
+      error = function(e) NULL
+    )
+    if (is.null(df_method)) {
+      next
+    }
+
+    df_args <- names(formals(df_method))
+
+    for (cls in c("dm", "dm_zoomed", "dm_keyed_tbl")) {
+      method_name <- paste0(verb, ".", cls)
+      dm_method <- tryCatch(
+        get(method_name, envir = dm_ns),
+        error = function(e) NULL
+      )
+      if (is.null(dm_method)) {
+        next
+      }
+
+      dm_args <- names(formals(dm_method))
+      missing_args <- setdiff(df_args, dm_args)
+      expect_true(
+        length(missing_args) == 0,
+        label = paste0(
+          method_name,
+          " is missing args from ",
+          verb,
+          ".data.frame: ",
+          paste(missing_args, collapse = ", ")
+        )
+      )
+    }
+  }
+})
