@@ -172,7 +172,10 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
 
   # Outgoing FKs from keyed table's fks_out
   new_dm <- dm_insert_zoomed_outgoing_fks_keyed(
-    dm_wo_outgoing_fks, new_tbl_name_chr, keys_info$fks_out, def
+    dm_wo_outgoing_fks,
+    new_tbl_name_chr,
+    keys_info$fks_out,
+    def
   )
 
   if (!is.na(zoomed$display)) {
@@ -278,7 +281,10 @@ keyed_fks_in_to_dm_fk <- function(fks_in, def, where) {
   for (j in seq_along(tables)) {
     match_idx <- which(
       orig_fks$table == tables[j] &
-        map_lgl(orig_fks$column, ~ identical(sort(as.character(.x)), sort(as.character(columns[[j]]))))
+        map_lgl(
+          orig_fks$column,
+          ~ identical(sort(as.character(.x)), sort(as.character(columns[[j]])))
+        )
     )
     if (length(match_idx) > 0) {
       on_deletes[j] <- orig_fks$on_delete[match_idx[1]]
@@ -298,12 +304,18 @@ keyed_fks_in_to_dm_fk <- function(fks_in, def, where) {
 # Update outgoing FKs in the dm def using keyed table's fks_out.
 keyed_update_outgoing_fks <- function(new_def, where, table_name, fks_out, orig_def) {
   for (i in seq_along(new_def$fks)) {
-    if (i == where) next
+    if (i == where) {
+      next
+    }
     fks_i <- new_def$fks[[i]]
-    if (nrow(fks_i) == 0) next
+    if (nrow(fks_i) == 0) {
+      next
+    }
 
     child_rows <- which(fks_i$table == table_name)
-    if (length(child_rows) == 0) next
+    if (length(child_rows) == 0) {
+      next
+    }
 
     parent_uuid <- orig_def$uuid[[i]]
     keep <- logical(length(child_rows))

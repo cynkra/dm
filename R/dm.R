@@ -523,7 +523,9 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
 #' @export
 `[.dm_zoomed` <- function(x, id) {
   tbl <- tbl_zoomed(x)
-  if (is_dm_keyed_tbl(tbl)) tbl <- unclass_keyed_tbl(tbl)
+  if (is_dm_keyed_tbl(tbl)) {
+    tbl <- unclass_keyed_tbl(tbl)
+  }
   `[`(tbl, id)
 }
 
@@ -874,7 +876,9 @@ as.list.dm <- function(x, ...) {
 as.list.dm_zoomed <- function(x, ...) {
   check_dots_empty()
   tbl <- tbl_zoomed(x)
-  if (is_dm_keyed_tbl(tbl)) tbl <- unclass_keyed_tbl(tbl)
+  if (is_dm_keyed_tbl(tbl)) {
+    tbl <- unclass_keyed_tbl(tbl)
+  }
   as.list(tbl)
 }
 

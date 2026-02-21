@@ -107,13 +107,17 @@ keyed_rename_key_cols <- function(keys_info, remap) {
 
   if (nrow(keys_info$fks_in) > 0) {
     keys_info$fks_in$parent_key_cols <- new_keys(map(
-      keys_info$fks_in$parent_key_cols, recode_compat, remap
+      keys_info$fks_in$parent_key_cols,
+      recode_compat,
+      remap
     ))
   }
 
   if (nrow(keys_info$fks_out) > 0) {
     keys_info$fks_out$child_fk_cols <- new_keys(map(
-      keys_info$fks_out$child_fk_cols, recode_compat, remap
+      keys_info$fks_out$child_fk_cols,
+      recode_compat,
+      remap
     ))
   }
 
