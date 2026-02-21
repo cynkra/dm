@@ -255,7 +255,7 @@ check_card_api <- function(
 ) {
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_card_api")
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       paste0(name, "(pk_column)"),
       paste0(name, "(x_select = )"),

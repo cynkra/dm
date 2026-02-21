@@ -155,7 +155,7 @@ dm_get_pk <- function(dm, table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
 
-  deprecate_soft("0.2.1", "dm::dm_get_pk()", "dm::dm_get_all_pks()")
+  deprecate_warn("0.2.1", "dm::dm_get_pk()", "dm::dm_get_all_pks()")
 
   table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
@@ -254,7 +254,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #'   dm_draw()
 dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = NULL) {
   if (!is.null(fail_fk)) {
-    lifecycle::deprecate_soft(
+    lifecycle::deprecate_warn(
       "1.0.4",
       "dm_rm_pk(fail_fk =)",
       details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
@@ -268,7 +268,7 @@ dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL) {
   check_not_zoomed(dm)
 
   if (!is.null(rm_referencing_fks)) {
-    deprecate_soft(
+    deprecate_warn(
       "0.2.1",
       "dm::dm_rm_pk(rm_referencing_fks = )",
       details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
