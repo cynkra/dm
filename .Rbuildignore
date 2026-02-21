@@ -35,7 +35,9 @@
 ^renovate\.json$
 ^tests/testthat/helper-sync\.R$
 ^index\.md$
+^AGENTS\.md$
 ^CLAUDE\.md$
+^DEVCONTAINER\.md$
 ^\.venv$
 ^\.claude$
 ^\.devcontainer$
