@@ -21,12 +21,12 @@
       dm_paste(learned_dm, options = "keys")
     Message
       dm::dm(
-        child,
-        parent,
+        other.child_tbl,
+        other.parent_tbl,
       ) %>%
-        dm::dm_add_pk(child, id) %>%
-        dm::dm_add_pk(parent, id) %>%
-        dm::dm_add_fk(child, parent_id, parent)
+        dm::dm_add_pk(other.child_tbl, id) %>%
+        dm::dm_add_pk(other.parent_tbl, id) %>%
+        dm::dm_add_fk(other.child_tbl, parent_id, other.parent_tbl)
 
 # dm_meta() contents
 
@@ -512,17 +512,17 @@
       dm::dm_get_all_fks(my_dm)
     Output
       # A tibble: 9 x 5
-        child_table child_fk_cols  parent_table  parent_key_cols  on_delete
-        <chr>       <keys>         <chr>         <keys>           <chr>    
-      1 Loan_Acc    account_id     acc           account_id       cascade  
-      2 Loan_Acc    loan_id        loan          loan_id          cascade  
-      3 Loan_Order  loan_id        loan          loan_id          cascade  
-      4 Loan_Trans  loan_id        loan          loan_id          cascade  
-      5 oseba       id_nesreca     nesreca       id_nesreca       cascade  
-      6 Loan_Order  order_id       order         order_id         cascade  
-      7 Loan_Trans  transaction_id trans         transaction_id   cascade  
-      8 nesreca     upravna_enota  upravna_enota id_upravna_enota cascade  
-      9 oseba       upravna_enota  upravna_enota id_upravna_enota cascade  
+        child_table              child_fk_cols  parent_table parent_key_cols on_delete
+        <chr>                    <keys>         <chr>        <keys>          <chr>    
+      1 Accidents.oseba          id_nesreca     Accidents.n~ id_nesreca      cascade  
+      2 Accidents.nesreca        upravna_enota  Accidents.u~ id_upravna_eno~ cascade  
+      3 Accidents.oseba          upravna_enota  Accidents.u~ id_upravna_eno~ cascade  
+      4 Financial_std.Loan_Acc   account_id     Financial_s~ account_id      cascade  
+      5 Financial_std.Loan_Acc   loan_id        Financial_s~ loan_id         cascade  
+      6 Financial_std.Loan_Order loan_id        Financial_s~ loan_id         cascade  
+      7 Financial_std.Loan_Trans loan_id        Financial_s~ loan_id         cascade  
+      8 Financial_std.Loan_Order order_id       Financial_s~ order_id        cascade  
+      9 Financial_std.Loan_Trans transaction_id Financial_s~ transaction_id  cascade  
 
 ---
 
@@ -530,16 +530,16 @@
       dm::dm_get_all_pks(my_dm)
     Output
       # A tibble: 10 x 3
-         table         pk_col                  autoincrement
-         <chr>         <keys>                  <lgl>        
-       1 Loan_Acc      loan_id, account_id     FALSE        
-       2 Loan_Order    order_id, loan_id       FALSE        
-       3 Loan_Trans    transaction_id, loan_id FALSE        
-       4 acc           account_id              FALSE        
-       5 ad            ts, ad_id, user_id      FALSE        
-       6 loan          loan_id                 FALSE        
-       7 nesreca       id_nesreca              FALSE        
-       8 order         order_id                FALSE        
-       9 trans         transaction_id          TRUE         
-      10 upravna_enota id_upravna_enota        FALSE        
+         table                    pk_col                  autoincrement
+         <chr>                    <keys>                  <lgl>        
+       1 Accidents.nesreca        id_nesreca              FALSE        
+       2 Accidents.upravna_enota  id_upravna_enota        FALSE        
+       3 Ad.ad                    ts, ad_id, user_id      FALSE        
+       4 Financial_std.Loan_Acc   loan_id, account_id     FALSE        
+       5 Financial_std.Loan_Order order_id, loan_id       FALSE        
+       6 Financial_std.Loan_Trans transaction_id, loan_id FALSE        
+       7 Financial_std.acc        account_id              FALSE        
+       8 Financial_std.loan       loan_id                 FALSE        
+       9 Financial_std.order      order_id                FALSE        
+      10 Financial_std.trans      transaction_id          TRUE         
 
