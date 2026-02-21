@@ -136,196 +136,564 @@ test_that("dm_insert_zoom2ed() retains color", {
 
 
 # dplyr verb snapshot tests -----------------------------------------------
-# Each test creates a simple dm, applies a dplyr verb via dm_zoom2_to(),
-# then uses dm_paste() to show key structure after dm_update_zoom2ed().
+# Each test constructs a dm inline, applies a dplyr verb via dm_zoom2_to(),
+# and uses dm_paste() to show key structure after dm_update_zoom2ed().
 
-local({
-  # Simple dm used across all verb tests
-  d <- dm(
-    parent = tibble(id = 1:3, name = c("a", "b", "c")),
-    child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
-  ) %>%
-    dm_add_pk(parent, id) %>%
-    dm_add_pk(child, child_id) %>%
-    dm_add_fk(child, parent_id, parent)
+# --- Verbs that change key columns ---
 
-  # Helper: zoom, apply verb, update and paste. Works for all verbs
-  # including those that strip zoom2 attributes (summarise, reframe, etc.)
-
-  zoom2_verb_paste <- function(dm, table_name, verb_fn) {
-    zoomed <- dm_zoom2_to(dm, !!table_name)
-    modified <- verb_fn(zoomed)
-    # Build keyed tables from original dm and replace the zoomed one
-    keyed_tables <- dm_get_keyed_tables_impl(dm)
-    keyed_tables[[table_name]] <- zoom2_clean_attrs(modified)
-    new_dm(keyed_tables) %>% dm_paste(options = "all")
-  }
-
-  # --- Verbs that change key columns ---
-
-  test_that("zoom2 select() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) select(z, id))
-    })
+test_that("zoom2 select() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      select(id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 select() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) select(z, child_id, val))
-    })
+test_that("zoom2 select() on child table drops FK", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      select(child_id, val) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 rename() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) rename(z, parent_id = id))
-    })
+test_that("zoom2 rename() on parent PK column", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      rename(parent_id = id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 rename() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) rename(z, cid = child_id, pid = parent_id))
-    })
+test_that("zoom2 rename() on child FK column", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      rename(cid = child_id, pid = parent_id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 summarise() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) summarise(z, n = n()))
-    })
+test_that("zoom2 summarise() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent)
+
+    keyed_tables <- dm_get_keyed_tables_impl(d)
+    keyed_tables[["parent"]] <-
+      d %>%
+      dm_zoom2_to(parent) %>%
+      summarise(n = n()) %>%
+      zoom2_clean_attrs()
+    new_dm(keyed_tables) %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 summarise() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) {
-        z %>% group_by(parent_id) %>% summarise(n = n())
-      })
-    })
+test_that("zoom2 summarise() on child table with group_by", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent)
+
+    keyed_tables <- dm_get_keyed_tables_impl(d)
+    keyed_tables[["child"]] <-
+      d %>%
+      dm_zoom2_to(child) %>%
+      group_by(parent_id) %>%
+      summarise(n = n()) %>%
+      zoom2_clean_attrs()
+    new_dm(keyed_tables) %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 left_join()", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) {
-        left_join(z, dm_zoom2_to(d, parent))
-      })
-    })
+test_that("zoom2 left_join()", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent)
+
+    d %>%
+      dm_zoom2_to(child) %>%
+      left_join(dm_zoom2_to(d, parent)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 inner_join()", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) {
-        inner_join(z, dm_zoom2_to(d, parent))
-      })
-    })
+test_that("zoom2 inner_join()", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent)
+
+    d %>%
+      dm_zoom2_to(child) %>%
+      inner_join(dm_zoom2_to(d, parent)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 semi_join()", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) {
-        semi_join(z, dm_zoom2_to(d, parent))
-      })
-    })
+test_that("zoom2 semi_join()", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent)
+
+    d %>%
+      dm_zoom2_to(child) %>%
+      semi_join(dm_zoom2_to(d, parent)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 anti_join()", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) {
-        anti_join(z, dm_zoom2_to(d, parent))
-      })
-    })
+test_that("zoom2 anti_join()", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent)
+
+    d %>%
+      dm_zoom2_to(child) %>%
+      anti_join(dm_zoom2_to(d, parent)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  # --- Verbs that don't change key columns (parent + child) ---
+test_that("zoom2 right_join()", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent)
 
-  test_that("zoom2 filter() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) filter(z, id > 1))
-    })
+    d %>%
+      dm_zoom2_to(child) %>%
+      right_join(dm_zoom2_to(d, parent)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 filter() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) filter(z, val != "a"))
-    })
+test_that("zoom2 full_join()", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent)
+
+    d %>%
+      dm_zoom2_to(child) %>%
+      full_join(dm_zoom2_to(d, parent)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 mutate() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) mutate(z, name2 = toupper(name)))
-    })
+# --- Verbs that don't change key columns (parent + child) ---
+
+test_that("zoom2 filter() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      filter(id > 1) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 mutate() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) mutate(z, val2 = toupper(val)))
-    })
+test_that("zoom2 filter() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      filter(val != "a") %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 arrange() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) arrange(z, desc(id)))
-    })
+test_that("zoom2 mutate() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      mutate(name2 = toupper(name)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 arrange() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) arrange(z, desc(child_id)))
-    })
+test_that("zoom2 mutate() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      mutate(val2 = toupper(val)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 distinct() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) distinct(z))
-    })
+test_that("zoom2 arrange() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      arrange(desc(id)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 distinct() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) distinct(z))
-    })
+test_that("zoom2 arrange() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      arrange(desc(child_id)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 slice() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) slice(z, 1:2))
-    })
+test_that("zoom2 distinct() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      distinct() %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 slice() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) slice(z, 1:3))
-    })
+test_that("zoom2 distinct() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      distinct() %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 transmute() on parent table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "parent", function(z) transmute(z, id, name_upper = toupper(name)))
-    })
+test_that("zoom2 slice() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      slice(1:2) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
+})
 
-  test_that("zoom2 transmute() on child table", {
-    skip_if_remote_src()
-    expect_snapshot({
-      zoom2_verb_paste(d, "child", function(z) transmute(z, child_id, parent_id))
-    })
+test_that("zoom2 slice() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      slice(1:3) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 transmute() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      transmute(id, name_upper = toupper(name)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 transmute() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      transmute(child_id, parent_id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 relocate() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      relocate(name, .before = id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 relocate() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      relocate(val, .before = child_id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 group_by() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      group_by(name) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 group_by() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      group_by(parent_id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 count() on parent table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(parent) %>%
+      count(name) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 count() on child table", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      count(parent_id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 left_join() with three tables", {
+  skip_if_remote_src()
+  expect_snapshot({
+    d <- dm(
+      grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")),
+      parent = tibble(id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(grandparent, gp_id) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(parent, gp_id, grandparent) %>%
+      dm_add_fk(child, parent_id, parent)
+
+    d %>%
+      dm_zoom2_to(child) %>%
+      left_join(dm_zoom2_to(d, parent)) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
   })
 })
