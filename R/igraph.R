@@ -4,16 +4,8 @@
 # time with pure R fallbacks from R/igraph-fallback.R.
 # All functions accept and return "dm_graph" objects (or the "dm_igraph" subclass).
 
-igraph_available <- function() {
-  rlang::is_installed("igraph")
-}
-
 rlang::on_load({
-  if (!memoise::is.memoized(igraph_available)) {
-    igraph_available <<- memoise::memoise(igraph_available)
-  }
-
-  if (!igraph_available()) {
+  if (!rlang::is_installed("igraph")) {
     graph_from_data_frame <<- graph_from_data_frame_fallback
     graph_vertices <<- graph_vertices_fallback
     graph_edges <<- graph_edges_fallback
@@ -28,15 +20,6 @@ rlang::on_load({
     graph_girth <<- graph_girth_fallback
   }
 })
-
-# dm_graph: minimal pure R graph representation used when igraph is not available.
-# Fields: directed (logical), vnames (character), from (integer), to (integer).
-new_dm_graph <- function(directed, vnames, from, to) {
-  structure(
-    list(directed = directed, vnames = vnames, from = from, to = to),
-    class = "dm_graph"
-  )
-}
 
 # dm_igraph: wraps an igraph object; used when igraph is installed.
 new_dm_igraph <- function(ig) {

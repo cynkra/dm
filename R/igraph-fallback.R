@@ -2,6 +2,15 @@
 # These are assigned to the graph_* names in .onLoad() if igraph is not installed.
 # Each function takes a dm_graph object (not dm_igraph) and returns a dm_graph.
 
+# dm_graph: minimal pure R graph representation.
+# Fields: directed (logical), vnames (character), from (integer), to (integer).
+new_dm_graph <- function(directed, vnames, from, to) {
+  structure(
+    list(directed = directed, vnames = vnames, from = from, to = to),
+    class = "dm_graph"
+  )
+}
+
 graph_from_data_frame_fallback <- function(d, directed, vertices = NULL) {
   if (is.null(vertices)) {
     vnames <- unique(c(as.character(d[[1]]), as.character(d[[2]])))
