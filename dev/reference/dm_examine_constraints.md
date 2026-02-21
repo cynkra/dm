@@ -13,6 +13,7 @@ dm_examine_constraints(
   .dm,
   ...,
   .progress = NA,
+  .max_value = 6L,
   dm = deprecated(),
   progress = deprecated()
 )
@@ -33,6 +34,11 @@ dm_examine_constraints(
   Whether to display a progress bar, if `NA` (the default) hide in
   non-interactive mode, show in interactive mode. Requires the
   'progress' package.
+
+- .max_value:
+
+  Maximum number of distinct problematic values to report in the
+  `problem` column, defaults to `6`. Set to `Inf` to report all values.
 
 - dm, progress:
 

@@ -74,6 +74,7 @@ to print as a regular tibble.</p>
 <span>  <span class="va">.dm</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  .progress <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  .max_value <span class="op">=</span> <span class="fl">6L</span>,</span>
 <span>  dm <span class="op">=</span> <span class="fu"><a href="deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  progress <span class="op">=</span> <span class="fu"><a href="deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -95,6 +96,12 @@ to print as a regular tibble.</p>
 <dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.</p></dd>
+
+
+<dt id="arg--max-value">.max_value<a class="anchor" aria-label="anchor" href="#arg--max-value"></a></dt>
+<dd><p>Maximum number of distinct problematic values to report
+in the <code>problem</code> column, defaults to <code>6</code>.
+Set to <code>Inf</code> to report all values.</p></dd>
 
 
 <dt id="arg-dm-progress">dm, progress<a class="anchor" aria-label="anchor" href="#arg-dm-progress"></a></dt>
