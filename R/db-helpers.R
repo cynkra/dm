@@ -144,7 +144,7 @@ find_name_clashes <- function(old, new) {
 }
 
 #' @autoglobal
-get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
+get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names_pattern = "{.table}") {
   schema <- check_schema(src, schema)
 
   if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
@@ -174,16 +174,6 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
     # MariaDB
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_mariadb(con)
-  }
-
-  # Use smart default for `.names`, if it wasn't provided
-  if (!is.null(names)) {
-    names_pattern <- names
-  } else if (length(schema) == 1) {
-    names_pattern <- "{.table}"
-  } else {
-    names_pattern <- "{.schema}.{.table}"
-    cli::cli_inform('Using {.code .names = "{names_pattern}"}')
   }
 
   names_table <- names_table %>%
