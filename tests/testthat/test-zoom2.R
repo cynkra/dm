@@ -158,7 +158,7 @@ test_that("zoom2 select() on parent table", {
   })
 })
 
-test_that("zoom2 select() on child table drops FK", {
+test_that("zoom2 select() on child table", {
   skip_if_remote_src()
   expect_snapshot({
     dm(
@@ -175,7 +175,7 @@ test_that("zoom2 select() on child table drops FK", {
   })
 })
 
-test_that("zoom2 rename() on parent PK column", {
+test_that("zoom2 rename() on parent table", {
   skip_if_remote_src()
   expect_snapshot({
     dm(
@@ -192,7 +192,7 @@ test_that("zoom2 rename() on parent PK column", {
   })
 })
 
-test_that("zoom2 rename() on child FK column", {
+test_that("zoom2 rename() on child table", {
   skip_if_remote_src()
   expect_snapshot({
     dm(

@@ -113,7 +113,7 @@
         dm::dm_add_pk(child, child_id) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
-# zoom2 select() on child table drops FK
+# zoom2 select() on child table
 
     Code
       dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
@@ -137,7 +137,7 @@
         dm::dm_add_pk(parent, id) %>%
         dm::dm_add_pk(child, child_id)
 
-# zoom2 rename() on parent PK column
+# zoom2 rename() on parent table
 
     Code
       dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
@@ -161,7 +161,7 @@
       ) %>%
         dm::dm_add_pk(child, child_id)
 
-# zoom2 rename() on child FK column
+# zoom2 rename() on child table
 
     Code
       dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
