@@ -65,7 +65,7 @@ dm_filter_api0 <- function(
   apply_target = make_dm_apply_filters_call
 ) {
   if (!is.null(dm)) {
-    deprecate_soft("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
+    deprecate_warn("1.0.0", "dm_filter(dm = )", "dm_filter(.dm = )", user_env = user_env)
     dm_filter_api1(
       dm,
       ...,
@@ -94,7 +94,7 @@ dm_filter_api1 <- function(.dm, ..., table = NULL, call, user_env, target, apply
     out <- reduce2(names(quos), quos, dm_filter_api, .init = .dm, target = target)
     apply_target(out)
   } else {
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       "dm_filter(table = )",
       user_env = user_env,
@@ -173,7 +173,7 @@ dm_apply_filters <- function(dm) {
 
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       "dm_apply_filters()",
       details = "Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary."
@@ -198,7 +198,7 @@ dm_apply_filters_to_tbl <- function(dm, table) {
 
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       "dm_apply_filters_to_tbl()",
       details = "Access tables directly after `dm_filter()`."
@@ -303,7 +303,7 @@ dm_get_filters <- function(dm) {
 
   filters <- dm_get_filters_impl(dm)
   if (nrow(filters) == 0) {
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       "dm_get_filters()",
       details = "Filter conditions are no longer stored with the dm object."

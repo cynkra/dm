@@ -70,7 +70,7 @@ check_paste_options <- function(options, select, env) {
   }
 
   if (!is.null(select)) {
-    deprecate_soft(
+    deprecate_warn(
       "0.1.2",
       "dm::dm_paste(select = )",
       "dm::dm_paste(options = 'select')",

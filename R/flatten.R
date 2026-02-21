@@ -172,7 +172,7 @@ dm_flatten_to_tbl_impl <- function(
 #' @rdname deprecated
 #' @export
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
-  deprecate_soft("0.3.0", "dm::dm_join_to_tbl()", "dm::dm_flatten_to_tbl()")
+  deprecate_warn("0.3.0", "dm::dm_join_to_tbl()", "dm::dm_flatten_to_tbl()")
 
   check_not_zoomed(dm)
   force(join)

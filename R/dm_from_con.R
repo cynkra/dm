@@ -157,7 +157,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL, ...) 
     return(empty_dm())
   }
 
-  deprecate_soft("0.3.0", "dm::dm_from_src()", "dm::dm_from_con()")
+  deprecate_warn("0.3.0", "dm::dm_from_src()", "dm::dm_from_con()")
   dm_from_con(con = con_from_src_or_con(src), table_names, learn_keys, ...)
 }
 

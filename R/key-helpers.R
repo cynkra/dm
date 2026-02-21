@@ -25,7 +25,7 @@
 #' check_key(data)
 check_key <- function(x, ..., .data = deprecated()) {
   if (!is_missing(.data)) {
-    deprecate_soft("1.0.0", "check_key(.data = )", "check_key(x = )")
+    deprecate_warn("1.0.0", "check_key(.data = )", "check_key(x = )")
     return(check_key_impl0({{ .data }}, {{ x }}, ...))
   }
 
@@ -268,7 +268,7 @@ check_api <- function(
 ) {
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_api")
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       paste0(name, "(c1 = )"),
       paste0(name, "(x_select = )"),
