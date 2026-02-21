@@ -26,7 +26,7 @@
       `dm_bind()` was deprecated in dm 1.0.0.
       i Please use `dm()` instead.
     Output
-      All `dm` objects need to share the same `src`.
+      All <dm> objects need to share the same `src`.
 
 # output
 

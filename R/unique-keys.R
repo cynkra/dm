@@ -276,16 +276,12 @@ dm_rm_uk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
 # Error -------------------------------------------------------------------
 
 abort_uk_not_defined <- function() {
-  abort(error_txt_uk_not_defined(), class = dm_error_full("uk_not_defined"))
-}
-
-error_txt_uk_not_defined <- function() {
-  glue("No unique keys to remove.")
+  cli::cli_abort("No unique keys to remove.", class = dm_error_full("uk_not_defined"))
 }
 
 abort_no_uk_if_pk <- function(table, column, type = "PK") {
-  error_txt <- glue(
-    "A {type} ({commas(tick(column))}) for table `{table}` already exists, not adding UK."
+  cli::cli_abort(
+    "A {type} ({.code {column}}) for table {.code {table}} already exists, not adding UK.",
+    class = dm_error_full("no_uk_if_pk")
   )
-  abort(error_txt, class = dm_error_full("no_uk_if_pk"))
 }

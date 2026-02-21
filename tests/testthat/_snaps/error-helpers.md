@@ -14,12 +14,12 @@
       abort_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
     Condition
       Error in `abort_not_unique_key()`:
-      ! (`elves`, `Rudolph`, `mulled_wine`) not a unique key of `Christmas`.
+      ! (`elves`, `Rudolph`, and `mulled_wine`) not a unique key of `Christmas`.
     Code
       abort_table_not_in_dm("laziness", "hard_work")
     Condition
       Error in `abort_table_not_in_dm()`:
-      ! Table `laziness` not in `dm` object. Available table names: `hard_work`.
+      ! Table `laziness` not in <dm> object. Available table names: `hard_work`.
     Code
       abort_not_subset_of("playing", "game", "hunting", "game")
     Condition
@@ -31,7 +31,7 @@
     Condition
       Error in `abort_sets_not_equal()`:
       ! A problem occurred.
-        And another, even worse problem, occurred shortly after.
+      And another, even worse problem, occurred shortly after.
     Code
       abort_not_bijective("child_table_name", "fk_col_name")
     Condition
@@ -92,22 +92,22 @@
       abort_fk_exists("child", c("child_1", "child_2"), "parent")
     Condition
       Error in `abort_fk_exists()`:
-      ! (`child_1`, `child_2`) is already a foreign key of table `child` into table `parent`.
+      ! (`child_1` and `child_2`) is already a foreign key of table `child` into table `parent`.
     Code
       abort_first_rm_fks("parent", c("child_1", "child_2"))
     Condition
       Error in `abort_first_rm_fks()`:
-      ! There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those, or set `fail_fk = FALSE`.
+      ! There are foreign keys pointing from table(s) `child_1` and `child_2` to table `parent`. First remove those, or set `fail_fk = FALSE`.
     Code
       abort_update_not_supported()
     Condition
       Error in `abort_update_not_supported()`:
-      ! Updating `dm` objects not supported.
+      ! Updating <dm> objects not supported.
     Code
       abort_only_possible_wo_filters("find_wisdom")
     Condition
       Error in `abort_only_possible_wo_filters()`:
-      ! You can't call `find_wisdom()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first.
+      ! You can't call `find_wisdom()` on a <dm> with filter conditions. Consider using `dm_apply_filters()` first.
     Code
       abort_tables_not_neighbors("subjects", "king")
     Condition
@@ -127,7 +127,7 @@
       abort_what_a_weird_object("monster")
     Condition
       Error in `abort_what_a_weird_object()`:
-      ! Don't know how to determine table source for object of class `monster`.
+      ! Don't know how to determine table source for object of class <monster>.
     Code
       abort_not_same_src()
     Condition
@@ -137,12 +137,12 @@
       abort_squash_limited()
     Condition
       Error in `abort_squash_limited()`:
-      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`.
+      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join()`, `inner_join()`, `full_join()`.
     Code
       abort_apply_filters_first("join_tightly")
     Condition
       Error in `abort_apply_filters_first()`:
-      ! `dm_..._to_tbl()` with join method `join_tightly` generally wouldn't produce the correct result when filters are set. Please consider calling `dm_apply_filters()` first.
+      ! `dm_..._to_tbl()` with join method `join_tightly()` generally wouldn't produce the correct result when filters are set. Please consider calling `dm_apply_filters()` first.
     Code
       abort_no_flatten_with_nest_join()
     Condition
@@ -152,22 +152,22 @@
       abort_is_not_dm("blob")
     Condition
       Error in `abort_is_not_dm()`:
-      ! Required class `dm` but instead is `blob`.
+      ! Required class <dm> but instead is <blob>.
     Code
       abort_con_only_for_dbi()
     Condition
       Error in `abort_con_only_for_dbi()`:
-      ! A local `dm` doesn't have a DB connection.
+      ! A local <dm> doesn't have a DB connection.
     Code
       abort_only_possible_wo_zoom("dm_zoom_to")
     Condition
       Error in `abort_only_possible_wo_zoom()`:
-      ! You can't call `dm_zoom_to()` on a `dm_zoomed`. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! You can't call `dm_zoom_to()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
     Code
       abort_only_possible_w_zoom("dm_update_zoomed")
     Condition
       Error in `abort_only_possible_w_zoom()`:
-      ! You can't call `dm_update_zoomed()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.
+      ! You can't call `dm_update_zoomed()` on an unzoomed <dm>. Consider using `dm_zoom_to()` first.
     Code
       abort_learn_keys(error_cnd(message = "some reason"))
     Condition
@@ -179,7 +179,7 @@
     Code
       abort_tbl_access("accessdenied")
     Condition
-      Error in `dm_abort()`:
+      Error in `abort_tbl_access()`:
       ! Table(s) `accessdenied` cannot be accessed.
       i Use `tbl(src, ...)` to troubleshoot.
     Code
@@ -196,7 +196,7 @@
       abort_dm_invalid("it's ugly.")
     Condition
       Error in `abort_dm_invalid()`:
-      ! This `dm` is invalid, reason: it's ugly.
+      ! This <dm> is invalid, reason: it's ugly.
     Code
       abort_no_table_provided()
     Condition
@@ -206,7 +206,7 @@
       abort_table_not_zoomed("blur", c("focus_1", "focus_2"))
     Condition
       Error in `abort_table_not_zoomed()`:
-      ! In `pull_tbl.dm_zoomed`: Table `blur` not zoomed, zoomed tables: `focus_1`, `focus_2`.
+      ! In `pull_tbl.dm_zoomed()`: Table `blur` not zoomed, zoomed tables: `focus_1` and `focus_2`.
     Code
       abort_not_pulling_multiple_zoomed()
     Condition
@@ -216,7 +216,7 @@
       abort_cols_not_avail(c("pink5", "elephant"))
     Condition
       Error in `abort_cols_not_avail()`:
-      ! The color(s) `pink5`, `elephant` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
+      ! The color(s) `pink5` and `elephant` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
     Code
       abort_only_named_args("give_names", "frobnicability")
     Condition
@@ -236,17 +236,17 @@
       abort_only_for_local_src(mtcars)
     Condition
       Error in `abort_only_for_local_src()`:
-      ! `nest_join.dm_zoomed()` works only for a local `src`, not on a database with `src`-class: `data.frame`.
+      ! `nest_join.dm_zoomed()` works only for a local `src`, not on a database with `src`-class: <data.frame>.
     Code
       abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
     Condition
       Error in `abort_parameter_not_correct_class()`:
-      ! Parameter `number` needs to be of class `numeric` but is of class `logical`.
+      ! Parameter `number` needs to be of class <numeric> but is of class <logical>.
     Code
       abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
     Condition
       Error in `abort_parameter_not_correct_length()`:
-      ! Parameter `length_1_parameter` needs to be of length `1` but is of length 26 (`a`, `b`, `c`, `d`, `e`, ... (26 total)).
+      ! Parameter `length_1_parameter` needs to be of length 1 but is of length 26 (`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`, `i`, `j`, `k`, `l`, `m`, `n`, `o`, `p`, `q`, `r`, ..., `y`, and `z`).
     Code
       warn_if_arg_not("NULL", c("MSSQL", "Postgres"), arg_name = "dbms_dependent_arg")
     Condition
@@ -264,7 +264,7 @@
       abort_no_schemas_supported(con = 1)
     Condition
       Error in `abort_no_schemas_supported()`:
-      ! Currently schemas are not supported for a connection of class `numeric`.
+      ! Currently schemas are not supported for a connection of class <numeric>.
     Code
       abort_no_schemas_supported()
     Condition
@@ -274,7 +274,7 @@
       abort_temporary_not_in_schema()
     Condition
       Error in `abort_temporary_not_in_schema()`:
-      ! If argument `temporary = TRUE`, argument `schema` has to be `NULL`.
+      ! If argument `temporary` is `TRUE`, argument `schema` has to be `NULL`.
     Code
       abort_one_of_schema_table_names()
     Condition

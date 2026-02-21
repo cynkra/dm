@@ -698,30 +698,12 @@ fk_table_to_def_fks <- function(
 # Errors ------------------------------------------------------------------
 
 abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
-  abort(
-    error_txt_fk_exists(
-      child_table_name,
-      colnames,
-      parent_table_name
-    ),
+  cli::cli_abort(
+    "({.code {colnames}}) is already a foreign key of table {.code {child_table_name}} into table {.code {parent_table_name}}.",
     class = dm_error_full("fk_exists")
   )
 }
 
-error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
-  glue(
-    "({commas(tick(colnames))}) is already a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}."
-  )
-}
-
 abort_is_not_fkc <- function() {
-  abort(
-    error_txt_is_not_fkc(),
-    class = dm_error_full("is_not_fkc")
-  )
-}
-
-error_txt_is_not_fkc <- function() {
-  "No foreign keys to remove."
+  cli::cli_abort("No foreign keys to remove.", class = dm_error_full("is_not_fkc"))
 }
