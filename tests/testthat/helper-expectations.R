@@ -95,6 +95,9 @@ arrange_if_no_list <- function(tbl) {
 }
 
 harmonize_tbl <- function(tbl, ...) {
+  if (is_dm_keyed_tbl(tbl)) {
+    tbl <- unclass_keyed_tbl(tbl)
+  }
   tbl %>%
     collect() %>%
     mutate(...) %>%

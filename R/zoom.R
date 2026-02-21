@@ -162,7 +162,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
   dm_wo_outgoing_fks <-
     dm_unzoomed %>%
     dm_add_tbl_impl(
-      new_tbl,
+      list(new_tbl),
       new_tbl_name_chr,
       filters = list_of(new_filters),
       pks = list_of(upd_pk),
@@ -297,53 +297,40 @@ keyed_fks_in_to_dm_fk <- function(fks_in, def, where) {
 
 # Update outgoing FKs in the dm def using keyed table's fks_out.
 keyed_update_outgoing_fks <- function(new_def, where, table_name, fks_out, orig_def) {
-  # Remove all existing outgoing FK entries for the zoomed table
   for (i in seq_along(new_def$fks)) {
     if (i == where) next
     fks_i <- new_def$fks[[i]]
-    if (nrow(fks_i) > 0) {
-      keep <- fks_i$table != table_name
-      new_def$fks[[i]] <- fks_i[keep, ]
-    }
-  }
+    if (nrow(fks_i) == 0) next
 
-  # Add new FK entries from keyed table's fks_out
-  if (nrow(fks_out) > 0) {
-    for (j in seq_len(nrow(fks_out))) {
-      parent_uuid <- fks_out$parent_uuid[[j]]
-      parent_idx <- which(orig_def$uuid == parent_uuid)
+    child_rows <- which(fks_i$table == table_name)
+    if (length(child_rows) == 0) next
 
-      if (length(parent_idx) == 1) {
-        child_fk_cols <- fks_out$child_fk_cols[[j]]
-        parent_key_cols <- fks_out$parent_key_cols[[j]]
+    parent_uuid <- orig_def$uuid[[i]]
+    keep <- logical(length(child_rows))
 
-        # Look up on_delete from original def
-        orig_parent_fks <- orig_def$fks[[parent_idx]]
-        match_rows <- which(
-          orig_parent_fks$table == table_name &
-            map_lgl(
-              orig_parent_fks$ref_column,
-              ~ identical(sort(as.character(.x)), sort(as.character(parent_key_cols)))
-            )
-        )
-
-        if (length(match_rows) > 0) {
-          on_delete <- orig_parent_fks$on_delete[match_rows[1]]
-        } else {
-          on_delete <- "no_action"
-        }
-
-        new_def$fks[[parent_idx]] <- vec_rbind(
-          new_def$fks[[parent_idx]],
-          new_fk(
-            ref_column = list(parent_key_cols),
-            table = table_name,
-            column = list(child_fk_cols),
-            on_delete = on_delete
+    for (k in seq_along(child_rows)) {
+      row_idx <- child_rows[k]
+      # Find matching FK in fks_out
+      out_match <- which(
+        fks_out$parent_uuid == parent_uuid &
+          map_lgl(
+            fks_out$parent_key_cols,
+            ~ identical(sort(as.character(.x)), sort(as.character(fks_i$ref_column[[row_idx]])))
           )
-        )
+      )
+      if (length(out_match) > 0) {
+        # Update the FK column name to current name from keyed table
+        fks_i$column[[row_idx]] <- fks_out$child_fk_cols[[out_match[1]]]
+        keep[k] <- TRUE
       }
     }
+
+    # Remove FKs that are no longer valid
+    if (!all(keep)) {
+      remove_rows <- child_rows[!keep]
+      fks_i <- fks_i[-remove_rows, ]
+    }
+    new_def$fks[[i]] <- fks_i
   }
 
   new_def
@@ -560,12 +547,21 @@ keyed_get_by <- function(keyed_tbl, x_orig_name, y_name, def) {
   n_matches <- length(out_match) + length(in_match)
 
   if (n_matches == 0) {
-    abort_tables_not_neighbors(x_orig_name, y_name)
+    # Check if the FK existed in the original dm but was lost
+    # (e.g., FK column was dropped during zoom transformations)
+    tryCatch(
+      get_by(structure(list(def = def), class = "dm", version = 4L), x_orig_name, y_name),
+      error = function(e) {
+        abort_tables_not_neighbors(x_orig_name, y_name)
+      }
+    )
+    # If we get here, the FK existed originally but was lost
+    abort_fk_not_tracked(x_orig_name, y_name)
   }
 
   if (n_matches > 1) {
     abort(
-      paste0("Column(s) Column(s) of FK between '", x_orig_name, "' and '", y_name, "' ambiguous."),
+      paste0("Column(s) of FK between '", x_orig_name, "' and '", y_name, "' ambiguous."),
       class = "multiple_fk"
     )
   }

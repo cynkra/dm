@@ -132,7 +132,7 @@
     Code
       dm %>% dm_zoom_to(flights) %>% waldo::compare(dm, max_diffs = 10)
     Output
-      `old$flights$zoom` is an S3 object of class <tbl_df/tbl/data.frame>, a list
+      `old$flights$zoom` is an S3 object of class <dm_keyed_tbl/tbl_df/tbl/data.frame>, a list
       `new$flights$zoom` is NULL
       
       `old$flights$col_tracker_zoom` is a character vector ('year', 'month', 'day', 'dep_time', 'sched_dep_time', ...)

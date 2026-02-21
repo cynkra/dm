@@ -596,9 +596,10 @@ pull.dm_zoomed <- function(.data, var = -1, name = NULL, ...) {
 #' @rdname dplyr_table_manipulation
 #' @export
 compute.dm_zoomed <- function(x, ...) {
-  dm_zoomed_df <-
-    tbl_zoomed(x) %>%
-    compute(...)
+  keyed_tbl <- tbl_zoomed(x)
+  keys_info <- keyed_get_info(keyed_tbl)
+  computed_tbl <- compute(unclass_keyed_tbl(keyed_tbl), ...)
+  dm_zoomed_df <- new_keyed_tbl_from_keys_info(computed_tbl, keys_info)
   replace_zoomed_tbl(x, dm_zoomed_df)
 }
 

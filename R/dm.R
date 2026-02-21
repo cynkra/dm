@@ -522,8 +522,9 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
 
 #' @export
 `[.dm_zoomed` <- function(x, id) {
-  # for both dm and dm_zoomed
-  `[`(tbl_zoomed(x), id)
+  tbl <- tbl_zoomed(x)
+  if (is_dm_keyed_tbl(tbl)) tbl <- unclass_keyed_tbl(tbl)
+  `[`(tbl, id)
 }
 
 
@@ -872,8 +873,9 @@ as.list.dm <- function(x, ...) {
 #' @export
 as.list.dm_zoomed <- function(x, ...) {
   check_dots_empty()
-
-  as.list(tbl_zoomed(x))
+  tbl <- tbl_zoomed(x)
+  if (is_dm_keyed_tbl(tbl)) tbl <- unclass_keyed_tbl(tbl)
+  as.list(tbl)
 }
 
 #' Get a glimpse of your `dm` object
