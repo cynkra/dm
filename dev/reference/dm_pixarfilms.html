@@ -64,7 +64,7 @@ pixarfilms, along with the references."><meta property="og:image" content="https
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_pixarfilms</span><span class="op">(</span><span class="va">...</span>, color <span class="op">=</span> <span class="cn">TRUE</span>, consistent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dm_pixarfilms</span><span class="op">(</span><span class="va">...</span>, color <span class="op">=</span> <span class="cn">TRUE</span>, consistent <span class="op">=</span> <span class="cn">FALSE</span>, version <span class="op">=</span> <span class="st">"v1"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -85,6 +85,12 @@ have colors assigned to different tables for visualization with
 <dd><p>Boolean, In the original <code>dm</code>  the  <code>film</code> column in
 <code>pixar_films</code> contains missing values so cannot be made a proper primary key.
 Set to <code>TRUE</code> to remove those records.</p></dd>
+
+
+<dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
+<dd><p>The version of the data to use.
+<code>"v1"</code> (default) uses a vendored snapshot of <span class="pkg">pixarfilms</span> 0.2.1.
+<code>"latest"</code> uses the data from the installed <span class="pkg">pixarfilms</span> package.</p></dd>
 
 </dl></div>
     <div class="section level2">

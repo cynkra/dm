@@ -6,7 +6,7 @@ object from the tables in pixarfilms, along with the references.
 ## Usage
 
 ``` r
-dm_pixarfilms(..., color = TRUE, consistent = FALSE)
+dm_pixarfilms(..., color = TRUE, consistent = FALSE, version = "v1")
 ```
 
 ## Arguments
@@ -26,6 +26,12 @@ dm_pixarfilms(..., color = TRUE, consistent = FALSE)
   Boolean, In the original `dm` the `film` column in `pixar_films`
   contains missing values so cannot be made a proper primary key. Set to
   `TRUE` to remove those records.
+
+- version:
+
+  The version of the data to use. `"v1"` (default) uses a vendored
+  snapshot of pixarfilms 0.2.1. `"latest"` uses the data from the
+  installed pixarfilms package.
 
 ## Value
 

@@ -65,13 +65,33 @@
 <span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">col</span>, <span class="va">...</span>, sep <span class="op">=</span> <span class="st">"_"</span>, remove <span class="op">=</span> <span class="cn">TRUE</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'dm_keyed_tbl'</span></span>
-<span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">col</span>, <span class="va">...</span>, sep <span class="op">=</span> <span class="st">"_"</span>, remove <span class="op">=</span> <span class="cn">TRUE</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'dm_zoomed'</span></span>
-<span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">col</span>, <span class="va">into</span>, sep <span class="op">=</span> <span class="st">"[^[:alnum:]]+"</span>, remove <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate</a></span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">col</span>,</span>
+<span>  <span class="va">into</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"[^[:alnum:]]+"</span>,</span>
+<span>  remove <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  convert <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  extra <span class="op">=</span> <span class="st">"warn"</span>,</span>
+<span>  fill <span class="op">=</span> <span class="st">"warn"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'dm_keyed_tbl'</span></span>
-<span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate</a></span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">col</span>,</span>
+<span>  <span class="va">into</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"[^[:alnum:]]+"</span>,</span>
+<span>  remove <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  convert <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  extra <span class="op">=</span> <span class="st">"warn"</span>,</span>
+<span>  fill <span class="op">=</span> <span class="st">"warn"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,8 +103,13 @@
 
 
 <dt id="arg-col">col<a class="anchor" aria-label="anchor" href="#arg-col"></a></dt>
-<dd><p>For <code>unite.dm_zoomed</code>: see <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">tidyr::unite()</a></code></p>
-<p>For <code>separate.dm_zoomed</code>: see <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">tidyr::separate()</a></code></p></dd>
+<dd><p>The name of the new column, as a string or symbol.</p>
+<p>This argument is passed by expression and supports
+<a href="https://rlang.r-lib.org/reference/topic-inject.html" class="external-link">quasiquotation</a> (you can unquote strings
+and symbols). The name is captured from the expression with
+<code><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">rlang::ensym()</a></code> (note that this kind of interface where
+symbols do not represent actual objects is now discouraged in the
+tidyverse; we support it here for backward compatibility).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -93,21 +118,44 @@
 
 
 <dt id="arg-sep">sep<a class="anchor" aria-label="anchor" href="#arg-sep"></a></dt>
-<dd><p>For <code>unite.dm_zoomed</code>: see <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">tidyr::unite()</a></code></p>
-<p>For <code>separate.dm_zoomed</code>: see <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">tidyr::separate()</a></code></p></dd>
+<dd><p>Separator to use between values.</p></dd>
 
 
 <dt id="arg-remove">remove<a class="anchor" aria-label="anchor" href="#arg-remove"></a></dt>
-<dd><p>For <code>unite.dm_zoomed</code>: see <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">tidyr::unite()</a></code></p>
-<p>For <code>separate.dm_zoomed</code>: see <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">tidyr::separate()</a></code></p></dd>
+<dd><p>If <code>TRUE</code>, remove input columns from output data frame.</p></dd>
 
 
 <dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
-<dd><p>see <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">tidyr::unite()</a></code></p></dd>
+<dd><p>If <code>TRUE</code>, missing values will be removed prior to uniting
+each value.</p></dd>
 
 
 <dt id="arg-into">into<a class="anchor" aria-label="anchor" href="#arg-into"></a></dt>
-<dd><p>see <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">tidyr::separate()</a></code></p></dd>
+<dd><p>Names of new variables to create as character vector.
+Use <code>NA</code> to omit the variable in the output.</p></dd>
+
+
+<dt id="arg-convert">convert<a class="anchor" aria-label="anchor" href="#arg-convert"></a></dt>
+<dd><p>If <code>TRUE</code>, will run <code><a href="https://rdrr.io/r/utils/type.convert.html" class="external-link">type.convert()</a></code> with
+<code>as.is = TRUE</code> on new columns. This is useful if the component
+columns are integer, numeric or logical.</p>
+<p>NB: this will cause string <code>"NA"</code>s to be converted to <code>NA</code>s.</p></dd>
+
+
+<dt id="arg-extra">extra<a class="anchor" aria-label="anchor" href="#arg-extra"></a></dt>
+<dd><p>If <code>sep</code> is a character vector, this controls what
+happens when there are too many pieces. There are three valid options:</p><ul><li><p><code>"warn"</code> (the default): emit a warning and drop extra values.</p></li>
+<li><p><code>"drop"</code>: drop any extra values without a warning.</p></li>
+<li><p><code>"merge"</code>: only splits at most <code>length(into)</code> times</p></li>
+</ul></dd>
+
+
+<dt id="arg-fill">fill<a class="anchor" aria-label="anchor" href="#arg-fill"></a></dt>
+<dd><p>If <code>sep</code> is a character vector, this controls what
+happens when there are not enough pieces. There are three valid options:</p><ul><li><p><code>"warn"</code> (the default): emit a warning and fill from the right</p></li>
+<li><p><code>"right"</code>: fill with missing values on the right</p></li>
+<li><p><code>"left"</code>: fill with missing values on the left</p></li>
+</ul></dd>
 
 </dl></div>
 
