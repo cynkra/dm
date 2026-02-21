@@ -157,18 +157,78 @@ test_that("Learning from specific schema works?", {
 })
 
 test_that("Learning from SQLite works (#288)?", {
-  skip("FIXME")
-  src_sqlite <- skip_if_error(src_sqlite()(":memory:", TRUE))
+  con_sqlite <- skip_if_error(DBI::dbConnect(RSQLite::SQLite(), ":memory:"))
+  withr::defer(DBI::dbDisconnect(con_sqlite))
 
-  copy_to(src_sqlite(), tibble(a = 1:3), name = "test")
+  DBI::dbWriteTable(con_sqlite, "test", tibble(a = 1:3))
 
   expect_equivalent_dm(
-    src_sqlite() %>%
-      dm_from_con() %>%
+    dm_from_con(con_sqlite) %>%
       dm_select_tbl(test) %>%
       collect(),
     dm(test = tibble(a = 1:3))
   )
+})
+
+test_that("Learning keys from SQLite works", {
+  con_sqlite <- skip_if_error(DBI::dbConnect(RSQLite::SQLite(), ":memory:"))
+  withr::defer(DBI::dbDisconnect(con_sqlite))
+
+  DBI::dbExecute(con_sqlite, "CREATE TABLE first (id INTEGER PRIMARY KEY)")
+  DBI::dbExecute(
+    con_sqlite,
+    paste(
+      "CREATE TABLE second (",
+      "id INTEGER PRIMARY KEY, first_id INTEGER,",
+      "FOREIGN KEY (first_id) REFERENCES first (id))"
+    )
+  )
+  DBI::dbExecute(
+    con_sqlite,
+    paste(
+      "CREATE TABLE third (",
+      "id INTEGER PRIMARY KEY, first_id INTEGER, second_id INTEGER,",
+      "FOREIGN KEY (first_id) REFERENCES first (id),",
+      "FOREIGN KEY (second_id) REFERENCES second (id))"
+    )
+  )
+
+  learned_dm <- dm_from_con(con_sqlite, learn_keys = TRUE) %>%
+    collect()
+
+  expect_snapshot(dm_paste(learned_dm, options = "keys"))
+})
+
+test_that("Learning keys from an attached SQLite database works", {
+  con_sqlite <- skip_if_error(DBI::dbConnect(RSQLite::SQLite(), ":memory:"))
+  withr::defer(DBI::dbDisconnect(con_sqlite))
+
+  # Create a second (attached) database in a temp file
+  db2_path <- withr::local_tempfile(fileext = ".sqlite")
+  local({
+    con2 <- DBI::dbConnect(RSQLite::SQLite(), db2_path)
+    on.exit(DBI::dbDisconnect(con2))
+    DBI::dbExecute(con2, "CREATE TABLE parent (id INTEGER PRIMARY KEY, val TEXT NOT NULL)")
+    DBI::dbExecute(
+      con2,
+      paste(
+        "CREATE TABLE child (",
+        "id INTEGER PRIMARY KEY, parent_id INTEGER,",
+        "FOREIGN KEY (parent_id) REFERENCES parent (id))"
+      )
+    )
+  })
+
+  # Attach the second database under a schema alias
+  DBI::dbExecute(
+    con_sqlite,
+    paste0("ATTACH DATABASE '", db2_path, "' AS other")
+  )
+
+  learned_dm <- dm_from_con(con_sqlite, schema = "other", learn_keys = TRUE) %>%
+    collect()
+
+  expect_snapshot(dm_paste(learned_dm, options = "keys"))
 })
 
 

@@ -1,3 +1,33 @@
+# Learning keys from SQLite works
+
+    Code
+      dm_paste(learned_dm, options = "keys")
+    Message
+      dm::dm(
+        first,
+        second,
+        third,
+      ) %>%
+        dm::dm_add_pk(first, id) %>%
+        dm::dm_add_pk(second, id) %>%
+        dm::dm_add_pk(third, id) %>%
+        dm::dm_add_fk(second, first_id, first) %>%
+        dm::dm_add_fk(third, first_id, first) %>%
+        dm::dm_add_fk(third, second_id, second)
+
+# Learning keys from an attached SQLite database works
+
+    Code
+      dm_paste(learned_dm, options = "keys")
+    Message
+      dm::dm(
+        child,
+        parent,
+      ) %>%
+        dm::dm_add_pk(child, id) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
 # dm_meta() contents
 
     Code
