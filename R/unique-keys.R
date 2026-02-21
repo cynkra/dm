@@ -204,7 +204,7 @@ dm_rm_uk_ <- function(dm, table, columns, ...) {
   dm_rm_uk_impl(dm, table_name, columns)
 }
 
-dm_rm_uk_impl <- function(dm, table_name, columns) {
+dm_rm_uk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
   def <- dm_get_def(dm)
 
   if (is.null(table_name)) {
@@ -225,7 +225,7 @@ dm_rm_uk_impl <- function(dm, table_name, columns) {
       def$uks[i],
       ~ tryCatch(
         {
-          vars <- eval_select_indices(columns, colnames(.x))
+          vars <- eval_select_indices(columns, colnames(.x), error_call = error_call)
           map_lgl(.y$column, ~ identical(names(vars), .x))
         },
         error = function(e) {

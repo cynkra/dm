@@ -1,5 +1,88 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9015
+
+## Bug fixes
+
+- Fix bogus message for `dm_rm_fk()` in presence of FKs to non-PKs (#1270, #2367).
+
+## Chore
+
+- Don't refer to removed `dplyr::src_dbi()` (@DavisVaughan, #2356).
+
+## Continuous integration
+
+- Use robust way to show payload.
+
+
+# dm 1.0.12.9014
+
+## Continuous integration
+
+- Tweaks (#2354).
+
+
+# dm 1.0.12.9013
+
+## Continuous integration
+
+- Install odbc from GitHub remote to avoid failures on older versions of R.
+
+
+# dm 1.0.12.9012
+
+## Chore
+
+- Better traceback location for selection errors (#2351).
+
+
+# dm 1.0.12.9011
+
+## Continuous integration
+
+- Install binaries from r-universe for dev workflow (#2348).
+
+
+# dm 1.0.12.9010
+
+## Continuous integration
+
+- Fix reviewdog and add commenting workflow (#2345).
+
+
+# dm 1.0.12.9009
+
+## Continuous integration
+
+- Use workflows for fledge (#2343).
+
+
+# dm 1.0.12.9008
+
+## Continuous integration
+
+- Sync (#2341).
+
+
+# dm 1.0.12.9007
+
+## Chore
+
+- Format with air with line length 100 (#2335).
+
+## Continuous integration
+
+- Fix dev pkgdown.
+
+## Documentation
+
+- Agent docs and updated instructions.
+
+## claude
+
+- Fix config.
+
+
 # dm 1.0.12.9006
 
 ## Chore

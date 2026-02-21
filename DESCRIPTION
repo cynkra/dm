@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.12.9006
-Date: 2025-10-17
+Version: 1.0.12.9015
+Date: 2026-02-21
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -49,11 +49,11 @@ License: MIT + file LICENSE
 URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
 BugReports: https://github.com/cynkra/dm/issues
 Depends: 
-    R (>= 3.3)
+    R (>= 4.0)
 Imports:
     backports,
     cli (>= 2.2.0),
-    dplyr (>= 1.1.0),
+    dplyr (>= 1.2.0),
     glue,
     igraph (>= 2.2.0),
     lifecycle (>= 1.0.3),
@@ -114,6 +114,8 @@ Config/Needs/website:
     whisker,
     xml2
 Config/Needs/check: anthonynorth/roxyglobals
+Remotes: r-dbi/odbc
+RemotesInfo: https://github.com/cran/odbc/commit/c12831e0e1a9ac22bf6d0d4f898a581e55cf2a60
 VignetteBuilder: 
     knitr
 Config/autostyle/scope: line_breaks

@@ -345,7 +345,14 @@ dm_rm_fk <- function(dm, table = NULL, columns = NULL, ref_table = NULL, ref_col
 }
 
 #' @autoglobal
-dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
+dm_rm_fk_impl <- function(
+  dm,
+  table_name,
+  cols,
+  ref_table_name,
+  ref_cols,
+  error_call = caller_env()
+) {
   def <- dm_get_def(dm)
 
   # Filter by each argument if given:
@@ -384,7 +391,11 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
       ~ {
         ii <- tryCatch(
           {
-            names_vars <- names(eval_select_indices(ref_cols, colnames(..3)))
+            names_vars <- names(eval_select_indices(
+              ref_cols,
+              colnames(..3),
+              error_call = error_call
+            ))
             map_lgl(.x$ref_column[.y], identical, names_vars)
           },
           error = function(e) {
@@ -415,7 +426,11 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
           ~ {
             tryCatch(
               {
-                names_vars <- names(eval_select_indices(cols, colnames(all_tables[[.x]])))
+                names_vars <- names(eval_select_indices(
+                  cols,
+                  colnames(all_tables[[.x]]),
+                  error_call = error_call
+                ))
                 identical(.y, names_vars)
               },
               error = function(e) {
@@ -445,12 +460,11 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   } else if (!is.null(ref_cols)) {
     show_disambiguation <- FALSE
   } else {
-    # Check if all FKs point to the primary key
-    show_disambiguation <- !all(map2_lgl(
-      def$fks[idx],
-      def$pks[idx],
+    # Check if all FKs (being removed) point to the primary key
+    show_disambiguation <- !all(pmap_lgl(
+      list(def$fks[idx], idx_fk, def$pks[idx]),
       ~ {
-        all(map_lgl(.x$ref_column, identical, .y$column[[1]]))
+        all(map_lgl(..1$ref_column[..2], identical, ..3$column[[1]]))
       }
     ))
   }
