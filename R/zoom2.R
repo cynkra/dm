@@ -153,7 +153,9 @@ zoom2_clean_attrs <- function(x) {
   # Clean up registry entry
   if (is_dm_keyed_tbl(x)) {
     uuid <- keyed_get_info(x)$uuid
-    rm(list = intersect(uuid, ls(zoom2_registry)), envir = zoom2_registry)
+    if (exists(uuid, envir = zoom2_registry, inherits = FALSE)) {
+      rm(list = uuid, envir = zoom2_registry)
+    }
   }
   attr(x, "dm_zoom2_src_dm") <- NULL
   attr(x, "dm_zoom2_src_name") <- NULL
