@@ -376,7 +376,7 @@
     Condition
       Warning:
       `copy_to.dm()` was deprecated in dm 0.2.0.
-      i Use `copy_to(dm_get_con(dm), ...)` and `dm()`.
+      i Use `dplyr::copy_to(dm_get_con(dm), ...)` and `dm()`.
     Output
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`, `car_table`
@@ -430,7 +430,7 @@
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message
       Detaching table from dm.
-      i Use `. %>% pull_tbl() %>% collect()` instead to silence this message.
+      i Use `. %>% pull_tbl() %>% dplyr::collect()` instead to silence this message.
     Output
       # A tibble: 144 x 15
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed

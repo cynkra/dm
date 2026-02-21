@@ -258,7 +258,7 @@ check_flatten_to_tbl <- function(
   if (join_name == "right_join" && auto_detect && more_than_1_pt) {
     warning(
       paste0(
-        "Result for `dm_flatten_to_tbl()` with `dplyr::right_join()` dependend on order of tables in `dm`, when ",
+        "Result for `dm_flatten_to_tbl()` with `right_join()` dependend on order of tables in `dm`, when ",
         "more than 2 tables involved and no explicit order given in `...`."
       )
     )
