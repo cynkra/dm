@@ -44,14 +44,17 @@ json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   nest_cols <- purrr::map(dots, ~ tidyselect::vars_select(col_nms, !!.x))
   id_cols <- setdiff(col_nms, unlist(unique(nest_cols)))
 
-  sql_exprs <- purrr::imap(nest_cols, ~ sql_json_nest(
-    dbplyr::remote_con(.data),
-    cols = names(.x),
-    names_sep = .names_sep,
-    packed_col = .y,
-    id_cols = id_cols,
-    data = .data
-  ))
+  sql_exprs <- purrr::imap(
+    nest_cols,
+    ~ sql_json_nest(
+      dbplyr::remote_con(.data),
+      cols = names(.x),
+      names_sep = .names_sep,
+      packed_col = .y,
+      id_cols = id_cols,
+      data = .data
+    )
+  )
 
   json_nest_aggregate(dbplyr::remote_con(.data), .data, id_cols, sql_exprs)
 }
@@ -112,7 +115,11 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     }
     inner_query_alias <- glue("*tmp_{nesting_name}*")
     inner_query <- glue::glue_sql(
-      "SELECT ", selected, " FROM (", in_query, ") {`inner_query_alias`}",
+      "SELECT ",
+      selected,
+      " FROM (",
+      in_query,
+      ") {`inner_query_alias`}",
       .con = con
     )
 
@@ -132,7 +139,10 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     glue_collapse(" AND ")
 
   nesting_plan$from_json_path_query <- glue::glue_sql(
-    "(", nesting_plan$inner_query, " WHERE (", join_constraint,
+    "(",
+    nesting_plan$inner_query,
+    " WHERE (",
+    join_constraint,
     ") FOR JSON PATH) AS {`nesting_plan$nesting_name`}",
     .con = con
   )

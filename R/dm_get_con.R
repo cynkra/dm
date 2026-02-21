@@ -21,7 +21,9 @@
 dm_get_con <- function(dm) {
   check_not_zoomed(dm)
   src <- dm_get_src_impl(dm)
-  if (!inherits(src, "src_dbi")) abort_con_only_for_dbi()
+  if (!inherits(src, "src_dbi")) {
+    abort_con_only_for_dbi()
+  }
   src$con
 }
 

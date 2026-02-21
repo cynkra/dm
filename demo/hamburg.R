@@ -181,7 +181,6 @@ dm_flights %>%
 
 # NB: [, $, [[ and names() also work
 
-
 ##
 ##
 ##
@@ -198,7 +197,6 @@ dm_flights %>%
 ##
 ##
 ##
-
 
 ##
 ##
@@ -217,7 +215,6 @@ dm_flights %>%
 ##
 ##
 ##
-
 
 ##
 ##
@@ -241,7 +238,6 @@ try(
   dm_flights %>%
     dm_join_to_tbl(airports, airlines)
 )
-
 
 
 ##
@@ -309,12 +305,10 @@ delta_non_jfk_january %>%
 ##
 ##
 
-
 # A single table of a `dm` can be activated (or zoomed to),
 # and subsequently be manipulated by many {dplyr}-verbs.
 # Eventually, either the original table can be updated
 # or the manipulated table can be inserted as a new table.
-
 
 # The print output for a `dm_zoomed` looks very much like that from a normal `tibble`.
 dm_flights %>%
@@ -356,7 +350,6 @@ dm_flights %>%
   dm_draw()
 
 
-
 ##
 ##
 ##
@@ -365,7 +358,6 @@ dm_flights %>%
 ##
 ##
 ##
-
 
 ##
 ##
@@ -379,7 +371,6 @@ dm_flights %>%
 ##
 ##
 ##
-
 
 # Use `dm()` with a syntax similar to `tibble()`:
 nycflights13_tbl <- dm(airlines, airports, flights, planes, weather)
@@ -426,13 +417,14 @@ dm_get_available_colors()
 nycflights13_base <-
   nycflights13_fk %>%
   cdm_set_colors(
-    airlines = , planes = , weather = , airports = "blue"
+    airlines = ,
+    planes = ,
+    weather = ,
+    airports = "blue"
   )
 
 nycflights13_base %>%
   dm_draw()
-
-
 
 
 ##
@@ -443,7 +435,6 @@ nycflights13_base %>%
 ##
 ##
 ##
-
 
 # Determine key candidates
 zoomed_weather <- dm_zoom_to(nycflights13_base, weather)
@@ -530,11 +521,6 @@ nycflights13_perfect %>%
   dm_draw()
 
 
-
-
-
-
-
 ##
 ##
 ##
@@ -543,7 +529,6 @@ nycflights13_perfect %>%
 ##
 ##
 ##
-
 
 ##
 ##
@@ -560,8 +545,10 @@ nycflights13_perfect %>%
 dm_flights_sqlite <-
   dm_flights %>%
   copy_dm_to(
-    dbplyr::src_memdb(), .,
-    unique_table_names = TRUE, set_key_constraints = FALSE
+    dbplyr::src_memdb(),
+    .,
+    unique_table_names = TRUE,
+    set_key_constraints = FALSE
   )
 
 dm_flights_sqlite
@@ -595,9 +582,6 @@ dm_flights_sqlite %>%
   dm_filter(flights, day == 1) %>%
   dm_apply_filters_to_tbl(flights) %>%
   dbplyr::sql_render()
-
-
-
 
 
 ##
@@ -656,7 +640,6 @@ try({
 ##
 ##
 ##
-
 
 ##
 ##

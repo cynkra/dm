@@ -38,7 +38,8 @@ test_that("table_description works", {
       dm_set_table_description(!!!table_desc) %>%
       dm_get_table_description(),
     set_names(
-      c("flights", "planes"), c("high in the sky\nflying from NY", "Flugzeuge")
+      c("flights", "planes"),
+      c("high in the sky\nflying from NY", "Flugzeuge")
     )
   )
 

@@ -18,8 +18,15 @@ repair_table_names <- function(old_names, new_names, repair = "check_unique", qu
   list(new_old_names = new_old_names, new_names = new_names, old_new_names = old_new_names)
 }
 
-dm_add_tbl_impl <- function(dm, tbls, table_name, filters = list_of(new_filter()),
-                            pks = list_of(new_pk()), fks = list_of(new_fk()), uks = list_of(new_uk())) {
+dm_add_tbl_impl <- function(
+  dm,
+  tbls,
+  table_name,
+  filters = list_of(new_filter()),
+  pks = list_of(new_pk()),
+  fks = list_of(new_fk()),
+  uks = list_of(new_uk())
+) {
   def <- dm_get_def(dm)
 
   def_0 <- def[rep_along(table_name, NA_integer_), ]

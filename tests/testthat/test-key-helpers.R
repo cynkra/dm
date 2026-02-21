@@ -106,8 +106,20 @@ test_that("check_api() new interface", {
     check_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
     check_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
     check_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
-    check_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
-    check_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(
+      x = data_mcard_1(),
+      y = data_mcard_2(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
+    check_api(
+      y = data_mcard_2(),
+      x = data_mcard_1(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
     check_api(data_mcard_1(), a, data_mcard_2(), b)
   )
 })

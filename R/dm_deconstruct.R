@@ -46,8 +46,12 @@ dm_deconstruct <- function(dm, dm_name = NULL) {
 
   names <- names(dm)
   code <- paste0(
-    tick_if_needed(names), " <- pull_tbl(", dm_name, ", ",
-    map_chr(names, deparse), ", keyed = TRUE)",
+    tick_if_needed(names),
+    " <- pull_tbl(",
+    dm_name,
+    ", ",
+    map_chr(names, deparse),
+    ", keyed = TRUE)",
     collapse = "\n"
   )
 
