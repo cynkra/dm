@@ -145,8 +145,9 @@ find_name_clashes <- function(old, new) {
 
 #' @autoglobal
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names_pattern = "{.table}") {
+  schema <- check_schema(src, schema)
+
   if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
-    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "Redshift", "MariaDB"))
     warn_if_arg_not(dbname, only_on = "MSSQL")
     tables <- src_tbls(src)
     out <- purrr::map(tables, ~ DBI::Id(table = .x))
@@ -156,29 +157,21 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names_pattern =
 
   con <- con_from_src_or_con(src)
 
-  if (!is.null(schema)) {
-    check_param_class(schema, "character")
-  }
-
   if (is_mssql(src)) {
     # MSSQL
-    schema <- schema_mssql(con, schema)
     dbname_sql <- dbname_mssql(con, dbname)
     names_table <- get_names_table_mssql(con, dbname_sql)
     dbname <- names(dbname_sql)
   } else if (is_postgres(src)) {
     # Postgres
-    schema <- schema_postgres(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_postgres(con)
   } else if (is_redshift(src)) {
     # Redshift
-    schema <- schema_redshift(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_redshift(con)
   } else if (is_mariadb(src)) {
     # MariaDB
-    schema <- schema_mariadb(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_mariadb(con)
   }
@@ -229,6 +222,29 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names_pattern =
     deframe()
 }
 
+check_schema <- function(src, schema) {
+  if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
+    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "Redshift", "MariaDB"))
+    return(schema)
+  }
+
+  con <- con_from_src_or_con(src)
+
+  if (!is.null(schema)) {
+    check_param_class(schema, "character")
+  }
+
+  if (is_mssql(src)) {
+    schema_mssql(con, schema)
+  } else if (is_postgres(src)) {
+    schema_postgres(con, schema)
+  } else if (is_redshift(src)) {
+    schema_redshift(con, schema)
+  } else if (is_mariadb(src)) {
+    schema_mariadb(con, schema)
+  }
+}
+
 # `schema_*()` : default schema if NULL, otherwise unchanged
 schema_mssql <- function(con, schema) {
   if (is_null(schema)) {
@@ -248,7 +264,8 @@ schema_redshift <- schema_postgres
 
 schema_mariadb <- function(con, schema) {
   if (is_null(schema)) {
-    schema <- sql("database()")
+    # Extra parenthesis because it is used in a dbplyr-generated IN clause later
+    schema <- sql("(database())")
   }
   schema
 }

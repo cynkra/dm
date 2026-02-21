@@ -11,6 +11,9 @@
 #' - MSSQL
 #' - DuckDB
 #'
+#' The default database schema is used if `schema` is `NULL`:
+#' `"dbo"` for MSSQL, `"public"` for Postgres/Redshift, and the current database for MariaDB/MySQL and for SQLite/DuckDB.
+#'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #'
 #' @family DB interaction functions
@@ -45,6 +48,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, names_pattern = "
   if (is.null(con)) {
     return()
   }
+
+  schema <- check_schema(con, schema)
 
   info <- dm_meta(con, catalog = dbname, schema = schema)
 
