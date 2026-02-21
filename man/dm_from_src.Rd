@@ -22,9 +22,8 @@ The default attempts to query and issues an informative message.}
 
 Additional parameters for the schema learning query.
 \itemize{
-\item \code{schema}: supported for MSSQL (default: \code{"dbo"}), Postgres/Redshift (default: \code{"public"}), MariaDB/MySQL
-(default: current database) and SQLite (default: main schema).
-Learn the tables in a specific schema (or database for MariaDB/MySQL).
+\item \code{schema}: supported for MSSQL (default: \code{"dbo"}), Postgres/Redshift (default: \code{"public"}), and MariaDB/MySQL
+(default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
 \item \code{dbname}: supported for MSSQL. Access different databases on the connected MSSQL-server;
 default: active database.
 \item \code{table_type}: supported for Postgres/Redshift (default: \code{"BASE TABLE"}). Specify the table type. Options are:

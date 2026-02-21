@@ -11,9 +11,6 @@
 #' - MSSQL
 #' - DuckDB
 #'
-#' The default database schema is used if `schema` is `NULL`:
-#' `"dbo"` for MSSQL, `"public"` for Postgres/Redshift, and the current database for MariaDB/MySQL and for SQLite/DuckDB.
-#'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #'
 #' @family DB interaction functions
@@ -40,7 +37,7 @@
 #'   iris_dm_learned <- dm_learn_from_db(src_sqlite)
 #' }
 #' @autoglobal
-dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, names_pattern = "{.table}") {
+dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{table}") {
   # assuming that we will not try to learn from (globally) temporary tables, which do not appear in sys.table
   con <- con_from_src_or_con(dest)
   src <- src_from_src_or_con(dest)
@@ -48,8 +45,6 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, names_pattern = "
   if (is.null(con)) {
     return()
   }
-
-  schema <- check_schema(con, schema)
 
   info <- dm_meta(con, catalog = dbname, schema = schema)
 
@@ -60,8 +55,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, names_pattern = "
 
   dm_name <-
     df_info$tables %>%
-    select(catalog = table_catalog, .schema = table_schema, .table = table_name) %>%
-    mutate(name = glue(!!names_pattern)) %>%
+    select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
+    mutate(name = glue(!!name_format)) %>%
     pull() %>%
     unclass() %>%
     vec_as_names(repair = "unique")

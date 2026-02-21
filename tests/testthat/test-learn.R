@@ -225,12 +225,7 @@ test_that("Learning keys from an attached SQLite database works", {
     paste0("ATTACH DATABASE '", db2_path, "' AS other")
   )
 
-  learned_dm <- dm_from_con(
-    con_sqlite,
-    schema = "other",
-    learn_keys = TRUE,
-    .names = "{.schema}.{.table}_tbl"
-  ) %>%
+  learned_dm <- dm_from_con(con_sqlite, schema = "other", learn_keys = TRUE) %>%
     collect()
 
   expect_snapshot(dm_paste(learned_dm, options = "keys"))

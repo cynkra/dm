@@ -41,11 +41,11 @@ create_graph_from_dm <- function(dm, directed = FALSE) {
     select(ref_table = table, fks) %>%
     unnest_list_of_df("fks") %>%
     select(table, ref_table) %>%
-    igraph::graph_from_data_frame(directed = directed, vertices = def$table)
+    graph_from_data_frame(directed = directed, vertices = def$table)
 }
 
 get_names_of_connected <- function(g, start, squash) {
-  dfs <- igraph::dfs(g, start, unreachable = FALSE, dist = TRUE)
+  dfs <- graph_dfs(g, start, unreachable = FALSE, dist = TRUE)
   # `purrr::discard()` in case `list_of_pts` is `NA`
   if (squash) {
     setdiff(names(dfs[["order"]]), start) %>% discard(is.na)
