@@ -37,13 +37,7 @@ new_dm_graph <- function(directed, vnames, from, to) {
 # data in $vnames, $from, $to for use by wrapper functions without igraph.
 new_dm_igraph <- function(ig) {
   structure(
-    list(
-      igraph = ig,
-      directed = igraph::is_directed(ig),
-      vnames = names(igraph::V(ig)),
-      from = as.integer(igraph::tail_of(ig, igraph::E(ig))),
-      to = as.integer(igraph::head_of(ig, igraph::E(ig)))
-    ),
+    list(igraph = ig),
     class = c("dm_igraph", "dm_graph")
   )
 }
@@ -67,6 +61,36 @@ print.dm_graph <- function(x, ...) {
   }
   if (n_e > 0L) {
     edge_strs <- paste(x$vnames[x$from], x$vnames[x$to], sep = "|")
+    cat("Edges:", paste(edge_strs, collapse = ", "), "\n")
+  }
+  invisible(x)
+}
+
+print.dm_igraph <- function(x, ...) {
+  ig <- x$igraph
+  directed <- igraph::is_directed(ig)
+  vnames <- names(igraph::V(ig))
+  from <- as.integer(igraph::tail_of(ig, igraph::E(ig)))
+  to <- as.integer(igraph::head_of(ig, igraph::E(ig)))
+
+  n_v <- length(vnames)
+  n_e <- length(from)
+  directed_str <- if (directed) "directed" else "undirected"
+  cat(
+    sprintf(
+      "<dm_graph> %s, %d %s, %d %s\n",
+      directed_str,
+      n_v,
+      if (n_v == 1L) "vertex" else "vertices",
+      n_e,
+      if (n_e == 1L) "edge" else "edges"
+    )
+  )
+  if (n_v > 0L) {
+    cat("Vertices:", paste(vnames, collapse = ", "), "\n")
+  }
+  if (n_e > 0L) {
+    edge_strs <- paste(vnames[from], vnames[to], sep = "|")
     cat("Edges:", paste(edge_strs, collapse = ", "), "\n")
   }
   invisible(x)
