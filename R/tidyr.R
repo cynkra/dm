@@ -18,13 +18,13 @@
 #' zoom_united %>%
 #'   separate(month_day, c("month", "day"))
 NULL
-#' @export
+#' @exportS3Method tidyr::unite
 unite.dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   check_zoomed(data)
 }
 
 #' @rdname tidyr_table_manipulation
-#' @export
+#' @exportS3Method tidyr::unite
 unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   tbl <- tbl_zoomed(data)
   united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
@@ -42,7 +42,7 @@ unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FA
 }
 
 #' @rdname tidyr_table_manipulation
-#' @export
+#' @exportS3Method tidyr::unite
 unite.dm_keyed_tbl <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   keys_info <- keyed_get_info(data)
   tbl <- unclass_keyed_tbl(data)
@@ -50,7 +50,7 @@ unite.dm_keyed_tbl <- function(data, col, ..., sep = "_", remove = TRUE, na.rm =
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
-#' @export
+#' @exportS3Method tidyr::separate
 separate.dm <- function(
   data,
   col,
@@ -66,7 +66,7 @@ separate.dm <- function(
 }
 
 #' @rdname tidyr_table_manipulation
-#' @export
+#' @exportS3Method tidyr::separate
 separate.dm_zoomed <- function(
   data,
   col,
@@ -99,7 +99,7 @@ separate.dm_zoomed <- function(
 }
 
 #' @rdname tidyr_table_manipulation
-#' @export
+#' @exportS3Method tidyr::separate
 separate.dm_keyed_tbl <- function(
   data,
   col,

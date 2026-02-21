@@ -673,7 +673,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' @param temporary Must remain `TRUE`.
 #' @return A `dm` object of the same structure as the input.
 #' @name materialize
-#' @export
+#' @exportS3Method dplyr::compute
 #' @examplesIf dm:::dm_has_financial() && rlang::is_installed("RSQLite")
 #' financial <- dm_financial_sqlite()
 #'
@@ -712,7 +712,7 @@ compute.dm <- function(x, ..., temporary = TRUE) {
 #' @inheritParams dm_examine_constraints
 #'
 #' @rdname materialize
-#' @export
+#' @exportS3Method dplyr::collect
 collect.dm <- function(x, ..., progress = NA) {
   # for both dm and dm_zoomed
   x <- dm_apply_filters_impl(x)
@@ -724,7 +724,7 @@ collect.dm <- function(x, ..., progress = NA) {
   dm_from_def(def, zoomed = is_zoomed(x))
 }
 
-#' @export
+#' @exportS3Method dplyr::collect
 collect.dm_zoomed <- function(x, ...) {
   check_dots_empty()
 
@@ -750,12 +750,12 @@ dimnames.dm_zoomed <- function(x) {
   dimnames(tbl_zoomed(x))
 }
 
-#' @export
+#' @exportS3Method dplyr::tbl_vars
 tbl_vars.dm <- function(x) {
   check_zoomed(x)
 }
 
-#' @export
+#' @exportS3Method dplyr::tbl_vars
 tbl_vars.dm_zoomed <- function(x) {
   tbl_vars(tbl_zoomed(x))
 }

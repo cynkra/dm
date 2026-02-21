@@ -30,7 +30,7 @@ dm_get_src <- function(x) {
 #' @param src A `dm` object.
 #' @param from A length one character variable containing the name of the requested table
 #' @param ... See original function documentation
-#' @export
+#' @exportS3Method dplyr::tbl
 #' @rdname dplyr_src
 #' @keywords internal
 tbl.dm <- function(src, from, ...) {
@@ -51,7 +51,7 @@ tbl.dm <- function(src, from, ...) {
 #' to list the table names in a `dm` object.
 #' @rdname dplyr_src
 #' @keywords internal
-#' @export
+#' @exportS3Method dplyr::src_tbls
 src_tbls.dm <- function(x, ...) {
   deprecate_soft("0.2.0", "dm::src_tbls.dm()", details = "Use `names(dm_get_tables(dm))` instead.")
 
@@ -70,7 +70,7 @@ src_tbls.dm <- function(x, ...) {
 #' @param temporary For `copy_to.dm()`: If the `dm` is on a DB, the copied version of `df` will only be written temporarily to the DB.
 #' After the connection is reset it will no longer be available.
 #' @param repair,quiet Name repair options; cf. [vctrs::vec_as_names()]
-#' @export
+#' @exportS3Method dplyr::copy_to
 #' @rdname dplyr_src
 #' @keywords internal
 copy_to.dm <- function(

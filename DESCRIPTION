@@ -53,16 +53,15 @@ Depends:
 Imports:
     backports,
     cli (>= 2.2.0),
-    dplyr (>= 1.2.0),
     glue,
     igraph (>= 2.2.0),
     lifecycle (>= 1.0.3),
+    magrittr,
     memoise,
     methods,
     purrr (>= 1.0.0),
     rlang (>= 1.0.2),
     tibble (>= 3.0.0),
-    tidyr (>= 1.0.0),
     tidyselect (>= 1.2.0),
     vctrs (>= 0.3.2)
 Suggests: 
@@ -74,6 +73,7 @@ Suggests:
     DiagrammeR,
     DiagrammeRsvg,
     digest,
+    dplyr (>= 1.2.0),
     duckdb (>= 0.4.0),
     fansi,
     forcats,
@@ -83,7 +83,6 @@ Suggests:
     keyring,
     knitr,
     labelled (>= 2.12.0),
-    magrittr,
     nycflights13,
     odbc (>= 1.4.2),
     pillar,
@@ -100,6 +99,7 @@ Suggests:
     shinyAce,
     shinydashboard,
     testthat (>= 3.2.0),
+    tidyr (>= 1.0.0),
     tidyverse,
     waldo,
     withr

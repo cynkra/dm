@@ -20,13 +20,13 @@
 #' dm_insert_zoomed(zoomed, new_tbl_name = "avg_air_time_per_month")
 NULL
 
-#' @export
+#' @exportS3Method dplyr::filter
 filter.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::filter
 filter.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   tbl <- tbl_zoomed(.data)
   filtered_tbl <- filter(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
@@ -34,7 +34,7 @@ filter.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::filter
 filter.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -42,13 +42,13 @@ filter.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   new_keyed_tbl_from_keys_info(filtered_tbl, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::filter_out
 filter_out.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::filter_out
 filter_out.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   tbl <- tbl_zoomed(.data)
   filtered_tbl <- filter_out(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
@@ -56,7 +56,7 @@ filter_out.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::filter_out
 filter_out.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -64,7 +64,7 @@ filter_out.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   new_keyed_tbl_from_keys_info(filtered_tbl, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::mutate
 mutate.dm <- function(
   .data,
   ...,
@@ -77,7 +77,7 @@ mutate.dm <- function(
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::mutate
 mutate.dm_zoomed <- function(
   .data,
   ...,
@@ -102,7 +102,7 @@ mutate.dm_zoomed <- function(
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::mutate
 mutate.dm_keyed_tbl <- function(
   .data,
   ...,
@@ -124,13 +124,13 @@ mutate.dm_keyed_tbl <- function(
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::transmute
 transmute.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::transmute
 transmute.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
@@ -145,7 +145,7 @@ transmute.dm_zoomed <- function(.data, ...) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::transmute
 transmute.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -153,13 +153,13 @@ transmute.dm_keyed_tbl <- function(.data, ...) {
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::select
 select.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::select
 select.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
 
@@ -171,7 +171,7 @@ select.dm_zoomed <- function(.data, ...) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::select
 select.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -179,14 +179,14 @@ select.dm_keyed_tbl <- function(.data, ...) {
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::relocate
 relocate.dm <- function(.data, ..., .before = NULL, .after = NULL) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @inheritParams dplyr::relocate
-#' @export
+#' @exportS3Method dplyr::relocate
 relocate.dm_zoomed <- function(.data, ..., .before = NULL, .after = NULL) {
   tbl <- tbl_zoomed(.data)
 
@@ -195,7 +195,7 @@ relocate.dm_zoomed <- function(.data, ..., .before = NULL, .after = NULL) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::relocate
 relocate.dm_keyed_tbl <- function(.data, ..., .before = NULL, .after = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -203,13 +203,13 @@ relocate.dm_keyed_tbl <- function(.data, ..., .before = NULL, .after = NULL) {
   new_keyed_tbl_from_keys_info(relocated_tbl, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::rename
 rename.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::rename
 rename.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
 
@@ -221,7 +221,7 @@ rename.dm_zoomed <- function(.data, ...) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::rename
 rename.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -229,14 +229,14 @@ rename.dm_keyed_tbl <- function(.data, ...) {
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::distinct
 distinct.dm <- function(.data, ..., .keep_all = FALSE) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @param .keep_all For `distinct.dm_zoomed()`: see [dplyr::distinct()]
-#' @export
+#' @exportS3Method dplyr::distinct
 distinct.dm_zoomed <- function(.data, ..., .keep_all = FALSE) {
   tbl <- tbl_zoomed(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
@@ -249,7 +249,7 @@ distinct.dm_zoomed <- function(.data, ..., .keep_all = FALSE) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::distinct
 distinct.dm_keyed_tbl <- function(.data, ..., .keep_all = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -257,13 +257,13 @@ distinct.dm_keyed_tbl <- function(.data, ..., .keep_all = FALSE) {
   new_keyed_tbl_from_keys_info(distinct_tbl, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::arrange
 arrange.dm <- function(.data, ..., .by_group = FALSE, .locale = NULL) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::arrange
 arrange.dm_zoomed <- function(.data, ..., .by_group = FALSE, .locale = NULL) {
   tbl <- tbl_zoomed(.data)
   arranged_tbl <- arrange(tbl, ..., .by_group = .by_group, .locale = .locale)
@@ -271,7 +271,7 @@ arrange.dm_zoomed <- function(.data, ..., .by_group = FALSE, .locale = NULL) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::arrange
 arrange.dm_keyed_tbl <- function(.data, ..., .by_group = FALSE, .locale = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -279,7 +279,7 @@ arrange.dm_keyed_tbl <- function(.data, ..., .by_group = FALSE, .locale = NULL) 
   new_keyed_tbl_from_keys_info(arranged_tbl, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::slice
 slice.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   check_zoomed(.data)
 }
@@ -288,7 +288,7 @@ slice.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 #' @param .keep_pk For `slice.dm_zoomed`: Logical, if `TRUE`, the primary key will be retained during this transformation. If `FALSE`, it will be dropped.
 #' By default, the value is `NULL`, which causes the function to issue a message in case a primary key is available for the zoomed table.
 #' This argument is specific for the `slice.dm_zoomed()` method.
-#' @export
+#' @exportS3Method dplyr::slice
 slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL) {
   sliced_tbl <- slice(tbl_zoomed(.data), ..., .by = {{ .by }}, .preserve = .preserve)
   orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
@@ -309,7 +309,7 @@ slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk 
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::slice
 slice.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -317,13 +317,13 @@ slice.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
   new_keyed_tbl_from_keys_info(sliced_tbl, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_by
 group_by.dm <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::group_by
 group_by.dm_zoomed <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
   tbl <- tbl_zoomed(.data)
   grouped_tbl <- group_by(tbl, ..., .add = .add, .drop = .drop)
@@ -332,7 +332,7 @@ group_by.dm_zoomed <- function(.data, ..., .add = FALSE, .drop = group_by_drop_d
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::group_by
 group_by.dm_keyed_tbl <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -340,72 +340,72 @@ group_by.dm_keyed_tbl <- function(.data, ..., .add = FALSE, .drop = group_by_dro
   new_keyed_tbl_from_keys_info(grouped_tbl, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_data
 group_data.dm <- function(.data) {
   check_zoomed(.data)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_data
 group_data.dm_zoomed <- function(.data) {
   tbl <- tbl_zoomed(.data)
   group_data(tbl)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_keys
 group_keys.dm <- function(.tbl, ...) {
   check_zoomed(.tbl)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_keys
 group_keys.dm_zoomed <- function(.tbl, ...) {
   .data <- .tbl
   tbl <- tbl_zoomed(.data)
   group_keys(tbl, ...)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_indices
 group_indices.dm <- function(.data, ...) {
   check_zoomed(.data)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_indices
 group_indices.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
   group_indices(tbl, ...)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_vars
 group_vars.dm <- function(x) {
   check_zoomed(x)
 }
 
-#' @export
+#' @exportS3Method dplyr::group_vars
 group_vars.dm_zoomed <- function(x) {
   .data <- x
   tbl <- tbl_zoomed(.data)
   group_vars(tbl)
 }
 
-#' @export
+#' @exportS3Method dplyr::groups
 groups.dm <- function(x) {
   check_zoomed(x)
 }
 
-#' @export
+#' @exportS3Method dplyr::groups
 groups.dm_zoomed <- function(x) {
   .data <- x
   tbl <- tbl_zoomed(.data)
   groups(tbl)
 }
 
-#' @export
+#' @exportS3Method dplyr::ungroup
 ungroup.dm <- function(x, ...) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @param x For `ungroup.dm_zoomed`: object of class `dm_zoomed`
-#' @export
+#' @exportS3Method dplyr::ungroup
 ungroup.dm_zoomed <- function(x, ...) {
   tbl <- tbl_zoomed(x)
   ungrouped_tbl <- ungroup(tbl, ...)
@@ -414,7 +414,7 @@ ungroup.dm_zoomed <- function(x, ...) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::ungroup
 ungroup.dm_keyed_tbl <- function(x, ...) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
@@ -422,13 +422,13 @@ ungroup.dm_keyed_tbl <- function(x, ...) {
   new_keyed_tbl_from_keys_info(ungrouped_tbl, keys_info)
 }
 
-#' @export
+#' @exportS3Method dplyr::summarise
 summarise.dm <- function(.data, ..., .by = NULL, .groups = NULL) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::summarise
 summarise.dm_zoomed <- function(.data, ..., .by = NULL, .groups = NULL) {
   tbl <- tbl_zoomed(.data)
   # groups are "selected"; key tracking will continue for them
@@ -441,7 +441,7 @@ summarise.dm_zoomed <- function(.data, ..., .by = NULL, .groups = NULL) {
 
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::summarise
 summarise.dm_keyed_tbl <- function(.data, ..., .by = NULL, .groups = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -462,13 +462,13 @@ summarise.dm_keyed_tbl <- function(.data, ..., .by = NULL, .groups = NULL) {
   )
 }
 
-#' @export
+#' @exportS3Method dplyr::reframe
 reframe.dm <- function(.data, ..., .by = NULL) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::reframe
 reframe.dm_zoomed <- function(.data, ..., .by = NULL) {
   tbl <- tbl_zoomed(.data)
   reframed_tbl <- reframe(tbl, ..., .by = {{ .by }})
@@ -480,7 +480,7 @@ reframe.dm_zoomed <- function(.data, ..., .by = NULL) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::reframe
 reframe.dm_keyed_tbl <- function(.data, ..., .by = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
@@ -496,7 +496,7 @@ reframe.dm_keyed_tbl <- function(.data, ..., .by = NULL) {
   )
 }
 
-#' @export
+#' @exportS3Method dplyr::count
 count.dm <- function(
   x,
   ...,
@@ -510,7 +510,7 @@ count.dm <- function(
 
 #' @rdname dplyr_table_manipulation
 #' @inheritParams dplyr::count
-#' @export
+#' @exportS3Method dplyr::count
 count.dm_zoomed <- function(
   x,
   ...,
@@ -541,7 +541,7 @@ count.dm_zoomed <- function(
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::count
 count.dm_keyed_tbl <- function(
   x,
   ...,
@@ -559,13 +559,13 @@ count.dm_keyed_tbl <- function(
   )
 }
 
-#' @export
+#' @exportS3Method dplyr::tally
 tally.dm <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::tally
 tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   tbl <- tbl_zoomed(x)
   groups <- set_names(map_chr(groups(tbl), as_string))
@@ -582,7 +582,7 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::tally
 tally.dm_keyed_tbl <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
@@ -593,21 +593,21 @@ tally.dm_keyed_tbl <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   )
 }
 
-#' @export
+#' @exportS3Method dplyr::pull
 pull.dm <- function(.data, var = -1, name = NULL, ...) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @inheritParams dplyr::pull
-#' @export
+#' @exportS3Method dplyr::pull
 pull.dm_zoomed <- function(.data, var = -1, name = NULL, ...) {
   tbl <- tbl_zoomed(.data)
   pull(tbl, var = {{ var }}, name = {{ name }}, ...)
 }
 
 #' @rdname dplyr_table_manipulation
-#' @export
+#' @exportS3Method dplyr::compute
 compute.dm_zoomed <- function(x, ...) {
   dm_zoomed_df <-
     tbl_zoomed(x) %>%
@@ -640,7 +640,7 @@ compute.dm_zoomed <- function(x, ...) {
 #'   semi_join(airlines, by = "name")
 NULL
 
-#' @export
+#' @exportS3Method dplyr::left_join
 left_join.dm <- function(
   x,
   y,
@@ -658,7 +658,7 @@ left_join.dm <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::left_join
 left_join.dm_zoomed <- function(
   x,
   y,
@@ -691,7 +691,7 @@ left_join.dm_zoomed <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::left_join
 left_join.dm_keyed_tbl <- function(
   x,
   y,
@@ -733,7 +733,7 @@ left_join.dm_keyed_tbl <- function(
   )
 }
 
-#' @export
+#' @exportS3Method dplyr::inner_join
 inner_join.dm <- function(
   x,
   y,
@@ -751,7 +751,7 @@ inner_join.dm <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::inner_join
 inner_join.dm_zoomed <- function(
   x,
   y,
@@ -784,7 +784,7 @@ inner_join.dm_zoomed <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::inner_join
 inner_join.dm_keyed_tbl <- function(
   x,
   y,
@@ -826,7 +826,7 @@ inner_join.dm_keyed_tbl <- function(
   )
 }
 
-#' @export
+#' @exportS3Method dplyr::full_join
 full_join.dm <- function(
   x,
   y,
@@ -843,7 +843,7 @@ full_join.dm <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::full_join
 full_join.dm_zoomed <- function(
   x,
   y,
@@ -874,7 +874,7 @@ full_join.dm_zoomed <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::full_join
 full_join.dm_keyed_tbl <- function(
   x,
   y,
@@ -914,7 +914,7 @@ full_join.dm_keyed_tbl <- function(
   )
 }
 
-#' @export
+#' @exportS3Method dplyr::right_join
 right_join.dm <- function(
   x,
   y,
@@ -932,7 +932,7 @@ right_join.dm <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::right_join
 right_join.dm_zoomed <- function(
   x,
   y,
@@ -965,7 +965,7 @@ right_join.dm_zoomed <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::right_join
 right_join.dm_keyed_tbl <- function(
   x,
   y,
@@ -1007,13 +1007,13 @@ right_join.dm_keyed_tbl <- function(
   )
 }
 
-#' @export
+#' @exportS3Method dplyr::semi_join
 semi_join.dm <- function(x, y, by = NULL, copy = FALSE, ..., na_matches = c("na", "never")) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::semi_join
 semi_join.dm_zoomed <- function(
   x,
   y,
@@ -1038,7 +1038,7 @@ semi_join.dm_zoomed <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::semi_join
 semi_join.dm_keyed_tbl <- function(
   x,
   y,
@@ -1066,13 +1066,13 @@ semi_join.dm_keyed_tbl <- function(
   new_keyed_tbl_from_keys_info(joined_tbl, keyed_get_info(x))
 }
 
-#' @export
+#' @exportS3Method dplyr::anti_join
 anti_join.dm <- function(x, y, by = NULL, copy = FALSE, ..., na_matches = c("na", "never")) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::anti_join
 anti_join.dm_zoomed <- function(
   x,
   y,
@@ -1097,7 +1097,7 @@ anti_join.dm_zoomed <- function(
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::anti_join
 anti_join.dm_keyed_tbl <- function(
   x,
   y,
@@ -1125,7 +1125,7 @@ anti_join.dm_keyed_tbl <- function(
   new_keyed_tbl_from_keys_info(joined_tbl, keyed_get_info(x))
 }
 
-#' @export
+#' @exportS3Method dplyr::nest_join
 nest_join.dm <- function(
   x,
   y,
@@ -1142,7 +1142,7 @@ nest_join.dm <- function(
 
 #' @rdname dplyr_join
 #' @inheritParams dplyr::nest_join
-#' @export
+#' @exportS3Method dplyr::nest_join
 nest_join.dm_zoomed <- function(
   x,
   y,
@@ -1161,13 +1161,13 @@ nest_join.dm_zoomed <- function(
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
 
-#' @export
+#' @exportS3Method dplyr::cross_join
 cross_join.dm <- function(x, y, ..., copy = FALSE, suffix = c(".x", ".y")) {
   check_zoomed(x)
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::cross_join
 cross_join.dm_zoomed <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y")) {
   if (!is_null(copy)) {
     message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
@@ -1182,7 +1182,7 @@ cross_join.dm_zoomed <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
 }
 
 #' @rdname dplyr_join
-#' @export
+#' @exportS3Method dplyr::cross_join
 cross_join.dm_keyed_tbl <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y")) {
   if (!is_dm_keyed_tbl(y)) {
     return(NextMethod())
