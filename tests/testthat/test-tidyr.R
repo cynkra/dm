@@ -132,7 +132,9 @@ test_that("dm tidyr method signatures match tidyr data.frame method signatures",
       get(paste0(verb, ".data.frame"), envir = tidyr_ns),
       error = function(e) NULL
     )
-    if (is.null(df_method)) next
+    if (is.null(df_method)) {
+      next
+    }
 
     df_args <- names(formals(df_method))
 
@@ -142,15 +144,20 @@ test_that("dm tidyr method signatures match tidyr data.frame method signatures",
         get(method_name, envir = dm_ns),
         error = function(e) NULL
       )
-      if (is.null(dm_method)) next
+      if (is.null(dm_method)) {
+        next
+      }
 
       dm_args <- names(formals(dm_method))
       missing_args <- setdiff(df_args, dm_args)
       expect_true(
         length(missing_args) == 0,
         label = paste0(
-          method_name, " is missing args from ", verb,
-          ".data.frame: ", paste(missing_args, collapse = ", ")
+          method_name,
+          " is missing args from ",
+          verb,
+          ".data.frame: ",
+          paste(missing_args, collapse = ", ")
         )
       )
     }
