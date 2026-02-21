@@ -8,19 +8,12 @@
 # empty graph
 
     Code
-      names(graph_vertices(g0))
+      print(g0)
     Output
-      character(0)
+      <dm_graph> undirected, 0 vertices, 0 edges
     Code
-      names(graph_vertices(g1))
+      print(g1)
     Output
-      [1] "x"
-    Code
-      attr(graph_edges(g0), "vnames")
-    Output
-      character(0)
-    Code
-      attr(graph_edges(g1), "vnames")
-    Output
-      character(0)
+      <dm_graph> undirected, 1 vertex, 0 edges
+      Vertices: x 
 

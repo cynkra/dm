@@ -35,9 +35,7 @@ test_that("empty graph", {
   g0 <- create_graph_from_dm(empty_dm())
   g1 <- create_graph_from_dm(dm(x = tibble(a = 1)))
   expect_snapshot({
-    names(graph_vertices(g0))
-    names(graph_vertices(g1))
-    attr(graph_edges(g0), "vnames")
-    attr(graph_edges(g1), "vnames")
+    print(g0)
+    print(g1)
   })
 })

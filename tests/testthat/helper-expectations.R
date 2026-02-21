@@ -1,6 +1,6 @@
 expect_identical_graph <- function(g1, g2) {
-  if (igraph_available()) {
-    expect_true(igraph::identical_graphs(g1, g2))
+  if (inherits(g1, "dm_igraph") && inherits(g2, "dm_igraph")) {
+    expect_true(igraph::identical_graphs(g1$igraph, g2$igraph))
   } else {
     expect_setequal(g1$vnames, g2$vnames)
     edges1 <- sort(paste(g1$vnames[g1$from], g1$vnames[g1$to]))

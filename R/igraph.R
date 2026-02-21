@@ -1,9 +1,15 @@
 # Wrappers for igraph functions used internally.
-# When igraph is installed, the wrappers delegate to igraph.
-# When igraph is not installed, pure R implementations are used instead.
+# When igraph is installed, graphs are stored as objects of class
+# c("dm_igraph", "dm_graph") wrapping an igraph object.
+# When igraph is not installed, graphs are stored as plain "dm_graph" objects
+# using a pure R representation.
+#
+# All wrapper functions accept and return "dm_graph" objects, abstracting away
+# whether igraph is used under the hood.
 
-# Memoised check so the package availability lookup happens only once per session.
-igraph_available <- memoise::memoise(function() rlang::is_installed("igraph"))
+rlang::on_load({
+  igraph_available <<- memoise::memoise(function() rlang::is_installed("igraph"))
+})
 
 # Minimal graph representation for when igraph is not available.
 # A dm_graph has:
@@ -18,12 +24,54 @@ new_dm_graph <- function(directed, vnames, from, to) {
   )
 }
 
+# Wrap an igraph object in the unified dm_graph class hierarchy.
+# Only call this when igraph is installed (i.e., inside an `inherits(g, "dm_igraph")`
+# guard or immediately after `graph_from_data_frame()` with igraph available).
+# Returns an object of class c("dm_igraph", "dm_graph") that mirrors the igraph
+# data in $vnames, $from, $to for use by wrapper functions without igraph.
+new_dm_igraph <- function(ig) {
+  structure(
+    list(
+      igraph = ig,
+      directed = igraph::is_directed(ig),
+      vnames = names(igraph::V(ig)),
+      from = as.integer(igraph::tail_of(ig, igraph::E(ig))),
+      to = as.integer(igraph::head_of(ig, igraph::E(ig)))
+    ),
+    class = c("dm_igraph", "dm_graph")
+  )
+}
+
+print.dm_graph <- function(x, ...) {
+  n_v <- length(x$vnames)
+  n_e <- length(x$from)
+  directed_str <- if (isTRUE(x$directed)) "directed" else "undirected"
+  cat(
+    sprintf(
+      "<dm_graph> %s, %d %s, %d %s\n",
+      directed_str,
+      n_v, if (n_v == 1L) "vertex" else "vertices",
+      n_e, if (n_e == 1L) "edge" else "edges"
+    )
+  )
+  if (n_v > 0L) {
+    cat("Vertices:", paste(x$vnames, collapse = ", "), "\n")
+  }
+  if (n_e > 0L) {
+    edge_strs <- paste(x$vnames[x$from], x$vnames[x$to], sep = "|")
+    cat("Edges:", paste(edge_strs, collapse = ", "), "\n")
+  }
+  invisible(x)
+}
+
 # graph_from_data_frame -------------------------------------------------------
 
 graph_from_data_frame <- function(d, directed, vertices = NULL) {
   if (igraph_available()) {
-    return(igraph::graph_from_data_frame(d, directed = directed, vertices = vertices))
+    ig <- igraph::graph_from_data_frame(d, directed = directed, vertices = vertices)
+    return(new_dm_igraph(ig))
   }
+
   if (is.null(vertices)) {
     vnames <- unique(c(as.character(d[[1]]), as.character(d[[2]])))
   } else {
@@ -39,9 +87,10 @@ graph_from_data_frame <- function(d, directed, vertices = NULL) {
 # Returns a named integer vector: values are 1-based indices, names are vertex names.
 
 graph_vertices <- function(g) {
-  if (igraph_available()) {
-    return(igraph::V(g))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::V(g$igraph))
   }
+
   set_names(seq_along(g$vnames), g$vnames)
 }
 
@@ -49,9 +98,10 @@ graph_vertices <- function(g) {
 # Returns an integer vector with a "vnames" attribute (e.g. "from|to").
 
 graph_edges <- function(g) {
-  if (igraph_available()) {
-    return(igraph::E(g))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::E(g$igraph))
   }
+
   out <- seq_along(g$from)
   attr(out, "vnames") <- paste(g$vnames[g$from], g$vnames[g$to], sep = "|")
   out
@@ -61,9 +111,10 @@ graph_edges <- function(g) {
 # Returns a list with $order (named integer), $dist (named numeric), $parent (named integer).
 
 graph_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
-  if (igraph_available()) {
-    return(igraph::dfs(g, root, unreachable = unreachable, parent = parent, dist = dist))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::dfs(g$igraph, root, unreachable = unreachable, parent = parent, dist = dist))
   }
+
   n <- length(g$vnames)
   vidx <- set_names(seq_along(g$vnames), g$vnames)
   root_idx <- vidx[[root]]
@@ -111,9 +162,10 @@ graph_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE)
 # mode = "in":  for edge u→v, v comes before u (parents before children in FK graph).
 
 graph_topo_sort <- function(g, mode = "out") {
-  if (igraph_available()) {
-    return(igraph::topo_sort(g, mode = mode))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::topo_sort(g$igraph, mode = mode))
   }
+
   n <- length(g$vnames)
   if (mode == "in") {
     from <- g$to
@@ -148,9 +200,10 @@ graph_topo_sort <- function(g, mode = "out") {
 # graph_distances(g, v)[1, ] gives distances from v to all vertices.
 
 graph_distances <- function(g, v = NULL) {
-  if (igraph_available()) {
-    return(igraph::distances(g, v))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::distances(g$igraph, v))
   }
+
   n <- length(g$vnames)
 
   # Build adjacency list (undirected: use both directions)
@@ -189,9 +242,11 @@ graph_distances <- function(g, v = NULL) {
 # Returns a new graph containing only the specified vertices and edges between them.
 
 graph_induced_subgraph <- function(g, vids) {
-  if (igraph_available()) {
-    return(igraph::induced_subgraph(g, vids))
+  if (inherits(g, "dm_igraph")) {
+    sub <- igraph::induced_subgraph(g$igraph, vids)
+    return(new_dm_igraph(sub))
   }
+
   keep_mask <- g$vnames %in% vids
   new_vnames <- g$vnames[keep_mask]
   old_indices <- which(keep_mask)
@@ -209,9 +264,10 @@ graph_induced_subgraph <- function(g, vids) {
 # names(result$predecessors) are the predecessor vertex names (NA for source vertex).
 
 graph_shortest_paths <- function(g, from, to, predecessors = FALSE) {
-  if (igraph_available()) {
-    return(igraph::shortest_paths(g, from, to, predecessors = predecessors))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::shortest_paths(g$igraph, from, to, predecessors = predecessors))
   }
+
   n <- length(g$vnames)
   vidx <- set_names(seq_along(g$vnames), g$vnames)
   start_idx <- vidx[[from]]
@@ -255,9 +311,11 @@ graph_shortest_paths <- function(g, from, to, predecessors = FALSE) {
 # Returns a new graph with the specified vertices (and their incident edges) removed.
 
 graph_delete_vertices <- function(g, v) {
-  if (igraph_available()) {
-    return(igraph::delete_vertices(g, v))
+  if (inherits(g, "dm_igraph")) {
+    sub <- igraph::delete_vertices(g$igraph, v)
+    return(new_dm_igraph(sub))
   }
+
   graph_induced_subgraph(g, setdiff(g$vnames, v))
 }
 
@@ -268,9 +326,10 @@ graph_delete_vertices <- function(g, v) {
 # mode = "all": both
 
 graph_neighbors <- function(g, v, mode = "all") {
-  if (igraph_available()) {
-    return(igraph::neighbors(g, v, mode = mode))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::neighbors(g$igraph, v, mode = mode))
   }
+
   v_idx <- if (is.character(v)) {
     set_names(seq_along(g$vnames), g$vnames)[[v]]
   } else {
@@ -286,9 +345,10 @@ graph_neighbors <- function(g, v, mode = "all") {
 # Returns the number of vertices in the graph.
 
 graph_vcount <- function(g) {
-  if (igraph_available()) {
-    return(igraph::vcount(g))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::vcount(g$igraph))
   }
+
   length(g$vnames)
 }
 
@@ -297,9 +357,10 @@ graph_vcount <- function(g) {
 # names($circle) are vertex names.
 
 graph_girth <- function(g) {
-  if (igraph_available()) {
-    return(igraph::girth(g))
+  if (inherits(g, "dm_igraph")) {
+    return(igraph::girth(g$igraph))
   }
+
   n <- length(g$vnames)
   if (n == 0L) {
     return(list(girth = Inf, circle = set_names(integer(0), character(0))))

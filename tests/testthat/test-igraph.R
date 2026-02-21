@@ -29,6 +29,16 @@ make_graph_cycle <- function() {
 
 # graph_from_data_frame ----------------------------------------------------
 
+test_that("graph_from_data_frame: print output is consistent", {
+  d <- tibble::tibble(from = c("a", "b"), to = c("b", "c"))
+  g_directed <- graph_from_data_frame(d, directed = TRUE, vertices = c("a", "b", "c"))
+  g_undirected <- graph_from_data_frame(d, directed = FALSE, vertices = c("a", "b", "c"))
+  expect_snapshot({
+    print(g_directed)
+    print(g_undirected)
+  })
+})
+
 test_that("graph_from_data_frame: non-empty data frame builds correct graph", {
   d <- tibble::tibble(from = c("a", "b"), to = c("b", "c"))
   g <- graph_from_data_frame(d, directed = TRUE, vertices = c("a", "b", "c"))
@@ -42,6 +52,7 @@ test_that("graph_from_data_frame: zero-row data frame builds graph with no edges
   g <- graph_from_data_frame(d, directed = FALSE, vertices = c("x", "y"))
   expect_setequal(names(graph_vertices(g)), c("x", "y"))
   expect_equal(length(graph_edges(g)), 0L)
+  expect_snapshot(print(g))
 })
 
 test_that("graph_from_data_frame: NULL vertices derives vertex names from edges", {
