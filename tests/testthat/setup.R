@@ -2,6 +2,9 @@
 #
 # withr::defer(utils::Rprof(NULL), teardown_env())
 
+library(dplyr)
+library(tidyr)
+
 local_options(
   pillar.min_title_chars = NULL,
   pillar.max_title_chars = NULL,

@@ -13,8 +13,8 @@ expect_equivalent_dm <- function(
   ignore_on_delete = FALSE,
   ignore_autoincrement = FALSE
 ) {
-  tables1 <- dm_get_tables_impl(object) %>% map(collect)
-  tables2 <- dm_get_tables_impl(expected) %>% map(collect)
+  tables1 <- dm_get_tables_impl(object) %>% map(dplyr::collect)
+  tables2 <- dm_get_tables_impl(expected) %>% map(dplyr::collect)
 
   expect_equivalent_tbl_lists(
     tables1,
@@ -26,8 +26,8 @@ expect_equivalent_dm <- function(
   if (sort_keys) {
     if (ignore_autoincrement) {
       expect_equivalent_tbl(
-        dm_get_all_pks_impl(object) %>% select(-autoincrement),
-        dm_get_all_pks_impl(expected) %>% select(-autoincrement)
+        dm_get_all_pks_impl(object) %>% dplyr::select(-autoincrement),
+        dm_get_all_pks_impl(expected) %>% dplyr::select(-autoincrement)
       )
     } else {
       expect_equivalent_tbl(dm_get_all_pks_impl(object), dm_get_all_pks_impl(expected))
@@ -39,8 +39,8 @@ expect_equivalent_dm <- function(
   } else {
     if (ignore_autoincrement) {
       expect_equivalent_tbl(
-        dm_get_all_pks_impl(object) %>% select(-autoincrement),
-        dm_get_all_pks_impl(expected) %>% select(-autoincrement)
+        dm_get_all_pks_impl(object) %>% dplyr::select(-autoincrement),
+        dm_get_all_pks_impl(expected) %>% dplyr::select(-autoincrement)
       )
     } else {
       expect_equivalent_tbl(dm_get_all_pks_impl(object), dm_get_all_pks_impl(expected))
@@ -56,10 +56,10 @@ expect_equivalent_why <- function(ex1, ex2) {
   if (inherits(my_test_src(), "src_dbi")) {
     ex1 <-
       ex1 %>%
-      mutate(why = (why != ""))
+      dplyr::mutate(why = (why != ""))
     ex2 <-
       ex2 %>%
-      mutate(why = (why != ""))
+      dplyr::mutate(why = (why != ""))
   }
 
   expect_identical(ex1, ex2)
@@ -81,16 +81,16 @@ expect_name_repair_message <- function(expr) {
 
 arrange_if_no_list <- function(tbl) {
   if (inherits(tbl, "tbl_dbi")) {
-    arrange_all(tbl)
+    dplyr::arrange_all(tbl)
   } else {
-    arrange(tbl, across(where(~ !is.list(.))))
+    dplyr::arrange(tbl, dplyr::across(dplyr::where(~ !is.list(.))))
   }
 }
 
 harmonize_tbl <- function(tbl, ...) {
   tbl %>%
-    collect() %>%
-    mutate(...) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(...) %>%
     arrange_if_no_list()
 }
 
@@ -104,8 +104,8 @@ expect_equivalent_tbl <- function(
   .sort_columns = FALSE
 ) {
   if (.sort_columns) {
-    tbl_1 <- select(tbl_1, !!!sort(names(tbl_1)))
-    tbl_2 <- select(tbl_2, !!!sort(names(tbl_2)))
+    tbl_1 <- dplyr::select(tbl_1, !!!sort(names(tbl_1)))
+    tbl_2 <- dplyr::select(tbl_2, !!!sort(names(tbl_2)))
   }
   tbl_1_lcl <- harmonize_tbl(tbl_1, ...)
   tbl_2_lcl <- harmonize_tbl(tbl_2, ...)

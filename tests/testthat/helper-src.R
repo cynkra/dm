@@ -48,10 +48,10 @@ copy_to_my_test_src <- function(rhs, lhs) {
     suppressMessages(copy_dm_to(src, rhs))
   } else if (inherits(rhs, "list")) {
     suppressMessages(
-      map(rhs, ~ copy_to(src, .x, name = unique_db_table_name(name), temporary = TRUE))
+      map(rhs, ~ dplyr::copy_to(src, .x, name = unique_db_table_name(name), temporary = TRUE))
     )
   } else {
-    suppressMessages(copy_to(src, rhs, name = name, temporary = TRUE))
+    suppressMessages(dplyr::copy_to(src, rhs, name = name, temporary = TRUE))
   }
 }
 
@@ -143,7 +143,7 @@ test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .uniqu
     temporary <- TRUE
   }
 
-  out <- copy_to(src, df, name = name, temporary = temporary, unique_indexes = .unique_indexes)
+  out <- dplyr::copy_to(src, df, name = name, temporary = temporary, unique_indexes = .unique_indexes)
   out
 }
 
@@ -168,7 +168,7 @@ test_db_src_frame <- function(
 
   name <- unique_db_table_name("test_frame")
 
-  out <- copy_to(src, df, name = name, temporary = .temporary, unique_indexes = .unique_indexes)
+  out <- dplyr::copy_to(src, df, name = name, temporary = .temporary, unique_indexes = .unique_indexes)
 
   if (!.temporary) {
     withr::defer(DBI::dbRemoveTable(con_from_src_or_con(src), name), envir = .env)
@@ -181,7 +181,7 @@ test_db_src_frame <- function(
 # for examine_cardinality...() ----------------------------------------------
 
 data_card_1 %<-% tibble::tibble(a = 1:5, b = letters[1:5])
-data_card_1_duckdb %<--% copy_to(duckdb_test_src(), data_card_1())
+data_card_1_duckdb %<--% dplyr::copy_to(duckdb_test_src(), data_card_1())
 data_card_2 %<-% tibble::tibble(a = c(1, 3:6), b = letters[1:5])
 data_card_3 %<-% tibble::tibble(c = 1:5)
 data_card_4 %<-% tibble::tibble(c = c(1:5, 5L))
@@ -202,7 +202,7 @@ dm_for_card %<--%
       dc_2 = data_card_11(),
       dc_3 = data_card_12(),
       dc_4 = data_card_13(),
-      dc_5 = suppress_mssql_message(compute(data_card_1())),
+      dc_5 = suppress_mssql_message(dplyr::compute(data_card_1())),
       dc_6 = data_card_7()
     ) %>%
       dm_add_fk(dc_2, c(a, b), dc_1, c(a, b)) %>%
@@ -376,24 +376,24 @@ dm_for_filter_df %<--%
   {
     # FIXME: Do it the other way round, data frame first, then copy to db
     dm_for_filter() %>%
-      collect() %>%
+      dplyr::collect() %>%
       dm_zoom_to(tf_1) %>%
-      arrange(pick(everything())) %>%
+      dplyr::arrange(pick(dplyr::everything())) %>%
       dm_update_zoomed() %>%
       dm_zoom_to(tf_2) %>%
-      arrange(pick(everything())) %>%
+      dplyr::arrange(pick(dplyr::everything())) %>%
       dm_update_zoomed() %>%
       dm_zoom_to(tf_3) %>%
-      arrange(pick(everything())) %>%
+      dplyr::arrange(pick(dplyr::everything())) %>%
       dm_update_zoomed() %>%
       dm_zoom_to(tf_4) %>%
-      arrange(pick(everything())) %>%
+      dplyr::arrange(pick(dplyr::everything())) %>%
       dm_update_zoomed() %>%
       dm_zoom_to(tf_5) %>%
-      arrange(pick(everything())) %>%
+      dplyr::arrange(pick(dplyr::everything())) %>%
       dm_update_zoomed() %>%
       dm_zoom_to(tf_6) %>%
-      arrange(pick(everything())) %>%
+      dplyr::arrange(pick(dplyr::everything())) %>%
       dm_update_zoomed()
   }
 
@@ -519,35 +519,35 @@ iris_1 %<-%
   {
     datasets::iris %>%
       as_tibble() %>%
-      mutate(Species = as.character(Species)) %>%
-      mutate(key = row_number()) %>%
-      select(key, everything())
+      dplyr::mutate(Species = as.character(Species)) %>%
+      dplyr::mutate(key = dplyr::row_number()) %>%
+      dplyr::select(key, dplyr::everything())
   }
 iris_2 %<-%
   {
     iris_1() %>%
-      mutate(other_col = 1L)
+      dplyr::mutate(other_col = 1L)
   }
 iris_3 %<-%
   {
     iris_2() %>%
-      mutate(one_more_col = 1)
+      dplyr::mutate(one_more_col = 1)
   }
 
 iris_1_dis %<-%
   {
     iris_1() %>%
-      rename_at(2:6, ~ sub("^", "iris_1.", .))
+      dplyr::rename_at(2:6, ~ sub("^", "iris_1.", .))
   }
 iris_2_dis %<-%
   {
     iris_2() %>%
-      rename_at(1:7, ~ sub("^", "iris_2.", .))
+      dplyr::rename_at(1:7, ~ sub("^", "iris_2.", .))
   }
 iris_3_dis %<-%
   {
     iris_3() %>%
-      rename_at(1:7, ~ sub("^", "iris_3.", .))
+      dplyr::rename_at(1:7, ~ sub("^", "iris_3.", .))
   }
 
 dm_for_disambiguate %<-%
@@ -585,7 +585,7 @@ fact %<-%
 fact_clean %<-%
   {
     fact() %>%
-      rename(
+      dplyr::rename(
         fact.something = something
       )
   }
@@ -593,7 +593,7 @@ fact_clean %<-%
 fact_clean_new %<-%
   {
     fact() %>%
-      rename(
+      dplyr::rename(
         something.fact = something
       )
   }
@@ -607,12 +607,12 @@ dim_1 %<-%
 dim_1_clean %<-%
   {
     dim_1() %>%
-      rename(dim_1.something = something)
+      dplyr::rename(dim_1.something = something)
   }
 dim_1_clean_new %<-%
   {
     dim_1() %>%
-      rename(something.dim_1 = something)
+      dplyr::rename(something.dim_1 = something)
   }
 
 dim_2 %<-%
@@ -623,12 +623,12 @@ dim_2 %<-%
 dim_2_clean %<-%
   {
     dim_2() %>%
-      rename(dim_2.something = something)
+      dplyr::rename(dim_2.something = something)
   }
 dim_2_clean_new %<-%
   {
     dim_2() %>%
-      rename(something.dim_2 = something)
+      dplyr::rename(something.dim_2 = something)
   }
 
 dim_3 %<-%
@@ -639,12 +639,12 @@ dim_3 %<-%
 dim_3_clean %<-%
   {
     dim_3() %>%
-      rename(dim_3.something = something)
+      dplyr::rename(dim_3.something = something)
   }
 dim_3_clean_new %<-%
   {
     dim_3() %>%
-      rename(something.dim_3 = something)
+      dplyr::rename(something.dim_3 = something)
   }
 
 dim_4 %<-%
@@ -655,12 +655,12 @@ dim_4 %<-%
 dim_4_clean %<-%
   {
     dim_4() %>%
-      rename(dim_4.something = something)
+      dplyr::rename(dim_4.something = something)
   }
 dim_4_clean_new %<-%
   {
     dim_4() %>%
-      rename(something.dim_4 = something)
+      dplyr::rename(something.dim_4 = something)
   }
 
 # dm for testing dm_disentangle() -----------------------------------------
@@ -668,14 +668,14 @@ dim_4_clean_new %<-%
 entangled_dm %<-%
   {
     dm(
-      a = tf_5() %>% rename(a = k),
-      b = tf_5() %>% rename(b = k),
-      c = tf_5() %>% rename(c = k),
-      d = tf_5() %>% rename(d = k),
-      e = tf_5() %>% rename(e = k),
-      f = tf_5() %>% rename(f = k),
-      g = tf_5() %>% rename(g = k),
-      h = tf_5() %>% rename(h = k)
+      a = tf_5() %>% dplyr::rename(a = k),
+      b = tf_5() %>% dplyr::rename(b = k),
+      c = tf_5() %>% dplyr::rename(c = k),
+      d = tf_5() %>% dplyr::rename(d = k),
+      e = tf_5() %>% dplyr::rename(e = k),
+      f = tf_5() %>% dplyr::rename(f = k),
+      g = tf_5() %>% dplyr::rename(g = k),
+      h = tf_5() %>% dplyr::rename(h = k)
     ) %>%
       dm_add_pk(b, b) %>%
       dm_add_pk(c, c) %>%
@@ -698,13 +698,13 @@ entangled_dm %<-%
 entangled_dm_2 %<-%
   {
     dm(
-      a = tf_5() %>% rename(a = k),
-      b = tf_5() %>% rename(b = k),
-      c = tf_5() %>% rename(c = k),
-      d = tf_5() %>% rename(d = k),
-      e = tf_5() %>% rename(e = k),
-      f = tf_5() %>% rename(f = k),
-      g = tf_5() %>% rename(g = k)
+      a = tf_5() %>% dplyr::rename(a = k),
+      b = tf_5() %>% dplyr::rename(b = k),
+      c = tf_5() %>% dplyr::rename(c = k),
+      d = tf_5() %>% dplyr::rename(d = k),
+      e = tf_5() %>% dplyr::rename(e = k),
+      f = tf_5() %>% dplyr::rename(f = k),
+      g = tf_5() %>% dplyr::rename(g = k)
     ) %>%
       dm_add_pk(b, b) %>%
       dm_add_pk(c, c) %>%
@@ -744,25 +744,25 @@ dm_for_flatten %<-%
 result_from_flatten %<-%
   {
     fact_clean() %>%
-      left_join(
+      dplyr::left_join(
         dim_1_clean(),
         by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
       ) %>%
-      left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
-      left_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
-      left_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
+      dplyr::left_join(dim_2_clean(), by = c("dim_2_key" = "dim_2_pk")) %>%
+      dplyr::left_join(dim_3_clean(), by = c("dim_3_key" = "dim_3_pk")) %>%
+      dplyr::left_join(dim_4_clean(), by = c("dim_4_key" = "dim_4_pk"))
   }
 
 result_from_flatten_new %<-%
   {
     fact_clean_new() %>%
-      left_join(
+      dplyr::left_join(
         dim_1_clean_new(),
         by = c("dim_1_key_1" = "dim_1_pk_1", "dim_1_key_2" = "dim_1_pk_2")
       ) %>%
-      left_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
-      left_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
-      left_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
+      dplyr::left_join(dim_2_clean_new(), by = c("dim_2_key" = "dim_2_pk")) %>%
+      dplyr::left_join(dim_3_clean_new(), by = c("dim_3_key" = "dim_3_pk")) %>%
+      dplyr::left_join(dim_4_clean_new(), by = c("dim_4_key" = "dim_4_pk"))
   }
 
 # 'bad' dm (no ref. integrity) for testing dm_flatten_to_tbl() --------
@@ -790,8 +790,8 @@ dm_nycflights_small_base %<-%
   {
     tables <- dm_get_tables(dm_nycflights13())
     # https://github.com/tidyverse/dbplyr/pull/1195
-    tables$flights <- mutate(tables$flights, time_hour = as.character(time_hour))
-    tables$weather <- mutate(tables$weather, time_hour = as.character(time_hour))
+    tables$flights <- dplyr::mutate(tables$flights, time_hour = as.character(time_hour))
+    tables$weather <- dplyr::mutate(tables$weather, time_hour = as.character(time_hour))
     dm(!!!tables)
   }
 
@@ -847,7 +847,7 @@ get_test_tables_from_postgres <- function() {
       "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"
     ) %>%
     as_tibble() %>%
-    filter(grepl(
+    dplyr::filter(grepl(
       "^tf_[0-9]{1}_[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]+",
       table_name
     ))
@@ -863,7 +863,7 @@ clear_postgres <- function() {
 
   walk(
     get_test_tables_from_postgres() %>%
-      pull(),
+      dplyr::pull(),
     ~ DBI::dbExecute(con_postgres, glue("DROP TABLE {.x} CASCADE"))
   )
 }
