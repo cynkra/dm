@@ -380,3 +380,10 @@ test_that("dm_zoom_to() and related functions work", {
 test_that("default_local_src() works", {
   expect_s3_class(default_local_src(), "src")
 })
+
+test_that("dm_squash_to_tbl() deprecation warning is correct", {
+  # Test that the deprecation warning shows the correct parameter name .recursive
+  expect_snapshot({
+    dm_squash_to_tbl(dm_for_flatten(), fact)
+  })
+})

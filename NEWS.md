@@ -1,36 +1,214 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.0.11.9002
+# dm 1.0.12.9015
+
+## Bug fixes
+
+- Fix bogus message for `dm_rm_fk()` in presence of FKs to non-PKs (#1270, #2367).
+
+## Chore
+
+- Don't refer to removed `dplyr::src_dbi()` (@DavisVaughan, #2356).
 
 ## Continuous integration
 
-- Explicit permissions (#2254).
-
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
+- Use robust way to show payload.
 
 
-# dm 1.0.11.9001
+# dm 1.0.12.9014
 
 ## Continuous integration
 
-- Use styler from main branch (#2252).
-
-- Need to install R on Ubuntu 24.04 (#2250).
-
-- Use Ubuntu 24.04 and styler PR (#2248).
+- Tweaks (#2354).
 
 
-# dm 1.0.11.9000
+# dm 1.0.12.9013
 
 ## Continuous integration
 
-- Need to install R on Ubuntu 24.04 (#2250).
+- Install odbc from GitHub remote to avoid failures on older versions of R.
 
-- Use Ubuntu 24.04 and styler PR (#2248).
+
+# dm 1.0.12.9012
+
+## Chore
+
+- Better traceback location for selection errors (#2351).
+
+
+# dm 1.0.12.9011
+
+## Continuous integration
+
+- Install binaries from r-universe for dev workflow (#2348).
+
+
+# dm 1.0.12.9010
+
+## Continuous integration
+
+- Fix reviewdog and add commenting workflow (#2345).
+
+
+# dm 1.0.12.9009
+
+## Continuous integration
+
+- Use workflows for fledge (#2343).
+
+
+# dm 1.0.12.9008
+
+## Continuous integration
+
+- Sync (#2341).
+
+
+# dm 1.0.12.9007
+
+## Chore
+
+- Format with air with line length 100 (#2335).
+
+## Continuous integration
+
+- Fix dev pkgdown.
+
+## Documentation
+
+- Agent docs and updated instructions.
+
+## claude
+
+- Fix config.
+
+
+# dm 1.0.12.9006
+
+## Chore
+
+- Adapt to igraph \>= 2.2.0 (#2289).
+
+
+# dm 1.0.12.9005
+
+## Continuous integration
+
+- Use reviewdog for external PRs (#2323).
+
+
+# dm 1.0.12.9004
+
+## Chore
+
+- Auto-update from GitHub Actions (#2321).
+
+
+# dm 1.0.12.9003
+
+## Continuous integration
+
+- Cleanup and fix macOS (#2317).
+
+
+# dm 1.0.12.9002
+
+## Testing
+
+- Add tests for `check_key()` (#2298).
+
+
+# dm 1.0.12.9001
+
+## Bug fixes
+
+- `check_key()` returns input data frame when key is valid (#2221, #2303).
+
+- Correct deprecation warning message for `dm_squash_to_tbl()` (#1364, #2302).
+
+## Chore
+
+- Use summary reporter.
+
+- Support SQL Server, needs image update.
+
+- Fully support MariaDB.
+
+- Support new `DM_TEST_*_HOST` env vars.
+
+- Add MariaDB, do not connect yet.
+
+- Add Postgres to devcontainer.
+
+- Claude settings.
+
+- Claude and Copilot settings.
+
+- Add devcontainer.
+
+- Add Claude Code GitHub Workflow.
+
+## Continuous integration
+
+- Format with air, check detritus, better handling of `extra-packages` (#2308).
+
+## Testing
+
+- Add snapshot test for `dm_squash_to_tbl()` (#1364, #2299).
+
+## Uncategorized
+
+- Feat!: `copy_dm_to()` uses `dm_sql()`. Unique keys and autoincrement primary keys (#1725) are created on the database. Data models with cyclic references are supported on databases that allow adding constraints in `ALTER TABLE` statements (at this time, all except DuckDB and SQLite, #664) (#2022) (@krlmlr, @41898282+github-actions\[bot\], #1887).
+
+
+# dm 1.0.12.9000
+
+## fledge
+
+- CRAN release v1.0.12 (#2295).
+
+
+# dm 1.0.12
+
+## Bug fixes
+
+- Improve detection of foreign-key relationships in Postgres (#1879, #2286).
+
+- Avoid including constraints from a different `constraint_schema` when learning from a database (#2228, #2275).
+
+## Features
+
+- Add support for Redshift connections (@owenjonesuob, #2215).
+
+## Chore
+
+- Remove fansi.
+
+- Suggest package used in demo.
+
+- Bump RMariaDB version (#2244).
+
+- Drop crayon and mockr dependencies (@olivroy, #2220).
+
+## Documentation
+
+- Add cynkra ROR (#2282).
+
+- Fix intended links (@guspan-tanadi, #2278).
+
+- Restore empty space removed by styler (#2269).
+
+- Use `index.md`.
+
+- Tweak formatting (@salim-b, #2232).
+
+- Fix typo (@salim-b, #2218).
+
+## Testing
+
+- Stabilize learning tests (#2291).
+
+- Fix compatibility with waldo \>= 0.6.0 (#2240).
 
 
 # dm 1.0.11

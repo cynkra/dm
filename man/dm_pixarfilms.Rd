@@ -4,7 +4,7 @@
 \alias{dm_pixarfilms}
 \title{Creates a dm object for the \pkg{pixarfilms} data}
 \usage{
-dm_pixarfilms(..., color = TRUE, consistent = FALSE)
+dm_pixarfilms(..., color = TRUE, consistent = FALSE, version = "v1")
 }
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}
@@ -16,6 +16,10 @@ have colors assigned to different tables for visualization with
 \item{consistent}{Boolean, In the original \code{dm}  the  \code{film} column in
 \code{pixar_films} contains missing values so cannot be made a proper primary key.
 Set to \code{TRUE} to remove those records.}
+
+\item{version}{The version of the data to use.
+\code{"v1"} (default) uses a vendored snapshot of \pkg{pixarfilms} 0.2.1.
+\code{"latest"} uses the data from the installed \pkg{pixarfilms} package.}
 }
 \value{
 A \code{dm} object consisting of \pkg{pixarfilms} tables, complete with
@@ -26,7 +30,7 @@ Creates an example \code{\link{dm}} object from the tables in
 \pkg{pixarfilms}, along with the references.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("pixarfilms", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("DiagrammeR")) withAutoprint(\{ # examplesIf}
 dm_pixarfilms()
 dm_pixarfilms() \%>\%
   dm_draw()

@@ -3,52 +3,110 @@
 \name{dplyr_table_manipulation}
 \alias{dplyr_table_manipulation}
 \alias{filter.dm_zoomed}
+\alias{filter.dm_keyed_tbl}
+\alias{filter_out.dm_zoomed}
+\alias{filter_out.dm_keyed_tbl}
 \alias{mutate.dm_zoomed}
+\alias{mutate.dm_keyed_tbl}
 \alias{transmute.dm_zoomed}
+\alias{transmute.dm_keyed_tbl}
 \alias{select.dm_zoomed}
+\alias{select.dm_keyed_tbl}
 \alias{relocate.dm_zoomed}
+\alias{relocate.dm_keyed_tbl}
 \alias{rename.dm_zoomed}
+\alias{rename.dm_keyed_tbl}
 \alias{distinct.dm_zoomed}
+\alias{distinct.dm_keyed_tbl}
 \alias{arrange.dm_zoomed}
+\alias{arrange.dm_keyed_tbl}
 \alias{slice.dm_zoomed}
+\alias{slice.dm_keyed_tbl}
 \alias{group_by.dm_zoomed}
 \alias{group_by.dm_keyed_tbl}
 \alias{ungroup.dm_zoomed}
+\alias{ungroup.dm_keyed_tbl}
 \alias{summarise.dm_zoomed}
 \alias{summarise.dm_keyed_tbl}
+\alias{reframe.dm_zoomed}
+\alias{reframe.dm_keyed_tbl}
 \alias{count.dm_zoomed}
+\alias{count.dm_keyed_tbl}
 \alias{tally.dm_zoomed}
+\alias{tally.dm_keyed_tbl}
 \alias{pull.dm_zoomed}
 \alias{compute.dm_zoomed}
 \title{\pkg{dplyr} table manipulation methods for zoomed dm objects}
 \usage{
-\method{filter}{dm_zoomed}(.data, ...)
+\method{filter}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE)
 
-\method{mutate}{dm_zoomed}(.data, ...)
+\method{filter}{dm_keyed_tbl}(.data, ..., .by = NULL, .preserve = FALSE)
+
+\method{filter_out}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE)
+
+\method{filter_out}{dm_keyed_tbl}(.data, ..., .by = NULL, .preserve = FALSE)
+
+\method{mutate}{dm_zoomed}(
+  .data,
+  ...,
+  .by = NULL,
+  .keep = c("all", "used", "unused", "none"),
+  .before = NULL,
+  .after = NULL
+)
+
+\method{mutate}{dm_keyed_tbl}(
+  .data,
+  ...,
+  .by = NULL,
+  .keep = c("all", "used", "unused", "none"),
+  .before = NULL,
+  .after = NULL
+)
 
 \method{transmute}{dm_zoomed}(.data, ...)
 
+\method{transmute}{dm_keyed_tbl}(.data, ...)
+
 \method{select}{dm_zoomed}(.data, ...)
+
+\method{select}{dm_keyed_tbl}(.data, ...)
 
 \method{relocate}{dm_zoomed}(.data, ..., .before = NULL, .after = NULL)
 
+\method{relocate}{dm_keyed_tbl}(.data, ..., .before = NULL, .after = NULL)
+
 \method{rename}{dm_zoomed}(.data, ...)
+
+\method{rename}{dm_keyed_tbl}(.data, ...)
 
 \method{distinct}{dm_zoomed}(.data, ..., .keep_all = FALSE)
 
-\method{arrange}{dm_zoomed}(.data, ...)
+\method{distinct}{dm_keyed_tbl}(.data, ..., .keep_all = FALSE)
 
-\method{slice}{dm_zoomed}(.data, ..., .keep_pk = NULL)
+\method{arrange}{dm_zoomed}(.data, ..., .by_group = FALSE, .locale = NULL)
 
-\method{group_by}{dm_zoomed}(.data, ...)
+\method{arrange}{dm_keyed_tbl}(.data, ..., .by_group = FALSE, .locale = NULL)
 
-\method{group_by}{dm_keyed_tbl}(.data, ...)
+\method{slice}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL)
+
+\method{slice}{dm_keyed_tbl}(.data, ..., .by = NULL, .preserve = FALSE)
+
+\method{group_by}{dm_zoomed}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
+
+\method{group_by}{dm_keyed_tbl}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
 
 \method{ungroup}{dm_zoomed}(x, ...)
 
-\method{summarise}{dm_zoomed}(.data, ...)
+\method{ungroup}{dm_keyed_tbl}(x, ...)
 
-\method{summarise}{dm_keyed_tbl}(.data, ...)
+\method{summarise}{dm_zoomed}(.data, ..., .by = NULL, .groups = NULL)
+
+\method{summarise}{dm_keyed_tbl}(.data, ..., .by = NULL, .groups = NULL)
+
+\method{reframe}{dm_zoomed}(.data, ..., .by = NULL)
+
+\method{reframe}{dm_keyed_tbl}(.data, ..., .by = NULL)
 
 \method{count}{dm_zoomed}(
   x,
@@ -59,9 +117,20 @@
   .drop = group_by_drop_default(x)
 )
 
-\method{tally}{dm_zoomed}(x, ...)
+\method{count}{dm_keyed_tbl}(
+  x,
+  ...,
+  wt = NULL,
+  sort = FALSE,
+  name = NULL,
+  .drop = group_by_drop_default(x)
+)
 
-\method{pull}{dm_zoomed}(.data, var = -1, ...)
+\method{tally}{dm_zoomed}(x, wt = NULL, sort = FALSE, name = NULL)
+
+\method{tally}{dm_keyed_tbl}(x, wt = NULL, sort = FALSE, name = NULL)
+
+\method{pull}{dm_zoomed}(.data, var = -1, name = NULL, ...)
 
 \method{compute}{dm_zoomed}(x, ...)
 }
@@ -70,17 +139,83 @@
 
 \item{...}{see corresponding function in package \pkg{dplyr} or \pkg{tidyr}}
 
-\item{.before, .after}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Destination of
-columns selected by \code{...}. Supplying neither will move columns to the
-left-hand side; specifying both is an error.}
+\item{.by}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Optionally, a selection of columns to
+group by for just this operation, functioning as an alternative to \code{\link[dplyr:group_by]{group_by()}}. For
+details and examples, see \link[dplyr:dplyr_by]{?dplyr_by}.}
+
+\item{.preserve}{Relevant when the \code{.data} input is grouped. If \code{.preserve = FALSE} (the default), the grouping structure is recalculated based on the
+resulting data, otherwise the grouping is kept as is.}
+
+\item{.keep}{Control which columns from \code{.data} are retained in the output. Grouping
+columns and columns created by \code{...} are always kept.
+\itemize{
+\item \code{"all"} retains all columns from \code{.data}. This is the default.
+\item \code{"used"} retains only the columns used in \code{...} to create new
+columns. This is useful for checking your work, as it displays inputs
+and outputs side-by-side.
+\item \code{"unused"} retains only the columns \emph{not} used in \code{...} to create new
+columns. This is useful if you generate new columns, but no longer need
+the columns used to generate them.
+\item \code{"none"} doesn't retain any extra columns from \code{.data}. Only the grouping
+variables and columns created by \code{...} are kept.
+}}
+
+\item{.before, .after}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Optionally, control where new columns
+should appear (the default is to add to the right hand side). See
+\code{\link[dplyr:relocate]{relocate()}} for more details.}
 
 \item{.keep_all}{For \code{distinct.dm_zoomed()}: see \code{\link[dplyr:distinct]{dplyr::distinct()}}}
+
+\item{.by_group}{If \code{TRUE}, will sort first by grouping variable. Applies to
+grouped data frames only.}
+
+\item{.locale}{The locale to sort character vectors in.
+\itemize{
+\item If \code{NULL}, the default, uses the \code{"C"} locale unless the deprecated
+\code{dplyr.legacy_locale} global option escape hatch is active. See the
+\link[dplyr]{dplyr-locale} help page for more details.
+\item If a single string from \code{\link[stringi:stri_locale_list]{stringi::stri_locale_list()}} is supplied, then
+this will be used as the locale to sort with. For example, \code{"en"} will
+sort with the American English locale. This requires the stringi package.
+\item If \code{"C"} is supplied, then character vectors will always be sorted in the
+C locale. This does not require stringi and is often much faster than
+supplying a locale identifier.
+}
+
+The C locale is not the same as English locales, such as \code{"en"},
+particularly when it comes to data containing a mix of upper and lower case
+letters. This is explained in more detail on the \link[dplyr:dplyr-locale]{locale}
+help page under the \verb{Default locale} section.}
 
 \item{.keep_pk}{For \code{slice.dm_zoomed}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.
 This argument is specific for the \code{slice.dm_zoomed()} method.}
 
+\item{.add}{When \code{FALSE}, the default, \code{group_by()} will
+override existing groups. To add to the existing groups, use
+\code{.add = TRUE}.}
+
+\item{.drop}{Drop groups formed by factor levels that don't appear in the
+data? The default is \code{TRUE} except when \code{.data} has been previously
+grouped with \code{.drop = FALSE}. See \code{\link[dplyr:group_by_drop_default]{group_by_drop_default()}} for details.}
+
 \item{x}{For \code{ungroup.dm_zoomed}: object of class \code{dm_zoomed}}
+
+\item{.groups}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} Grouping structure of the
+result.
+\itemize{
+\item \code{"drop_last"}: drops the last level of grouping. This was the
+only supported option before version 1.0.0.
+\item \code{"drop"}: All levels of grouping are dropped.
+\item \code{"keep"}: Same grouping structure as \code{.data}.
+\item \code{"rowwise"}: Each row is its own group.
+}
+
+When \code{.groups} is not specified, it is set to \code{"drop_last"} for a grouped
+data frame, and \code{"keep"} for a rowwise data frame. In addition, a message
+informs you of how the result will be grouped unless the result is
+ungrouped, the option \code{"dplyr.summarise.inform"} is set to \code{FALSE}, or when
+\code{summarise()} is called from a function in a package.}
 
 \item{wt}{<\code{\link[rlang:args_data_masking]{data-masking}}> Frequency weights.
 Can be \code{NULL} or a variable:
@@ -96,15 +231,6 @@ Can be \code{NULL} or a variable:
 If omitted, it will default to \code{n}. If there's already a column called \code{n},
 it will use \code{nn}. If there's a column called \code{n} and \code{nn}, it'll use
 \code{nnn}, and so on, adding \code{n}s until it gets a new name.}
-
-\item{.drop}{Handling of factor levels that don't appear in the data, passed
-on to \code{\link[dplyr:group_by]{group_by()}}.
-
-For \code{count()}: if \code{FALSE} will include counts for empty groups (i.e. for
-levels of factors that don't exist in the data).
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} For \code{add_count()}: deprecated since it
-can't actually affect the output.}
 
 \item{var}{A variable specified as:
 \itemize{

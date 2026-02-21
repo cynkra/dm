@@ -20,7 +20,13 @@ json_unpack <- function(data, cols, ..., names_sep = NULL, names_repair = "check
 }
 
 #' @export
-json_unpack.data.frame <- function(data, cols, ..., names_sep = NULL, names_repair = "check_unique") {
+json_unpack.data.frame <- function(
+  data,
+  cols,
+  ...,
+  names_sep = NULL,
+  names_repair = "check_unique"
+) {
   if (missing(cols)) {
     abort("The `cols` argument must be provided")
   }
