@@ -115,6 +115,13 @@ All new functions must include:
 - Test files should align with source files
 - `R/name.R` → `tests/testthat/test-name.R`
 
+### Scratch Directory
+
+- `scratch/` is for exploratory R scripts, notes, and temporary files
+  not part of the package
+- Place temporary or planning markdown files in `scratch/`, not in
+  `tests/` or other tracked directories
+
 ## Testing
 
 - Add test cases for all new functionality
@@ -126,6 +133,9 @@ All new functions must include:
   test for the affected function
 - Implement both structured and snapshot tests
 - When testing error behavior, prefer snapshot tests
+- When testing output-producing functions
+  (e.g. [`dm_paste()`](https://dm.cynkra.com/dev/reference/dm_paste.md)),
+  prefer snapshot tests over regex-based assertions
 - Run tests frequently during development and at the end:
   `testthat::test_local(reporter = "check")`
 - Run `devtools::check()` as a final step to ensure all checks pass

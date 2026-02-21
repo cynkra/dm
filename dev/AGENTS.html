@@ -169,6 +169,12 @@
 <code>R/name.R</code> → <code>tests/testthat/test-name.R</code>
 </li>
 </ul></div>
+<div class="section level3">
+<h3 id="scratch-directory">Scratch Directory<a class="anchor" aria-label="anchor" href="#scratch-directory"></a></h3>
+<ul><li>
+<code>scratch/</code> is for exploratory R scripts, notes, and temporary files not part of the package</li>
+<li>Place temporary or planning markdown files in <code>scratch/</code>, not in <code>tests/</code> or other tracked directories</li>
+</ul></div>
 </div>
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
@@ -179,6 +185,7 @@
 <li>Add regression tests for bug fixes directly after the last existing test for the affected function</li>
 <li>Implement both structured and snapshot tests</li>
 <li>When testing error behavior, prefer snapshot tests</li>
+<li>When testing output-producing functions (e.g. <code><a href="reference/dm_paste.html">dm_paste()</a></code>), prefer snapshot tests over regex-based assertions</li>
 <li>Run tests frequently during development and at the end: <code>testthat::test_local(reporter = "check")</code>
 </li>
 <li>Run <code>devtools::check()</code> as a final step to ensure all checks pass</li>
