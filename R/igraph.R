@@ -50,8 +50,10 @@ print.dm_graph <- function(x, ...) {
     sprintf(
       "<dm_graph> %s, %d %s, %d %s\n",
       directed_str,
-      n_v, if (n_v == 1L) "vertex" else "vertices",
-      n_e, if (n_e == 1L) "edge" else "edges"
+      n_v,
+      if (n_v == 1L) "vertex" else "vertices",
+      n_e,
+      if (n_e == 1L) "edge" else "edges"
     )
   )
   if (n_v > 0L) {
