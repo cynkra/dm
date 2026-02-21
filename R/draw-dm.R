@@ -171,12 +171,10 @@ dm_draw <- function(
   )
   unsupported <- setdiff(names(backend_opts), supported_backend_opts)
   if (length(unsupported) > 0) {
-    abort(
-      paste0(
-        "Unsupported `backend_opts` for backend \"", backend, "\": ",
-        paste0("`", unsupported, "`", collapse = ", "), ".\n",
-        "Supported options are: ",
-        paste0("`", supported_backend_opts, "`", collapse = ", "), "."
+    cli::cli_abort(
+      c(
+        "Unsupported {.arg backend_opts} for backend {.val {backend}}: {.code {unsupported}}.",
+        i = "Supported options are: {.code {supported_backend_opts}}."
       ),
       class = dm_error_full("unsupported_backend_opts")
     )
