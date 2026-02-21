@@ -18,7 +18,7 @@ template_content <- readLines(template_path, warn = FALSE)
 for (db in databases) {
   # Replace placeholder with actual database name
   content <- gsub("\\{\\{DATABASE\\}\\}", db, template_content)
-  
+
   # Add header comment indicating this is generated
   header <- c(
     paste0("# GENERATED FILE - DO NOT EDIT"),
@@ -27,11 +27,11 @@ for (db in databases) {
     "",
     content
   )
-  
+
   # Write to output file
   output_path <- file.path("tests", "testthat", paste0("test-", db, ".R"))
   writeLines(header, output_path)
-  
+
   cat("Generated:", output_path, "\n")
 }
 

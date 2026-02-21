@@ -2,12 +2,12 @@
 local({
   # Override my_test_src_name for this file
   my_test_src_name <<- "{{DATABASE}}"
-  
+
   # Override my_test_src_fun for this file
   my_test_src_fun <<- function() {
     get0("test_src_{{DATABASE}}", inherits = TRUE)
   }
-  
+
   # Override my_test_src_cache for this file
   my_test_src_cache <<- function() {
     tryCatch(
@@ -17,11 +17,11 @@ local({
       }
     )
   }
-  
+
   # Override my_test_src for this file
   my_test_src <<- function() {
     testthat::skip_if_not_installed("dbplyr")
-    
+
     fun <- my_test_src_fun()
     if (is.null(fun)) {
       skip(paste0("Data source not known: {{DATABASE}}"))
