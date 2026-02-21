@@ -13,4 +13,4 @@ CRAN-RELEASE
 *.log
 CRAN-SUBMISSION
 .vscode
-tests/testthat/_problems/
+/tests/testthat/_problems/

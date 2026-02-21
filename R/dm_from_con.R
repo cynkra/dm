@@ -14,7 +14,7 @@
 #'
 #'   Set to `TRUE` to query the definition of primary and
 #'   foreign keys from the database.
-#'   Currently works only for Postgres/Redshift and SQL Server databases.
+#'   Currently works for Postgres/Redshift, MariaDB/MySQL, SQLite, SQL Server, and DuckDB databases.
 #'   The default attempts to query and issues an informative message.
 #' @param .names
 #'   `r lifecycle::badge("experimental")`
