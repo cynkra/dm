@@ -48,7 +48,7 @@ For the \code{"DiagrammeR"} backend, supported options are:
 \item \code{edge_attrs}: Additional edge attributes (default \code{""}).
 \item \code{focus}: A list of parameters for rendering (table filter).
 \item \code{graph_name}: The name of the graph (default \code{"Data Model"}).
-\item \code{columnArrows}: Edges from columns to columns (default \code{TRUE}).
+\item \code{column_arrow}: Edges from columns to columns (default \code{TRUE}).
 \item \code{font_size}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Font size for \code{header} (default \code{16}), \code{column} (default \code{16}),
 and \code{table_description} (default \code{8}).
@@ -57,7 +57,7 @@ Can be set as a named integer vector, e.g.
 }}
 
 \item{columnArrows}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
-\code{backend_opts = list(columnArrows = ...)} instead.}
+\code{backend_opts = list(column_arrow = ...)} instead.}
 
 \item{graph_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
 \code{backend_opts = list(graph_attrs = ...)} instead.}
