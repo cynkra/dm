@@ -106,9 +106,10 @@ dm_impl <- function(tbls, names) {
 #' @param tables A named list of the tables (tibble-objects, not names),
 #'   to be included in the `dm` object.
 #'
-#' @examplesIf rlang::is_installed("nycflights13")
+#' @examplesIf rlang::is_installed(c("nycflights13", "dplyr"))
 #' library(dm)
 #' library(nycflights13)
+#' library(dplyr)
 #'
 #' # using `data.frame` objects
 #' new_dm(tibble::lst(weather, airports))

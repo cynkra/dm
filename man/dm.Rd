@@ -74,9 +74,10 @@ dm_nycflights13()[["airports"]]
 
 dm_nycflights13() \%>\% names()
 \dontshow{\}) # examplesIf}
-\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "dplyr"))) withAutoprint(\{ # examplesIf}
 library(dm)
 library(nycflights13)
+library(dplyr)
 
 # using `data.frame` objects
 new_dm(tibble::lst(weather, airports))

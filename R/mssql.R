@@ -1,7 +1,7 @@
 mssql_sys_db <- function(con, dbname, sys_table, vars = NULL) {
   if (is.na(dbname)) {
     id <- DBI::Id(schema = "sys", table = sys_table)
-    sql_name <- sql("DB_NAME()")
+    sql_name <- dbplyr::sql("DB_NAME()")
   } else {
     id <- DBI::Id(catalog = dbname, schema = "sys", table = sys_table)
     sql_name <- dbname
