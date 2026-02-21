@@ -3,9 +3,13 @@
 #' @description If there are any permament tables on a DB, a new [`dm`] object can be created that contains those tables,
 #' along with their primary and foreign key constraints.
 #'
-#' Currently this only works with MSSQL and Postgres/Redshift databases.
+#' Currently this works for the following databases:
 #'
-#' The default database schema will be used; it is currently not possible to parametrize the funcion with a specific database schema.
+#' - Postgres/Redshift
+#' - MySQL/MariaDB
+#' - SQLite
+#' - MSSQL
+#' - DuckDB
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #'
@@ -60,6 +64,8 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
   from <-
     df_info$tables %>%
     select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
+    # RSQLite doesn't accept three-component identifiers, so we need to quote only the schema and table name
+    mutate(catalog = if (!all(is.na(catalog))) catalog) %>%
     pmap_chr(~ DBI::dbQuoteIdentifier(con, DBI::Id(...)))
 
   df_key_info <-
