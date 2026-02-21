@@ -7,10 +7,14 @@
 # All wrapper functions accept and return "dm_graph" objects, abstracting away
 # whether igraph is used under the hood.
 
-igraph_available <- NULL
+igraph_available <- function() {
+  rlang::is_installed("igraph")
+}
 
 rlang::on_load({
-  igraph_available <<- memoise::memoise(function() rlang::is_installed("igraph"))
+  if (!memoise::is.memoized(igraph_available)) {
+    igraph_available <<- memoise::memoise(igraph_available)
+  }
 })
 
 # Minimal graph representation for when igraph is not available.
