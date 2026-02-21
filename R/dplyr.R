@@ -435,6 +435,10 @@ summarise.dm_zoomed <- function(.data, ..., .by = NULL, .groups = NULL) {
   # #663: user responsibility: if group columns are manipulated, they are still tracked
   groups <- set_names(map_chr(groups(tbl), as_string))
   summarized_tbl <- summarize(tbl, ..., .by = {{ .by }}, .groups = .groups)
+
+  # Set group vars as new PK
+  attr(summarized_tbl, "new_pk") <- unname(groups)
+
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
 }
