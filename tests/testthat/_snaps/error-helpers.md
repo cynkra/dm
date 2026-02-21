@@ -137,12 +137,12 @@
       abort_squash_limited()
     Condition
       Error in `abort_squash_limited()`:
-      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join()`, `inner_join()`, `full_join()`.
+      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`.
     Code
       abort_apply_filters_first("join_tightly")
     Condition
       Error in `abort_apply_filters_first()`:
-      ! `dm_..._to_tbl()` with join method `join_tightly()` generally wouldn't produce the correct result when filters are set. Please consider calling `dm_apply_filters()` first.
+      ! `dm_..._to_tbl()` with join method `join_tightly` generally wouldn't produce the correct result when filters are set. Please consider calling `dm_apply_filters()` first.
     Code
       abort_no_flatten_with_nest_join()
     Condition
@@ -206,7 +206,7 @@
       abort_table_not_zoomed("blur", c("focus_1", "focus_2"))
     Condition
       Error in `abort_table_not_zoomed()`:
-      ! In `pull_tbl.dm_zoomed()`: Table `blur` not zoomed, zoomed tables: `focus_1`, `focus_2`.
+      ! In `pull_tbl.dm_zoomed()`: Table `blur` not zoomed, zoomed tables: `focus_1` and `focus_2`.
     Code
       abort_not_pulling_multiple_zoomed()
     Condition

@@ -348,7 +348,7 @@ dquote <- function(x) {
 abort_unknown_option <- function(options, all_options) {
   bad_options <- setdiff(options, all_options)
   cli::cli_abort(
-    "Option unknown: {.val {bad_options}}. Must be one of {.val {all_options}}.",
+    "{qty(length(bad_options))}Option{?s} unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}.",
     class = dm_error_full("unknown_option")
   )
 }

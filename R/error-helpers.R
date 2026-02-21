@@ -191,14 +191,14 @@ abort_what_a_weird_object <- function(class) {
 
 abort_squash_limited <- function() {
   cli::cli_abort(
-    "{.code dm_flatten_to_tbl(.recursive = TRUE)} only supports join methods {.fn left_join}, {.fn inner_join}, {.fn full_join}.",
+    "{.code dm_flatten_to_tbl(.recursive = TRUE)} only supports join methods {.code left_join}, {.code inner_join}, {.code full_join}.",
     class = dm_error_full("squash_limited")
   )
 }
 
 abort_apply_filters_first <- function(join_name) {
   cli::cli_abort(
-    "{.fn dm_..._to_tbl} with join method {.fn {join_name}} generally wouldn't produce the correct result when filters are set. Please consider calling {.fn dm_apply_filters} first.",
+    "{.fn dm_..._to_tbl} with join method {.code {join_name}} generally wouldn't produce the correct result when filters are set. Please consider calling {.fn dm_apply_filters} first.",
     class = dm_error_txt_apply_filters_first(join_name)
   )
 }
@@ -314,7 +314,7 @@ abort_no_table_provided <- function() {
 
 abort_table_not_zoomed <- function(table_name, zoomed_tables) {
   cli::cli_abort(
-    "In {.fn pull_tbl.dm_zoomed}: Table {.code {table_name}} not zoomed, zoomed tables: {commas(tick(zoomed_tables))}.",
+    "In {.fn pull_tbl.dm_zoomed}: Table {.code {table_name}} not zoomed, zoomed tables: {.code {zoomed_tables}}.",
     class = dm_error_full("table_not_zoomed")
   )
 }
