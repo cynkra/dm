@@ -42,7 +42,8 @@ fin_dm <- dm_from_con(fin_db)
 
 ``` fansi
 #> Keys queried successfully.
-#> ℹ Use `learn_keys = TRUE` to mute this message.
+#> ℹ Use `learn_keys = TRUE` to enforce querying keys and to mute this
+#>   message.
 ```
 
 ``` r

@@ -546,7 +546,7 @@ the <code>dm</code> contains the tables but not the keys:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-message"><code><span><span class="co">#&gt; ! unable to fetch autoincrement metadata for src 'src_SQLiteConnection'</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Keys could not be queried.</span></span></code></pre>
+<pre class="fansi fansi-message"><code><span><span class="co">#&gt; Keys could not be queried.</span></span></code></pre>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; src:  sqlite 3.51.2 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
@@ -555,7 +555,7 @@ the <code>dm</code> contains the tables but not the keys:</p>
 <span><span class="co">#&gt; Primary keys: 0</span></span>
 <span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
 <p>Remember to terminate the database connection:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con_sqlite</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">

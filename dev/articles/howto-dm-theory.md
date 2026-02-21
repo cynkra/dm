@@ -513,7 +513,9 @@ dm_from_con(con_sqlite)
 #> ! unable to fetch autoincrement metadata for src 'src_SQLiteConnection'
 ```
 
-    #> Keys could not be queried.
+``` fansi
+#> Keys could not be queried.
+```
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────

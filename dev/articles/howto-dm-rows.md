@@ -210,6 +210,9 @@ The changeset dm is then used as an argument to
 dm_insert_out <-
   demo_sql %>%
   dm_rows_insert(dm_insert_in)
+```
+
+``` fansi
 #> Result is returned as a dm object with lazy tables. Use `in_place = FALSE`
 #> to mute this message, or `in_place = TRUE` to write to the underlying
 #> tables.
@@ -362,9 +365,17 @@ local_dm$child
 dm_deleted <-
   dm(parent = new_parent, child = new_child) %>%
   dm_rows_delete(local_dm, .)
-#> Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.
+```
+
+``` fansi
+#> Result is returned as a dm object with lazy tables. Use `in_place = FALSE`
+#> to mute this message, or `in_place = TRUE` to write to the underlying
+#> tables.
 #> Ignoring extra `y` columns: value, fk
 #> Ignoring extra `y` columns: value
+```
+
+``` r
 
 dm_deleted$child
 ```
@@ -400,9 +411,15 @@ patched_child
 dm_patched <-
   dm(child = patched_child) %>%
   dm_rows_patch(dm_deleted, .)
+```
+
+``` fansi
 #> Result is returned as a dm object with lazy tables. Use `in_place = FALSE`
 #> to mute this message, or `in_place = TRUE` to write to the underlying
 #> tables.
+```
+
+``` r
 
 dm_patched$child
 ```
@@ -452,9 +469,15 @@ upserted_child
 dm_upserted <-
   dm(parent = upserted_parent, child = upserted_child) %>%
   dm_rows_upsert(dm_patched, .)
+```
+
+``` fansi
 #> Result is returned as a dm object with lazy tables. Use `in_place = FALSE`
 #> to mute this message, or `in_place = TRUE` to write to the underlying
 #> tables.
+```
+
+``` r
 
 dm_upserted$parent
 ```
