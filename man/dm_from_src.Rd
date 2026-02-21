@@ -15,7 +15,7 @@ dm_from_src(src = NULL, table_names = NULL, learn_keys = NULL, ...)
 
 Set to \code{TRUE} to query the definition of primary and
 foreign keys from the database.
-Currently works only for Postgres/Redshift and SQL Server databases.
+Currently works for Postgres/Redshift, MariaDB/MySQL, SQLite, SQL Server, and DuckDB databases.
 The default attempts to query and issues an informative message.}
 
 \item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
