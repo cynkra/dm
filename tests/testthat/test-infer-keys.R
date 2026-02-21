@@ -145,7 +145,7 @@ test_that("dm_infer_keys() handles no shared columns", {
   expect_equal(nrow(dm_get_all_pks(result)), 0)
 })
 
-test_that("dm_infer_keys() id_column heuristic works", {
+test_that("dm_infer_keys() id_column heuristic matches exact table name", {
   customers <- tibble(
     id = 1:3,
     name = c("Alice", "Bob", "Charlie")
