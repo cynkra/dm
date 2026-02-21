@@ -27,14 +27,14 @@
 #'   - `edge_attrs`: Additional edge attributes (default `""`).
 #'   - `focus`: A list of parameters for rendering (table filter).
 #'   - `graph_name`: The name of the graph (default `"Data Model"`).
-#'   - `columnArrows`: Edges from columns to columns (default `TRUE`).
+#'   - `column_arrow`: Edges from columns to columns (default `TRUE`).
 #'   - `font_size`: `r lifecycle::badge("experimental")`
 #'     Font size for `header` (default `16`), `column` (default `16`),
 #'     and `table_description` (default `8`).
 #'     Can be set as a named integer vector, e.g.
 #'     `c(table_headers = 18L, table_description = 6L)`.
 #' @param columnArrows `r lifecycle::badge("deprecated")` Use
-#'   `backend_opts = list(columnArrows = ...)` instead.
+#'   `backend_opts = list(column_arrow = ...)` instead.
 #' @param graph_attrs `r lifecycle::badge("deprecated")` Use
 #'   `backend_opts = list(graph_attrs = ...)` instead.
 #' @param node_attrs `r lifecycle::badge("deprecated")` Use
@@ -95,9 +95,9 @@ dm_draw <- function(
     lifecycle::deprecate_soft(
       "1.1.0",
       "dm_draw(columnArrows = )",
-      details = "Use `backend_opts = list(columnArrows = ...)` instead."
+      details = "Use `backend_opts = list(column_arrow = ...)` instead."
     )
-    backend_opts[["columnArrows"]] <- backend_opts[["columnArrows"]] %||% columnArrows
+    backend_opts[["column_arrow"]] <- backend_opts[["column_arrow"]] %||% columnArrows
   }
   if (lifecycle::is_present(graph_attrs)) {
     lifecycle::deprecate_soft(
@@ -166,6 +166,22 @@ dm_draw <- function(
 
   backend <- arg_match(backend)
 
+  supported_backend_opts <- c(
+    "graph_attrs", "node_attrs", "edge_attrs", "focus", "graph_name", "column_arrow", "font_size"
+  )
+  unsupported <- setdiff(names(backend_opts), supported_backend_opts)
+  if (length(unsupported) > 0) {
+    abort(
+      paste0(
+        "Unsupported `backend_opts` for backend \"", backend, "\": ",
+        paste0("`", unsupported, "`", collapse = ", "), ".\n",
+        "Supported options are: ",
+        paste0("`", supported_backend_opts, "`", collapse = ", "), "."
+      ),
+      class = dm_error_full("unsupported_backend_opts")
+    )
+  }
+
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
     return(invisible(NULL))
@@ -181,7 +197,7 @@ dm_draw <- function(
     rankdir = rankdir,
     col_attr = c("column", if (column_types) "type"),
     view_type = view_type,
-    columnArrows = backend_opts[["columnArrows"]] %||% TRUE,
+    columnArrows = backend_opts[["column_arrow"]] %||% TRUE,
     graph_attrs = backend_opts[["graph_attrs"]] %||% "",
     node_attrs = backend_opts[["node_attrs"]] %||% "",
     edge_attrs = backend_opts[["edge_attrs"]] %||% "",

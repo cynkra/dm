@@ -83,3 +83,30 @@
       The `font_size` argument of `dm_draw()` is deprecated as of dm 1.1.0.
       i Use `backend_opts = list(font_size = ...)` instead.
 
+# unsupported backend_opts fail with clear error
+
+    Code
+      dm_draw(dm_nycflights13(), backend_opts = list(columnArrows = TRUE))
+    Condition
+      Error in `dm_draw()`:
+      ! Unsupported `backend_opts` for backend "DiagrammeR": `columnArrows`.
+      Supported options are: `graph_attrs`, `node_attrs`, `edge_attrs`, `focus`, `graph_name`, `column_arrow`, `font_size`.
+
+---
+
+    Code
+      dm_draw(dm_nycflights13(), backend_opts = list(foo = 1, bar = 2))
+    Condition
+      Error in `dm_draw()`:
+      ! Unsupported `backend_opts` for backend "DiagrammeR": `foo`, `bar`.
+      Supported options are: `graph_attrs`, `node_attrs`, `edge_attrs`, `focus`, `graph_name`, `column_arrow`, `font_size`.
+
+# column_arrow backend option works
+
+    Code
+      invisible(dm_draw(dm_nycflights13(), columnArrows = FALSE))
+    Condition
+      Warning:
+      The `columnArrows` argument of `dm_draw()` is deprecated as of dm 1.1.0.
+      i Use `backend_opts = list(column_arrow = ...)` instead.
+
