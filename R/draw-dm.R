@@ -92,7 +92,7 @@ dm_draw <- function(
 
   # Handle deprecated DiagrammeR-specific arguments
   if (lifecycle::is_present(columnArrows)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_soft(
       "1.1.0",
       "dm_draw(columnArrows = )",
       details = "Use `backend_opts = list(column_arrow = ...)` instead."
@@ -100,7 +100,7 @@ dm_draw <- function(
     backend_opts[["column_arrow"]] <- backend_opts[["column_arrow"]] %||% columnArrows
   }
   if (lifecycle::is_present(graph_attrs)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_soft(
       "1.1.0",
       "dm_draw(graph_attrs = )",
       details = "Use `backend_opts = list(graph_attrs = ...)` instead."
@@ -108,7 +108,7 @@ dm_draw <- function(
     backend_opts[["graph_attrs"]] <- backend_opts[["graph_attrs"]] %||% graph_attrs
   }
   if (lifecycle::is_present(node_attrs)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_soft(
       "1.1.0",
       "dm_draw(node_attrs = )",
       details = "Use `backend_opts = list(node_attrs = ...)` instead."
@@ -116,7 +116,7 @@ dm_draw <- function(
     backend_opts[["node_attrs"]] <- backend_opts[["node_attrs"]] %||% node_attrs
   }
   if (lifecycle::is_present(edge_attrs)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_soft(
       "1.1.0",
       "dm_draw(edge_attrs = )",
       details = "Use `backend_opts = list(edge_attrs = ...)` instead."
@@ -124,7 +124,7 @@ dm_draw <- function(
     backend_opts[["edge_attrs"]] <- backend_opts[["edge_attrs"]] %||% edge_attrs
   }
   if (lifecycle::is_present(focus)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_soft(
       "1.1.0",
       "dm_draw(focus = )",
       details = "Use `backend_opts = list(focus = ...)` instead."
@@ -132,7 +132,7 @@ dm_draw <- function(
     backend_opts[["focus"]] <- backend_opts[["focus"]] %||% focus
   }
   if (lifecycle::is_present(graph_name)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_soft(
       "1.1.0",
       "dm_draw(graph_name = )",
       details = "Use `backend_opts = list(graph_name = ...)` instead."
@@ -140,7 +140,7 @@ dm_draw <- function(
     backend_opts[["graph_name"]] <- backend_opts[["graph_name"]] %||% graph_name
   }
   if (lifecycle::is_present(font_size)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_soft(
       "1.1.0",
       "dm_draw(font_size = )",
       details = "Use `backend_opts = list(font_size = ...)` instead."
