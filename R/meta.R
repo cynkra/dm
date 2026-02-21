@@ -1,6 +1,12 @@
 dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE, error_call = caller_env()) {
   if (is_sqlite(con)) {
-    return(dm_meta_sqlite(con, catalog = catalog, schema = schema, simple = simple, error_call = error_call))
+    return(dm_meta_sqlite(
+      con,
+      catalog = catalog,
+      schema = schema,
+      simple = simple,
+      error_call = error_call
+    ))
   }
 
   need_collect <- FALSE
@@ -361,7 +367,13 @@ dm_meta_add_keys <- function(dm_meta) {
 }
 
 #' @autoglobal
-dm_meta_sqlite <- function(con, catalog = NA, schema = NULL, simple = FALSE, error_call = caller_env()) {
+dm_meta_sqlite <- function(
+  con,
+  catalog = NA,
+  schema = NULL,
+  simple = FALSE,
+  error_call = caller_env()
+) {
   if (!is.na(catalog)) {
     cli::cli_abort("{.arg catalog} must be {.code NA} for SQLite connections.", call = error_call)
   }
@@ -376,7 +388,9 @@ dm_meta_sqlite <- function(con, catalog = NA, schema = NULL, simple = FALSE, err
   table_names_df <- DBI::dbGetQuery(
     con,
     paste0(
-      "SELECT name FROM ", schema_q, ".sqlite_master",
+      "SELECT name FROM ",
+      schema_q,
+      ".sqlite_master",
       " WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
     )
   )
