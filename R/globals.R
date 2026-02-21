@@ -34,6 +34,15 @@ utils::globalVariables(c(
   "new_table", # <dm_disentangle>
   "fks", # <dm_disentangle>
   "uks", # <dm_disentangle>
+  "child_table", # <dm_flatten_impl>
+  "parent_table", # <dm_flatten_impl>
+  "child_table", # <dm_flatten_recursive>
+  "parent_table", # <dm_flatten_recursive>
+  "child_table", # <dm_flatten_non_recursive>
+  "child_table", # <dm_flatten_join>
+  "parent_table", # <dm_flatten_join>
+  "child_table", # <dm_flatten_transfer_fks>
+  "parent_table", # <dm_flatten_transfer_fks>
   "pks", # <str.dm>
   "fks", # <str.dm>
   "filters", # <str.dm>
