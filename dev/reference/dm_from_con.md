@@ -59,9 +59,9 @@ dm_from_con(
   Additional parameters for the schema learning query.
 
   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres/Redshift
-    (default: `"public"`), MariaDB/MySQL (default: current database) and
-    SQLite (default: main schema). Learn the tables in a specific schema
-    (or database for MariaDB/MySQL).
+    (default: `"public"`), and MariaDB/MySQL (default: current
+    database). Learn the tables in a specific schema (or database for
+    MariaDB/MySQL).
 
   - `dbname`: supported for MSSQL. Access different databases on the
     connected MSSQL-server; default: active database.

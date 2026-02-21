@@ -112,9 +112,8 @@ where multiple schemas are given, and may change in future versions.</p></dd>
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
-<p>Additional parameters for the schema learning query.</p><ul><li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>), Postgres/Redshift (default: <code>"public"</code>), MariaDB/MySQL
-(default: current database) and SQLite (default: main schema).
-Learn the tables in a specific schema (or database for MariaDB/MySQL).</p></li>
+<p>Additional parameters for the schema learning query.</p><ul><li><p><code>schema</code>: supported for MSSQL (default: <code>"dbo"</code>), Postgres/Redshift (default: <code>"public"</code>), and MariaDB/MySQL
+(default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).</p></li>
 <li><p><code>dbname</code>: supported for MSSQL. Access different databases on the connected MSSQL-server;
 default: active database.</p></li>
 <li><p><code>table_type</code>: supported for Postgres/Redshift (default: <code>"BASE TABLE"</code>). Specify the table type. Options are:</p><ol><li><p><code>"BASE TABLE"</code> for a persistent table (normal table type)</p></li>
