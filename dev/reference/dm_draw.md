@@ -72,7 +72,7 @@ dm_draw(
 
   - `graph_name`: The name of the graph (default `"Data Model"`).
 
-  - `columnArrows`: Edges from columns to columns (default `TRUE`).
+  - `column_arrow`: Edges from columns to columns (default `TRUE`).
 
   - `font_size`: **\[experimental\]** Font size for `header` (default
     `16`), `column` (default `16`), and `table_description` (default
@@ -81,7 +81,7 @@ dm_draw(
 
 - columnArrows:
 
-  **\[deprecated\]** Use `backend_opts = list(columnArrows = ...)`
+  **\[deprecated\]** Use `backend_opts = list(column_arrow = ...)`
   instead.
 
 - graph_attrs:
