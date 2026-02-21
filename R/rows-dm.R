@@ -193,8 +193,8 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
-    inform(
-      "Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables."
+    cli::cli_inform(
+      "Result is returned as a dm object with lazy tables. Use {.code in_place = FALSE} to mute this message, or {.code in_place = TRUE} to write to the underlying tables."
     )
     in_place <- FALSE
   }
