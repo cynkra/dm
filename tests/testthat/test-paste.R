@@ -105,3 +105,31 @@ test_that("output 2", {
       dm_paste(options = "tables")
   })
 })
+
+test_that("chunking behavior for large dm", {
+  create_large_dm <- function(n_tables) {
+    main_table <- tibble(id = integer(0))
+    tables <- list(main = main_table)
+    for (i in 1:n_tables) {
+      table_name <- paste0("table_", i)
+      tables[[table_name]] <- tibble(
+        id = integer(0),
+        main_id = integer(0)
+      )
+    }
+    dm_obj <- do.call(dm, tables)
+    dm_obj <- dm_obj %>% dm_add_pk(main, id)
+    for (i in 1:n_tables) {
+      table_name <- paste0("table_", i)
+      dm_obj <- dm_obj %>%
+        dm_add_pk(!!table_name, id) %>%
+        dm_add_fk(!!table_name, main_id, main)
+    }
+    dm_obj
+  }
+
+  # Use chunk_size = 3 with a 3-table dm (7 operations) to verify chunking output
+  expect_snapshot(
+    writeLines(dm:::dm_paste_impl(create_large_dm(3), c("keys"), 2, chunk_size = 3))
+  )
+})
