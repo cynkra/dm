@@ -76,7 +76,7 @@ is_unique_key <- function(.data, column) {
 }
 
 #' @autoglobal
-is_unique_key_se <- function(.data, colname) {
+is_unique_key_se <- function(.data, colname, max_value = MAX_COMMAS) {
   val_names <- paste0("value", seq_along(colname))
   col_syms <- syms(colname)
   names(col_syms) <- val_names
@@ -103,7 +103,7 @@ is_unique_key_se <- function(.data, colname) {
     mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
     filter(n != 1 | any_na != 0L) %>%
     arrange(desc(n), !!!syms(val_names)) %>%
-    utils::head(MAX_COMMAS + 1) %>%
+    utils::head(max_value + 1) %>%
     collect()
 
   res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
