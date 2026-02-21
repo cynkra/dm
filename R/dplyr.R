@@ -113,7 +113,14 @@ mutate.dm_keyed_tbl <- function(
 ) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
-  out <- mutate(tbl, ..., .by = {{ .by }}, .keep = .keep, .before = {{ .before }}, .after = {{ .after }})
+  out <- mutate(
+    tbl,
+    ...,
+    .by = {{ .by }},
+    .keep = .keep,
+    .before = {{ .before }},
+    .after = {{ .after }}
+  )
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 

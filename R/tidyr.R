@@ -51,16 +51,46 @@ unite.dm_keyed_tbl <- function(data, col, ..., sep = "_", remove = TRUE, na.rm =
 }
 
 #' @export
-separate.dm <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, convert = FALSE, extra = "warn", fill = "warn", ...) {
+separate.dm <- function(
+  data,
+  col,
+  into,
+  sep = "[^[:alnum:]]+",
+  remove = TRUE,
+  convert = FALSE,
+  extra = "warn",
+  fill = "warn",
+  ...
+) {
   check_zoomed(data)
 }
 
 #' @rdname tidyr_table_manipulation
 #' @export
-separate.dm_zoomed <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, convert = FALSE, extra = "warn", fill = "warn", ...) {
+separate.dm_zoomed <- function(
+  data,
+  col,
+  into,
+  sep = "[^[:alnum:]]+",
+  remove = TRUE,
+  convert = FALSE,
+  extra = "warn",
+  fill = "warn",
+  ...
+) {
   tbl <- tbl_zoomed(data)
   col <- tidyselect::vars_pull(names(tbl), !!enquo(col))
-  separated_tbl <- separate(tbl, col = !!col, into = into, sep = sep, remove = remove, convert = convert, extra = extra, fill = fill, ...)
+  separated_tbl <- separate(
+    tbl,
+    col = !!col,
+    into = into,
+    sep = sep,
+    remove = remove,
+    convert = convert,
+    extra = extra,
+    fill = fill,
+    ...
+  )
   # all columns that are not removed count as "selected"; names of "selected" are identical to "selected"
   deselected <- if (remove) col else character()
   selected <- set_names(setdiff(names(col_tracker_zoomed(data)), deselected))
@@ -70,9 +100,29 @@ separate.dm_zoomed <- function(data, col, into, sep = "[^[:alnum:]]+", remove = 
 
 #' @rdname tidyr_table_manipulation
 #' @export
-separate.dm_keyed_tbl <- function(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, convert = FALSE, extra = "warn", fill = "warn", ...) {
+separate.dm_keyed_tbl <- function(
+  data,
+  col,
+  into,
+  sep = "[^[:alnum:]]+",
+  remove = TRUE,
+  convert = FALSE,
+  extra = "warn",
+  fill = "warn",
+  ...
+) {
   keys_info <- keyed_get_info(data)
   tbl <- unclass_keyed_tbl(data)
-  out <- separate(tbl, col = {{ col }}, into = into, sep = sep, remove = remove, convert = convert, extra = extra, fill = fill, ...)
+  out <- separate(
+    tbl,
+    col = {{ col }},
+    into = into,
+    sep = sep,
+    remove = remove,
+    convert = convert,
+    extra = extra,
+    fill = fill,
+    ...
+  )
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
