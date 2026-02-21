@@ -71,7 +71,7 @@
       invisible(dm_draw(dm_nycflights13(), graph_attrs = "rankdir=LR"))
     Condition
       Warning:
-      The `graph_attrs` argument of `dm_draw()` is deprecated as of dm 1.0.12.9014.
+      The `graph_attrs` argument of `dm_draw()` is deprecated as of dm 1.1.0.
       i Use `backend_opts = list(graph_attrs = ...)` instead.
 
 ---
@@ -80,6 +80,6 @@
       invisible(dm_draw(dm_nycflights13(), font_size = 14L))
     Condition
       Warning:
-      The `font_size` argument of `dm_draw()` is deprecated as of dm 1.0.12.9014.
+      The `font_size` argument of `dm_draw()` is deprecated as of dm 1.1.0.
       i Use `backend_opts = list(font_size = ...)` instead.
 

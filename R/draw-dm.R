@@ -98,7 +98,7 @@ dm_draw <- function(
   # Handle deprecated DiagrammeR-specific arguments
   if (lifecycle::is_present(columnArrows)) {
     lifecycle::deprecate_soft(
-      "1.0.12.9014",
+      "1.1.0",
       "dm_draw(columnArrows = )",
       details = "Use `backend_opts = list(columnArrows = ...)` instead."
     )
@@ -106,7 +106,7 @@ dm_draw <- function(
   }
   if (lifecycle::is_present(graph_attrs)) {
     lifecycle::deprecate_soft(
-      "1.0.12.9014",
+      "1.1.0",
       "dm_draw(graph_attrs = )",
       details = "Use `backend_opts = list(graph_attrs = ...)` instead."
     )
@@ -114,7 +114,7 @@ dm_draw <- function(
   }
   if (lifecycle::is_present(node_attrs)) {
     lifecycle::deprecate_soft(
-      "1.0.12.9014",
+      "1.1.0",
       "dm_draw(node_attrs = )",
       details = "Use `backend_opts = list(node_attrs = ...)` instead."
     )
@@ -122,7 +122,7 @@ dm_draw <- function(
   }
   if (lifecycle::is_present(edge_attrs)) {
     lifecycle::deprecate_soft(
-      "1.0.12.9014",
+      "1.1.0",
       "dm_draw(edge_attrs = )",
       details = "Use `backend_opts = list(edge_attrs = ...)` instead."
     )
@@ -130,7 +130,7 @@ dm_draw <- function(
   }
   if (lifecycle::is_present(focus)) {
     lifecycle::deprecate_soft(
-      "1.0.12.9014",
+      "1.1.0",
       "dm_draw(focus = )",
       details = "Use `backend_opts = list(focus = ...)` instead."
     )
@@ -138,7 +138,7 @@ dm_draw <- function(
   }
   if (lifecycle::is_present(graph_name)) {
     lifecycle::deprecate_soft(
-      "1.0.12.9014",
+      "1.1.0",
       "dm_draw(graph_name = )",
       details = "Use `backend_opts = list(graph_name = ...)` instead."
     )
@@ -146,7 +146,7 @@ dm_draw <- function(
   }
   if (lifecycle::is_present(font_size)) {
     lifecycle::deprecate_soft(
-      "1.0.12.9014",
+      "1.1.0",
       "dm_draw(font_size = )",
       details = "Use `backend_opts = list(font_size = ...)` instead."
     )
