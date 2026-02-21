@@ -274,7 +274,8 @@ schema_redshift <- schema_postgres
 
 schema_mariadb <- function(con, schema) {
   if (is_null(schema)) {
-    schema <- sql("database()")
+    # Extra parenthesis because it is used in a dbplyr-generated IN clause later
+    schema <- sql("(database())")
   }
   schema
 }
