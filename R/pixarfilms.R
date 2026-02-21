@@ -11,33 +11,48 @@
 #' @param consistent Boolean, In the original `dm`  the  `film` column in
 #' `pixar_films` contains missing values so cannot be made a proper primary key.
 #' Set to `TRUE` to remove those records.
+#' @param version The version of the data to use.
+#'   `"v1"` (default) uses a vendored snapshot of \pkg{pixarfilms} 0.2.1.
+#'   `"latest"` uses the data from the installed \pkg{pixarfilms} package.
 #'
 #' @return A `dm` object consisting of \pkg{pixarfilms} tables, complete with
 #'   primary and foreign keys and optionally colored.
 #'
 #' @export
 #' @autoglobal
-#' @examplesIf rlang::is_installed(c("pixarfilms", "DiagrammeR"))
+#' @examplesIf rlang::is_installed("DiagrammeR")
 #' dm_pixarfilms()
 #' dm_pixarfilms() %>%
 #'   dm_draw()
-dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
+dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE, version = "v1") {
   check_dots_empty()
 
-  # Check for data package installed
-  check_suggested("pixarfilms", "dm_pixarfilms")
+  version <- arg_match(version, c("v1", "latest"))
 
   # Extract data objects
-  pixar_films <- pixarfilms::pixar_films
+  if (version == "latest") {
+    # Check for data package installed
+    check_suggested("pixarfilms", "dm_pixarfilms")
+
+    pixar_films <- pixarfilms::pixar_films
+    pixar_people <- pixarfilms::pixar_people
+    academy <- pixarfilms::academy
+    box_office <- pixarfilms::box_office
+    genres <- pixarfilms::genres
+    public_response <- pixarfilms::public_response
+  } else {
+    data <- pixarfilms_v1()
+    pixar_films <- data$pixar_films
+    pixar_people <- data$pixar_people
+    academy <- data$academy
+    box_office <- data$box_office
+    genres <- data$genres
+    public_response <- data$public_response
+  }
+
   if (consistent) {
     pixar_films <- filter(pixar_films, !is.na(film))
   }
-
-  pixar_people <- pixarfilms::pixar_people
-  academy <- pixarfilms::academy
-  box_office <- pixarfilms::box_office
-  genres <- pixarfilms::genres
-  public_response <- pixarfilms::public_response
 
   # Create dm object
   dm <- dm(
@@ -84,4 +99,8 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
   }
 
   dm
+}
+
+pixarfilms_v1 <- function() {
+  readRDS(system.file("extdata/pixarfilms-v1.rds", package = "dm"))
 }
