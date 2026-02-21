@@ -98,8 +98,12 @@ dm_flatten_recursive <- function(dm, start, list_of_pts, direct_parents) {
 
   # Process in reverse DFS order (bottom-up), skip start
   for (tbl in rev(order)) {
-    if (tbl == start) next
-    if (!(tbl %in% src_tbls_impl(dm))) next
+    if (tbl == start) {
+      next
+    }
+    if (!(tbl %in% src_tbls_impl(dm))) {
+      next
+    }
 
     current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
     tbl_parents <- current_fks %>%
@@ -245,7 +249,9 @@ dm_flatten_transfer_fks <- function(def, dm, start, parents, parent_col_renames,
     for (i in seq_len(nrow(pt_child_fks))) {
       gp <- pt_child_fks$parent_table[i]
       # Skip if grandparent is also being absorbed or is the start table
-      if (gp %in% parents || gp == start) next
+      if (gp %in% parents || gp == start) {
+        next
+      }
 
       child_cols <- pt_child_fks$child_fk_cols[[i]]
       parent_cols <- pt_child_fks$parent_key_cols[[i]]
