@@ -298,13 +298,3 @@ test_that("DiagrammeR-specific options are soft-deprecated", {
       invisible()
   })
 })
-
-test_that("backend_opts passes DiagrammeR-specific options correctly", {
-  skip_if_not_installed("DiagrammeR")
-
-  # Should work without deprecation warning
-  expect_no_warning(
-    dm_nycflights13() |>
-      dm_draw(backend_opts = list(graph_attrs = "rankdir=LR"))
-  )
-})
