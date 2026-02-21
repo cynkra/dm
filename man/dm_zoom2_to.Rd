@@ -4,6 +4,7 @@
 \alias{dm_zoom2_to}
 \alias{dm_update_zoom2ed}
 \alias{dm_insert_zoom2ed}
+\alias{dm_discard_zoom2ed}
 \title{Mark table for manipulation (v2)}
 \usage{
 dm_zoom2_to(dm, table)
@@ -16,6 +17,8 @@ dm_insert_zoom2ed(
   repair = "unique",
   quiet = FALSE
 )
+
+dm_discard_zoom2ed(zoomed_tbl)
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
@@ -60,9 +63,11 @@ Users can silence the name repair messages by setting the
 \code{"rlib_name_repair_verbosity"} global option to \code{"quiet"}.}
 }
 \value{
-For \code{dm_zoom2_to()}: A \code{dm_keyed_tbl} object with \code{"dm_zoom2"} attributes.
+For \code{dm_zoom2_to()}: A \code{dm_keyed_tbl} object with zoom2 info
+stored in \code{dm_key_info}.
 
-For \code{dm_update_zoom2ed()} and \code{dm_insert_zoom2ed()}: A \code{dm} object.
+For \code{dm_update_zoom2ed()}, \code{dm_insert_zoom2ed()} and
+\code{dm_discard_zoom2ed()}: A \code{dm} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -76,6 +81,9 @@ of the \code{dm_keyed_tbl} object.
 with the manipulated table.
 
 \code{dm_insert_zoom2ed()} adds the manipulated table as a new table to the dm.
+
+\code{dm_discard_zoom2ed()} discards the zoomed table and returns the
+original \code{dm} as it was before zooming.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
@@ -94,5 +102,9 @@ flights_keyed_transformed \%>\%
 # insert the zoomed table as a new table
 flights_keyed_transformed \%>\%
   dm_insert_zoom2ed("extended_flights")
+
+# discard changes and return original dm
+flights_keyed_transformed \%>\%
+  dm_discard_zoom2ed()
 \dontshow{\}) # examplesIf}
 }

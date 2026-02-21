@@ -4,24 +4,22 @@ test_that("dm_zoom2_to() works", {
 
   expect_s3_class(result, "dm_keyed_tbl")
 
-  # has dm_zoom2 attributes
-  expect_false(is.null(attr(result, "dm_zoom2_src_dm")))
-  expect_false(is.null(attr(result, "dm_zoom2_src_name")))
-  expect_equal(attr(result, "dm_zoom2_src_name"), "tf_1")
+  # has zoom2 info in dm_key_info
+  keys_info <- keyed_get_info(result)
+  expect_false(is.null(keys_info$zoom2))
+  expect_equal(keys_info$zoom2$table_name, "tf_1")
 })
 
 
 test_that("dm_zoom2_to() preserves table content", {
   expect_equivalent_tbl(
     dm_zoom2_to(dm_for_filter(), tf_2) %>%
-      zoom2_clean_attrs() %>%
       unclass_keyed_tbl(),
     tf_2()
   )
 
   expect_equivalent_tbl(
     dm_zoom2_to(dm_for_filter(), tf_3) %>%
-      zoom2_clean_attrs() %>%
       unclass_keyed_tbl(),
     tf_3()
   )
@@ -88,6 +86,38 @@ test_that("dm_update_zoom2ed() preserves mutated data", {
 
   # The updated table should have the new column
   expect_true("new_col" %in% colnames(result_dm$tf_2))
+})
+
+
+test_that("dm_discard_zoom2ed() works", {
+  original_dm <- dm_for_filter()
+  result_dm <-
+    original_dm %>%
+    dm_zoom2_to(tf_2) %>%
+    mutate(new_col = 1) %>%
+    dm_discard_zoom2ed()
+
+  # Should return the original dm unchanged
+  expect_equivalent_dm(
+    result_dm,
+    original_dm
+  )
+  expect_false("new_col" %in% colnames(result_dm$tf_2))
+})
+
+
+test_that("dm_discard_zoom2ed() works after summarise", {
+  original_dm <- dm_for_filter()
+  result_dm <-
+    original_dm %>%
+    dm_zoom2_to(tf_2) %>%
+    summarise(n = n()) %>%
+    dm_discard_zoom2ed()
+
+  expect_equivalent_dm(
+    result_dm,
+    original_dm
+  )
 })
 
 

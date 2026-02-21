@@ -13,9 +13,13 @@
 #'
 #' `dm_insert_zoom2ed()` adds the manipulated table as a new table to the dm.
 #'
+#' `dm_discard_zoom2ed()` discards the zoomed table and returns the
+#' original `dm` as it was before zooming.
+#'
 #' @inheritParams dm_zoom_to
 #'
-#' @return For `dm_zoom2_to()`: A `dm_keyed_tbl` object with `"dm_zoom2"` attributes.
+#' @return For `dm_zoom2_to()`: A `dm_keyed_tbl` object with zoom2 info
+#'   stored in `dm_key_info`.
 #'
 #' @export
 #' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
@@ -34,6 +38,10 @@
 #' # insert the zoomed table as a new table
 #' flights_keyed_transformed %>%
 #'   dm_insert_zoom2ed("extended_flights")
+#'
+#' # discard changes and return original dm
+#' flights_keyed_transformed %>%
+#'   dm_discard_zoom2ed()
 dm_zoom2_to <- function(dm, table) {
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -41,12 +49,10 @@ dm_zoom2_to <- function(dm, table) {
   keyed_tables <- dm_get_keyed_tables_impl(dm)
   keyed_tbl <- keyed_tables[[table_name]]
 
-  attr(keyed_tbl, "dm_zoom2_src_dm") <- dm
-  attr(keyed_tbl, "dm_zoom2_src_name") <- table_name
-
-  # Also register by uuid for verbs that strip custom attributes
-  uuid <- keyed_get_info(keyed_tbl)$uuid
-  zoom2_registry[[uuid]] <- list(dm = dm, table_name = table_name)
+  # Store zoom2 info inside dm_key_info so it survives all dplyr/tidyr verbs
+  keys_info <- keyed_get_info(keyed_tbl)
+  keys_info$zoom2 <- list(dm = dm, table_name = table_name)
+  attr(keyed_tbl, "dm_key_info") <- keys_info
 
   keyed_tbl
 }
@@ -55,7 +61,8 @@ dm_zoom2_to <- function(dm, table) {
 #' @param zoomed_tbl A `dm_keyed_tbl` object returned by `dm_zoom2_to()`
 #'   or modified via dplyr operations.
 #'
-#' @return For `dm_update_zoom2ed()` and `dm_insert_zoom2ed()`: A `dm` object.
+#' @return For `dm_update_zoom2ed()`, `dm_insert_zoom2ed()` and
+#'   `dm_discard_zoom2ed()`: A `dm` object.
 #'
 #' @export
 dm_update_zoom2ed <- function(zoomed_tbl) {
@@ -64,15 +71,7 @@ dm_update_zoom2ed <- function(zoomed_tbl) {
   table_name <- zoom2_info$table_name
 
   keyed_tables <- dm_get_keyed_tables_impl(dm)
-
-  # Preserve key info from zoomed_tbl if it's still a keyed_tbl,
-  # otherwise wrap it
-  if (!is_dm_keyed_tbl(zoomed_tbl)) {
-    zoomed_tbl <- zoom2_clean_attrs(zoomed_tbl)
-    keyed_tables[[table_name]] <- zoomed_tbl
-  } else {
-    keyed_tables[[table_name]] <- zoom2_clean_attrs(zoomed_tbl)
-  }
+  keyed_tables[[table_name]] <- zoom2_clean_keys_info(zoomed_tbl)
 
   # Preserve table order by using names from original keyed_tables
   new_dm(keyed_tables)
@@ -107,8 +106,7 @@ dm_insert_zoom2ed <- function(zoomed_tbl, new_tbl_name = NULL, repair = "unique"
   new_tbl_name <- names_list$new_names
 
   # Add the new table
-  cleaned_tbl <- zoom2_clean_attrs(zoomed_tbl)
-  keyed_tables[[new_tbl_name]] <- cleaned_tbl
+  keyed_tables[[new_tbl_name]] <- zoom2_clean_keys_info(zoomed_tbl)
 
   out <- new_dm(keyed_tables)
 
@@ -122,42 +120,36 @@ dm_insert_zoom2ed <- function(zoomed_tbl, new_tbl_name = NULL, repair = "unique"
   out
 }
 
+#' @rdname dm_zoom2_to
+#' @export
+dm_discard_zoom2ed <- function(zoomed_tbl) {
+  zoom2_info <- zoom2_get_info(zoomed_tbl)
+  zoom2_info$dm
+}
+
 
 # Internal helpers --------------------------------------------------------
 
-# Registry for zoom2 info, keyed by uuid.
-# Some dplyr/tidyr verbs (summarise, reframe, tally, ungroup, unite, separate)
-# strip custom attributes but preserve the uuid in dm_key_info.
-zoom2_registry <- new.env(parent = emptyenv())
-
 zoom2_get_info <- function(zoomed_tbl) {
-  dm <- attr(zoomed_tbl, "dm_zoom2_src_dm")
-  table_name <- attr(zoomed_tbl, "dm_zoom2_src_name")
-
-  if (is.null(dm) || is.null(table_name)) {
-    # Fall back to uuid-based registry lookup
-    if (is_dm_keyed_tbl(zoomed_tbl)) {
-      uuid <- keyed_get_info(zoomed_tbl)$uuid
-      info <- zoom2_registry[[uuid]]
-      if (!is.null(info)) {
-        return(info)
-      }
-    }
-    abort("This object was not created by `dm_zoom2_to()`.")
+  if (!is_dm_keyed_tbl(zoomed_tbl)) {
+    cli::cli_abort("This object was not created by {.fn dm_zoom2_to}.")
   }
 
-  list(dm = dm, table_name = table_name)
+  keys_info <- keyed_get_info(zoomed_tbl)
+  zoom2 <- keys_info$zoom2
+
+  if (is.null(zoom2)) {
+    cli::cli_abort("This object was not created by {.fn dm_zoom2_to}.")
+  }
+
+  zoom2
 }
 
-zoom2_clean_attrs <- function(x) {
-  # Clean up registry entry
+zoom2_clean_keys_info <- function(x) {
   if (is_dm_keyed_tbl(x)) {
-    uuid <- keyed_get_info(x)$uuid
-    if (exists(uuid, envir = zoom2_registry, inherits = FALSE)) {
-      rm(list = uuid, envir = zoom2_registry)
-    }
+    keys_info <- keyed_get_info(x)
+    keys_info$zoom2 <- NULL
+    attr(x, "dm_key_info") <- keys_info
   }
-  attr(x, "dm_zoom2_src_dm") <- NULL
-  attr(x, "dm_zoom2_src_name") <- NULL
   x
 }

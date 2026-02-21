@@ -54,7 +54,8 @@ new_keyed_tbl <- function(
   uks = NULL,
   fks_in = NULL,
   fks_out = NULL,
-  uuid = NULL
+  uuid = NULL,
+  zoom2 = NULL
 ) {
   check_dots_empty()
 
@@ -73,7 +74,8 @@ new_keyed_tbl <- function(
     uks = uks,
     fks_in = fks_in,
     fks_out = fks_out,
-    uuid = uuid
+    uuid = uuid,
+    zoom2 = zoom2
   )
 
   x
@@ -85,7 +87,8 @@ new_keyed_tbl_from_keys_info <- function(tbl, keys_info) {
     pk = keys_info$pk,
     fks_in = keys_info$fks_in,
     fks_out = keys_info$fks_out,
-    uuid = keys_info$uuid
+    uuid = keys_info$uuid,
+    zoom2 = keys_info$zoom2
   )
 }
 
