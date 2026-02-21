@@ -202,3 +202,19 @@ test_that("UK support works", {
     "table-uk-2-dm.svg"
   )
 })
+
+test_that("DiagrammeR-specific options are soft-deprecated", {
+  skip_if_not_installed("DiagrammeR")
+
+  expect_snapshot({
+    dm_nycflights13() |>
+      dm_draw(graph_attrs = "rankdir=LR") |>
+      invisible()
+  })
+
+  expect_snapshot({
+    dm_nycflights13() |>
+      dm_draw(font_size = 14L) |>
+      invisible()
+  })
+})
