@@ -13,6 +13,7 @@
 #' @rawNamespace import(tidyr, except = c(extract))
 ## usethis namespace: start
 #' @importFrom methods is
+#' @importFrom igraph V E
 #' @importFrom utils head tail str packageVersion
 #' @importFrom grDevices col2rgb colors rgb
 ## usethis namespace: end
