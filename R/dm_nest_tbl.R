@@ -202,9 +202,9 @@ check_table_can_be_packed <- function(table_name, children_names, fks) {
 
 # FIXME: can we be more efficient ?
 node_type_from_graph <- function(graph, drop = NULL) {
-  vertices <- igraph::V(graph)
-  n_children <- map_dbl(vertices, ~ length(igraph::neighbors(graph, .x, mode = "in")))
-  n_parents <- map_dbl(vertices, ~ length(igraph::neighbors(graph, .x, mode = "out")))
+  vertices <- graph_vertices(graph)
+  n_children <- map_dbl(vertices, ~ length(graph_neighbors(graph, .x, mode = "in")))
+  n_parents <- map_dbl(vertices, ~ length(graph_neighbors(graph, .x, mode = "out")))
   node_types <- set_names(rep_along(vertices, "intermediate"), names(vertices))
   node_types[n_parents == 0 & n_children == 1] <- "terminal parent"
   node_types[n_children == 0 & n_parents == 1] <- "terminal child"
