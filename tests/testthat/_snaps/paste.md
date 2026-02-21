@@ -338,16 +338,18 @@
         table_1,
         table_2,
         table_3,
-      ) %>%
+      )
+      
+      dm_step_2 <- dm_step_1 %>%
         dm::dm_add_pk(main, id) %>%
         dm::dm_add_pk(table_1, id) %>%
         dm::dm_add_pk(table_2, id)
       
-      dm_step_2 <- dm_step_1 %>%
-        dm::dm_add_pk(table_3, id) %>%
-        dm::dm_add_fk(table_1, main_id, main) %>%
-        dm::dm_add_fk(table_2, main_id, main)
+      dm_step_3 <- dm_step_2 %>%
+        dm::dm_add_pk(table_3, id)
       
-      dm_step_2 %>%
+      dm_step_3 %>%
+        dm::dm_add_fk(table_1, main_id, main) %>%
+        dm::dm_add_fk(table_2, main_id, main) %>%
         dm::dm_add_fk(table_3, main_id, main)
 
