@@ -17,10 +17,15 @@ runs:
     - uses: ankane/setup-mariadb@v1
       if: env.DM_TEST_SRC == 'test-maria'
       with:
-        mariadb-version: 10.9
+        mariadb-version: 10.11
+
+    - uses: ankane/setup-mysql@v1
+      if: env.DM_TEST_SRC == 'test-mysql-maria'
+      with:
+        mysql-version: "8.0"
 
     - name: Create database (MariaDB), set it to UTF-8, add time zone info
-      if: env.DM_TEST_SRC == 'test-maria'
+      if: env.DM_TEST_SRC == 'test-maria' || env.DM_TEST_SRC == 'test-mysql-maria'
       run: |
         mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
       shell: bash
@@ -41,4 +46,10 @@ runs:
       run: |
         ln -s /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.*.so.* /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so
         echo "ODBCSYSINI=${{ github.workspace }}/.github/odbc" | tee -a $GITHUB_ENV
+      shell: bash
+
+    - name: Allow slower examples
+      run: |
+        # FIXME: Slow examples in dm?
+        echo "_R_CHECK_EXAMPLE_TIMING_THRESHOLD_=15" | tee -a $GITHUB_ENV
       shell: bash

@@ -40,7 +40,15 @@ get_by <- function(dm, lhs_name, rhs_name) {
   by
 }
 
-repair_by <- function(by) {
+# Normalize a `by` argument: convert `dplyr_join_by` objects to named character
+# vectors, and ensure unnamed elements get names equal to their values.
+normalize_join_by <- function(by) {
+  if (inherits(by, "dplyr_join_by")) {
+    return(set_names(by$y, by$x))
+  }
+  if (!is_named2(by)) {
+    by <- set_names(by, by)
+  }
   bad <- which(names2(by) == "")
   names(by)[bad] <- by[bad]
   by
@@ -49,5 +57,5 @@ repair_by <- function(by) {
 update_filter <- function(dm, table_name, filters) {
   def <- dm_get_def(dm)
   def$filters[def$table == table_name] <- filters
-  new_dm3(def, zoomed = TRUE)
+  dm_from_def(def, zoomed = TRUE)
 }

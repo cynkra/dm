@@ -33,5 +33,5 @@ dm_disentangle <- function(dm, start, quiet = FALSE) {
     select(-fks) %>%
     relocate(fks = new_fks, .after = uks) %>%
     mutate(fks = vctrs::as_list_of(map(fks, ~ .x %||% new_fk()))) %>%
-    new_dm3()
+    dm_from_def()
 }

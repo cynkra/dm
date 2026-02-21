@@ -1,5 +1,21 @@
 #' @autoglobal
-build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary = TRUE, table_names = set_names(names(dm))) {
+build_copy_queries <- function(
+  dest,
+  dm,
+  set_key_constraints = TRUE,
+  temporary = TRUE,
+  table_names = set_names(names(dm))
+) {
+  stopifnot(!is_src_db(dm))
+
+  ## Reorder queries according to topological sort so pks are created before associated fks
+  graph <- create_graph_from_dm(dm, directed = TRUE)
+  topo <- names(igraph::topo_sort(graph, mode = "in"))
+
+  if (length(topo) == length(dm)) {
+    dm <- dm[topo]
+  }
+
   con <- con_from_src_or_con(dest)
 
   ## helper to quote all elements of a column and enumerate (concat) element wise
@@ -9,13 +25,22 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
   ## helper to set on delete statement for fks if required
   set_on_delete_col <- function(x) {
-    map_chr(x, ~ {
-      switch(.x,
-        "no_action" = "",
-        "cascade" = " ON DELETE CASCADE",
-        abort(glue("on_delete column value '{.x}' not supported"))
+    if (is_duckdb(dest) && any(x == "cascade")) {
+      inform(glue('`on_delete = "cascade"` not supported for duckdb'))
+      ""
+    } else {
+      map_chr(
+        x,
+        ~ {
+          switch(
+            .x,
+            "no_action" = "",
+            "cascade" = " ON DELETE CASCADE",
+            abort(glue('`on_delete = "{.x}"` not supported'))
+          )
+        }
       )
-    })
+    }
   }
 
   ## fetch types, keys and uniques
@@ -47,7 +72,16 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
     # database-specific type conversions
     if (is_mariadb(dest)) {
-      types[types == "TEXT"] <- "VARCHAR(255)"
+      if (nrow(tbl) == 0) {
+        types[types == "TEXT"] <- "VARCHAR(255)"
+      } else {
+        for (i in which(types == "TEXT")) {
+          chars <- max(nchar(tbl[[i]], type = "bytes", keepNA = FALSE))
+          if (chars <= 255) {
+            types[[i]] <- paste0("VARCHAR(255)")
+          }
+        }
+      }
     }
     if (is_sqlite(dest)) {
       types[types == "INT"] <- "INTEGER"
@@ -56,10 +90,10 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     # database-specific autoincrementing column types
     if (length(pk_col) > 0L) {
       # extract column name representing primary key
-      pk_col <- pk_col %>% extract2(1L)
+      pk_col <- pk_col[[1]]
 
       # Postgres:
-      if (is_postgres(dest)) {
+      if (is_postgres(dest) || is_redshift(dest)) {
         types[pk_col] <- "SERIAL"
       }
 
@@ -91,15 +125,19 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     if (length(pk_col) > 0L) {
       df_col_types <-
         df_col_types %>%
-        mutate(autoincrement_attribute = if_else(
-          col == pk_col,
-          !!autoincrement_attribute,
-          autoincrement_attribute
-        ))
+        mutate(
+          autoincrement_attribute = if_else(
+            col == pk_col,
+            !!autoincrement_attribute,
+            autoincrement_attribute
+          )
+        )
     }
 
     df_col_types
   }
+
+  tbl_defs <- tibble(name = names(dm))
 
   col_defs <-
     dm %>%
@@ -150,7 +188,9 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
     # https://github.com/r-lib/rlang/issues/1422
     if (is_mariadb(con) && temporary) {
       if (nrow(fks) > 0 && !is_testing()) {
-        warn("MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`")
+        warn(
+          "MySQL and MariaDB don't support foreign keys for temporary tables, these won't be set in the remote database but are preserved in the `dm`"
+        )
       }
     } else {
       fk_defs <-
@@ -177,7 +217,10 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
           name = child_table,
           index_name = map_chr(child_fk_cols, paste, collapse = "_"),
           remote_name = purrr::map_chr(table_names[name], ~ DBI::dbQuoteIdentifier(con, .x)),
-          remote_name_unquoted = map_chr(DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)), ~ .x@name[["table"]]),
+          remote_name_unquoted = map_chr(
+            DBI::dbUnquoteIdentifier(con, DBI::SQL(remote_name)),
+            ~ .x@name[[length(.x@name)]]
+          ),
           index_name = make.unique(paste0(remote_name_unquoted, "__", index_name), sep = "__")
         ) %>%
         group_by(name) %>%
@@ -198,7 +241,8 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
 
   ## compile `CREATE TABLE ...` queries
   create_table_queries <-
-    col_defs %>%
+    tbl_defs %>%
+    left_join(col_defs, by = "name") %>%
     left_join(pk_defs, by = "name") %>%
     left_join(unique_defs, by = "name") %>%
     left_join(fk_defs, by = "name") %>%
@@ -214,20 +258,19 @@ build_copy_queries <- function(dest, dm, set_key_constraints = TRUE, temporary =
       )
     ) %>%
     ungroup() %>%
-    transmute(name, remote_name, columns, sql_table = DBI::SQL(glue(
-      "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {purrr::map_chr(remote_name, ~ DBI::dbQuoteIdentifier(con, .x))} (\n  {all_defs}\n)"
-    )))
+    transmute(
+      name,
+      remote_name,
+      columns,
+      sql_table = DBI::SQL(glue(
+        "CREATE {if (temporary) 'TEMPORARY ' else ''}TABLE {purrr::map_chr(remote_name, ~ DBI::dbQuoteIdentifier(con, .x))} (\n  {all_defs}\n)"
+      ))
+    )
 
-  queries <- left_join(create_table_queries, index_queries, by = "name")
-
-  ## Reorder queries according to topological sort so pks are created before associated fks
-  graph <- create_graph_from_dm(dm, directed = TRUE)
-  topo <- igraph::topo_sort(graph, mode = "in")
-  idx <- match(names(topo), queries$name)
-
-  if (length(idx) == nrow(create_table_queries)) {
-    queries <- queries[idx, ]
-  }
+  queries <-
+    tbl_defs %>%
+    left_join(create_table_queries, by = "name") %>%
+    left_join(index_queries, by = "name")
 
   queries
 }

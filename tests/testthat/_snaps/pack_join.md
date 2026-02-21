@@ -46,20 +46,20 @@
       1     1 a            3 a    
       2     2 b            4 b    
 
----
+# `pack_join()` works with remote table
 
     `x` and `y` must share the same src, set `copy` = TRUE (may be slow)
 
 ---
 
     Code
-      pack_join(df1, dm_fin$accounts, by = c(col1 = "id"), copy = TRUE)
+      pack_join(df1, dm_remote$tf_1, by = c(col1 = "a"), copy = TRUE)
     Output
       # A tibble: 2 x 3
-         col1 key   `dm_fin$accounts`$district_id $frequency       $date
-        <int> <chr>                         <int> <chr>            <int>
-      1     1 a                                18 POPLATEK MESICNE  9213
-      2     2 b                                 1 POPLATEK MESICNE  8457
+         col1 key   `dm_remote$tf_1`$b
+        <int> <chr> <chr>             
+      1     1 a     A                 
+      2     2 b     B                 
 
 ---
 

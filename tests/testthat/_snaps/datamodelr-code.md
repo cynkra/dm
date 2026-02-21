@@ -22,7 +22,7 @@
       6   tf_2     e1  4        <NA>   0 <NA>    <NA>   <NA>             <NA>
       7   tf_3      f  1        <NA>   0 <NA>    <NA>   <NA>             <NA>
       8   tf_3     f1  2        <NA>   0 <NA>    <NA>   <NA>             <NA>
-      9   tf_3      g  3        <NA>   0 <NA>    <NA>   <NA>             <NA>
+      9   tf_3      g  3 explicit UK   1 <NA>    <NA>   <NA>             <NA>
       10  tf_4      h  1          PK   1 <NA>    <NA>   <NA>             <NA>
       11  tf_4      i  2        <NA>   0 <NA>    <NA>   <NA>             <NA>
       12  tf_4      j  3        <NA>   0 <NA>    <NA>   <NA>             <NA>
@@ -72,7 +72,7 @@
       6   tf_2     e1  4  int        <NA>   0 <NA>    <NA>   <NA>             <NA>
       7   tf_3      f  1  chr        <NA>   0 <NA>    <NA>   <NA>             <NA>
       8   tf_3     f1  2  int        <NA>   0 <NA>    <NA>   <NA>             <NA>
-      9   tf_3      g  3  chr        <NA>   0 <NA>    <NA>   <NA>             <NA>
+      9   tf_3      g  3  chr explicit UK   1 <NA>    <NA>   <NA>             <NA>
       10  tf_4      h  1  chr          PK   1 <NA>    <NA>   <NA>             <NA>
       11  tf_4      i  2  chr        <NA>   0 <NA>    <NA>   <NA>             <NA>
       12  tf_4      j  3  chr        <NA>   0 <NA>    <NA>   <NA>             <NA>

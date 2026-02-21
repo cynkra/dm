@@ -24,8 +24,8 @@ To this end, a dm object can be created from any database that has a {[DBI](http
 When a dm object is created via a DBI connection to an RDBMS, it can import all the tables in the database, the active schema, or a limited set.
 For some RDBMS, such as Postgres, SQL Server and MariaDB, primary and foreign keys are also imported and do not have to be manually added afterwards.
 
-To demonstrate, we will connect to a `r href("relational dataset repository", "https://relational.fit.cvut.cz/")` with a database server that is publicly accessible without registration.
-It hosts a `r href("financial dataset", "https://relational.fit.cvut.cz/dataset/Financial")` that contains loan data along with relevant account information and transactions.
+To demonstrate, we will connect to a `r href("relational dataset repository", "https://relational.fel.cvut.cz/")` with a database server that is publicly accessible without registration.
+It hosts a `r href("financial dataset", "https://relational.fel.cvut.cz/dataset/Financial")` that contains loan data along with relevant account information and transactions.
 We chose this dataset because the relationships between `loan`, `account`, and `transactions` tables are a good representation of databases that record real-world business transactions.
 
 Below, we open a connection to the publicly accessible database server using their documented connection parameters.
@@ -38,9 +38,9 @@ library(RMariaDB)
 my_db <- dbConnect(
   MariaDB(),
   username = "guest",
-  password = "relational",
+  password = "ctu-relational",
   dbname = "Financial_ijs",
-  host = "relational.fit.cvut.cz"
+  host = "relational.fel.cvut.cz"
 )
 ``````
 
@@ -102,7 +102,7 @@ fin_dm <- dm_from_con(my_db, learn_keys = FALSE)
 fin_dm
 ``````
 
-The `r href("model diagram", "https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg")` provided by our test database loosely illustrates the intended relationships between tables.
+The `r href("model diagram", "https://relational.fel.cvut.cz/assets/img/datasets-generated/financial.svg")` provided by our test database loosely illustrates the intended relationships between tables.
 In the diagram, we can see that the `loans` table should be linked to the `accounts` table.
 Below, we create those links in 3 steps:
 
@@ -155,9 +155,9 @@ my_db_fun <- function() {
   dbConnect(
     MariaDB(),
     username = "guest",
-    password = "relational",
+    password = "ctu-relational",
     dbname = "Financial_ijs",
-    host = "relational.fit.cvut.cz"
+    host = "relational.fel.cvut.cz"
   )
 }
 

@@ -70,7 +70,7 @@ test_that("dm_rm_pk() works as intended?", {
       dm_for_filter() %>%
         dm_get_def() %>%
         mutate(pks = if_else(table == "tf_4", list_of(new_pk()), pks)) %>%
-        new_dm3()
+        dm_from_def()
     ),
     "fail_fk"
   )
@@ -212,6 +212,8 @@ test_that("dm_get_all_pks() with table arg", {
 })
 
 test_that("dm_get_all_pks() with table arg fails nicely", {
+  skip_if(packageVersion("tidyselect") > "1.2.0")
+
   expect_snapshot_error({
     nyc_comp() %>%
       dm_get_all_pks(c(airlines, weather, timetable, tabletime))

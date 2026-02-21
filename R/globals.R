@@ -18,6 +18,8 @@ utils::globalVariables(c(
   "columns", # <build_copy_queries>
   "schema_name", # <get_src_tbl_names>
   "table_name", # <get_src_tbl_names>
+  "remote_name", # <get_src_tbl_names>
+  "local_name", # <get_src_tbl_names>
   "child_uuid", # <fks_df_from_keys_info>
   "parent_uuid", # <fks_df_from_keys_info>
   "child_fk_cols", # <fks_df_from_keys_info>
@@ -32,9 +34,6 @@ utils::globalVariables(c(
   "new_table", # <dm_disentangle>
   "fks", # <dm_disentangle>
   "uks", # <dm_disentangle>
-  "pks", # <new_dm_def>
-  "uks", # <new_dm_def>
-  "fks", # <new_dm_def>
   "pks", # <str.dm>
   "fks", # <str.dm>
   "filters", # <str.dm>
@@ -45,12 +44,19 @@ utils::globalVariables(c(
   "ref_uuid", # <tbl_def_impl>
   "ref_column", # <tbl_def_impl>
   "column", # <tbl_def_impl>
+  "name", # <dm_ddl_pre>
+  "col_def", # <dm_ddl_pre>
+  "uk_def", # <dm_ddl_pre>
+  "fk_def", # <dm_ddl_pre>
+  "pk_def", # <dm_ddl_pre>
+  "remote_name", # <dm_ddl_pre>
   "renames", # <prepare_join>
   "kind", # <dm_get_data_model>
   "child_table", # <dm_get_data_model>
   "child_fk_cols", # <dm_get_data_model>
   "parent_table", # <dm_get_data_model>
   "parent_key_cols", # <dm_get_data_model>
+  "id", # <dm_get_data_model>
   "uk_col", # <dm_get_data_model>
   "column", # <dm_get_data_model>
   "key", # <dm_get_data_model>
@@ -119,8 +125,6 @@ utils::globalVariables(c(
   "JSON_AGG", # <sql_json_nest.PqConnection>
   "JSON_BUILD_OBJECT", # <sql_json_nest.PqConnection>
   "JSON_BUILD_OBJECT", # <sql_json_pack.PqConnection>
-  "JSON_AGG", # <sql_json_nest.PqConnection>
-  "JSON_BUILD_OBJECT", # <sql_json_nest.PqConnection>
   "key", # <is_unique_key_se>
   "any_na", # <is_unique_key_se>
   ".", # <is_unique_key_se>
@@ -234,6 +238,8 @@ utils::globalVariables(c(
   "film", # <dm_pixarfilms>
   "award_type", # <dm_pixarfilms>
   "genre", # <dm_pixarfilms>
+  "category", # <dm_pixarfilms>
+  "value", # <dm_pixarfilms>
   "column", # <enum_pk_candidates>
   "columns", # <enum_pk_candidates>
   "column", # <enum_pk_candidates_impl>

@@ -38,14 +38,14 @@ A tibble with the following columns:
 
 This function returns a tibble with information about
 the cardinality of the FK constraints.
-The printing for this object is special, use \code{\link[=as_tibble]{as_tibble()}}
+The printing for this object is special, use \code{\link[tibble:as_tibble]{tibble::as_tibble()}}
 to print as a regular tibble.
 }
 \details{
 Uses \code{\link[=examine_cardinality]{examine_cardinality()}} on each foreign key that is defined in the \code{\link{dm}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_examine_cardinalities()
 \dontshow{\}) # examplesIf}

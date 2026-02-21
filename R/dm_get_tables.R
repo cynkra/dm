@@ -31,6 +31,8 @@
 #'   dm_get_tables(keyed = TRUE) %>%
 #'   new_dm()
 dm_get_tables <- function(x, ..., keyed = FALSE) {
+  check_dots_empty()
+
   check_not_zoomed(x)
   if (isTRUE(keyed)) {
     dm_get_keyed_tables_impl(x)

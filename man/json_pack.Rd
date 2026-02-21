@@ -9,7 +9,7 @@ json_pack(.data, ..., .names_sep = NULL)
 \arguments{
 \item{.data}{A data frame, a data frame extension (e.g. a tibble), or  a lazy data frame (e.g. from dbplyr or dtplyr).}
 
-\item{...}{<\code{\link[=tidyr_tidy_select]{tidy-select}}> Columns to pack, specified
+\item{...}{<\code{\link[tidyr:tidyr_tidy_select]{tidy-select}}> Columns to pack, specified
 using name-variable pairs of the form \code{new_col = c(col1, col2, col3)}.
 The right hand side can be any valid tidy select expression.}
 

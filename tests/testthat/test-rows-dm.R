@@ -5,26 +5,27 @@ test_that("dumma", {
 })
 
 test_that("dm_rows_insert()", {
-  skip_if_not_installed("nycflights13")
   skip_if_not_installed("RSQLite")
   local_options(lifecycle_verbosity = "quiet")
 
+  # Entire dataset with all dimension tables populated
+  # with flights and weather data truncated:
+  flights_init <-
+    dm_nycflights13() %>%
+    dm_zoom_to(flights) %>%
+    filter(FALSE) %>%
+    dm_update_zoomed() %>%
+    dm_zoom_to(weather) %>%
+    filter(FALSE) %>%
+    dm_update_zoomed()
+
+  # Must use SQLite because other databases have strict foreign key constraints
+  sqlite <- DBI::dbConnect(RSQLite::SQLite())
+
+  # Target database:
+  flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
+
   expect_snapshot({
-    # Entire dataset with all dimension tables populated
-    # with flights and weather data truncated:
-    flights_init <-
-      dm_nycflights13() %>%
-      dm_zoom_to(flights) %>%
-      filter(FALSE) %>%
-      dm_update_zoomed() %>%
-      dm_zoom_to(weather) %>%
-      filter(FALSE) %>%
-      dm_update_zoomed()
-
-    sqlite <- dbConnect(RSQLite::SQLite())
-
-    # Target database:
-    flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
     print(dm_nrow(flights_sqlite))
 
     # First update:
@@ -82,40 +83,38 @@ test_that("dm_rows_insert()", {
     print(dm_nrow(flights_sqlite))
 
     # Disconnect
-    dbDisconnect(sqlite)
+    DBI::dbDisconnect(sqlite)
   })
 })
 
 test_that("dm_rows_update()", {
-  skip_if_not_installed("dbplyr")
+  # Test bad column order
+  dm_filter_rearranged <-
+    dm_for_filter() %>%
+    dm_select(tf_2, d, everything()) %>%
+    dm_select(tf_4, i, everything()) %>%
+    dm_select(tf_5, l, m, everything())
+
+  dm_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_filter_rearranged))
+
+  dm_update_local <- dm(
+    tf_1 = tibble(
+      a = 2L,
+      b = "q"
+    ),
+    tf_4 = tibble(
+      h = "e",
+      i = "sieben",
+    ),
+    tf_5 = tibble(
+      k = 3L,
+      ww = 3,
+    ),
+  )
+
+  dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
 
   expect_snapshot({
-    # Test bad column order
-    dm_filter_rearranged <-
-      dm_for_filter() %>%
-      dm_select(tf_2, d, everything()) %>%
-      dm_select(tf_4, i, everything()) %>%
-      dm_select(tf_5, l, m, everything())
-
-    suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_filter_rearranged))
-
-    dm_update_local <- dm(
-      tf_1 = tibble(
-        a = 2L,
-        b = "q"
-      ),
-      tf_4 = tibble(
-        h = "e",
-        i = "sieben",
-      ),
-      tf_5 = tibble(
-        k = 3L,
-        ww = 3,
-      ),
-    )
-
-    dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
-
     dm_copy %>%
       pull_tbl(tf_2) %>%
       arrange_all()
@@ -148,25 +147,24 @@ test_that("dm_rows_update()", {
 })
 
 test_that("dm_rows_truncate()", {
-  skip_if_not_installed("dbplyr")
   local_options(lifecycle_verbosity = "warning")
 
+  suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
+
+  dm_truncate_local <- dm(
+    tf_2 = tibble(
+      c = c("worm"),
+      d = 10L,
+    ),
+    tf_5 = tibble(
+      k = 3L,
+      m = "tree",
+    ),
+  )
+
+  dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_truncate_local))
+
   expect_snapshot({
-    suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
-
-    dm_truncate_local <- dm(
-      tf_2 = tibble(
-        c = c("worm"),
-        d = 10L,
-      ),
-      tf_5 = tibble(
-        k = 3L,
-        m = "tree",
-      ),
-    )
-
-    dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_truncate_local))
-
     dm_copy %>%
       pull_tbl(tf_2) %>%
       arrange_all()
@@ -242,7 +240,7 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
     order_of_deletion <- c("t4", "t2", "t3", "t1")
     walk(
       order_of_deletion,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", dbplyr::ident_q(.x))))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", .x)))
     )
   })
 
@@ -280,18 +278,130 @@ test_that("dm_rows_append() works with autoincrement PKs and FKS for selected DB
       collect()
   )
 
-  expect_snapshot({
-    local_dm$t1
-    local_dm$t2
-    local_dm$t3
-    local_dm$t4
-    filled_dm$t1
-    filled_dm$t2
-    filled_dm$t3
-    filled_dm$t4
-    filled_dm_in_place$t1
-    filled_dm_in_place$t2
-    filled_dm_in_place$t3
-    filled_dm_in_place$t4
-  })
+  expect_silent(
+    filled_dm_in_place_twice <- dm_rows_append(
+      dm_ai_empty_remote,
+      dm_ai_insert,
+      in_place = TRUE,
+      progress = FALSE
+    ) %>%
+      collect()
+  )
+
+  expect_snapshot(
+    variant = my_test_src_name,
+    {
+      local_dm$t1
+      local_dm$t2
+      local_dm$t3
+      local_dm$t4
+      filled_dm$t1
+      filled_dm$t2
+      filled_dm$t3
+      filled_dm$t4
+      filled_dm_in_place$t1
+      filled_dm_in_place$t2
+      filled_dm_in_place$t3
+      filled_dm_in_place$t4
+      filled_dm_in_place_twice$t1
+      filled_dm_in_place_twice$t2
+      filled_dm_in_place_twice$t3
+      filled_dm_in_place_twice$t4
+    }
+  )
+})
+
+
+test_that("dm_rows_append() works with autoincrement PKs and FKS locally", {
+  skip_if_remote_src()
+
+  # Setup
+  local_dm <-
+    dm_for_autoinc_1() %>%
+    dm_add_pk(t1, a, autoincrement = TRUE) %>%
+    dm_add_pk(t2, c, autoincrement = TRUE) %>%
+    dm_add_pk(t4, g, autoincrement = TRUE) %>%
+    dm_add_fk(t2, d, t1) %>%
+    dm_add_fk(t3, e, t1) %>%
+    dm_add_fk(t4, h, t2)
+
+  dm_ai_empty <-
+    local_dm %>%
+    dm_ptype()
+
+  # Corner case: empty + empty = empty
+  expect_identical(
+    expect_silent(dm_rows_append(
+      dm_ai_empty,
+      dm_ai_empty,
+      in_place = FALSE,
+      progress = FALSE
+    )),
+    dm_ai_empty
+  )
+
+  # Tests
+  dm_ai_insert <-
+    dm_for_autoinc_1() %>%
+    # Remove one PK column, only provided by local logic
+    dm_select(t4, -g) %>%
+    dm_zoom_to(t3) %>%
+    filter(0L == 1L) %>%
+    dm_update_zoomed()
+
+  expect_silent(
+    filled_dm <- dm_rows_append(
+      dm_ai_empty,
+      dm_ai_insert,
+      in_place = FALSE,
+      progress = FALSE
+    )
+  )
+
+  # Corner case: data + empty = data
+  expect_identical(
+    expect_silent(dm_rows_append(
+      filled_dm,
+      dm_ai_empty,
+      in_place = FALSE,
+      progress = FALSE
+    )),
+    filled_dm
+  )
+
+  expect_error(
+    dm_rows_append(
+      dm_ai_empty,
+      dm_ai_insert,
+      in_place = TRUE,
+      progress = FALSE
+    )
+  )
+
+  expect_silent(
+    filled_twice_dm <- dm_rows_append(
+      filled_dm,
+      dm_ai_insert,
+      in_place = FALSE,
+      progress = FALSE
+    )
+  )
+
+  expect_snapshot(
+    variant = my_test_src_name,
+    {
+      local_dm$t1
+      local_dm$t2
+      local_dm$t3
+      local_dm$t4
+      filled_dm$t1
+      filled_dm$t2
+      filled_dm$t3
+      filled_dm$t4
+      filled_twice_dm$t1
+      filled_twice_dm$t2
+      filled_twice_dm$t3
+      filled_twice_dm$t4
+    }
+  )
 })

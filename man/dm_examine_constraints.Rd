@@ -37,7 +37,7 @@ A tibble with the following columns:
 \description{
 This function returns a tibble with information about
 which key constraints are met (\code{is_key = TRUE}) or violated (\code{FALSE}).
-The printing for this object is special, use \code{\link[=as_tibble]{as_tibble()}}
+The printing for this object is special, use \code{\link[tibble:as_tibble]{tibble::as_tibble()}}
 to print as a regular tibble.
 }
 \details{
@@ -46,7 +46,7 @@ For the foreign key constraints, the tests check if for each foreign key constra
 form a subset of the values of the referenced column.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_examine_constraints()
 \dontshow{\}) # examplesIf}

@@ -42,7 +42,7 @@ because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_disambiguate_cols()
 \dontshow{\}) # examplesIf}

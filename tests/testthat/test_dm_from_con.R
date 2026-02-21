@@ -1,6 +1,4 @@
 test_that("table identifiers are quoted", {
-  skip_if_not_installed("dbplyr")
-
   con_db <- my_db_test_con()
 
   test_dm <- copy_dm_to(
@@ -18,16 +16,18 @@ test_that("table identifiers are quoted", {
   on.exit({
     walk(
       remote_tbl_names_copied,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", .x)))
     )
   })
 
   dm <-
     suppress_mssql_warning(dm_from_con(con_db, learn_keys = FALSE)) %>%
-    dm_select_tbl(!!!map(
-      DBI::dbUnquoteIdentifier(con_db, DBI::SQL(remote_tbl_names_copied)),
-      ~ .x@name[["table"]]
-    ))
+    dm_select_tbl(
+      !!!map(
+        DBI::dbUnquoteIdentifier(con_db, DBI::SQL(remote_tbl_names_copied)),
+        ~ .x@name[[length(.x@name)]]
+      )
+    )
 
   remote_tbl_names_learned <-
     dm %>%
@@ -35,12 +35,13 @@ test_that("table identifiers are quoted", {
     map_chr(remote_name_qual)
 
   # `gsub()`, cause schema names are part of the remote_names (also standard schemas "dbo" for MSSQL and "public" for Postgres).
-  expect_setequal(gsub("^.*\\.", "", unname(remote_tbl_names_learned)), unclass(DBI::dbQuoteIdentifier(con_db, names(dm))))
+  expect_setequal(
+    gsub("^.*\\.", "", unname(remote_tbl_names_learned)),
+    unclass(DBI::dbQuoteIdentifier(con_db, names(dm)))
+  )
 })
 
 test_that("table identifiers are quoted with learn_keys = FALSE", {
-  skip_if_not_installed("dbplyr")
-
   con_db <- my_db_test_con()
 
   test_dm <- copy_dm_to(
@@ -60,7 +61,7 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
   on.exit({
     walk(
       remote_tbl_names_copied,
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", .x)))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", .x)))
     )
   })
 
@@ -71,13 +72,14 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
     map_chr(remote_name_qual)
 
   con <- dm_get_con(dm)
-  expect_equal(gsub("^.*\\.", "", unname(remote_names)), unclass(DBI::dbQuoteIdentifier(con, names(dm))))
+  expect_equal(
+    gsub("^.*\\.", "", DBI::SQL(unname(remote_names))),
+    DBI::dbQuoteIdentifier(con, names(dm))
+  )
 })
 
 
 test_that("dm_from_src() deprecated", {
-  skip_if_not_installed("dbplyr")
-
   con_db <- my_db_test_con()
 
   expect_deprecated(dm_from_src(src_from_src_or_con(con_db), learn_keys = FALSE))

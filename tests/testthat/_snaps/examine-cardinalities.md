@@ -55,7 +55,7 @@
     Message
       ! No FKs available in `dm`.
 
----
+# `dm_examine_cardinalities()` API (2)
 
     Code
       dm_examine_cardinalities(dm_test_obj(), foo = "bar")

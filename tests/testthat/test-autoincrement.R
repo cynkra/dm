@@ -18,6 +18,8 @@ test_that("autoincrement produces valid R code", {
 })
 
 test_that("autoincrement produces valid SQL queries and R code - RSQLite", {
+  skip_if_not_installed("RSQLite")
+
   con <- DBI::dbConnect(RSQLite::SQLite())
   df <- dm:::build_copy_queries(con, dm)
 

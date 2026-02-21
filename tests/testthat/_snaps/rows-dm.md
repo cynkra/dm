@@ -6,11 +6,6 @@
 # dm_rows_insert()
 
     Code
-      flights_init <- dm_nycflights13() %>% dm_zoom_to(flights) %>% filter(FALSE) %>%
-        dm_update_zoomed() %>% dm_zoom_to(weather) %>% filter(FALSE) %>%
-        dm_update_zoomed()
-      sqlite <- dbConnect(RSQLite::SQLite())
-      flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
       print(dm_nrow(flights_sqlite))
     Output
       airlines airports  flights   planes  weather 
@@ -69,17 +64,11 @@
       airlines airports  flights   planes  weather 
             15       86       88      945        6 
     Code
-      dbDisconnect(sqlite)
+      DBI::dbDisconnect(sqlite)
 
 # dm_rows_update()
 
     Code
-      dm_filter_rearranged <- dm_for_filter() %>% dm_select(tf_2, d, everything()) %>%
-        dm_select(tf_4, i, everything()) %>% dm_select(tf_5, l, m, everything())
-      suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_filter_rearranged))
-      dm_update_local <- dm(tf_1 = tibble(a = 2L, b = "q"), tf_4 = tibble(h = "e", i = "sieben",
-        ), tf_5 = tibble(k = 3L, ww = 3, ), )
-      dm_update_copy <- suppressMessages(copy_dm_to(my_db_test_src(), dm_update_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
             d c        e        e1
@@ -265,11 +254,6 @@
 # dm_rows_truncate()
 
     Code
-      suppressMessages(dm_copy <- copy_dm_to(my_db_test_src(), dm_for_filter()))
-      dm_truncate_local <- dm(tf_2 = tibble(c = c("worm"), d = 10L, ), tf_5 = tibble(
-        k = 3L, m = "tree", ), )
-      dm_truncate_copy <- suppressMessages(copy_dm_to(my_db_test_src(),
-      dm_truncate_local))
       dm_copy %>% pull_tbl(tf_2) %>% arrange_all()
     Output
         c            d e        e1
@@ -440,107 +424,4 @@
       4     1 streetlamp h    
       5     1 tree       f    
       
-
-# dm_rows_append() works with autoincrement PKs and FKS for selected DBs
-
-    Code
-      local_dm$t1
-    Output
-      # A tibble: 3 x 2
-            a o    
-        <int> <chr>
-      1     5 a    
-      2     6 b    
-      3     7 c    
-    Code
-      local_dm$t2
-    Output
-      # A tibble: 3 x 3
-            c     d o    
-        <int> <int> <chr>
-      1    10     7 c    
-      2     9     6 b    
-      3     8     5 a    
-    Code
-      local_dm$t3
-    Output
-      # A tibble: 3 x 2
-            e o    
-        <int> <chr>
-      1     6 b    
-      2     5 a    
-      3     7 c    
-    Code
-      local_dm$t4
-    Output
-      # A tibble: 3 x 3
-            g     h o    
-        <int> <int> <chr>
-      1     1     8 a    
-      2     2     9 b    
-      3     3    10 c    
-    Code
-      filled_dm$t1
-    Output
-      # A tibble: 3 x 2
-            a o    
-        <int> <chr>
-      1     5 a    
-      2     6 b    
-      3     7 c    
-    Code
-      filled_dm$t2
-    Output
-      # A tibble: 3 x 3
-            c     d o    
-        <int> <int> <chr>
-      1    10     7 c    
-      2     9     6 b    
-      3     8     5 a    
-    Code
-      filled_dm$t3
-    Output
-      # A tibble: 0 x 2
-      # i 2 variables: e <int>, o <chr>
-    Code
-      filled_dm$t4
-    Output
-      # A tibble: 3 x 3
-            g     h o    
-        <int> <int> <chr>
-      1    NA     8 a    
-      2    NA     9 b    
-      3    NA    10 c    
-    Code
-      filled_dm_in_place$t1
-    Output
-      # A tibble: 3 x 2
-            a o    
-        <int> <chr>
-      1     1 a    
-      2     2 b    
-      3     3 c    
-    Code
-      filled_dm_in_place$t2
-    Output
-      # A tibble: 3 x 3
-            c     d o    
-        <int> <int> <chr>
-      1     1     3 c    
-      2     2     2 b    
-      3     3     1 a    
-    Code
-      filled_dm_in_place$t3
-    Output
-      # A tibble: 0 x 2
-      # i 2 variables: e <int>, o <chr>
-    Code
-      filled_dm_in_place$t4
-    Output
-      # A tibble: 3 x 3
-            g     h o    
-        <int> <int> <chr>
-      1     1     3 a    
-      2     2     2 b    
-      3     3     1 c    
 

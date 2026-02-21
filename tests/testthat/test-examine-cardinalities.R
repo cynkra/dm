@@ -17,7 +17,9 @@ test_that("`dm_examine_cardinalities()` API", {
     dm_examine_cardinalities(dm_test_obj(), progress = FALSE)
     dm_examine_cardinalities(dm = dm_test_obj())
   })
+})
 
+test_that("`dm_examine_cardinalities()` API (2)", {
   expect_snapshot(error = TRUE, {
     dm_examine_cardinalities(dm_test_obj(), foo = "bar")
   })

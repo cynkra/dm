@@ -12,9 +12,9 @@ foreign keys are also imported and do not have to be manually added
 afterwards.
 
 To demonstrate, we will connect to a [relational dataset
-repository](https://relational.fit.cvut.cz/) with a database server that
+repository](https://relational.fel.cvut.cz/) with a database server that
 is publicly accessible without registration. It hosts a [financial
-dataset](https://relational.fit.cvut.cz/dataset/Financial) that contains
+dataset](https://relational.fel.cvut.cz/dataset/Financial) that contains
 loan data along with relevant account information and transactions. We
 chose this dataset because the relationships between `loan`, `account`,
 and `transactions` tables are a good representation of databases that
@@ -32,9 +32,9 @@ library(RMariaDB)
 my_db <- dbConnect(
   MariaDB(),
   username = "guest",
-  password = "relational",
+  password = "ctu-relational",
   dbname = "Financial_ijs",
-  host = "relational.fit.cvut.cz"
+  host = "relational.fel.cvut.cz"
 )
 ```
 
@@ -47,7 +47,7 @@ library(dm)
 my_dm <- dm_from_con(my_db)
 my_dm
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> src:  mysql  [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
 #> Columns: 57
@@ -90,7 +90,7 @@ accounts <- tbl(my_db, "accounts")
 my_manual_dm <- dm(loans, accounts)
 my_manual_dm
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> src:  mysql  [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `loans`, `accounts`
 #> Columns: 11
@@ -110,7 +110,7 @@ information on keys and a crash course on databases, see
 `vignette("howto-dm-theory")`.
 
 The [model
-diagram](https://relational.fit.cvut.cz/assets/img/datasets-generated/financial.svg)
+diagram](https://relational.fel.cvut.cz/assets/img/datasets-generated/financial.svg)
 provided by our test database loosely illustrates the intended
 relationships between tables. In the diagram we can see that the `loans`
 table should be linked to the `accounts` table. Below we create those
@@ -153,7 +153,7 @@ trans <- tbl(my_db, "trans")
 my_dm_keys %>%
   dm(trans)
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> src:  mysql  [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `loans`, `accounts`, `trans`
 #> Columns: 21
@@ -173,7 +173,7 @@ it are transient unless stored in a new variable.
 ``` r
 my_dm_keys
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> src:  mysql  [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `loans`, `accounts`
 #> Columns: 11
@@ -186,7 +186,7 @@ my_dm_trans <-
 
 my_dm_trans
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  mysql  [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> src:  mysql  [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `loans`, `accounts`, `trans`
 #> Columns: 21
@@ -203,7 +203,7 @@ my_dm_keys %>%
 #> Renamed columns:
 #> * date -> loans.date, accounts.date
 #> # Source:   lazy query [?? x 10]
-#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> # Database: mysql [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #>       id account_id loans.date amount duration payments status district_id
 #>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr>        <int>
 #>  1  4959          2 1994-01-05  80952       24     3373 A                1
@@ -285,7 +285,7 @@ in the dm object.
 ``` r
 my_dm_total$total_loans
 #> # Source:   lazy query [?? x 2]
-#> # Database: mysql [guest@relational.fit.cvut.cz:NA/Financial_ijs]
+#> # Database: mysql [guest@relational.fel.cvut.cz:NA/Financial_ijs]
 #>    account_id total_amount
 #>         <int>        <dbl>
 #>  1          2        80952

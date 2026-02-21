@@ -96,18 +96,19 @@ See also <https://docs.google.com/document/d/1axInaYK6oK6riRio72uTAeQazuork1X0cl
 
 - macOS: <https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16>
 
-### Start the containers
+### Start new database containers
 
 ```sh
-docker-compose up
+make db-start
 # May take several minutes to pull the images
 ```
 
-Switches:
+### Start database containers without forcing recreation
 
-- `--force-recreate`: Recreate all databases from scratch
-- `-d`: Daemon mode, run in the background, use `docker-compose stop` to stop
-- `maria`, `mssql`, `postgres`: Run only a particular service
+```sh
+make db-restart
+# May take several minutes to pull the images
+```
 
 ### Connectivity test
 
@@ -120,12 +121,14 @@ DM_TEST_DOCKER_HOST=192.168.64.2 make connect
 Linux:
 
 ```sh
-DM_TEST_DOCKER_HOST=localhost make connect
+DM_TEST_DOCKER_HOST=127.0.0.1 make connect
 ```
 
 Controlled with environment variables:
 
-- `DM_TEST_DOCKER_HOST`: `localhost` on Linux, see output of `colima status` on macOS
+- `DM_TEST_DOCKER_HOST`: `127.0.0.1` or `localhost` on Linux, see output of `colima status` on macOS
+
+    (On Linux, using `localhost` instead of `127.0.0.1` may cause problems for MariaDB.)
 
 See also the `Makefile`.
 
@@ -136,8 +139,9 @@ The subsequent instructions omit setting the environment variables explicitly.
 ### Test against a specific database backend
 
 ```sh
-make test-mssql
+make test-postgres
 ```
+
 
 ### Test against all backends
 
@@ -149,32 +153,8 @@ make -j1 test
 ### Test on Docker
 
 ```sh
-# make docker-build
+# make docker-build # not necessary, image available on ghcr.io
 make docker-test
-```
-
-
-### mssql: For a new container, create the database
-
-FIXME: Automate this.
-
-```sh
-R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
-```
-
-
-### maria: For a new container, grant permissions
-
-FIXME: Automate this.
-
-```sh
-R -q -e 'suppressMessages(pkgload::load_all()); DBI::dbExecute(test_src_maria(root = TRUE)$con, "GRANT ALL ON *.* TO '"'"'compose'"'"'@'"'"'%'"'"';"); DBI::dbExecute(test_src_maria()$con, "FLUSH PRIVILEGES")'
-```
-
-Linux:
-
-```sh
-DM_TEST_DOCKER_HOST=localhost DM_TEST_MSSQL_ODBC_LIB=/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.2.so.1.1 R -q -e 'pkgload::load_all(); DBI::dbExecute(test_src_mssql(FALSE)$con, "CREATE DATABASE test")'
 ```
 
 

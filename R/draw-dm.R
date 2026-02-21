@@ -27,16 +27,18 @@
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
 #'   Pass this value explicitly if your code not only uses this function
 #'   to display a data model but relies on the type of the return value.
-#' @param table_description `r lifecycle::badge("experimental")`
+#' @param font_size `r lifecycle::badge("experimental")`
 #'
-#'   Provide a named character vector or a named list with the names
-#'   corresponding to the table names to describe.
-#'   Descriptions across several lines can be achieved using the newline symbol `\n`.
-#' @param font_size_table_description `r lifecycle::badge("experimental")`
+#'   Font size for:
 #'
-#'   Font size for `table_description`, defaults to `8`.
+#'   - `header`, defaults to `16`
+#'   - `column`, defaults to `16`
+#'   - `table_description`, defaults to `8`
+#'
+#'   Can be set as a named integer vector, e.g. `c(table_headers = 18L, table_description = 6L)`.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
+#' @seealso [dm_set_table_description()] for adding details to one or more tables in the diagram
 #'
 #' @export
 #'
@@ -45,7 +47,7 @@
 #' Currently, this is an object of class `grViz` (see also
 #' [DiagrammeR::grViz()]), but this is subject to change.
 #'
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13() %>%
 #'   dm_draw()
 #'
@@ -57,30 +59,31 @@
 #'
 #' dm_nycflights13() %>%
 #'   dm_get_colors()
-dm_draw <- function(dm,
-                    rankdir = "LR",
-                    ...,
-                    col_attr = NULL,
-                    view_type = c("keys_only", "all", "title_only"),
-                    columnArrows = TRUE,
-                    graph_attrs = "",
-                    node_attrs = "",
-                    edge_attrs = "",
-                    focus = NULL,
-                    graph_name = "Data Model",
-                    column_types = NULL,
-                    backend = "DiagrammeR",
-                    table_description = NULL,
-                    font_size_table_description = 8L) {
-  #
+dm_draw <- function(
+  dm,
+  rankdir = "LR",
+  ...,
+  col_attr = NULL,
+  view_type = c("keys_only", "all", "title_only"),
+  columnArrows = TRUE,
+  graph_attrs = "",
+  node_attrs = "",
+  edge_attrs = "",
+  focus = NULL,
+  graph_name = "Data Model",
+  column_types = NULL,
+  backend = "DiagrammeR",
+  font_size = NULL
+) {
   check_not_zoomed(dm)
   check_dots_empty()
-  if (!is.null(table_description)) {
-    if (!is_named(table_description)) {
-      abort_arg_needs_names("table_description")
-    }
-    walk(names(table_description), dm_tbl_name, dm = dm)
-  }
+
+  tbl_names <- src_tbls_impl(dm, quiet = TRUE)
+  table_description <- dm_get_table_description_impl(
+    dm,
+    set_names(seq_along(tbl_names), tbl_names)
+  ) %>%
+    prep_recode()
 
   view_type <- arg_match(view_type)
 
@@ -114,7 +117,7 @@ dm_draw <- function(dm,
     focus = focus,
     graph_name = graph_name,
     table_description = as.list(table_description),
-    font_size_table_description = font_size_table_description
+    font_size = as.list(font_size)
   )
   bdm_render_graph(graph, top_level_fun = "dm_draw")
 }
@@ -227,10 +230,10 @@ dm_get_all_column_types <- function(x) {
 #'
 #' @description
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
-#' The colors can either be either specified with hex color codes or using the names of the built-in R colors.
+#' The colors can either be specified with hex color codes or using the names of the built-in R colors.
 #' An overview of the colors corresponding to the standard color names can be found at
 #' the bottom of
-#' [http://rpubs.com/krlmlr/colors](http://rpubs.com/krlmlr/colors).
+#' [https://rpubs.com/krlmlr/colors](https://rpubs.com/krlmlr/colors).
 #'
 #' @inheritParams dm_draw
 #' @param ... Colors to set in the form `color = table`.
@@ -239,7 +242,7 @@ dm_get_all_column_types <- function(x) {
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13(color = FALSE) %>%
 #'   dm_set_colors(
 #'     darkblue = starts_with("air"),
@@ -259,10 +262,14 @@ dm_get_all_column_types <- function(x) {
 #' @autoglobal
 dm_set_colors <- function(dm, ...) {
   quos <- enquos(...)
-  if (any(names(quos) == "")) abort_only_named_args("dm_set_colors", "the colors")
+  if (any(names(quos) == "")) {
+    abort_only_named_args("dm_set_colors", "the colors")
+  }
   cols <- names(quos)
-  if (!all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
-    all(cols %in% src_tbls_impl(dm))) {
+  if (
+    !all(cols[!is_hex_color(cols)] %in% dm_get_available_colors()) &&
+      all(cols %in% src_tbls_impl(dm))
+  ) {
     abort_wrong_syntax_set_cols()
   }
 
@@ -285,7 +292,7 @@ dm_set_colors <- function(dm, ...) {
     mutate(display = coalesce(new_display, display)) %>%
     select(-new_display)
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 color_quos_to_display <- function(...) {

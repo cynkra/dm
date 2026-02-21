@@ -10,40 +10,85 @@
 \usage{
 \method{unite}{dm_zoomed}(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE)
 
-\method{unite}{dm_keyed_tbl}(data, ...)
+\method{unite}{dm_keyed_tbl}(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE)
 
-\method{separate}{dm_zoomed}(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, ...)
+\method{separate}{dm_zoomed}(
+  data,
+  col,
+  into,
+  sep = "[^[:alnum:]]+",
+  remove = TRUE,
+  convert = FALSE,
+  extra = "warn",
+  fill = "warn",
+  ...
+)
 
-\method{separate}{dm_keyed_tbl}(data, ...)
+\method{separate}{dm_keyed_tbl}(
+  data,
+  col,
+  into,
+  sep = "[^[:alnum:]]+",
+  remove = TRUE,
+  convert = FALSE,
+  extra = "warn",
+  fill = "warn",
+  ...
+)
 }
 \arguments{
 \item{data}{object of class \code{dm_zoomed}}
 
-\item{col}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
+\item{col}{The name of the new column, as a string or symbol.
 
-For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
+This argument is passed by expression and supports
+\link[rlang:topic-inject]{quasiquotation} (you can unquote strings
+and symbols). The name is captured from the expression with
+\code{\link[rlang:defusing-advanced]{rlang::ensym()}} (note that this kind of interface where
+symbols do not represent actual objects is now discouraged in the
+tidyverse; we support it here for backward compatibility).}
 
 \item{...}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
 For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
 
-\item{sep}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
+\item{sep}{Separator to use between values.}
 
-For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
+\item{remove}{If \code{TRUE}, remove input columns from output data frame.}
 
-\item{remove}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
+\item{na.rm}{If \code{TRUE}, missing values will be removed prior to uniting
+each value.}
 
-For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
+\item{into}{Names of new variables to create as character vector.
+Use \code{NA} to omit the variable in the output.}
 
-\item{na.rm}{see \code{\link[tidyr:unite]{tidyr::unite()}}}
+\item{convert}{If \code{TRUE}, will run \code{\link[=type.convert]{type.convert()}} with
+\code{as.is = TRUE} on new columns. This is useful if the component
+columns are integer, numeric or logical.
 
-\item{into}{see \code{\link[tidyr:separate]{tidyr::separate()}}}
+NB: this will cause string \code{"NA"}s to be converted to \code{NA}s.}
+
+\item{extra}{If \code{sep} is a character vector, this controls what
+happens when there are too many pieces. There are three valid options:
+\itemize{
+\item \code{"warn"} (the default): emit a warning and drop extra values.
+\item \code{"drop"}: drop any extra values without a warning.
+\item \code{"merge"}: only splits at most \code{length(into)} times
+}}
+
+\item{fill}{If \code{sep} is a character vector, this controls what
+happens when there are not enough pieces. There are three valid options:
+\itemize{
+\item \code{"warn"} (the default): emit a warning and fill from the right
+\item \code{"right"}: fill with missing values on the right
+\item \code{"left"}: fill with missing values on the left
+}}
 }
 \description{
 Use these methods without the '.dm_zoomed' suffix (see examples).
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 zoom_united <- dm_nycflights13() \%>\%
   dm_zoom_to(flights) \%>\%
   select(year, month, day) \%>\%

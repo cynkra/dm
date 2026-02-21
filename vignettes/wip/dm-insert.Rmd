@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-fansi::set_knit_hooks(knitr::knit_hooks)
 options(crayon.enabled = TRUE, width = 75, cli.width = 75)
 
 knit_print.grViz <- function(x, ...) {
@@ -182,6 +181,6 @@ dm_patch_tbl <- function(dm, ...) {
   def <- dm_get_def(dm)
   idx <- match(names(new_tables), def$table)
   def[idx, "data"] <- unname(new_tables)
-  new_dm3(def)
+  dm_from_def(def)
 }
 ```

@@ -31,3 +31,14 @@ tail.dm_zoomed <- function(x, n = 6L, ...) {
   # dm method provided by utils
   replace_zoomed_tbl(x, tail(tbl_zoomed(x), n, ...))
 }
+
+fast_tibble <- function(...) {
+  out <- vctrs::df_list(...)
+  tibble::new_tibble(out)
+}
+
+recode_compat <- function(x, y) {
+  x <- unname(x)
+  idx <- vctrs::vec_match(names(y), x)
+  vctrs::vec_assign(x, idx, y)
+}

@@ -73,7 +73,8 @@ test_that("dm() works for adding tables", {
 
   # are in the default case (`repair = 'unique'`) the tables renamed (old table AND new table) according to "unique" default setting
   expect_identical(
-    dm(dm_for_filter(), tf_1 = data_card_1(), .name_repair = "unique", .quiet = TRUE) %>% src_tbls_impl(),
+    dm(dm_for_filter(), tf_1 = data_card_1(), .name_repair = "unique", .quiet = TRUE) %>%
+      src_tbls_impl(),
     c("tf_1...1", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6", "tf_1...7")
   )
 
@@ -91,8 +92,6 @@ test_that("dm() works for adding tables", {
     dm(dm_for_filter(), tf_7_new = tf_7()) %>% dm_select_tbl(tf_1, tf_7_new, everything())
   )
 
-  skip_if_not_installed("dbplyr")
-
   # error in case table srcs don't match
   expect_dm_error(
     dm(dm_for_filter(), data_card_1_duckdb()),
@@ -108,7 +107,8 @@ test_that("dm() works for adding tables", {
 
 test_that("dm() for adding tables with compound keys", {
   expect_snapshot({
-    dm(dm_for_flatten(), res_flat = result_from_flatten()) %>% dm_paste(options = c("select", "keys"))
+    dm(dm_for_flatten(), res_flat = result_from_flatten()) %>%
+      dm_paste(options = c("select", "keys"))
   })
 })
 
@@ -125,7 +125,7 @@ test_that("dm() works for dm objects", {
       dm_get_def(dm_for_flatten()),
       dm_get_def(dm_for_disambiguate())
     ) %>%
-      new_dm3()
+      dm_from_def()
   )
 })
 
@@ -151,8 +151,6 @@ test_that("errors: duplicate table names, src mismatches", {
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
   })
 
-  skip_if_not_installed("dbplyr")
-  skip_if_not_installed("duckdb")
   expect_dm_error(dm(dm_for_flatten(), dm_for_filter_duckdb()), "not_same_src")
 })
 
@@ -184,7 +182,7 @@ test_that("auto-renaming works", {
         tf_6...17 = tf_6
       ))
     ) %>%
-      new_dm3()
+      dm_from_def()
   )
 
   expect_silent(
@@ -193,7 +191,6 @@ test_that("auto-renaming works", {
 })
 
 test_that("test error output for src mismatches", {
-  skip_if_not_installed("dbplyr")
   skip_if_not(getRversion() >= "4.0")
 
   expect_snapshot({
@@ -208,13 +205,24 @@ test_that("output for dm() with dm", {
     dm()
     dm(empty_dm())
     dm(dm_for_filter()) %>% collect()
-    dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique", .quiet = TRUE) %>% collect()
+    dm(
+      dm_for_filter(),
+      dm_for_flatten(),
+      dm_for_filter(),
+      .name_repair = "unique",
+      .quiet = TRUE
+    ) %>%
+      collect()
   })
+})
 
+test_that("output for dm() with dm (2)", {
   expect_snapshot(error = TRUE, {
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
   })
+})
 
+test_that("output for dm() with dm (3)", {
   expect_snapshot({
     dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>% collect()
   })
@@ -227,7 +235,8 @@ test_that("output dm() for dm for compound keys", {
   })
 
   expect_snapshot({
-    dm(dm_for_flatten(), dm_for_flatten(), .name_repair = "unique") %>% dm_paste(options = c("select", "keys"))
+    dm(dm_for_flatten(), dm_for_flatten(), .name_repair = "unique") %>%
+      dm_paste(options = c("select", "keys"))
   })
 })
 
@@ -271,8 +280,6 @@ test_that("'collect.dm_zoomed()' collects tables, with message", {
 })
 
 test_that("'compute.dm()' computes tables on DB", {
-  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
-
   def <-
     dm_for_filter_duckdb() %>%
     dm_filter(tf_1 = a > 3) %>%
@@ -286,8 +293,6 @@ test_that("'compute.dm()' computes tables on DB", {
 })
 
 test_that("'compute.dm_zoomed()' computes tables on DB", {
-  skip("Needs https://github.com/tidyverse/dbplyr/pull/649")
-
   dm_zoomed_for_compute <-
     dm_for_filter_duckdb() %>%
     dm_zoom_to(tf_1) %>%
@@ -310,6 +315,13 @@ test_that("'compute.dm_zoomed()' computes tables on DB", {
 
   remote_names <- map(def$data, dbplyr::remote_name)
   expect_equal(lengths(remote_names), rep_along(remote_names, 1))
+})
+
+test_that("'compute.dm()' fails with `temporary = FALSE` (#2059)", {
+  expect_snapshot(error = TRUE, {
+    dm_for_filter_duckdb() %>%
+      compute(temporary = FALSE)
+  })
 })
 
 test_that("some methods/functions for `dm_zoomed` work", {
@@ -354,7 +366,20 @@ test_that("`pull_tbl()`-methods work", {
     pull_tbl(dm_for_filter(), tf_5, keyed = TRUE),
     dm_get_tables(dm_for_filter(), keyed = TRUE)[["tf_5"]]
   )
+})
 
+test_that("`pull_tbl()`-methods work for (0)", {
+  tbl <-
+    dm_nycflights_small() %>%
+    dm_set_table_description("Flugzeuge" = planes) %>%
+    pull_tbl(planes, keyed = TRUE)
+
+  skip_if_not_installed("labelled")
+
+  expect_identical(labelled::label_attribute(tbl), "Flugzeuge")
+})
+
+test_that("`pull_tbl()`-methods work for (1)", {
   skip_if_src("maria")
   expect_equivalent_tbl(
     dm_for_filter() %>%
@@ -385,7 +410,7 @@ test_that("`pull_tbl()`-methods work (2)", {
     dm_for_filter() %>%
       dm_get_def() %>%
       mutate(zoom = list(tf_1)) %>%
-      new_dm3(zoomed = TRUE, validate = FALSE) %>%
+      dm_from_def(zoomed = TRUE, validate = FALSE) %>%
       pull_tbl(),
     "not_pulling_multiple_zoomed"
   )
@@ -469,8 +494,6 @@ test_that("dm_get_con() errors", {
 })
 
 test_that("dm_get_con() works", {
-  skip_if_not_installed("dbplyr")
-
   expect_identical(
     dm_get_con(dm_for_filter_db()),
     con_from_src_or_con(my_db_test_src())
@@ -492,8 +515,6 @@ test_that("str()", {
 })
 
 test_that("output", {
-  skip_if_not_installed("nycflights13")
-
   expect_snapshot({
     print(dm())
 
@@ -511,7 +532,6 @@ test_that("output", {
 
 
 # Compound tests ----------------------------------------------------------
-
 
 test_that("output for compound keys", {
   # FIXME: COMPOUND: Need proper test

@@ -12,3 +12,5 @@ dm*.tgz
 CRAN-RELEASE
 *.log
 CRAN-SUBMISSION
+.vscode
+tests/testthat/_problems

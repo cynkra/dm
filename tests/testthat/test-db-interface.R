@@ -3,8 +3,6 @@ test_that("data source found", {
   expect_silent(my_test_src_fun()())
 })
 
-skip_if_not_installed("dbplyr")
-
 test_that("copy_dm_to() copies data frames to databases", {
   skip_if_ide()
 
@@ -22,27 +20,22 @@ test_that("copy_dm_to() copies data frames to databases", {
 })
 
 test_that("copy_dm_to() copies data frames from any source", {
-  expect_equivalent_dm(
-    expect_deprecated_obj(
-      copy_dm_to(default_local_src(), dm_for_filter())
-    ),
-    dm_for_filter()
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(default_local_src(), dm_for_filter())
+  })
 })
 
 # FIXME: Add test that set_key_constraints = FALSE doesn't set key constraints,
 # in combination with dm_learn_from_db
 
 test_that("copy_dm_to() rejects overwrite and types arguments", {
-  expect_dm_error(
-    copy_dm_to(my_test_src(), dm_for_filter(), overwrite = TRUE),
-    class = "no_overwrite"
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(my_test_src(), dm_for_filter(), overwrite = TRUE)
+  })
 
-  expect_dm_error(
-    copy_dm_to(my_test_src(), dm_for_filter(), types = character()),
-    class = "no_types"
-  )
+  expect_snapshot(error = TRUE, {
+    copy_dm_to(my_test_src(), dm_for_filter(), types = character())
+  })
 })
 
 test_that("copy_dm_to() fails with duplicate table names", {
@@ -67,16 +60,13 @@ test_that("default table repair works", {
     glue::glue("{table_name}_2020_05_15_10_45_29_0")
   }
 
-  mockr::with_mock(
-    unique_db_table_name = my_unique_db_table_name,
-    {
-      repair_table_names_for_db(table_names, temporary = FALSE, con)
-      expect_equal(calls, 0)
-      repair_table_names_for_db(table_names, temporary = TRUE, con)
-      expect_gt(calls, 0)
-    },
-    .env = asNamespace("dm")
+  local_mocked_bindings(
+    unique_db_table_name = function(table_name) my_unique_db_table_name(table_name)
   )
+  repair_table_names_for_db(table_names, temporary = FALSE, con)
+  expect_equal(calls, 0)
+  repair_table_names_for_db(table_names, temporary = TRUE, con)
+  expect_gt(calls, 0)
 })
 
 test_that("copy_dm_to() fails legibly if target schema missing for MSSQL & Postgres", {
@@ -103,7 +93,7 @@ test_that("copy_dm_to() fails legibly with schema argument for MSSQL & Postgres"
   db_schema_create(src_db$con, "copy_dm_to_schema")
 
   withr::defer({
-    try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
+    try(DBI::dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
   })
 
   expect_dm_error(
@@ -137,9 +127,9 @@ test_that("copy_dm_to() works with schema argument for MSSQL & Postgres", {
     order_of_deletion <- c("tf_2", "tf_1", "tf_5", "tf_6", "tf_4", "tf_3")
     walk(
       dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(dbExecute(src_db$con, paste0("DROP TABLE ", remote_name_qual(.x))))
+      ~ try(DBI::dbExecute(src_db$con, paste0("DROP TABLE ", remote_name_qual(.x))))
     )
-    try(dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
+    try(DBI::dbExecute(src_db$con, "DROP SCHEMA copy_dm_to_schema"))
   })
 
   expect_silent(
@@ -181,70 +171,6 @@ test_that("copy_dm_to() fails with schema argument for databases where schema is
   )
 })
 
-
-test_that("build_copy_queries snapshot test for pixarfilms", {
-  src_db <- my_db_test_src()
-
-  # build regular dm from `dm_pixarfilms()`
-  pixar_dm <-
-    # fetch sample dm
-    dm_pixarfilms() %>%
-    # make it regular
-    dm_filter(pixar_films = (!is.na(film))) %>%
-    dm_select_tbl(-pixar_people)
-
-  skip_if_not_installed("testthat", "3.1.1")
-
-  expect_snapshot(
-    variant = my_test_src_name,
-    {
-      pixar_dm %>%
-        build_copy_queries(
-          src_db,
-          .
-        ) %>%
-        as.list() # to print full queries
-    }
-  )
-})
-
-
-test_that("build_copy_queries avoids duplicate indexes", {
-  src_db <- my_db_test_src()
-
-  # build a dm whose index might be duplicated if naively build (child__a__key)
-  ambiguous_dm <- dm(
-    parent1 = tibble(key = 1),
-    parent2 = tibble(a__key = 1),
-    child = tibble(a__key = 1),
-    child__a = tibble(key = 1)
-  ) %>%
-    dm_add_pk(parent1, key) %>%
-    dm_add_pk(parent2, a__key) %>%
-    dm_add_fk(child, a__key, parent2) %>%
-    dm_add_fk(child__a, key, parent2)
-
-  queries <-
-    build_copy_queries(
-      src_db,
-      ambiguous_dm,
-      table_names =
-        names(ambiguous_dm) %>%
-          repair_table_names_for_db(temporary = FALSE, con = src_db, schema = NULL)
-    )
-
-  expect_equal(anyDuplicated(unlist(queries$index_name)), 0)
-
-  skip_if_not_installed("testthat", "3.1.1")
-
-  expect_snapshot(
-    variant = my_test_src_name,
-    {
-      as.list(queries)
-    }
-  )
-})
-
 test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
   skip_if_src_not(c("postgres", "sqlite", "mssql", "maria"))
 
@@ -264,7 +190,7 @@ test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
     order_of_deletion <- c("xt4", "xt2", "xt3", "xt1")
     walk(
       dm_get_tables_impl(remote_dm)[order_of_deletion],
-      ~ try(dbExecute(con_db, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
+      ~ try(DBI::dbExecute(con_db, paste0("DROP TABLE ", dbplyr::remote_name(.x))))
     )
   })
 
@@ -284,4 +210,32 @@ test_that("copy_dm_to() works with autoincrement PKs and FKS on selected DBs", {
     local_dm_ptype,
     collected_dm
   )
+})
+
+test_that("copy_dm_to(table_names = ) (#250)", {
+  dm <- dm(x = tibble(a = 1))
+  dm_copy <- copy_dm_to(
+    my_db_test_con(),
+    dm,
+    table_names = c(x = "y"),
+    temporary = FALSE
+  )
+  withr::defer({
+    try(DBI::dbExecute(my_db_test_con(), "DROP TABLE y", immediate = TRUE))
+  })
+  expect_equal(dbplyr::remote_name(dm_copy$x), "y")
+
+  dm <- dm(x = tibble(a = 1), y = tibble(b = 1))
+  dm_copy <- copy_dm_to(
+    my_db_test_con(),
+    dm,
+    table_names = ~ paste0(.x, "1"),
+    temporary = FALSE
+  )
+  withr::defer({
+    try(DBI::dbExecute(my_db_test_con(), "DROP TABLE x1", immediate = TRUE))
+    try(DBI::dbExecute(my_db_test_con(), "DROP TABLE y1", immediate = TRUE))
+  })
+  expect_equal(dbplyr::remote_name(dm_copy$x), "x1")
+  expect_equal(dbplyr::remote_name(dm_copy$y), "y1")
 })

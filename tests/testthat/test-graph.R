@@ -7,12 +7,12 @@ test_that("functions working with graphs do the right thing?", {
   )
 
   join_list_tbl_3 <- tibble::tribble(
-    ~lhs,     ~rhs, ~rank, ~has_father,
-    "tf_2", "tf_3",     2,        TRUE,
-    "tf_4", "tf_3",     3,        TRUE,
-    "tf_1", "tf_2",     4,        TRUE,
-    "tf_5", "tf_4",     5,        TRUE,
-    "tf_6", "tf_5",     6,        TRUE
+    ~lhs   , ~rhs   , ~rank , ~has_father ,
+    "tf_2" , "tf_3" ,     2 , TRUE        ,
+    "tf_4" , "tf_3" ,     3 , TRUE        ,
+    "tf_1" , "tf_2" ,     4 , TRUE        ,
+    "tf_5" , "tf_4" ,     5 , TRUE        ,
+    "tf_6" , "tf_5" ,     6 , TRUE
   )
 
   expect_identical_graph(
@@ -28,5 +28,15 @@ test_that("functions working with graphs do the right thing?", {
 
   expect_snapshot({
     attr(igraph::E(create_graph_from_dm(nyc_comp())), "vnames")
+  })
+})
+
+test_that("empty graph", {
+  opt <- igraph::igraph_options(print.id = FALSE)
+  on.exit(igraph::igraph_options(opt))
+
+  expect_snapshot({
+    create_graph_from_dm(empty_dm())
+    create_graph_from_dm(dm(x = tibble(a = 1)))
   })
 })

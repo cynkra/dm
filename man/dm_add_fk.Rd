@@ -42,6 +42,7 @@ Defines behavior if a row in the parent table is deleted.
 and the operation is aborted if child rows exist
 - \code{"cascade"} means that the child row is also deleted
 This setting is picked up by \code{\link[=copy_dm_to]{copy_dm_to()}} with \code{set_key_constraints = TRUE},
+and by \code{\link[=dm_sql]{dm_sql()}},
 and might be considered by \code{\link[=dm_rows_delete]{dm_rows_delete()}} in a future version.}
 }
 \value{
@@ -67,7 +68,7 @@ This can happen
 These columns are then a so-called "implicit unique key" of the referenced table and can be listed via \code{\link[=dm_get_all_uks]{dm_get_all_uks()}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 nycflights_dm <- dm(
   planes = nycflights13::planes,
   flights = nycflights13::flights,

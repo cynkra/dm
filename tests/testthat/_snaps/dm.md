@@ -139,7 +139,7 @@
       Primary keys: 16
       Foreign keys: 14
 
----
+# output for dm() with dm (2)
 
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter())
@@ -154,7 +154,7 @@
         * "tf_5" at locations 5 and 16.
         * ...
 
----
+# output for dm() with dm (3)
 
     Code
       dm(dm_for_filter(), dm_for_flatten(), dm_for_filter(), .name_repair = "unique") %>%
@@ -219,6 +219,7 @@
         dm::dm_add_pk(dim_2, dim_2_pk) %>%
         dm::dm_add_pk(dim_3, dim_3_pk) %>%
         dm::dm_add_pk(dim_4, dim_4_pk) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -265,6 +266,7 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_fk(fact, c(dim_1_key_1, dim_1_key_2), dim_1) %>%
         dm::dm_add_fk(fact, dim_2_key, dim_2) %>%
         dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
@@ -330,6 +332,14 @@
         dm::dm_add_fk(fact...6, dim_2_key, dim_2...8) %>%
         dm::dm_add_fk(fact...6, dim_3_key, dim_3...9) %>%
         dm::dm_add_fk(fact...6, dim_4_key, dim_4...10)
+
+# 'compute.dm()' fails with `temporary = FALSE` (#2059)
+
+    Code
+      dm_for_filter_duckdb() %>% compute(temporary = FALSE)
+    Condition
+      Error in `compute()`:
+      ! `compute.dm()` does not support `temporary = FALSE`.
 
 # output
 
@@ -419,7 +429,8 @@
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% collect()
     Message
-      Detaching table from dm, use `collect(pull_tbl())` instead to silence this message.
+      Detaching table from dm.
+      i Use `. %>% pull_tbl() %>% collect()` instead to silence this message.
     Output
       # A tibble: 144 x 15
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
@@ -436,7 +447,7 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
       # i 134 more rows
       # i 5 more variables: wind_gust <dbl>, precip <dbl>, pressure <dbl>,
-      #   visib <dbl>, time_hour <dttm>
+      #   visib <dbl>, time_hour <chr>
     Code
       pull_tbl(nyc_comp(), weather)
     Output
@@ -455,7 +466,7 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
       # i 134 more rows
       # i 5 more variables: wind_gust <dbl>, precip <dbl>, pressure <dbl>,
-      #   visib <dbl>, time_hour <dttm>
+      #   visib <dbl>, time_hour <chr>
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% pull_tbl()
     Output
@@ -474,7 +485,7 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
       # i 134 more rows
       # i 5 more variables: wind_gust <dbl>, precip <dbl>, pressure <dbl>,
-      #   visib <dbl>, time_hour <dttm>
+      #   visib <dbl>, time_hour <chr>
 
 # glimpse.dm() works
 

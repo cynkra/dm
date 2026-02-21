@@ -9,7 +9,7 @@
     Output
       [1] "surjective mapping (child: 1 to n -> parent: 1)"
     Code
-      examine_cardinality(data_card_1(), data_card_1())
+      examine_cardinality(data_card_1(), suppress_mssql_message(compute(data_card_1())))
     Output
       [1] "bijective mapping (child: 1 -> parent: 1)"
     Code

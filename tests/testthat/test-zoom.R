@@ -102,7 +102,7 @@ test_that("dm_update_tbl() works", {
       zoom = if_else(table == "tf_6", list(tf_7()), list(NULL)),
       col_tracker_zoom = if_else(table == "tf_6", list(character()), list(NULL)),
     ) %>%
-    new_dm3(zoomed = TRUE)
+    dm_from_def(zoomed = TRUE)
 
   # test that the old table is updated correctly
   expect_equivalent_dm(
@@ -115,8 +115,6 @@ test_that("dm_update_tbl() works", {
 
 # after #271:
 test_that("all cols are tracked in zoomed table", {
-  skip_if_not_installed("nycflights13")
-
   expect_identical(
     dm_nycflights_small() %>%
       dm_zoom_to(flights) %>%

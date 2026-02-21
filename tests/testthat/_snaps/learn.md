@@ -4,8 +4,9 @@
       meta %>% dm_select_tbl(-schemata) %>% dm_zoom_to(table_constraints) %>% filter(
         constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY")) %>% dm_update_zoomed() %>%
         dm_get_tables() %>% map(select, -any_of("column_default"), -contains(
-        "catalog"), -contains("schema")) %>% map(arrange_all_but_constraint_name) %>%
-        map(collect) %>% map(~ if ("constraint_name" %in% colnames(.x)) {
+        "catalog"), -contains("schema")) %>% map(collect) %>% map(
+        arrange_all_but_constraint_name) %>% map(~ if ("constraint_name" %in%
+        colnames(.x)) {
         .x %>% mutate(constraint_name = as.integer(forcats::fct_inorder(
           constraint_name)))
       } else {
@@ -263,84 +264,132 @@
           },
           {
             "constraint_name": 2,
-            "table_name": "tf_2",
-            "column_name": "c",
+            "table_name": "tf_1",
+            "column_name": "a",
             "ordinal_position": 1
           },
           {
             "constraint_name": 3,
             "table_name": "tf_2",
-            "column_name": "d",
+            "column_name": "c",
             "ordinal_position": 1
           },
           {
             "constraint_name": 4,
+            "table_name": "tf_2",
+            "column_name": "c",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_name": 5,
+            "table_name": "tf_2",
+            "column_name": "d",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_name": 6,
             "table_name": "tf_2",
             "column_name": "e",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 4,
+            "constraint_name": 6,
             "table_name": "tf_2",
             "column_name": "e1",
             "ordinal_position": 2
           },
           {
-            "constraint_name": 5,
+            "constraint_name": 7,
             "table_name": "tf_3",
             "column_name": "f",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 5,
+            "constraint_name": 7,
             "table_name": "tf_3",
             "column_name": "f1",
             "ordinal_position": 2
           },
           {
-            "constraint_name": 6,
+            "constraint_name": 8,
+            "table_name": "tf_3",
+            "column_name": "f",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_name": 8,
+            "table_name": "tf_3",
+            "column_name": "f1",
+            "ordinal_position": 2
+          },
+          {
+            "constraint_name": 9,
+            "table_name": "tf_3",
+            "column_name": "g",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_name": 10,
             "table_name": "tf_4",
             "column_name": "h",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 7,
+            "constraint_name": 11,
+            "table_name": "tf_4",
+            "column_name": "h",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_name": 12,
             "table_name": "tf_4",
             "column_name": "j",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 7,
+            "constraint_name": 12,
             "table_name": "tf_4",
             "column_name": "j1",
             "ordinal_position": 2
           },
           {
-            "constraint_name": 8,
+            "constraint_name": 13,
             "table_name": "tf_5",
             "column_name": "k",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 9,
+            "constraint_name": 14,
+            "table_name": "tf_5",
+            "column_name": "k",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_name": 15,
             "table_name": "tf_5",
             "column_name": "l",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 10,
+            "constraint_name": 16,
             "table_name": "tf_5",
             "column_name": "m",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 11,
+            "constraint_name": 17,
             "table_name": "tf_6",
             "column_name": "n",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 12,
+            "constraint_name": 18,
+            "table_name": "tf_6",
+            "column_name": "o",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_name": 19,
             "table_name": "tf_6",
             "column_name": "o",
             "ordinal_position": 1
@@ -394,10 +443,6 @@
 
 # dm_from_con() with mariaDB
 
-    
-
----
-
     Code
       dm::dm_get_all_fks(my_dm)
     Output
@@ -430,10 +475,6 @@
       7 orders    id     FALSE        
       8 tkeys     id     FALSE        
       9 trans     id     FALSE        
-
----
-
-    
 
 ---
 

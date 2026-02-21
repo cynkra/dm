@@ -29,7 +29,7 @@
 #'   and `x` is returned, invisibly.
 #'
 #' @name rows-dm
-#' @examplesIf rlang::is_installed("RSQLite") && rlang::is_installed("nycflights13")
+#' @examplesIf rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))
 #' # Establish database connection:
 #' sqlite <- DBI::dbConnect(RSQLite::SQLite())
 #'
@@ -193,7 +193,9 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
   dm_rows_check(x, y)
 
   if (is_null(in_place)) {
-    inform("Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to mute this message, or `in_place = TRUE` to write to the underlying tables.")
+    cli::cli_inform(
+      "Result is returned as a dm object with lazy tables. Use {.code in_place = FALSE} to mute this message, or {.code in_place = TRUE} to write to the underlying tables."
+    )
     in_place <- FALSE
   }
 
@@ -237,13 +239,14 @@ check_keys_compatible <- function(x, y) {
 }
 
 get_dm_rows_op <- function(operation_name) {
-  switch(operation_name,
-    "insert"   = list(fun = do_rows_insert, pb_label = "inserting rows"),
-    "append"   = list(fun = do_rows_append, pb_label = "appending rows"),
-    "update"   = list(fun = do_rows_update, pb_label = "updating rows"),
-    "patch"    = list(fun = do_rows_patch, pb_label = "patching rows"),
-    "upsert"   = list(fun = do_rows_upsert, pb_label = "upserting rows"),
-    "delete"   = list(fun = do_rows_delete, pb_label = "deleting rows"),
+  switch(
+    operation_name,
+    "insert" = list(fun = do_rows_insert, pb_label = "inserting rows"),
+    "append" = list(fun = do_rows_append, pb_label = "appending rows"),
+    "update" = list(fun = do_rows_update, pb_label = "updating rows"),
+    "patch" = list(fun = do_rows_patch, pb_label = "patching rows"),
+    "upsert" = list(fun = do_rows_upsert, pb_label = "upserting rows"),
+    "delete" = list(fun = do_rows_delete, pb_label = "deleting rows"),
     "truncate" = list(fun = rows_truncate_, pb_label = "truncating rows")
   )
 }
@@ -256,6 +259,8 @@ do_rows_insert <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
 do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col = NULL) {
   if (is.null(autoinc_col)) {
     return(rows_append(x, y, ..., in_place = in_place))
+  } else if (inherits(x, "data.frame")) {
+    return(rows_append_ai_local(x, y, ..., autoinc_col))
   }
 
   # Assuming in-place append operation on dbplyr data source
@@ -285,25 +290,35 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
   source_rows <- map(key_values, ~ select(filter(y, !!returning == !!.x), -!!returning))
 
   con <- dbplyr::remote_con(x)
-  if (utils::packageVersion("dbplyr") >= "2.3.2.9000") {
+  # FIXME can be removed after depending on dbplyr >= 2.4.0
+  append_args <- rlang::fn_fmls_names(dbplyr::sql_query_append)
+  old_interface <- identical(append_args, c("con", "x_name", "y", "...", "returning_cols"))
+  if (old_interface) {
+    target_name <- remote_name_qual(x)
+    insert_queries <- map(
+      source_rows,
+      ~ dbplyr::sql_query_append(
+        con,
+        target_name,
+        .x,
+        returning_cols = autoinc_col
+      )
+    )
+  } else {
+    # FIXME: dbplyr::remote_table() private in dbplyr 2.3.3, public in dbplyr 2.4.0
     dbplyr_ns <- asNamespace("dbplyr")
     remote_table <- mget("remote_table", dbplyr_ns, mode = "function", ifnotfound = list(NULL))[[1]]
 
-    insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
-      con,
-      remote_table(x),
-      from = dbplyr::sql_render(.x, con),
-      insert_cols = colnames(.x),
-      returning_cols = autoinc_col
-    ))
-  } else {
-    target_name <- remote_name_qual(x)
-    insert_queries <- map(source_rows, ~ dbplyr::sql_query_append(
-      con,
-      target_name,
-      .x,
-      returning_cols = autoinc_col
-    ))
+    insert_queries <- map(
+      source_rows,
+      ~ dbplyr::sql_query_append(
+        con,
+        remote_table(x),
+        from = dbplyr::sql_render(.x, con),
+        insert_cols = colnames(.x),
+        returning_cols = autoinc_col
+      )
+    )
   }
 
   autoinc_col_orig <- paste0(autoinc_col, "_orig")
@@ -356,7 +371,9 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   if (require_keys) {
     all_pks <- dm_get_all_pks(x)
     if (!(all(tables %in% all_pks$table))) {
-      abort(glue("`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."))
+      abort(glue(
+        "`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."
+      ))
     }
     keys <- all_pks$pk_col[match(tables, all_pks$table)]
   } else {
@@ -369,7 +386,7 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   ticker <- new_ticker(rows_op$pb_label, length(tables), progress)
   op_ticker <- ticker(rows_op$fun)
 
-  if (!in_place) {
+  if (!in_place || (!is_src_db(x) && rows_op_name == "append")) {
     op_results <- target_tbls
   }
 
@@ -377,15 +394,21 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   for (i in seq_along(tables)) {
     table <- tables[[i]]
     tbl <- tbls[[i]]
-
     # FIXME: implement for in_place = FALSE
-    if (in_place && (rows_op_name == "append")) {
+    if (is_src_db(x) && in_place && (rows_op_name == "append")) {
       autoinc_col <- get_autoinc_col(x, table, colnames(tbl))
+    } else if (!is_src_db(x) && (rows_op_name == "append")) {
+      # `colnames(tbl)` could not contain the PK col, if it's left out in `y`
+      # in order to apply the AI logic for local dm's we need `colnames(x[[table]])`
+      autoinc_col <- get_autoinc_col(x, table, colnames(x[[table]]))
     } else {
       autoinc_col <- NULL
     }
 
-    # Returns tibble if autoinc_col is set, `target_tbl` otherwise
+    # Returns
+    # 1. tibble if autoinc_col is set and remote
+    # 2. list of tibbles (res_tibble and ai-lookup) autoinc_col is set and local
+    # 3. `target_tbl` otherwise
     res <- op_ticker(
       target_tbls[[i]],
       tbl,
@@ -394,14 +417,22 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
       autoinc_col = autoinc_col
     )
 
-    if (!is.null(autoinc_col)) {
+    if (!is.null(autoinc_col) && is_src_db(x)) {
       tbls <- align_autoinc_fks(tbls, x, table, res)
+    } else if (!is.null(autoinc_col) && !is_src_db(x)) {
+      op_results[[i]] <- res$x_new
+      # `if` is necessary, since in case y doesn't contain the AI column, the target
+      # table should still have the AI values, but no update of potentially existing
+      # FKs should take place
+      if (!is.null(get_autoinc_col(x, table, colnames(tbl)))) {
+        tbls <- align_autoinc_fks(tbls, x, table, res$ai_lookup)
+      }
     } else if (!in_place) {
       op_results[[i]] <- res
     }
   }
 
-  if (in_place) {
+  if (in_place && is_src_db(x)) {
     invisible(x)
   } else {
     x %>%
@@ -419,7 +450,7 @@ dm_patch_tbl <- function(dm, ...) {
   def <- dm_get_def(dm)
   idx <- match(names(new_tables), def$table)
   def[idx, "data"] <- list(unname(new_tables))
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 get_autoinc_col <- function(x, table, cols) {
@@ -450,7 +481,11 @@ align_autoinc_fks <- function(tbls, target_dm, table, returning_rows) {
   names(returning_rows)[[2]] <- new_pk_col
 
   # Structure: <pk_col>, <new_pk_col>
-  align_tbl <- dbplyr::copy_inline(dm_get_con(target_dm), returning_rows)
+  if (is_src_db(target_dm)) {
+    align_tbl <- dbplyr::copy_inline(dm_get_con(target_dm), returning_rows)
+  } else {
+    align_tbl <- returning_rows
+  }
 
   for (i in seq_along(fks_target$child_table)) {
     child_table <- fks_target$child_table[[i]]
@@ -481,11 +516,34 @@ derive_temp_column_name <- function(tbl_names, base, suffix = "_new") {
   }
 }
 
+rows_append_ai_local <- function(x, y, autoinc_col) {
+  num_new_rows <- nrow(y)
+  if (is_empty(x[[autoinc_col]])) {
+    init_ai_val <- 1L
+  } else {
+    init_ai_val <- max(x[[autoinc_col]]) + 1L
+  }
+  new_col_name <- derive_temp_column_name(colnames(x), autoinc_col)
+  ai_lu <- tibble(
+    !!autoinc_col := y[[autoinc_col]],
+    !!new_col_name := seq.int(init_ai_val, length.out = num_new_rows)
+  )
+  y_new <-
+    y %>%
+    mutate(!!new_col_name := !!ai_lu[[new_col_name]]) %>%
+    select(
+      -!!intersect(colnames(y), autoinc_col),
+      !!autoinc_col := !!new_col_name,
+      !!setdiff(colnames(x), autoinc_col)
+    )
+  list(x_new = rows_append(x, y_new), ai_lookup = ai_lu)
+}
+
 # Errors ------------------------------------------------------------------
 
 abort_columns_missing <- function(...) {
   # FIXME
-  abort("")
+  abort("abort_columns_missing()")
 }
 
 error_txt_columns_missing <- function(...) {
@@ -494,7 +552,7 @@ error_txt_columns_missing <- function(...) {
 
 abort_tables_missing <- function(...) {
   # FIXME
-  abort("")
+  abort("abort_tables_missing()")
 }
 
 error_txt_tables_missing <- function(...) {

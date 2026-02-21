@@ -33,6 +33,7 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -56,6 +57,7 @@
           dm::dm_add_pk(tf_4, h) %>%
           dm::dm_add_pk(tf_5, k) %>%
           dm::dm_add_pk(tf_6, o) %>%
+          dm::dm_add_uk(tf_3, g) %>%
           dm::dm_add_fk(tf_2, d, tf_1) %>%
           dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
           dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -79,6 +81,7 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_fk(tf_2, d, tf_1_new) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -124,6 +127,7 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
         dm::dm_add_fk(tf_2, c(e, e1), tf_3) %>%
         dm::dm_add_fk(tf_4, c(j, j1), tf_3) %>%
@@ -186,6 +190,7 @@
         dm::dm_add_pk(tf_4, h) %>%
         dm::dm_add_pk(tf_5, k) %>%
         dm::dm_add_pk(tf_6, o) %>%
+        dm::dm_add_uk(tf_3, g) %>%
         dm::dm_add_uk(tf_5, l) %>%
         dm::dm_add_uk(tf_6, n) %>%
         dm::dm_add_fk(tf_2, d, tf_1) %>%
@@ -322,4 +327,29 @@
       dm::dm(
         `tibble(...)`,
       )
+
+# chunking behavior for large dm
+
+    Code
+      writeLines(dm:::dm_paste_impl(create_large_dm(3), c("keys"), 2, chunk_size = 3))
+    Output
+      dm_step_1 <- dm::dm(
+        main,
+        table_1,
+        table_2,
+        table_3,
+      )
+      
+      dm_step_2 <- dm_step_1 %>%
+        dm::dm_add_pk(main, id) %>%
+        dm::dm_add_pk(table_1, id) %>%
+        dm::dm_add_pk(table_2, id)
+      
+      dm_step_3 <- dm_step_2 %>%
+        dm::dm_add_pk(table_3, id)
+      
+      dm_step_3 %>%
+        dm::dm_add_fk(table_1, main_id, main) %>%
+        dm::dm_add_fk(table_2, main_id, main) %>%
+        dm::dm_add_fk(table_3, main_id, main)
 

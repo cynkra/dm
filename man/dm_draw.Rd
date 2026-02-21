@@ -18,8 +18,7 @@ dm_draw(
   graph_name = "Data Model",
   column_types = NULL,
   backend = "DiagrammeR",
-  table_description = NULL,
-  font_size_table_description = 8L
+  font_size = NULL
 )
 }
 \arguments{
@@ -53,15 +52,16 @@ It defines the level of details for rendering tables
 Pass this value explicitly if your code not only uses this function
 to display a data model but relies on the type of the return value.}
 
-\item{table_description}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Provide a named character vector or a named list with the names
-corresponding to the table names to describe.
-Descriptions across several lines can be achieved using the newline symbol \verb{\\n}.}
+Font size for:
+\itemize{
+\item \code{header}, defaults to \code{16}
+\item \code{column}, defaults to \code{16}
+\item \code{table_description}, defaults to \code{8}
+}
 
-\item{font_size_table_description}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-Font size for \code{table_description}, defaults to \code{8}.}
+Can be set as a named integer vector, e.g. \code{c(table_headers = 18L, table_description = 6L)}.}
 }
 \value{
 An object with a \code{\link[=print]{print()}} method, which,
@@ -80,7 +80,7 @@ The backend for drawing the diagrams might change in the future.
 If you rely on DiagrammeR, pass an explicit value for the \code{backend} argument.
 }
 \examples{
-\dontshow{if (rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
   dm_draw()
 
@@ -96,4 +96,6 @@ dm_nycflights13() \%>\%
 }
 \seealso{
 \code{\link[=dm_set_colors]{dm_set_colors()}} for defining the table colors.
+
+\code{\link[=dm_set_table_description]{dm_set_table_description()}} for adding details to one or more tables in the diagram
 }

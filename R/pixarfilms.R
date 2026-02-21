@@ -11,34 +11,48 @@
 #' @param consistent Boolean, In the original `dm`  the  `film` column in
 #' `pixar_films` contains missing values so cannot be made a proper primary key.
 #' Set to `TRUE` to remove those records.
+#' @param version The version of the data to use.
+#'   `"v1"` (default) uses a vendored snapshot of \pkg{pixarfilms} 0.2.1.
+#'   `"latest"` uses the data from the installed \pkg{pixarfilms} package.
 #'
-#' @return A `dm` object consisting of {pixarfilms} tables, complete with
+#' @return A `dm` object consisting of \pkg{pixarfilms} tables, complete with
 #'   primary and foreign keys and optionally colored.
 #'
 #' @export
 #' @autoglobal
-#' @examplesIf rlang::is_installed("pixarfilms") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed("DiagrammeR")
 #' dm_pixarfilms()
 #' dm_pixarfilms() %>%
 #'   dm_draw()
-dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
+dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE, version = "v1") {
   check_dots_empty()
 
-  # Check for data package installed
-  check_suggested("pixarfilms",
-    use = TRUE,
-    top_level_fun = "dm_pixarfilms"
-  )
+  version <- arg_match(version, c("v1", "latest"))
 
   # Extract data objects
-  pixar_films <- pixarfilms::pixar_films
-  if (consistent) pixar_films <- filter(pixar_films, !is.na(film))
+  if (version == "latest") {
+    # Check for data package installed
+    check_suggested("pixarfilms", "dm_pixarfilms")
 
-  pixar_people <- pixarfilms::pixar_people
-  academy <- pixarfilms::academy
-  box_office <- pixarfilms::box_office
-  genres <- pixarfilms::genres
-  public_response <- pixarfilms::public_response
+    pixar_films <- pixarfilms::pixar_films
+    pixar_people <- pixarfilms::pixar_people
+    academy <- pixarfilms::academy
+    box_office <- pixarfilms::box_office
+    genres <- pixarfilms::genres
+    public_response <- pixarfilms::public_response
+  } else {
+    data <- pixarfilms_v1()
+    pixar_films <- data$pixar_films
+    pixar_people <- data$pixar_people
+    academy <- data$academy
+    box_office <- data$box_office
+    genres <- data$genres
+    public_response <- data$public_response
+  }
+
+  if (consistent) {
+    pixar_films <- filter(pixar_films, !is.na(film))
+  }
 
   # Create dm object
   dm <- dm(
@@ -55,10 +69,21 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
     dm %>%
     dm_add_pk(pixar_films, film) %>%
     dm_add_pk(academy, c(film, award_type)) %>%
-    dm_add_pk(box_office, film) %>%
-    dm_add_pk(genres, c(film, genre)) %>%
-    dm_add_pk(public_response, film)
+    dm_add_pk(box_office, film)
 
+  if ("genre" %in% names(genres)) {
+    dm <-
+      dm %>%
+      dm_add_pk(genres, c(film, genre))
+  } else {
+    dm <-
+      dm %>%
+      dm_add_pk(genres, c(film, category, value))
+  }
+
+  dm <-
+    dm %>%
+    dm_add_pk(public_response, film)
 
   # Add foreign keys between tables
   dm <-
@@ -68,7 +93,6 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
     dm_add_fk(box_office, film, pixar_films) %>%
     dm_add_fk(genres, film, pixar_films) %>%
     dm_add_fk(public_response, film, pixar_films)
-
 
   # Set colors for relationship diagram
   if (color) {
@@ -87,4 +111,8 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE) {
   }
 
   dm
+}
+
+pixarfilms_v1 <- function() {
+  readRDS(system.file("extdata/pixarfilms-v1.rds", package = "dm"))
 }

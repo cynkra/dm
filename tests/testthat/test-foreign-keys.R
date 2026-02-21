@@ -176,14 +176,29 @@ test_that("dm_rm_fk() works with partial matching", {
 })
 
 
+test_that("dm_rm_fk() produces no message when removing FK to PK in presence of FK to non-PK", {
+  p <- tibble(p_id = 1, p2_id = 1)
+  c1 <- tibble(p_id = 1)
+  c2 <- tibble(p2_id = 1)
+
+  my_dm <-
+    dm(p, c1, c2) %>%
+    dm_add_pk(p, p_id) %>%
+    dm_add_fk(c1, p_id, p) %>%
+    dm_add_fk(c2, p2_id, p, p2_id)
+
+  expect_silent(my_dm %>% dm_rm_fk(c1, p_id, p))
+})
+
+
 test_that("dm_enum_fk_candidates() works as intended?", {
   skip_if_ide()
 
   # `anti_join()` doesn't distinguish between `dbl` and `int`
   tbl_fk_candidates_tf_1_tf_4 <- tribble(
-    ~column, ~candidate, ~why,
-    "a", TRUE, "",
-    "b", FALSE, "<reason>"
+    ~column , ~candidate , ~why       ,
+    "a"     , TRUE       , ""         ,
+    "b"     , FALSE      , "<reason>"
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
@@ -198,8 +213,8 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   )
 
   tbl_tf_3_tf_4 <- tibble::tribble(
-    ~column, ~candidate, ~why,
-    "c", FALSE, "<reason>"
+    ~column , ~candidate , ~why       ,
+    "c"     , FALSE      , "<reason>"
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
@@ -213,8 +228,8 @@ test_that("dm_enum_fk_candidates() works as intended?", {
   )
 
   tbl_tf_4_tf_3 <- tibble::tribble(
-    ~column, ~candidate, ~why,
-    "c", TRUE, ""
+    ~column , ~candidate , ~why ,
+    "c"     , TRUE       , ""
   ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
@@ -230,8 +245,6 @@ test_that("dm_enum_fk_candidates() works as intended?", {
     dm_enum_fk_candidates(dm_test_obj(), dm_table_1, dm_table_4),
     class = "ref_tbl_has_no_pk"
   )
-
-  skip_if_not_installed("nycflights13")
 
   expect_snapshot({
     dm_nycflights13() %>%
@@ -303,6 +316,8 @@ test_that("dm_get_all_fks() with parent_table arg", {
 })
 
 test_that("dm_get_all_fks() with parent_table arg fails nicely", {
+  skip_if(packageVersion("tidyselect") > "1.2.0")
+
   expect_snapshot_error({
     nyc_comp() %>%
       dm_get_all_fks(c(airlines, weather, timetable, tabletime))

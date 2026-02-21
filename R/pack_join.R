@@ -26,6 +26,8 @@ pack_join.dm <- function(x, ...) {
 #' @rdname pack_join
 #' @export
 pack_join.dm_zoomed <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
+  check_dots_empty()
+
   y_name <- dm_tbl_name(x, {{ y }})
   zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
   x_tbl <- zoomed$zoom[[1]]
@@ -39,8 +41,9 @@ pack_join.dm_zoomed <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE
 pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))
-  if (!copy && inherits(y, "tbl_lazy"))
+  if (!copy && inherits(y, "tbl_lazy")) {
     abort("`x` and `y` must share the same src, set `copy` = TRUE (may be slow)")
+  }
   y_local <- collect(y)
   x_nms <- colnames(x)
   name_var_unique <- last(make.unique(c(names(y_local), x_nms, name_var)))

@@ -3,16 +3,16 @@
     Code
       dm_for_filter() %>% dm_zoom_to(tf_5) %>% as_dm_zoomed_df() %>% tbl_sum()
     Output
-      Zoomed table 
-            "tf_5" 
+      Zoomed table     A tibble 
+            "tf_5"      "4 x 4" 
 
 ---
 
     Code
       dm_for_filter() %>% dm_zoom_to(tf_2) %>% as_dm_zoomed_df() %>% tbl_sum()
     Output
-      Zoomed table 
-            "tf_2" 
+      Zoomed table     A tibble 
+            "tf_2"      "6 x 4" 
 
 # zoom output for compound keys
 
@@ -35,7 +35,7 @@
       10 EWR     2013     1    10     9  45.0  23    41.6      320      17.3 
       # i 134 more rows
       # i 5 more variables: wind_gust <dbl>, precip <dbl>, pressure <dbl>,
-      #   visib <dbl>, time_hour <dttm>
+      #   visib <dbl>, time_hour <chr>
     Code
       nyc_comp() %>% dm_zoom_to(weather) %>% dm_update_zoomed()
     Output

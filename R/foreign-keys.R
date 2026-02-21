@@ -26,6 +26,7 @@
 #'        and the operation is aborted if child rows exist
 #'     - `"cascade"` means that the child row is also deleted
 #'   This setting is picked up by [copy_dm_to()] with `set_key_constraints = TRUE`,
+#'   and by [dm_sql()],
 #'   and might be considered by [dm_rows_delete()] in a future version.
 #'
 #' @family foreign key functions
@@ -44,7 +45,7 @@
 #' @return An updated `dm` with an additional foreign key relation.
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' nycflights_dm <- dm(
 #'   planes = nycflights13::planes,
 #'   flights = nycflights13::flights,
@@ -68,9 +69,16 @@
 #'     dm_add_pk(planes, tailnum) %>%
 #'     dm_add_fk(flights, tailnum, planes, check = TRUE)
 #' )
-dm_add_fk <- function(dm, table, columns, ref_table, ref_columns = NULL, ...,
-                      check = FALSE,
-                      on_delete = c("no_action", "cascade")) {
+dm_add_fk <- function(
+  dm,
+  table,
+  columns,
+  ref_table,
+  ref_columns = NULL,
+  ...,
+  check = FALSE,
+  on_delete = c("no_action", "cascade")
+) {
   check_dots_empty()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
@@ -120,7 +128,14 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) 
 
     my <- ref_table == my_ref_table
     where_other <- which(!my)
-    dm <- dm_add_fk_impl(dm, table[where_other], column[where_other], ref_table[where_other], ref_column[where_other], on_delete[where_other])
+    dm <- dm_add_fk_impl(
+      dm,
+      table[where_other],
+      column[where_other],
+      ref_table[where_other],
+      ref_column[where_other],
+      on_delete[where_other]
+    )
 
     table <- table[my]
     column <- column[my]
@@ -157,7 +172,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) 
     new_fk(ref_column, table, column, on_delete)
   )
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 #' Check if foreign keys exists
@@ -255,10 +270,20 @@ dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
 dm_get_all_fks_impl <- function(dm, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
   def <- dm_get_def(dm)
 
-  dm_get_all_fks_def_impl(def = def, parent_table = parent_table, ignore_on_delete = ignore_on_delete, id = id)
+  dm_get_all_fks_def_impl(
+    def = def,
+    parent_table = parent_table,
+    ignore_on_delete = ignore_on_delete,
+    id = id
+  )
 }
 
-dm_get_all_fks_def_impl <- function(def, parent_table = NULL, ignore_on_delete = FALSE, id = FALSE) {
+dm_get_all_fks_def_impl <- function(
+  def,
+  parent_table = NULL,
+  ignore_on_delete = FALSE,
+  id = FALSE
+) {
   def_sub <- def[c("table", "fks")]
   names(def_sub)[[1]] <- "parent_table"
 
@@ -303,7 +328,7 @@ dm_get_all_fks_def_impl <- function(def, parent_table = NULL, ignore_on_delete =
 #' @return An updated `dm` without the matching foreign key relation(s).
 #'
 #' @export
-#' @examplesIf rlang::is_installed("nycflights13") && rlang::is_installed("DiagrammeR")
+#' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13(cycle = TRUE) %>%
 #'   dm_rm_fk(flights, dest, airports) %>%
 #'   dm_draw()
@@ -320,7 +345,14 @@ dm_rm_fk <- function(dm, table = NULL, columns = NULL, ref_table = NULL, ref_col
 }
 
 #' @autoglobal
-dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
+dm_rm_fk_impl <- function(
+  dm,
+  table_name,
+  cols,
+  ref_table_name,
+  ref_cols,
+  error_call = caller_env()
+) {
   def <- dm_get_def(dm)
 
   # Filter by each argument if given:
@@ -337,10 +369,14 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 
   # table_name: keep FK entries pointing to the other table
   if (!is.null(table_name)) {
-    idx_fk <- map2(def$fks[idx], idx_fk, ~ {
-      ii <- (.x$table[.y] == table_name)
-      .y[ii]
-    })
+    idx_fk <- map2(
+      def$fks[idx],
+      idx_fk,
+      ~ {
+        ii <- (.x$table[.y] == table_name)
+        .y[ii]
+      }
+    )
 
     # Prune after each step (this also ensures that negative selection works further below)
     keep <- (lengths(idx_fk) > 0)
@@ -350,18 +386,25 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
 
   # ref_cols: find column names once for each ref_table
   if (!is.null(ref_cols)) {
-    idx_fk <- pmap(list(def$fks[idx], idx_fk, def$data[idx]), ~ {
-      ii <- tryCatch(
-        {
-          names_vars <- names(eval_select_indices(ref_cols, colnames(..3)))
-          map_lgl(.x$ref_column[.y], identical, names_vars)
-        },
-        error = function(e) {
-          0
-        }
-      )
-      .y[ii]
-    })
+    idx_fk <- pmap(
+      list(def$fks[idx], idx_fk, def$data[idx]),
+      ~ {
+        ii <- tryCatch(
+          {
+            names_vars <- names(eval_select_indices(
+              ref_cols,
+              colnames(..3),
+              error_call = error_call
+            ))
+            map_lgl(.x$ref_column[.y], identical, names_vars)
+          },
+          error = function(e) {
+            0
+          }
+        )
+        .y[ii]
+      }
+    )
 
     # Prune after each step (this also ensures that negative selection works further below)
     keep <- (lengths(idx_fk) > 0)
@@ -373,20 +416,32 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   if (!is.null(cols)) {
     all_tables <- set_names(def$data, def$table)
 
-    idx_fk <- map2(def$fks[idx], idx_fk, ~ {
-      ii <- map2_lgl(.x$table[.y], .x$column[.y], ~ {
-        tryCatch(
-          {
-            names_vars <- names(eval_select_indices(cols, colnames(all_tables[[.x]])))
-            identical(.y, names_vars)
-          },
-          error = function(e) {
-            FALSE
+    idx_fk <- map2(
+      def$fks[idx],
+      idx_fk,
+      ~ {
+        ii <- map2_lgl(
+          .x$table[.y],
+          .x$column[.y],
+          ~ {
+            tryCatch(
+              {
+                names_vars <- names(eval_select_indices(
+                  cols,
+                  colnames(all_tables[[.x]]),
+                  error_call = error_call
+                ))
+                identical(.y, names_vars)
+              },
+              error = function(e) {
+                FALSE
+              }
+            )
           }
         )
-      })
-      .y[ii]
-    })
+        .y[ii]
+      }
+    )
 
     # Prune after each step (this also ensures that negative selection works further below)
     keep <- (lengths(idx_fk) > 0)
@@ -405,26 +460,37 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   } else if (!is.null(ref_cols)) {
     show_disambiguation <- FALSE
   } else {
-    # Check if all FKs point to the primary key
-    show_disambiguation <- !all(map2_lgl(def$fks[idx], def$pks[idx], ~ {
-      all(map_lgl(.x$ref_column, identical, .y$column[[1]]))
-    }))
+    # Check if all FKs (being removed) point to the primary key
+    show_disambiguation <- !all(pmap_lgl(
+      list(def$fks[idx], idx_fk, def$pks[idx]),
+      ~ {
+        all(map_lgl(..1$ref_column[..2], identical, ..3$column[[1]]))
+      }
+    ))
   }
 
   if (show_disambiguation) {
     def_rm <- def[idx, c("table", "pks", "fks")]
     def_rm$fks <- map2(def_rm$fks, idx_fk, vec_slice)
-    def_rm$fks <- map2(def_rm$fks, def_rm$pks, ~ {
-      .x$need_ref <- !map_lgl(.x$ref_column, identical, .y$column[[1]])
-      .x
-    })
+    def_rm$fks <- map2(
+      def_rm$fks,
+      def_rm$pks,
+      ~ {
+        .x$need_ref <- !map_lgl(.x$ref_column, identical, .y$column[[1]])
+        .x
+      }
+    )
 
     disambiguation <-
       def_rm %>%
       select(ref_table = table, fks) %>%
       unnest(-ref_table) %>%
       mutate(ref_col_text = if_else(need_ref, glue(", {deparse_keys(ref_column)})"), "")) %>%
-      mutate(text = glue("dm_rm_fk({tick_if_needed(table)}, {deparse_keys(column)}, {tick_if_needed(ref_table)}{ref_col_text})")) %>%
+      mutate(
+        text = glue(
+          "dm_rm_fk({tick_if_needed(table)}, {deparse_keys(column)}, {tick_if_needed(ref_table)}{ref_col_text})"
+        )
+      ) %>%
       pull()
 
     message("Removing foreign keys: %>%\n  ", glue_collapse(disambiguation, " %>%\n  "))
@@ -433,7 +499,7 @@ dm_rm_fk_impl <- function(dm, table_name, cols, ref_table_name, ref_cols) {
   # Execute
   def$fks[idx] <- map2(def$fks[idx], idx_fk, ~ .x[-.y, ])
 
-  new_dm3(def)
+  dm_from_def(def)
 }
 
 #' Foreign key candidates
@@ -520,7 +586,13 @@ enum_fk_candidates <- function(dm_zoomed, ref_table, ...) {
   ref_tbl_pk <- dm_get_pk_impl(dm_zoomed, ref_table_name)
 
   ref_tbl <- dm_get_tables_impl(dm_zoomed)[[ref_table_name]]
-  enum_fk_candidates_impl(table_name, tbl_zoomed(dm_zoomed), ref_table_name, ref_tbl, ref_tbl_pk) %>%
+  enum_fk_candidates_impl(
+    table_name,
+    tbl_zoomed(dm_zoomed),
+    ref_table_name,
+    ref_tbl,
+    ref_tbl_pk
+  ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns))
 }
@@ -603,11 +675,13 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
   )
 }
 
-fk_table_to_def_fks <- function(table,
-                                child_table = "child_table",
-                                child_fk_cols = "child_fk_cols",
-                                parent_table = "parent_table",
-                                parent_key_cols = "parent_key_cols") {
+fk_table_to_def_fks <- function(
+  table,
+  child_table = "child_table",
+  child_fk_cols = "child_fk_cols",
+  parent_table = "parent_table",
+  parent_key_cols = "parent_key_cols"
+) {
   table %>%
     group_by(!!ensym(parent_table)) %>%
     summarize(
@@ -625,7 +699,9 @@ fk_table_to_def_fks <- function(table,
 abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
   abort(
     error_txt_fk_exists(
-      child_table_name, colnames, parent_table_name
+      child_table_name,
+      colnames,
+      parent_table_name
     ),
     class = dm_error_full("fk_exists")
   )
