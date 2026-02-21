@@ -92,7 +92,7 @@ check_paste_options <- function(options, select, env) {
   options
 }
 
-dm_paste_impl <- function(dm, options, tab_width) {
+dm_paste_impl <- function(dm, options, tab_width, chunk_size = 100) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
@@ -119,17 +119,18 @@ dm_paste_impl <- function(dm, options, tab_width) {
   # adding code for color
   code_color <- if ("color" %in% options) dm_paste_color(dm)
 
-  # combine dm and paste code
-  code_dm <- glue_collapse(
-    c(
-      code_construct,
-      code_select,
-      code_pks,
-      code_uks,
-      code_fks,
-      code_color
-    ),
-    sep = glue(" %>%\n{tab}", .trim = FALSE)
+  # collect operations as named parts, preserving group boundaries for chunking
+  parts <- Filter(
+    function(x) length(x) > 0,
+    list(code_select, code_pks, code_uks, code_fks, code_color)
+  )
+
+  # combine dm construction and operations, chunking at group boundaries if needed
+  code_dm <- dm_paste_chunk_operations(
+    code_construct,
+    parts,
+    tab,
+    chunk_size = chunk_size
   )
 
   paste0(code_tables, code_dm)
@@ -240,6 +241,80 @@ df_paste <- function(x, tab) {
   }
 
   paste0("tibble::tibble(\n", cols, ")")
+}
+
+dm_paste_chunk_operations <- function(code_construct, parts, tab, chunk_size = 100) {
+  # Build chunks by accumulating complete groups (parts), never splitting a group
+  # across chunks unless the group itself exceeds chunk_size.
+  chunks_ops <- list()
+  current_ops <- character()
+
+  for (part in parts) {
+    if (length(current_ops) + length(part) <= chunk_size) {
+      # Entire part fits in the current chunk
+      current_ops <- c(current_ops, part)
+    } else {
+      # Part doesn't fit — flush the current chunk and handle the overflow
+      chunks_ops <- c(chunks_ops, list(current_ops))
+      current_ops <- character()
+      # Split the part into sub-chunks when it exceeds chunk_size on its own
+      sub_chunks <- split(part, ceiling(seq_along(part) / chunk_size))
+      for (j in seq_along(sub_chunks)) {
+        if (j < length(sub_chunks)) {
+          chunks_ops <- c(chunks_ops, list(sub_chunks[[j]]))
+        } else {
+          current_ops <- sub_chunks[[j]]
+        }
+      }
+    }
+  }
+  chunks_ops <- c(chunks_ops, list(current_ops))
+
+  # Remove a trailing empty chunk (can arise if the last part was exactly split
+  # into sub-chunks), but always keep at least one chunk for the construct.
+  if (length(chunks_ops) > 1 && length(chunks_ops[[length(chunks_ops)]]) == 0) {
+    chunks_ops <- chunks_ops[-length(chunks_ops)]
+  }
+
+  n_chunks <- length(chunks_ops)
+
+  # Single chunk: use a simple pipe chain with no intermediate variables
+  if (n_chunks == 1) {
+    return(glue_collapse(
+      c(code_construct, chunks_ops[[1]]),
+      sep = glue(" %>%\n{tab}", .trim = FALSE)
+    ))
+  }
+
+  # Multiple chunks: generate intermediate variable assignments
+  result_lines <- character()
+  for (i in seq_along(chunks_ops)) {
+    is_last <- i == n_chunks
+    var_name <- if (!is_last) paste0("dm_step_", i) else NULL
+    ops <- chunks_ops[[i]]
+
+    if (i == 1) {
+      chunk_code <- glue_collapse(
+        c(code_construct, ops),
+        sep = glue(" %>%\n{tab}", .trim = FALSE)
+      )
+    } else {
+      prev_var <- paste0("dm_step_", i - 1)
+      chunk_code <- paste0(
+        prev_var,
+        " %>%\n",
+        tab,
+        glue_collapse(ops, sep = glue(" %>%\n{tab}", .trim = FALSE))
+      )
+    }
+
+    result_lines <- c(
+      result_lines,
+      if (!is.null(var_name)) paste0(var_name, " <- ", chunk_code) else chunk_code
+    )
+  }
+
+  paste(result_lines, collapse = "\n\n")
 }
 
 deparse_line <- function(x) {
