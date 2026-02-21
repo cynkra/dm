@@ -43,7 +43,6 @@ dm_zoom2_to <- function(dm, table) {
 
   attr(keyed_tbl, "dm_zoom2_src_dm") <- dm
   attr(keyed_tbl, "dm_zoom2_src_name") <- table_name
-  attr(keyed_tbl, "dm_zoom2_col_tracker") <- set_names(colnames(keyed_tbl))
 
   keyed_tbl
 }
@@ -136,6 +135,5 @@ zoom2_get_info <- function(zoomed_tbl) {
 zoom2_clean_attrs <- function(x) {
   attr(x, "dm_zoom2_src_dm") <- NULL
   attr(x, "dm_zoom2_src_name") <- NULL
-  attr(x, "dm_zoom2_col_tracker") <- NULL
   x
 }

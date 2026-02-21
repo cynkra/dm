@@ -88,3 +88,490 @@
       8 flights_2   origin, time_hour weather      origin, time_hour no_action
       
 
+# zoom2 select() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) select(z, id))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 select() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) select(z, child_id, val))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id)
+
+# zoom2 rename() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) rename(z, parent_id = id))
+    Message
+      parent <- tibble::tibble(
+        parent_id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(child, child_id)
+
+# zoom2 rename() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) rename(z, cid = child_id, pid = parent_id))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        cid = integer(0),
+        pid = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id)
+
+# zoom2 summarise() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) summarise(z, n = n()))
+    Message
+      parent <- tibble::tibble(
+        n = integer(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(child, child_id)
+
+# zoom2 summarise() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) {
+        z %>% group_by(parent_id) %>% summarise(n = n())
+      })
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        parent_id = integer(0),
+        n = integer(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, parent_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 left_join()
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) {
+        left_join(z, dm_zoom2_to(d, parent))
+      })
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+        name = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 inner_join()
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) {
+        inner_join(z, dm_zoom2_to(d, parent))
+      })
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+        name = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 semi_join()
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) {
+        semi_join(z, dm_zoom2_to(d, parent))
+      })
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 anti_join()
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) {
+        anti_join(z, dm_zoom2_to(d, parent))
+      })
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 filter() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) filter(z, id > 1))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 filter() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) filter(z, val != "a"))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 mutate() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) mutate(z, name2 = toupper(name)))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+        name2 = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 mutate() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) mutate(z, val2 = toupper(val)))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+        val2 = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 arrange() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) arrange(z, desc(id)))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 arrange() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) arrange(z, desc(child_id)))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 distinct() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) distinct(z))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 distinct() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) distinct(z))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 slice() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) slice(z, 1:2))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 slice() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) slice(z, 1:3))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 transmute() on parent table
+
+    Code
+      zoom2_verb_paste(d, "parent", function(z) transmute(z, id, name_upper = toupper(
+        name)))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name_upper = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 transmute() on child table
+
+    Code
+      zoom2_verb_paste(d, "child", function(z) transmute(z, child_id, parent_id))
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
