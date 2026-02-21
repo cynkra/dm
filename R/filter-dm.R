@@ -336,7 +336,7 @@ get_all_filtered_connected <- function(dm, table) {
   # Computation of distances and shortest paths uses the same algorithm
   # internally, but s.p. doesn't return distances and distances don't return
   # the predecessor.
-  distances <- igraph::distances(graph, table)[1, ]
+  distances <- graph_distances(graph, table)[1, ]
   finite_distances <- distances[is.finite(distances)]
 
   # Using only nodes with finite distances (=in the same connected component)
@@ -350,16 +350,16 @@ get_all_filtered_connected <- function(dm, table) {
   # use only subgraph to
   # 1. speed things up
   # 2. make it possible to easily test for a cycle (cycle if: N(E) >= N(V))
-  graph <- igraph::induced_subgraph(graph, target_tables)
-  if (length(E(graph)) >= length(V(graph))) {
+  graph <- graph_induced_subgraph(graph, target_tables)
+  if (length(graph_edges(graph)) >= length(graph_vertices(graph))) {
     abort_no_cycles(graph)
   }
-  paths <- igraph::shortest_paths(graph, table, target_tables, predecessors = TRUE)
+  paths <- graph_shortest_paths(graph, table, target_tables, predecessors = TRUE)
 
   # All edges with finite distance as tidy data frame
   all_edges <-
     new_filtered_edges(
-      node = names(V(graph)),
+      node = names(graph_vertices(graph)),
       parent = names(paths$predecessors),
       # all of `graph`, `paths` and `finite_distances` are based on the same subset of tables,
       # hence the resulting tibble is correct
