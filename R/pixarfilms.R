@@ -70,8 +70,12 @@ dm_pixarfilms <- function(..., color = TRUE, consistent = FALSE, version = "v1")
     dm_add_pk(pixar_films, film) %>%
     dm_add_pk(academy, c(film, award_type)) %>%
     dm_add_pk(box_office, film) %>%
-    dm_add_pk(genres, c(film, genre)) %>%
     dm_add_pk(public_response, film)
+  dm <- if ("genre" %in% names(genres)) {
+    dm_add_pk(dm, genres, c(film, genre))
+  } else {
+    dm_add_pk(dm, genres, c(film, category, value))
+  }
 
   # Add foreign keys between tables
   dm <-
