@@ -239,6 +239,8 @@ utils::globalVariables(c(
   "film", # <dm_pixarfilms>
   "award_type", # <dm_pixarfilms>
   "genre", # <dm_pixarfilms>
+  "category", # <dm_pixarfilms>
+  "value", # <dm_pixarfilms>
   "column", # <enum_pk_candidates>
   "columns", # <enum_pk_candidates>
   "column", # <enum_pk_candidates_impl>

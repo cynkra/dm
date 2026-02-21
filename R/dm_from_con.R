@@ -71,9 +71,9 @@ dm_from_con <- function(
       {
         dm_learned <- dm_learn_from_db(con, ...)
         if (is_null(learn_keys)) {
-          inform(c(
+          cli::cli_inform(c(
             "Keys queried successfully.",
-            i = "Use `learn_keys = TRUE` to mute this message."
+            i = "Use {.code learn_keys = TRUE} to enforce querying keys and to mute this message."
           ))
         }
 
@@ -94,10 +94,10 @@ dm_from_con <- function(
         if (isTRUE(learn_keys)) {
           abort_learn_keys(e)
         }
-        inform(
+        cli::cli_inform(
           "Keys could not be queried.",
           x = conditionMessage(e),
-          i = "Use `learn_keys = FALSE` to mute this message."
+          i = "Use {.code learn_keys = FALSE} to avoid trying to query keys and to mute this message."
         )
         NULL
       }

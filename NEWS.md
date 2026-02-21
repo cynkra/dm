@@ -1,5 +1,20 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9015
+
+## Bug fixes
+
+- Fix bogus message for `dm_rm_fk()` in presence of FKs to non-PKs (#1270, #2367).
+
+## Chore
+
+- Don't refer to removed `dplyr::src_dbi()` (@DavisVaughan, #2356).
+
+## Continuous integration
+
+- Use robust way to show payload.
+
+
 # dm 1.0.12.9014
 
 ## Continuous integration

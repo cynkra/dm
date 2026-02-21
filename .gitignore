@@ -14,3 +14,4 @@ CRAN-RELEASE
 CRAN-SUBMISSION
 .vscode
 _problems/
+tests/testthat/_problems/
