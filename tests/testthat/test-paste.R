@@ -107,10 +107,7 @@ test_that("output 2", {
 })
 
 test_that("chunking behavior for large dm", {
-  # Test that dm_paste chunks long pipe chains to avoid stack overflow
-
-  # Create a dm with many tables and foreign keys to trigger chunking
-  create_large_dm <- function(n_tables = 55) {
+  create_large_dm <- function(n_tables) {
     main_table <- tibble(id = integer(0))
     tables <- list(main = main_table)
     for (i in 1:n_tables) {
@@ -131,13 +128,8 @@ test_that("chunking behavior for large dm", {
     dm_obj
   }
 
-  # Create a dm with 55 tables (generates 111 operations: 56 PKs + 55 FKs, exceeding the 100-op threshold)
-  large_dm <- create_large_dm(55)
-
-  # Use dm_paste_impl() directly, which returns the code as a character string
-  code <- dm:::dm_paste_impl(large_dm, c("keys", "color"), 2)
-
-  # Should generate more than 100 operations, triggering chunking
-  expect_true(grepl("dm_step_1 <-", code))
-  expect_true(grepl("dm_step_1 %>%", code))
+  # Use chunk_size = 3 with a 3-table dm (7 operations) to verify chunking output
+  expect_snapshot(
+    writeLines(dm:::dm_paste_impl(create_large_dm(3), c("keys"), 2, chunk_size = 3))
+  )
 })

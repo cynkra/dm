@@ -92,7 +92,7 @@ check_paste_options <- function(options, select, env) {
   options
 }
 
-dm_paste_impl <- function(dm, options, tab_width) {
+dm_paste_impl <- function(dm, options, tab_width, chunk_size = 100) {
   check_not_zoomed(dm)
   check_no_filter(dm)
 
@@ -136,7 +136,7 @@ dm_paste_impl <- function(dm, options, tab_width) {
     code_construct,
     all_operations,
     tab,
-    chunk_size = 100
+    chunk_size = chunk_size
   )
 
   paste0(code_tables, code_dm)
