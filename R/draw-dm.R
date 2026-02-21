@@ -167,7 +167,13 @@ dm_draw <- function(
   backend <- arg_match(backend)
 
   supported_backend_opts <- c(
-    "graph_attrs", "node_attrs", "edge_attrs", "focus", "graph_name", "column_arrow", "font_size"
+    "graph_attrs",
+    "node_attrs",
+    "edge_attrs",
+    "focus",
+    "graph_name",
+    "column_arrow",
+    "font_size"
   )
   unsupported <- setdiff(names(backend_opts), supported_backend_opts)
   if (length(unsupported) > 0) {
