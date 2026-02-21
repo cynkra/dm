@@ -11,15 +11,16 @@ dm_draw(
   ...,
   col_attr = NULL,
   view_type = c("keys_only", "all", "title_only"),
-  columnArrows = TRUE,
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  focus = NULL,
-  graph_name = "Data Model",
   column_types = NULL,
-  backend = "DiagrammeR",
-  font_size = NULL
+  backend = c("DiagrammeR"),
+  backend_opts = list(),
+  columnArrows = lifecycle::deprecated(),
+  graph_attrs = lifecycle::deprecated(),
+  node_attrs = lifecycle::deprecated(),
+  edge_attrs = lifecycle::deprecated(),
+  focus = lifecycle::deprecated(),
+  graph_name = lifecycle::deprecated(),
+  font_size = lifecycle::deprecated()
 )
 ```
 
@@ -47,30 +48,6 @@ dm_draw(
   level of details for rendering tables (only primary and foreign keys,
   all columns, or no columns).
 
-- columnArrows:
-
-  Edges from columns to columns (default: `TRUE`).
-
-- graph_attrs:
-
-  Additional graph attributes.
-
-- node_attrs:
-
-  Additional node attributes.
-
-- edge_attrs:
-
-  Additional edge attributes.
-
-- focus:
-
-  A list of parameters for rendering (table filter).
-
-- graph_name:
-
-  The name of the graph.
-
 - column_types:
 
   Set to `TRUE` to show column types.
@@ -78,23 +55,62 @@ dm_draw(
 - backend:
 
   Currently, only the default `"DiagrammeR"` is accepted. Pass this
-  value explicitly if your code not only uses this function to display a
-  data model but relies on the type of the return value.
+  value explicitly if your code relies on the type of the return value.
+
+- backend_opts:
+
+  A named list of backend-specific options. For the `"DiagrammeR"`
+  backend, supported options are:
+
+  - `graph_attrs`: Additional graph attributes (default `""`).
+
+  - `node_attrs`: Additional node attributes (default `""`).
+
+  - `edge_attrs`: Additional edge attributes (default `""`).
+
+  - `focus`: A list of parameters for rendering (table filter).
+
+  - `graph_name`: The name of the graph (default `"Data Model"`).
+
+  - `columnArrows`: Edges from columns to columns (default `TRUE`).
+
+  - `font_size`: **\[experimental\]** Font size for `header` (default
+    `16`), `column` (default `16`), and `table_description` (default
+    `8`). Can be set as a named integer vector, e.g.
+    `c(table_headers = 18L, table_description = 6L)`.
+
+- columnArrows:
+
+  **\[deprecated\]** Use `backend_opts = list(columnArrows = ...)`
+  instead.
+
+- graph_attrs:
+
+  **\[deprecated\]** Use `backend_opts = list(graph_attrs = ...)`
+  instead.
+
+- node_attrs:
+
+  **\[deprecated\]** Use `backend_opts = list(node_attrs = ...)`
+  instead.
+
+- edge_attrs:
+
+  **\[deprecated\]** Use `backend_opts = list(edge_attrs = ...)`
+  instead.
+
+- focus:
+
+  **\[deprecated\]** Use `backend_opts = list(focus = ...)` instead.
+
+- graph_name:
+
+  **\[deprecated\]** Use `backend_opts = list(graph_name = ...)`
+  instead.
 
 - font_size:
 
-  **\[experimental\]**
-
-  Font size for:
-
-  - `header`, defaults to `16`
-
-  - `column`, defaults to `16`
-
-  - `table_description`, defaults to `8`
-
-  Can be set as a named integer vector, e.g.
-  `c(table_headers = 18L, table_description = 6L)`.
+  **\[deprecated\]** Use `backend_opts = list(font_size = ...)` instead.
 
 ## Value
 

@@ -97,6 +97,8 @@ dm_get_table_description(nyc_desc)
 #>                                                                       "weather" 
 dm_reset_table_description(nyc_desc, flights) %>%
   dm_draw(font_size = c(header = 18L, table_description = 9L, column = 15L))
+#> Warning: The `font_size` argument of `dm_draw()` is deprecated as of dm 1.1.0.
+#> ℹ Use `backend_opts = list(font_size = ...)` instead.
 %0
 
 
