@@ -11,7 +11,7 @@ dm_draw(
   col_attr = NULL,
   view_type = c("keys_only", "all", "title_only"),
   column_types = NULL,
-  backend = c("DiagrammeR", "g6R"),
+  backend = c("DiagrammeR"),
   backend_opts = list(),
   columnArrows = lifecycle::deprecated(),
   graph_attrs = lifecycle::deprecated(),
@@ -37,14 +37,8 @@ It defines the level of details for rendering tables
 
 \item{column_types}{Set to \code{TRUE} to show column types.}
 
-\item{backend}{The rendering backend to use. Options are:
-\itemize{
-\item \code{"DiagrammeR"} (default): Uses DiagrammeR/Graphviz for rendering.
-Returns a \code{grViz} object.
-\item \code{"g6R"}: Uses g6R for interactive rendering with pan/zoom support.
-Returns a \code{g6} htmlwidget.
-Pass this value explicitly if your code relies on the type of the return value.
-}}
+\item{backend}{Currently, only the default \code{"DiagrammeR"} is accepted.
+Pass this value explicitly if your code relies on the type of the return value.}
 
 \item{backend_opts}{A named list of backend-specific options.
 For the \code{"DiagrammeR"} backend, supported options are:
@@ -86,9 +80,8 @@ Can be set as a named integer vector, e.g.
 \value{
 An object with a \code{\link[=print]{print()}} method, which,
 when printed, produces the output seen in the viewer as a side effect.
-For the \code{"DiagrammeR"} backend this is an object of class \code{grViz}
-(see also \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}).
-For the \code{"g6R"} backend this is an object of class \code{g6}.
+Currently, this is an object of class \code{grViz} (see also
+\code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), but this is subject to change.
 }
 \description{
 \code{dm_draw()} draws a diagram, a visual representation of the data model.
