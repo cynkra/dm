@@ -154,6 +154,7 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
 
     return(set_names(out, tables))
   }
+
   con <- con_from_src_or_con(src)
 
   if (is_mssql(src)) {
@@ -167,7 +168,6 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
     names_table <- get_names_table_postgres(con)
   } else if (is_redshift(src)) {
     # Redshift
-    schema <- schema_redshift(con, schema)
     dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
     names_table <- get_names_table_redshift(con)
   } else if (is_mariadb(src)) {
@@ -233,8 +233,8 @@ get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names = NULL) {
 }
 
 check_schema <- function(src, schema) {
-  if (!is_mssql(src) && !is_postgres(src) && !is_mariadb(src)) {
-    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "MariaDB"))
+  if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
+    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "Redshift", "MariaDB"))
     return(schema)
   }
 
@@ -242,17 +242,15 @@ check_schema <- function(src, schema) {
 
   if (!is.null(schema)) {
     check_param_class(schema, "character")
-    check_param_length(schema)
   }
 
   if (is_mssql(src)) {
-    # MSSQL
     schema_mssql(con, schema)
   } else if (is_postgres(src)) {
-    # Postgres
     schema_postgres(con, schema)
+  } else if (is_redshift(src)) {
+    schema_redshift(con, schema)
   } else if (is_mariadb(src)) {
-    # MariaDB
     schema_mariadb(con, schema)
   }
 }
@@ -272,16 +270,12 @@ schema_postgres <- function(con, schema) {
   schema
 }
 
-ident_q <- function(...) {
-  # to avoid dependency on dbplyr define `ident_q()` here (not exported from dplyr)
-  structure(c(...), class = c("ident_q", "ident", "character"))
-}
-
 schema_redshift <- schema_postgres
 
 schema_mariadb <- function(con, schema) {
   if (is_null(schema)) {
-    schema <- ident_q("database()")
+    # Extra parenthesis because it is used in a dbplyr-generated IN clause later
+    schema <- sql("(database())")
   }
   schema
 }
