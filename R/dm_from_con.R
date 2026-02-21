@@ -179,7 +179,7 @@ abort_learn_keys <- function(parent) {
   cli::cli_abort(
     c(
       "Failed to learn keys from database.",
-      i = "Use {.arg learn_keys = FALSE} to work around, or {.code dm:::dm_meta()} to debug."
+      i = "Use {.code learn_keys = FALSE} to work around, or {.code dm:::dm_meta()} to debug."
     ),
     class = dm_error_full("learn_keys"),
     parent = parent

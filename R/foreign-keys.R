@@ -699,7 +699,7 @@ fk_table_to_def_fks <- function(
 
 abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
   cli::cli_abort(
-    "({.code {colnames}}) is already a foreign key of table {.code {child_table_name}} into table {.code {parent_table_name}}.",
+    "({commas(tick(colnames))}) is already a foreign key of table {.code {child_table_name}} into table {.code {parent_table_name}}.",
     class = dm_error_full("fk_exists")
   )
 }

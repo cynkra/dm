@@ -14,7 +14,7 @@
       abort_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
     Condition
       Error in `abort_not_unique_key()`:
-      ! (`elves`, `Rudolph`, and `mulled_wine`) not a unique key of `Christmas`.
+      ! (`elves`, `Rudolph`, `mulled_wine`) not a unique key of `Christmas`.
     Code
       abort_table_not_in_dm("laziness", "hard_work")
     Condition
@@ -92,12 +92,12 @@
       abort_fk_exists("child", c("child_1", "child_2"), "parent")
     Condition
       Error in `abort_fk_exists()`:
-      ! (`child_1` and `child_2`) is already a foreign key of table `child` into table `parent`.
+      ! (`child_1`, `child_2`) is already a foreign key of table `child` into table `parent`.
     Code
       abort_first_rm_fks("parent", c("child_1", "child_2"))
     Condition
       Error in `abort_first_rm_fks()`:
-      ! There are foreign keys pointing from table(s) `child_1` and `child_2` to table `parent`. First remove those, or set `fail_fk = FALSE`.
+      ! There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those, or set `fail_fk = FALSE`.
     Code
       abort_update_not_supported()
     Condition
@@ -206,7 +206,7 @@
       abort_table_not_zoomed("blur", c("focus_1", "focus_2"))
     Condition
       Error in `abort_table_not_zoomed()`:
-      ! In `pull_tbl.dm_zoomed()`: Table `blur` not zoomed, zoomed tables: `focus_1` and `focus_2`.
+      ! In `pull_tbl.dm_zoomed()`: Table `blur` not zoomed, zoomed tables: `focus_1`, `focus_2`.
     Code
       abort_not_pulling_multiple_zoomed()
     Condition
@@ -216,7 +216,7 @@
       abort_cols_not_avail(c("pink5", "elephant"))
     Condition
       Error in `abort_cols_not_avail()`:
-      ! The color(s) `pink5` and `elephant` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
+      ! The color(s) `pink5`, `elephant` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
     Code
       abort_only_named_args("give_names", "frobnicability")
     Condition
@@ -246,7 +246,7 @@
       abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
     Condition
       Error in `abort_parameter_not_correct_length()`:
-      ! Parameter `length_1_parameter` needs to be of length 1 but is of length 26 (`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`, `i`, `j`, `k`, `l`, `m`, `n`, `o`, `p`, `q`, `r`, ..., `y`, and `z`).
+      ! Parameter `length_1_parameter` needs to be of length 1 but is of length 26 (`a`, `b`, `c`, `d`, `e`, ... (26 total)).
     Code
       warn_if_arg_not("NULL", c("MSSQL", "Postgres"), arg_name = "dbms_dependent_arg")
     Condition

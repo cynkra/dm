@@ -461,7 +461,7 @@ abort_key_set_force_false <- function(table) {
 
 abort_first_rm_fks <- function(table, fk_tables) {
   cli::cli_abort(
-    "There are foreign keys pointing from table(s) {.code {fk_tables}} to table {.code {table}}. First remove those, or set {.arg fail_fk = FALSE}.",
+    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {.code {table}}. First remove those, or set {.arg fail_fk = FALSE}.",
     class = dm_error_full("first_rm_fks")
   )
 }

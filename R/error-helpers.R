@@ -30,7 +30,7 @@ dm_warn <- function(bullets, class) {
 
 abort_not_unique_key <- function(table_name, column_names) {
   cli::cli_abort(
-    "({.code {column_names}}) not a unique key of {.code {table_name}}.",
+    "({commas(tick(column_names))}) not a unique key of {.code {table_name}}.",
     class = dm_error_full("not_unique_key")
   )
 }
@@ -41,7 +41,7 @@ abort_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2
   # taking care of singular/plural of the word "columns" and the corresponding ending of the verb
   plural <- s_if_plural(colname_1)
   cli::cli_abort(
-    "Column{plural['n']} ({.code {colname_1}}) of table {.code {table_name_1}} contain{plural['v']} values (see examples above) that are not present in column{plural['n']} ({.code {colname_2}}) of table {.code {table_name_2}}.",
+    "Column{plural['n']} ({commas(tick(colname_1))}) of table {.code {table_name_1}} contain{plural['v']} values (see examples above) that are not present in column{plural['n']} ({commas(tick(colname_2))}) of table {.code {table_name_2}}.",
     class = dm_error_full("not_subset_of")
   )
 }
@@ -57,7 +57,7 @@ abort_sets_not_equal <- function(error_msgs) {
 abort_not_bijective <- function(child_table_name, fk_col_name) {
   plural <- s_if_plural(fk_col_name)
   cli::cli_abort(
-    "1..1 cardinality (bijectivity) is not given: Column{plural['n']} ({.code {fk_col_name}}) in table {.code {child_table_name}} contain{plural['v']} duplicate values.",
+    "1..1 cardinality (bijectivity) is not given: Column{plural['n']} ({commas(tick(fk_col_name))}) in table {.code {child_table_name}} contain{plural['v']} duplicate values.",
     class = dm_error_full("not_bijective")
   )
 }
@@ -65,7 +65,7 @@ abort_not_bijective <- function(child_table_name, fk_col_name) {
 abort_not_injective <- function(child_table_name, fk_col_name) {
   plural <- s_if_plural(fk_col_name)
   cli::cli_abort(
-    "0..1 cardinality (injectivity from child table to parent table) is not given: Column{plural['n']} ({.code {fk_col_name}}) in table {.code {child_table_name}} contain{plural['v']} duplicate values.",
+    "0..1 cardinality (injectivity from child table to parent table) is not given: Column{plural['n']} ({commas(tick(fk_col_name))}) in table {.code {child_table_name}} contain{plural['v']} duplicate values.",
     class = dm_error_full("not_injective")
   )
 }
@@ -288,7 +288,7 @@ abort_fk_not_tracked <- function(x_orig_name, y_name) {
 
 abort_pk_not_tracked <- function(orig_table, orig_pk) {
   cli::cli_abort(
-    "The primary key column(s) {.code {orig_pk}} of the originally zoomed table {.code {orig_table}} got lost in transformations. Therefore it is not possible to use {.fn nest.dm_zoomed}.",
+    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {.code {orig_table}} got lost in transformations. Therefore it is not possible to use {.fn nest.dm_zoomed}.",
     class = dm_error_full("pk_not_tracked")
   )
 }
@@ -314,7 +314,7 @@ abort_no_table_provided <- function() {
 
 abort_table_not_zoomed <- function(table_name, zoomed_tables) {
   cli::cli_abort(
-    "In {.fn pull_tbl.dm_zoomed}: Table {.code {table_name}} not zoomed, zoomed tables: {.code {zoomed_tables}}.",
+    "In {.fn pull_tbl.dm_zoomed}: Table {.code {table_name}} not zoomed, zoomed tables: {commas(tick(zoomed_tables))}.",
     class = dm_error_full("table_not_zoomed")
   )
 }
@@ -328,7 +328,7 @@ abort_not_pulling_multiple_zoomed <- function() {
 
 abort_cols_not_avail <- function(wrong_col) {
   cli::cli_abort(
-    "The color(s) {.code {wrong_col}} are not available. Call {.fn dm_get_available_colors} for possible color names or use hex color codes.",
+    "The color(s) {commas(tick(wrong_col))} are not available. Call {.fn dm_get_available_colors} for possible color names or use hex color codes.",
     class = dm_error_full("cols_not_avail")
   )
 }
@@ -356,7 +356,7 @@ abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
 
 abort_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
   cli::cli_abort(
-    "Parameter {.arg {parameter}} needs to be of length {correct_length} but is of length {length(parameter_value)} ({.code {parameter_value}}).",
+    "Parameter {.arg {parameter}} needs to be of length {correct_length} but is of length {length(parameter_value)} ({commas(tick(parameter_value))}).",
     class = dm_error_full("parameter_not_correct_length")
   )
 }
