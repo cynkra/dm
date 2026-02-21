@@ -202,7 +202,7 @@ fks_df_from_keys_info <- function(tables) {
 
   fks %>%
     # Multiple tables with the same uuid can occur due to aliasing,
-    # hence `multiple = "all"`
+    # hence `multiple = "all"` and `relationship = "many-to-many"`
     left_join(
       child_uuid_lookup,
       by = "child_uuid",
