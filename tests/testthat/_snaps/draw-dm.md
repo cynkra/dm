@@ -65,3 +65,21 @@
       19 tf_6  n          2 chr  
       20 tf_6  o          3 chr  
 
+# DiagrammeR-specific options are soft-deprecated
+
+    Code
+      invisible(dm_draw(dm_nycflights13(), graph_attrs = "rankdir=LR"))
+    Condition
+      Warning:
+      The `graph_attrs` argument of `dm_draw()` is deprecated as of dm 1.1.0.
+      i Use `backend_opts = list(graph_attrs = ...)` instead.
+
+---
+
+    Code
+      invisible(dm_draw(dm_nycflights13(), font_size = 14L))
+    Condition
+      Warning:
+      The `font_size` argument of `dm_draw()` is deprecated as of dm 1.1.0.
+      i Use `backend_opts = list(font_size = ...)` instead.
+

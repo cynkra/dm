@@ -16,26 +16,37 @@
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
 #'   It defines the level of details for rendering tables
 #'   (only primary and foreign keys, all columns, or no columns).
-#' @param graph_name The name of the graph.
-#' @param graph_attrs Additional graph attributes.
-#' @param node_attrs Additional node attributes.
-#' @param edge_attrs Additional edge attributes.
-#' @param focus A list of parameters for rendering (table filter).
-#' @param columnArrows Edges from columns to columns (default: `TRUE`).
 #' @inheritParams rlang::args_dots_empty
 #' @param column_types Set to `TRUE` to show column types.
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
-#'   Pass this value explicitly if your code not only uses this function
-#'   to display a data model but relies on the type of the return value.
-#' @param font_size `r lifecycle::badge("experimental")`
-#'
-#'   Font size for:
-#'
-#'   - `header`, defaults to `16`
-#'   - `column`, defaults to `16`
-#'   - `table_description`, defaults to `8`
-#'
-#'   Can be set as a named integer vector, e.g. `c(table_headers = 18L, table_description = 6L)`.
+#'   Pass this value explicitly if your code relies on the type of the return value.
+#' @param backend_opts A named list of backend-specific options.
+#'   For the `"DiagrammeR"` backend, supported options are:
+#'   - `graph_attrs`: Additional graph attributes (default `""`).
+#'   - `node_attrs`: Additional node attributes (default `""`).
+#'   - `edge_attrs`: Additional edge attributes (default `""`).
+#'   - `focus`: A list of parameters for rendering (table filter).
+#'   - `graph_name`: The name of the graph (default `"Data Model"`).
+#'   - `columnArrows`: Edges from columns to columns (default `TRUE`).
+#'   - `font_size`: `r lifecycle::badge("experimental")`
+#'     Font size for `header` (default `16`), `column` (default `16`),
+#'     and `table_description` (default `8`).
+#'     Can be set as a named integer vector, e.g.
+#'     `c(table_headers = 18L, table_description = 6L)`.
+#' @param columnArrows `r lifecycle::badge("deprecated")` Use
+#'   `backend_opts = list(columnArrows = ...)` instead.
+#' @param graph_attrs `r lifecycle::badge("deprecated")` Use
+#'   `backend_opts = list(graph_attrs = ...)` instead.
+#' @param node_attrs `r lifecycle::badge("deprecated")` Use
+#'   `backend_opts = list(node_attrs = ...)` instead.
+#' @param edge_attrs `r lifecycle::badge("deprecated")` Use
+#'   `backend_opts = list(edge_attrs = ...)` instead.
+#' @param focus `r lifecycle::badge("deprecated")` Use
+#'   `backend_opts = list(focus = ...)` instead.
+#' @param graph_name `r lifecycle::badge("deprecated")` Use
+#'   `backend_opts = list(graph_name = ...)` instead.
+#' @param font_size `r lifecycle::badge("deprecated")` Use
+#'   `backend_opts = list(font_size = ...)` instead.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
 #' @seealso [dm_set_table_description()] for adding details to one or more tables in the diagram
@@ -65,18 +76,77 @@ dm_draw <- function(
   ...,
   col_attr = NULL,
   view_type = c("keys_only", "all", "title_only"),
-  columnArrows = TRUE,
-  graph_attrs = "",
-  node_attrs = "",
-  edge_attrs = "",
-  focus = NULL,
-  graph_name = "Data Model",
   column_types = NULL,
-  backend = "DiagrammeR",
-  font_size = NULL
+  backend = c("DiagrammeR"),
+  backend_opts = list(),
+  columnArrows = lifecycle::deprecated(),
+  graph_attrs = lifecycle::deprecated(),
+  node_attrs = lifecycle::deprecated(),
+  edge_attrs = lifecycle::deprecated(),
+  focus = lifecycle::deprecated(),
+  graph_name = lifecycle::deprecated(),
+  font_size = lifecycle::deprecated()
 ) {
   check_not_zoomed(dm)
   check_dots_empty()
+
+  # Handle deprecated DiagrammeR-specific arguments
+  if (lifecycle::is_present(columnArrows)) {
+    lifecycle::deprecate_soft(
+      "1.1.0",
+      "dm_draw(columnArrows = )",
+      details = "Use `backend_opts = list(columnArrows = ...)` instead."
+    )
+    backend_opts[["columnArrows"]] <- backend_opts[["columnArrows"]] %||% columnArrows
+  }
+  if (lifecycle::is_present(graph_attrs)) {
+    lifecycle::deprecate_soft(
+      "1.1.0",
+      "dm_draw(graph_attrs = )",
+      details = "Use `backend_opts = list(graph_attrs = ...)` instead."
+    )
+    backend_opts[["graph_attrs"]] <- backend_opts[["graph_attrs"]] %||% graph_attrs
+  }
+  if (lifecycle::is_present(node_attrs)) {
+    lifecycle::deprecate_soft(
+      "1.1.0",
+      "dm_draw(node_attrs = )",
+      details = "Use `backend_opts = list(node_attrs = ...)` instead."
+    )
+    backend_opts[["node_attrs"]] <- backend_opts[["node_attrs"]] %||% node_attrs
+  }
+  if (lifecycle::is_present(edge_attrs)) {
+    lifecycle::deprecate_soft(
+      "1.1.0",
+      "dm_draw(edge_attrs = )",
+      details = "Use `backend_opts = list(edge_attrs = ...)` instead."
+    )
+    backend_opts[["edge_attrs"]] <- backend_opts[["edge_attrs"]] %||% edge_attrs
+  }
+  if (lifecycle::is_present(focus)) {
+    lifecycle::deprecate_soft(
+      "1.1.0",
+      "dm_draw(focus = )",
+      details = "Use `backend_opts = list(focus = ...)` instead."
+    )
+    backend_opts[["focus"]] <- backend_opts[["focus"]] %||% focus
+  }
+  if (lifecycle::is_present(graph_name)) {
+    lifecycle::deprecate_soft(
+      "1.1.0",
+      "dm_draw(graph_name = )",
+      details = "Use `backend_opts = list(graph_name = ...)` instead."
+    )
+    backend_opts[["graph_name"]] <- backend_opts[["graph_name"]] %||% graph_name
+  }
+  if (lifecycle::is_present(font_size)) {
+    lifecycle::deprecate_soft(
+      "1.1.0",
+      "dm_draw(font_size = )",
+      details = "Use `backend_opts = list(font_size = ...)` instead."
+    )
+    backend_opts[["font_size"]] <- backend_opts[["font_size"]] %||% font_size
+  }
 
   tbl_names <- src_tbls_impl(dm, quiet = TRUE)
   table_description <- dm_get_table_description_impl(
@@ -94,7 +164,7 @@ dm_draw <- function(
     }
   }
 
-  stopifnot(identical(backend, "DiagrammeR"))
+  backend <- arg_match(backend)
 
   if (is_empty(dm)) {
     message("The dm cannot be drawn because it is empty.")
@@ -105,19 +175,20 @@ dm_draw <- function(
 
   data_model <- dm_get_data_model(dm, column_types)
 
+  # DiagrammeR backend (default)
   graph <- bdm_create_graph(
     data_model,
     rankdir = rankdir,
     col_attr = c("column", if (column_types) "type"),
     view_type = view_type,
-    columnArrows = columnArrows,
-    graph_attrs = graph_attrs,
-    node_attrs = node_attrs,
-    edge_attrs = edge_attrs,
-    focus = focus,
-    graph_name = graph_name,
+    columnArrows = backend_opts[["columnArrows"]] %||% TRUE,
+    graph_attrs = backend_opts[["graph_attrs"]] %||% "",
+    node_attrs = backend_opts[["node_attrs"]] %||% "",
+    edge_attrs = backend_opts[["edge_attrs"]] %||% "",
+    focus = backend_opts[["focus"]],
+    graph_name = backend_opts[["graph_name"]] %||% "Data Model",
     table_description = as.list(table_description),
-    font_size = as.list(font_size)
+    font_size = as.list(backend_opts[["font_size"]])
   )
   bdm_render_graph(graph, top_level_fun = "dm_draw")
 }

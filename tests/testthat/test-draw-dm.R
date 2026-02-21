@@ -163,20 +163,24 @@ test_that("table_description works", {
   expect_snapshot_diagram(
     dm_nycflights_small() %>%
       dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
-      dm_draw(font_size = list(table_description = 6L)),
+      dm_draw(backend_opts = list(font_size = list(table_description = 6L))),
     "table-desc-2-dm.svg"
   )
 
   expect_snapshot_diagram(
     dm_nycflights_small() %>%
       dm_set_table_description("high in the sky\nflying from NY" = flights) %>%
-      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+      dm_draw(
+        backend_opts = list(font_size = c(table_description = 6L, header = 19L, column = 14L))
+      ),
     "table-desc-3-dm.svg"
   )
 
   expect_snapshot_diagram(
     dm_nycflights13(table_description = TRUE) %>%
-      dm_draw(font_size = c(table_description = 6L, header = 19L, column = 14L)),
+      dm_draw(
+        backend_opts = list(font_size = c(table_description = 6L, header = 19L, column = 14L))
+      ),
     "table-desc-4-dm.svg"
   )
 })
@@ -197,4 +201,20 @@ test_that("UK support works", {
       dm_draw(),
     "table-uk-2-dm.svg"
   )
+})
+
+test_that("DiagrammeR-specific options are soft-deprecated", {
+  skip_if_not_installed("DiagrammeR")
+
+  expect_snapshot({
+    dm_nycflights13() |>
+      dm_draw(graph_attrs = "rankdir=LR") |>
+      invisible()
+  })
+
+  expect_snapshot({
+    dm_nycflights13() |>
+      dm_draw(font_size = 14L) |>
+      invisible()
+  })
 })
