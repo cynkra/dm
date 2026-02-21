@@ -4,7 +4,13 @@
 \alias{dm_flatten_to_tbl}
 \title{Flatten a part of a \code{dm} into a wide table}
 \usage{
-dm_flatten_to_tbl(dm, .start, ..., .recursive = FALSE, .join = left_join)
+dm_flatten_to_tbl(
+  dm,
+  .start,
+  ...,
+  .recursive = FALSE,
+  .join = dplyr::left_join
+)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}

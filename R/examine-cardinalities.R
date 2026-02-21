@@ -82,8 +82,8 @@ dm_examine_cardinalities_impl <- function(dm, progress = NA, top_level_fun = NUL
     dplyr::transmute(
       x_label = parent_table,
       y_label = child_table,
-      x = map2(dm_def[x_label], parent_key_cols, ~ dplyr::select(.x, all_of(.y))),
-      y = map2(dm_def[y_label], child_fk_cols, ~ dplyr::select(.x, all_of(.y))),
+      x = map2(dm_def[x_label], parent_key_cols, ~ dplyr::select(.x, tidyselect::all_of(.y))),
+      y = map2(dm_def[y_label], child_fk_cols, ~ dplyr::select(.x, tidyselect::all_of(.y))),
     )
   ticker <- new_ticker(
     "checking fk cardinalities",

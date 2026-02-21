@@ -76,7 +76,7 @@ rename_unique <- function(all_paths) {
     ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(table, new_table) %>%
-    add_count(table) %>%
+    dplyr::add_count(table) %>%
     dplyr::mutate(table = dplyr::if_else(n == 1L, table, new_table)) %>%
     dplyr::select(new_table, table) %>%
     deframe()

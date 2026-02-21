@@ -63,7 +63,7 @@ decompose_table <- function(.data, new_id_column, ...) {
     dplyr::mutate(
       !!id_col_q := as.integer(dplyr::coalesce(dplyr::row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))
     ) %>%
-    dplyr::select(!!id_col_q, everything())
+    dplyr::select(!!id_col_q, tidyselect::everything())
 
   non_key_indices <-
     setdiff(seq_along(avail_cols), sel_vars$indices)

@@ -84,7 +84,7 @@ dm_apply_filters_to_tbl(dm, table)
 
 dm_get_filters(dm)
 
-dm_join_to_tbl(dm, table_1, table_2, join = left_join)
+dm_join_to_tbl(dm, table_1, table_2, join = dplyr::left_join)
 
 dm_is_referenced(dm, table)
 
@@ -147,11 +147,11 @@ cdm_filter(dm, table, ...)
 
 cdm_nrow(dm)
 
-cdm_flatten_to_tbl(dm, start, ..., join = left_join)
+cdm_flatten_to_tbl(dm, start, ..., join = dplyr::left_join)
 
-cdm_squash_to_tbl(dm, start, ..., join = left_join)
+cdm_squash_to_tbl(dm, start, ..., join = dplyr::left_join)
 
-cdm_join_to_tbl(dm, table_1, table_2, join = left_join)
+cdm_join_to_tbl(dm, table_1, table_2, join = dplyr::left_join)
 
 cdm_apply_filters(dm)
 
@@ -220,7 +220,7 @@ dm_add_tbl(dm, ..., repair = "unique", quiet = FALSE)
 
 dm_bind(..., repair = "check_unique", quiet = FALSE)
 
-dm_squash_to_tbl(dm, start, ..., join = left_join)
+dm_squash_to_tbl(dm, start, ..., join = dplyr::left_join)
 
 rows_truncate(x, ..., in_place = FALSE)
 

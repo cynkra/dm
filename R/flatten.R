@@ -60,9 +60,9 @@
 #'   dm_flatten_to_tbl(.start = cards, .recursive = TRUE)
 #'
 #' @export
-dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_join) {
+dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = dplyr::left_join) {
   check_not_zoomed(dm)
-  join_name <- as_label(enexpr(.join))
+  join_name <- sub("^dplyr::", "", as_label(enexpr(.join)))
   if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) {
     abort_squash_limited()
   }
@@ -172,13 +172,13 @@ dm_flatten_to_tbl_impl <- function(
 #'
 #' @rdname deprecated
 #' @export
-dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+dm_join_to_tbl <- function(dm, table_1, table_2, join = dplyr::left_join) {
   deprecate_soft("0.3.0", "dm::dm_join_to_tbl()", "dm::dm_flatten_to_tbl()")
 
   check_not_zoomed(dm)
   force(join)
   stopifnot(is_function(join))
-  join_name <- deparse(substitute(join))
+  join_name <- sub("^dplyr::", "", deparse(substitute(join)))
 
   t1_name <- dm_tbl_name(dm, {{ table_1 }})
   t2_name <- dm_tbl_name(dm, {{ table_2 }})

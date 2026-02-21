@@ -46,9 +46,9 @@ pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALS
   }
   y_local <- dplyr::collect(y)
   x_nms <- colnames(x)
-  name_var_unique <- last(make.unique(c(names(y_local), x_nms, name_var)))
+  name_var_unique <- dplyr::last(make.unique(c(names(y_local), x_nms, name_var)))
   y_keys <- unname(by) %||% intersect(names(x), names(y_local))
-  y_packed <- tidyr::pack(y_local, !!name_var_unique := -all_of(y_keys))
+  y_packed <- tidyr::pack(y_local, !!name_var_unique := -tidyselect::all_of(y_keys))
   if (keep) {
     y_packed[[name_var_unique]][y_keys] <- y_packed[y_keys]
     # sort packed cols in original order

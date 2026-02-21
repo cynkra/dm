@@ -100,20 +100,20 @@ dm_meta_raw <- function(con, catalog) {
   if (is_mssql(src)) {
     columns <- columns %>%
       dplyr::mutate(
-        is_autoincrement = sql(
+        is_autoincrement = dbplyr::sql(
           "CAST(COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity') AS BIT)"
         )
       )
   } else if (is_postgres(src) || is_redshift(src)) {
     columns <- columns %>%
       dplyr::mutate(
-        is_autoincrement = sql(
+        is_autoincrement = dbplyr::sql(
           "CASE WHEN column_default IS NULL THEN FALSE ELSE column_default SIMILAR TO '%nextval%' END"
         )
       )
   } else if (is_mariadb(src)) {
     columns <- columns %>%
-      dplyr::mutate(is_autoincrement = sql("extra REGEXP 'auto_increment'")) %>%
+      dplyr::mutate(is_autoincrement = dbplyr::sql("extra REGEXP 'auto_increment'")) %>%
       dplyr::select(-extra)
   } else {
     cli::cli_alert_warning("unable to fetch autoincrement metadata for src '{class(src)[1]}'")
@@ -214,7 +214,7 @@ dm_meta_raw <- function(con, catalog) {
     constraint_column_usage <-
       dplyr::tbl(
         src,
-        sql(postgres_column_constraints),
+        dbplyr::sql(postgres_column_constraints),
         vars = c(
           "table_catalog",
           "table_schema",
@@ -353,7 +353,7 @@ dm_meta_add_keys <- function(dm_meta) {
       key_column_usage
     ) %>%
     #
-    dm_set_colors(green4 = ends_with("_constraints"), orange = ends_with("_usage"))
+    dm_set_colors(green4 = tidyselect::ends_with("_constraints"), orange = tidyselect::ends_with("_usage"))
 }
 
 dm_meta_simple_raw <- function(con) {
@@ -416,7 +416,7 @@ tbl_lc <- function(con, name, vars) {
     from <- name
   } else {
     quoted_vars <- DBI::dbQuoteIdentifier(con_from_src_or_con(con), vars)
-    from <- sql(paste0(
+    from <- dbplyr::sql(paste0(
       "SELECT ",
       # Be especially persuasive for MySQL
       paste0(quoted_vars, " AS ", quoted_vars, collapse = ", "),

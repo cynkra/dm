@@ -244,9 +244,9 @@ cdm_nrow <- function(dm) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
+cdm_flatten_to_tbl <- function(dm, start, ..., join = dplyr::left_join) {
   deprecate_soft("0.1.0", "dm::cdm_flatten_to_tbl()", "dm::dm_flatten_to_tbl()")
-  join_name <- deparse(substitute(join))
+  join_name <- sub("^dplyr::", "", deparse(substitute(join)))
   start <- dm_tbl_name(dm, {{ start }})
 
   vars <- setdiff(src_tbls_impl(dm), start)
@@ -266,9 +266,9 @@ cdm_flatten_to_tbl <- function(dm, start, ..., join = left_join) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+cdm_squash_to_tbl <- function(dm, start, ..., join = dplyr::left_join) {
   deprecate_soft("0.1.0", "dm::cdm_squash_to_tbl()", "dm::dm_squash_to_tbl()")
-  join_name <- deparse(substitute(join))
+  join_name <- sub("^dplyr::", "", deparse(substitute(join)))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) {
     abort_squash_limited()
   }
@@ -291,11 +291,11 @@ cdm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 #' @rdname deprecated
 #' @keywords internal
 #' @export
-cdm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+cdm_join_to_tbl <- function(dm, table_1, table_2, join = dplyr::left_join) {
   force(join)
   deprecate_soft("0.1.0", "dm::cdm_join_to_tbl()", "dm::dm_join_to_tbl()")
   stopifnot(is_function(join))
-  join_name <- deparse(substitute(join))
+  join_name <- sub("^dplyr::", "", deparse(substitute(join)))
 
   t1_name <- dm_tbl_name(dm, {{ table_1 }})
   t2_name <- dm_tbl_name(dm, {{ table_2 }})
@@ -809,7 +809,7 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 #' @keywords internal
 #'
 #' @export
-dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
+dm_squash_to_tbl <- function(dm, start, ..., join = dplyr::left_join) {
   deprecate_soft(
     "1.0.0",
     "dm_squash_to_tbl()",
@@ -817,7 +817,7 @@ dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
   )
 
   check_not_zoomed(dm)
-  join_name <- as_label(enexpr(join))
+  join_name <- sub("^dplyr::", "", as_label(enexpr(join)))
   if (!(join_name %in% c("left_join", "full_join", "inner_join"))) {
     abort_squash_limited()
   }

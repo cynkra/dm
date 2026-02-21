@@ -187,7 +187,7 @@ dm_ddl_pre <- function(
     dplyr::left_join(pk_defs, by = "name") %>%
     dplyr::left_join(uk_defs, by = "name") %>%
     dplyr::left_join(fk_defs, by = "name") %>%
-    rowwise() %>%
+    dplyr::rowwise() %>%
     dplyr::mutate(
       remote_name = table_names[name],
       all_defs = paste(

@@ -701,7 +701,7 @@ compute.dm <- function(x, ..., temporary = TRUE) {
   x %>%
     dm_apply_filters_impl() %>%
     dm_get_def() %>%
-    dplyr::mutate(data = map(data, compute, ...)) %>%
+    dplyr::mutate(data = map(data, dplyr::compute, ...)) %>%
     dm_from_def()
 }
 
@@ -720,7 +720,7 @@ collect.dm <- function(x, ..., progress = NA) {
   def <- dm_get_def(x)
 
   ticker <- new_ticker("downloading data", nrow(def), progress = progress)
-  def$data <- map(def$data, ticker(collect), ...)
+  def$data <- map(def$data, ticker(dplyr::collect), ...)
   dm_from_def(def, zoomed = is_zoomed(x))
 }
 

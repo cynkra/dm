@@ -318,13 +318,13 @@ slice.dm_keyed_tbl <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 }
 
 #' @exportS3Method dplyr::group_by
-group_by.dm <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
+group_by.dm <- function(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data)) {
   check_zoomed(.data)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @exportS3Method dplyr::group_by
-group_by.dm_zoomed <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
+group_by.dm_zoomed <- function(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data)) {
   tbl <- tbl_zoomed(.data)
   grouped_tbl <- dplyr::group_by(tbl, ..., .add = .add, .drop = .drop)
 
@@ -333,7 +333,7 @@ group_by.dm_zoomed <- function(.data, ..., .add = FALSE, .drop = group_by_drop_d
 
 #' @rdname dplyr_table_manipulation
 #' @exportS3Method dplyr::group_by
-group_by.dm_keyed_tbl <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
+group_by.dm_keyed_tbl <- function(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data)) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
   grouped_tbl <- dplyr::group_by(tbl, ..., .add = .add, .drop = .drop)
@@ -503,7 +503,7 @@ count.dm <- function(
   wt = NULL,
   sort = FALSE,
   name = NULL,
-  .drop = group_by_drop_default(x)
+  .drop = dplyr::group_by_drop_default(x)
 ) {
   check_zoomed(x)
 }
@@ -517,7 +517,7 @@ count.dm_zoomed <- function(
   wt = NULL,
   sort = FALSE,
   name = NULL,
-  .drop = group_by_drop_default(x)
+  .drop = dplyr::group_by_drop_default(x)
 ) {
   tbl <- tbl_zoomed(x)
 
@@ -533,7 +533,7 @@ count.dm_zoomed <- function(
 
   # Ensure grouping is transient
   if (is.data.frame(tbl)) {
-    out <- dplyr_reconstruct(out, tbl)
+    out <- dplyr::dplyr_reconstruct(out, tbl)
   }
 
   new_tracked_cols_zoom <- new_tracked_cols(x, groups)
@@ -548,7 +548,7 @@ count.dm_keyed_tbl <- function(
   wt = NULL,
   sort = FALSE,
   name = NULL,
-  .drop = group_by_drop_default(x)
+  .drop = dplyr::group_by_drop_default(x)
 ) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
@@ -574,7 +574,7 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
 
   # Ensure grouping is transient
   if (is.data.frame(tbl)) {
-    out <- dplyr_reconstruct(out, tbl)
+    out <- dplyr::dplyr_reconstruct(out, tbl)
   }
 
   new_tracked_cols_zoom <- new_tracked_cols(x, groups)
@@ -1231,7 +1231,7 @@ prepare_join <- function(
   all_cols_y <- colnames(y_tbl)
 
   if (quo_is_null(select_quo)) {
-    select_quo <- quo(everything())
+    select_quo <- quo(tidyselect::everything())
   }
 
   selected <- eval_select_both(select_quo, colnames(y_tbl), error_call = error_call)$names
@@ -1328,7 +1328,7 @@ safe_count <- function(
   wt = NULL,
   sort = FALSE,
   name = NULL,
-  .drop = group_by_drop_default(x)
+  .drop = dplyr::group_by_drop_default(x)
 ) {
   quos <- enquos(...)
 

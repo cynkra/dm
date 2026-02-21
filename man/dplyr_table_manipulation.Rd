@@ -92,9 +92,9 @@
 
 \method{slice}{dm_keyed_tbl}(.data, ..., .by = NULL, .preserve = FALSE)
 
-\method{group_by}{dm_zoomed}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
+\method{group_by}{dm_zoomed}(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data))
 
-\method{group_by}{dm_keyed_tbl}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
+\method{group_by}{dm_keyed_tbl}(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data))
 
 \method{ungroup}{dm_zoomed}(x, ...)
 
@@ -114,7 +114,7 @@
   wt = NULL,
   sort = FALSE,
   name = NULL,
-  .drop = group_by_drop_default(x)
+  .drop = dplyr::group_by_drop_default(x)
 )
 
 \method{count}{dm_keyed_tbl}(
@@ -123,7 +123,7 @@
   wt = NULL,
   sort = FALSE,
   name = NULL,
-  .drop = group_by_drop_default(x)
+  .drop = dplyr::group_by_drop_default(x)
 )
 
 \method{tally}{dm_zoomed}(x, wt = NULL, sort = FALSE, name = NULL)

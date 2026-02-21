@@ -8,7 +8,7 @@ mssql_sys_db <- function(con, dbname, sys_table, vars = NULL) {
   }
   dplyr::tbl(con, id, vars = vars) %>%
     dplyr::mutate(catalog = !!sql_name) %>%
-    dplyr::select(catalog, everything())
+    dplyr::select(catalog, tidyselect::everything())
 }
 
 #' @autoglobal
@@ -87,9 +87,9 @@ mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
       by = c("catalog", "referenced_object_id" = "object_id", "referenced_column_id" = "column_id")
     ) %>%
     dplyr::left_join(tables, by = c("catalog", "referenced_object_id" = "object_id")) %>%
-    collapse() %>%
+    dplyr::collapse() %>%
     dplyr::left_join(schemas, by = c("catalog", "schema_id")) %>%
-    collapse() %>%
+    dplyr::collapse() %>%
     dplyr::left_join(objects, by = c("constraint_object_id" = "object_id")) %>%
     # table_schema is used twice
     dplyr::transmute(

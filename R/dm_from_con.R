@@ -116,7 +116,7 @@ dm_from_con <- function(
   tbls <-
     src_tbl_names %>%
     quote_ids(con) %>%
-    map(possibly(tbl, NULL), src = src)
+    map(possibly(dplyr::tbl, NULL), src = src)
 
   bad <- map_lgl(tbls, is_null)
   if (any(bad)) {

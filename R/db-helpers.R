@@ -108,11 +108,11 @@ is_schema_supported <- function(con) {
 }
 
 src_from_src_or_con <- function(dest) {
-  if (is.src(dest)) dest else dbplyr::src_dbi(dest)
+  if (dplyr::is.src(dest)) dest else dbplyr::src_dbi(dest)
 }
 
 con_from_src_or_con <- function(dest) {
-  if (is.src(dest)) dest$con else dest
+  if (dplyr::is.src(dest)) dest$con else dest
 }
 
 repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL) {
@@ -258,7 +258,7 @@ schema_redshift <- schema_postgres
 
 schema_mariadb <- function(con, schema) {
   if (is_null(schema)) {
-    schema <- sql("database()")
+    schema <- dbplyr::sql("database()")
   }
   schema
 }
@@ -278,7 +278,7 @@ dbname_mssql <- function(con, dbname) {
 get_names_table_mssql <- function(con, dbname_sql) {
   dplyr::tbl(
     con,
-    sql(glue::glue(
+    dbplyr::sql(glue::glue(
       "
       SELECT tabs.name AS table_name, schemas.name AS schema_name
       FROM {dbname_sql}sys.tables tabs
@@ -292,7 +292,7 @@ get_names_table_mssql <- function(con, dbname_sql) {
 get_names_table_postgres <- function(con) {
   dplyr::tbl(
     con,
-    sql(
+    dbplyr::sql(
       "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
     )
   )

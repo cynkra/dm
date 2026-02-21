@@ -151,7 +151,6 @@ utils::globalVariables(c(
   "is_autoincrement", # <dm_learn_from_db>
   "pks", # <dm_learn_from_db>
   "delete_rule", # <dm_learn_from_db>
-  "inner_join", # <dm_learn_from_db>
   "constraint_column_usage.dm_name", # <dm_learn_from_db>
   "constraint_column_usage.column_name", # <dm_learn_from_db>
   "key_column_usage.dm_name", # <dm_learn_from_db>

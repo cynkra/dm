@@ -30,7 +30,7 @@ json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
     abort("All elements of `...` must be named.")
   }
   tidyr::nest(.data, ..., .names_sep = .names_sep) %>%
-    dplyr::mutate(dplyr::across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
+    dplyr::mutate(dplyr::across(tidyselect::all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
 }
 
 #' @export
@@ -157,5 +157,5 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
     .con = con
   )
 
-  dplyr::tbl(con, sql(out_query), vars = c(id_cols, nesting_plan$nesting_name))
+  dplyr::tbl(con, dbplyr::sql(out_query), vars = c(id_cols, nesting_plan$nesting_name))
 }

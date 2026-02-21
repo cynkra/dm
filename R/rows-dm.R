@@ -323,7 +323,7 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
 
   autoinc_col_orig <- paste0(autoinc_col, "_orig")
 
-  insert_sql <- sql(unlist(insert_queries))
+  insert_sql <- dbplyr::sql(unlist(insert_queries))
 
   # Run INSERT INTO queries, side effect!
   # Must run queries individually, e.g. on Postgres:
