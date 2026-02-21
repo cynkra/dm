@@ -94,7 +94,7 @@ dm_from_con <- function(
         if (isTRUE(learn_keys)) {
           abort_learn_keys(e)
         }
-        cli::inform(
+        cli::cli_inform(
           "Keys could not be queried.",
           x = conditionMessage(e),
           i = "Use {.code learn_keys = FALSE} to avoid trying to query keys and to mute this message."
