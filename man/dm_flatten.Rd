@@ -27,7 +27,8 @@ for example a fact table in a star schema.}
 Unquoted names of the parent tables to be joined into \code{table}.
 The order of the tables here determines the order of the joins.
 If \code{NULL} (the default), all direct parent tables
-(reachable via foreign keys) are joined.
+are joined in non-recursive mode,
+or all reachable ancestor tables in recursive mode.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
 \item{recursive}{Logical, defaults to \code{FALSE}.
