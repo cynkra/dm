@@ -8,6 +8,7 @@ dm_examine_constraints(
   .dm,
   ...,
   .progress = NA,
+  .max_value = 6L,
   dm = deprecated(),
   progress = deprecated()
 )
@@ -20,6 +21,10 @@ dm_examine_constraints(
 \item{.progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
+
+\item{.max_value}{Maximum number of distinct problematic values to report
+in the \code{problem} column, defaults to \code{6}.
+Set to \code{Inf} to report all values.}
 
 \item{dm, progress}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }

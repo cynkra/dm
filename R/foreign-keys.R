@@ -614,7 +614,7 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
     arrange(desc(candidate))
 }
 
-check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
+check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, max_value = MAX_COMMAS) {
   stopifnot(length(colname) == length(pk))
 
   val_names <- paste0("value", seq_along(colname))
@@ -646,7 +646,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
       filter(!(!!any_value_na_expr)) %>%
       anti_join(t2_join, by = val_names) %>%
       arrange(desc(n), !!!syms(val_names)) %>%
-      head(MAX_COMMAS + 1L) %>%
+      head(max_value + 1L) %>%
       collect(),
     error = identity
   )
@@ -667,6 +667,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 
   vals_formatted <- commas(
     glue("{res_tbl$value} ({res_tbl$n})"),
+    max_commas = max_value,
     capped = TRUE
   )
   glue(
