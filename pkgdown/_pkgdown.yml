@@ -121,6 +121,7 @@ reference:
   desc: >
     Check fulfillment and nature of relationships between tables.
   contents:
+  - dm_infer_keys
   - dm_examine_constraints
   - enum_pk_candidates
   - enum_fk_candidates
