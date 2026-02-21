@@ -50,12 +50,11 @@ URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
 BugReports: https://github.com/cynkra/dm/issues
 Depends: 
     R (>= 4.0),
-    dplyr,
-    tidyr
+    dplyr (>= 1.2.0),
+    tidyr (>= 1.3.2)
 Imports:
     backports,
     cli (>= 2.2.0),
-    dplyr (>= 1.2.0),
     glue,
     igraph (>= 2.2.0),
     lifecycle (>= 1.0.3),
@@ -64,7 +63,6 @@ Imports:
     purrr (>= 1.0.0),
     rlang (>= 1.0.2),
     tibble (>= 3.0.0),
-    tidyr (>= 1.0.0),
     tidyselect (>= 1.2.0),
     vctrs (>= 0.3.2)
 Suggests: 
