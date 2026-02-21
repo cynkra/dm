@@ -301,7 +301,9 @@ dm_paste_chunk_operations <- function(code_construct, parts, tab, chunk_size = 1
     } else {
       prev_var <- paste0("dm_step_", i - 1)
       chunk_code <- paste0(
-        prev_var, " %>%\n", tab,
+        prev_var,
+        " %>%\n",
+        tab,
         glue_collapse(ops, sep = glue(" %>%\n{tab}", .trim = FALSE))
       )
     }
