@@ -1,6 +1,6 @@
-dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE) {
+dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE, error_call = caller_env()) {
   if (is_sqlite(con)) {
-    return(dm_meta_sqlite(con))
+    return(dm_meta_sqlite(con, catalog = catalog, schema = schema, simple = simple, error_call = error_call))
   }
 
   need_collect <- FALSE
@@ -361,12 +361,26 @@ dm_meta_add_keys <- function(dm_meta) {
 }
 
 #' @autoglobal
-dm_meta_sqlite <- function(con) {
-  table_names <- DBI::dbListTables(con)
-  table_names <- table_names[!grepl("^sqlite_", table_names)]
+dm_meta_sqlite <- function(con, catalog = NA, schema = NULL, simple = FALSE, error_call = caller_env()) {
+  if (!is.na(catalog)) {
+    cli::cli_abort("{.arg catalog} must be {.code NA} for SQLite connections.", call = error_call)
+  }
 
   catalog <- NA_character_
-  schema <- "main"
+  if (is.null(schema)) {
+    schema <- "main"
+  }
+
+  # FIXME: Use dbListObjects() when it works, https://github.com/r-dbi/RSQLite/issues/689
+  schema_q <- DBI::dbQuoteIdentifier(con, schema)
+  table_names_df <- DBI::dbGetQuery(
+    con,
+    paste0(
+      "SELECT name FROM ", schema_q, ".sqlite_master",
+      " WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
+    )
+  )
+  table_names <- table_names_df$name
 
   schemata <- tibble(catalog_name = catalog, schema_name = schema)
 
@@ -379,12 +393,12 @@ dm_meta_sqlite <- function(con) {
 
   pragma_table_info <- map(set_names(table_names), function(t) {
     t_quoted <- DBI::dbQuoteIdentifier(con, t)
-    DBI::dbGetQuery(con, paste0("PRAGMA table_info(", t_quoted, ")"))
+    DBI::dbGetQuery(con, paste0("PRAGMA ", schema_q, ".table_info(", t_quoted, ")"))
   })
 
   pragma_fk_list <- map(set_names(table_names), function(t) {
     t_quoted <- DBI::dbQuoteIdentifier(con, t)
-    DBI::dbGetQuery(con, paste0("PRAGMA foreign_key_list(", t_quoted, ")"))
+    DBI::dbGetQuery(con, paste0("PRAGMA ", schema_q, ".foreign_key_list(", t_quoted, ")"))
   })
 
   columns <- imap_dfr(pragma_table_info, function(info, tbl) {
@@ -403,6 +417,13 @@ dm_meta_sqlite <- function(con) {
       is_autoincrement = FALSE,
     )
   })
+
+  if (simple) {
+    return(
+      dm(schemata, tables, columns) %>%
+        dm_meta_simple_add_keys()
+    )
+  }
 
   # PK constraints: one row per table that has PK columns
 
