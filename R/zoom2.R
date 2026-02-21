@@ -44,6 +44,10 @@ dm_zoom2_to <- function(dm, table) {
   attr(keyed_tbl, "dm_zoom2_src_dm") <- dm
   attr(keyed_tbl, "dm_zoom2_src_name") <- table_name
 
+  # Also register by uuid for verbs that strip custom attributes
+  uuid <- keyed_get_info(keyed_tbl)$uuid
+  zoom2_registry[[uuid]] <- list(dm = dm, table_name = table_name)
+
   keyed_tbl
 }
 
@@ -121,11 +125,24 @@ dm_insert_zoom2ed <- function(zoomed_tbl, new_tbl_name = NULL, repair = "unique"
 
 # Internal helpers --------------------------------------------------------
 
+# Registry for zoom2 info, keyed by uuid.
+# Some dplyr/tidyr verbs (summarise, reframe, tally, ungroup, unite, separate)
+# strip custom attributes but preserve the uuid in dm_key_info.
+zoom2_registry <- new.env(parent = emptyenv())
+
 zoom2_get_info <- function(zoomed_tbl) {
   dm <- attr(zoomed_tbl, "dm_zoom2_src_dm")
   table_name <- attr(zoomed_tbl, "dm_zoom2_src_name")
 
   if (is.null(dm) || is.null(table_name)) {
+    # Fall back to uuid-based registry lookup
+    if (is_dm_keyed_tbl(zoomed_tbl)) {
+      uuid <- keyed_get_info(zoomed_tbl)$uuid
+      info <- zoom2_registry[[uuid]]
+      if (!is.null(info)) {
+        return(info)
+      }
+    }
     abort("This object was not created by `dm_zoom2_to()`.")
   }
 
@@ -133,6 +150,11 @@ zoom2_get_info <- function(zoomed_tbl) {
 }
 
 zoom2_clean_attrs <- function(x) {
+  # Clean up registry entry
+  if (is_dm_keyed_tbl(x)) {
+    uuid <- keyed_get_info(x)$uuid
+    rm(list = intersect(uuid, ls(zoom2_registry)), envir = zoom2_registry)
+  }
   attr(x, "dm_zoom2_src_dm") <- NULL
   attr(x, "dm_zoom2_src_name") <- NULL
   x

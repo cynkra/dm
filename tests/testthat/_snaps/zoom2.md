@@ -188,14 +188,11 @@
 # zoom2 summarise() on parent table
 
     Code
-      d <- dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(
-        child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
-        parent_id, parent)
-      keyed_tables <- dm_get_keyed_tables_impl(d)
-      keyed_tables[["parent"]] <- d %>% dm_zoom2_to(parent) %>% summarise(n = n()) %>%
-        zoom2_clean_attrs()
-      new_dm(keyed_tables) %>% dm_paste(options = "all")
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(parent) %>% summarise(n = n()) %>% dm_update_zoom2ed() %>%
+        dm_paste(options = "all")
     Message
       parent <- tibble::tibble(
         n = integer(0),
@@ -214,14 +211,11 @@
 # zoom2 summarise() on child table with group_by
 
     Code
-      d <- dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(
-        child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
-        parent_id, parent)
-      keyed_tables <- dm_get_keyed_tables_impl(d)
-      keyed_tables[["child"]] <- d %>% dm_zoom2_to(child) %>% group_by(parent_id) %>%
-        summarise(n = n()) %>% zoom2_clean_attrs()
-      new_dm(keyed_tables) %>% dm_paste(options = "all")
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(child) %>% group_by(parent_id) %>% summarise(n = n()) %>%
+        dm_update_zoom2ed() %>% dm_paste(options = "all")
     Message
       parent <- tibble::tibble(
         id = integer(0),
@@ -239,15 +233,14 @@
         dm::dm_add_pk(child, parent_id) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
-# zoom2 left_join()
+# zoom2 summarise() insert
 
     Code
-      d <- dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(
-        child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
-        parent_id, parent)
-      d %>% dm_zoom2_to(child) %>% left_join(dm_zoom2_to(d, parent)) %>%
-        dm_update_zoom2ed() %>% dm_paste(options = "all")
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(child) %>% group_by(parent_id) %>% summarise(n = n()) %>%
+        dm_insert_zoom2ed("child_summary") %>% dm_paste(options = "all")
     Message
       parent <- tibble::tibble(
         id = integer(0),
@@ -257,56 +250,211 @@
         child_id = integer(0),
         parent_id = integer(0),
         val = character(0),
+      )
+      child_summary <- tibble::tibble(
+        parent_id = integer(0),
+        n = integer(0),
+      )
+      dm::dm(
+        parent,
+        child,
+        child_summary,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_pk(child_summary, parent_id) %>%
+        dm::dm_add_fk(child, parent_id, parent) %>%
+        dm::dm_add_fk(child_summary, parent_id, parent)
+
+# zoom2 reframe() on parent table
+
+    Code
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(parent) %>% reframe(n = n()) %>% dm_update_zoom2ed() %>% dm_paste(
+        options = "all")
+    Message
+      parent <- tibble::tibble(
+        n = integer(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(child, child_id)
+
+# zoom2 reframe() on child table
+
+    Code
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(child) %>% reframe(n = n(), .by = parent_id) %>%
+        dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
         name = character(0),
+      )
+      child <- tibble::tibble(
+        parent_id = integer(0),
+        n = integer(0),
       )
       dm::dm(
         parent,
         child,
       ) %>%
         dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 tally() on parent table
+
+    Code
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(parent) %>% tally() %>% dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      parent <- tibble::tibble(
+        n = integer(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(child, child_id)
+
+# zoom2 tally() on child table
+
+    Code
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(child) %>% tally() %>% dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        n = integer(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id)
+
+# zoom2 left_join()
+
+    Code
+      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
+        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
+        child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
+        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
+        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
+        parent_id, parent)
+      d %>% dm_zoom2_to(child) %>% left_join(dm_zoom2_to(d, parent)) %>%
+        dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      grandparent <- tibble::tibble(
+        gp_id = integer(0),
+        gp_name = character(0),
+      )
+      parent <- tibble::tibble(
+        id = integer(0),
+        gp_id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+        gp_id = integer(0),
+        name = character(0),
+      )
+      dm::dm(
+        grandparent,
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(grandparent, gp_id) %>%
+        dm::dm_add_pk(parent, id) %>%
         dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(parent, gp_id, grandparent) %>%
+        dm::dm_add_fk(child, gp_id, grandparent) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
 # zoom2 inner_join()
 
     Code
-      d <- dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(
+      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
+        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
         child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
+        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
+        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
         parent_id, parent)
       d %>% dm_zoom2_to(child) %>% inner_join(dm_zoom2_to(d, parent)) %>%
         dm_update_zoom2ed() %>% dm_paste(options = "all")
     Message
+      grandparent <- tibble::tibble(
+        gp_id = integer(0),
+        gp_name = character(0),
+      )
       parent <- tibble::tibble(
         id = integer(0),
+        gp_id = integer(0),
         name = character(0),
       )
       child <- tibble::tibble(
         child_id = integer(0),
         parent_id = integer(0),
         val = character(0),
+        gp_id = integer(0),
         name = character(0),
       )
       dm::dm(
+        grandparent,
         parent,
         child,
       ) %>%
+        dm::dm_add_pk(grandparent, gp_id) %>%
         dm::dm_add_pk(parent, id) %>%
         dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(parent, gp_id, grandparent) %>%
+        dm::dm_add_fk(child, gp_id, grandparent) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
 # zoom2 semi_join()
 
     Code
-      d <- dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(
+      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
+        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
         child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
+        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
+        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
         parent_id, parent)
       d %>% dm_zoom2_to(child) %>% semi_join(dm_zoom2_to(d, parent)) %>%
         dm_update_zoom2ed() %>% dm_paste(options = "all")
     Message
+      grandparent <- tibble::tibble(
+        gp_id = integer(0),
+        gp_name = character(0),
+      )
       parent <- tibble::tibble(
         id = integer(0),
+        gp_id = integer(0),
         name = character(0),
       )
       child <- tibble::tibble(
@@ -315,25 +463,35 @@
         val = character(0),
       )
       dm::dm(
+        grandparent,
         parent,
         child,
       ) %>%
+        dm::dm_add_pk(grandparent, gp_id) %>%
         dm::dm_add_pk(parent, id) %>%
         dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(parent, gp_id, grandparent) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
 # zoom2 anti_join()
 
     Code
-      d <- dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(
+      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
+        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
         child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
+        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
+        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
         parent_id, parent)
       d %>% dm_zoom2_to(child) %>% anti_join(dm_zoom2_to(d, parent)) %>%
         dm_update_zoom2ed() %>% dm_paste(options = "all")
     Message
+      grandparent <- tibble::tibble(
+        gp_id = integer(0),
+        gp_name = character(0),
+      )
       parent <- tibble::tibble(
         id = integer(0),
+        gp_id = integer(0),
         name = character(0),
       )
       child <- tibble::tibble(
@@ -342,68 +500,183 @@
         val = character(0),
       )
       dm::dm(
+        grandparent,
         parent,
         child,
       ) %>%
+        dm::dm_add_pk(grandparent, gp_id) %>%
         dm::dm_add_pk(parent, id) %>%
         dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(parent, gp_id, grandparent) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
 # zoom2 right_join()
 
     Code
-      d <- dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(
+      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
+        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
         child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
+        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
+        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
         parent_id, parent)
       d %>% dm_zoom2_to(child) %>% right_join(dm_zoom2_to(d, parent)) %>%
         dm_update_zoom2ed() %>% dm_paste(options = "all")
     Message
+      grandparent <- tibble::tibble(
+        gp_id = integer(0),
+        gp_name = character(0),
+      )
       parent <- tibble::tibble(
         id = integer(0),
+        gp_id = integer(0),
         name = character(0),
       )
       child <- tibble::tibble(
         child_id = integer(0),
         parent_id = integer(0),
         val = character(0),
+        gp_id = integer(0),
         name = character(0),
       )
       dm::dm(
+        grandparent,
         parent,
         child,
       ) %>%
+        dm::dm_add_pk(grandparent, gp_id) %>%
         dm::dm_add_pk(parent, id) %>%
         dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(parent, gp_id, grandparent) %>%
+        dm::dm_add_fk(child, gp_id, grandparent) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
 # zoom2 full_join()
 
     Code
-      d <- dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(
+      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
+        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
         child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
+        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
+        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
         parent_id, parent)
       d %>% dm_zoom2_to(child) %>% full_join(dm_zoom2_to(d, parent)) %>%
         dm_update_zoom2ed() %>% dm_paste(options = "all")
     Message
+      grandparent <- tibble::tibble(
+        gp_id = integer(0),
+        gp_name = character(0),
+      )
       parent <- tibble::tibble(
         id = integer(0),
+        gp_id = integer(0),
         name = character(0),
       )
       child <- tibble::tibble(
         child_id = integer(0),
         parent_id = integer(0),
         val = character(0),
+        gp_id = integer(0),
         name = character(0),
       )
       dm::dm(
+        grandparent,
         parent,
         child,
       ) %>%
+        dm::dm_add_pk(grandparent, gp_id) %>%
         dm::dm_add_pk(parent, id) %>%
         dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(parent, gp_id, grandparent) %>%
+        dm::dm_add_fk(child, gp_id, grandparent) %>%
         dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 cross_join()
+
+    Code
+      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
+        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
+        child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
+        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
+        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
+        parent_id, parent)
+      d %>% dm_zoom2_to(child) %>% cross_join(dm_zoom2_to(d, parent)) %>%
+        dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      grandparent <- tibble::tibble(
+        gp_id = integer(0),
+        gp_name = character(0),
+      )
+      parent <- tibble::tibble(
+        id = integer(0),
+        gp_id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+        id = integer(0),
+        gp_id = integer(0),
+        name = character(0),
+      )
+      dm::dm(
+        grandparent,
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(grandparent, gp_id) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_fk(parent, gp_id, grandparent) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 left_join() insert
+
+    Code
+      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
+        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
+        child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
+        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
+        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
+        parent_id, parent)
+      d %>% dm_zoom2_to(child) %>% left_join(dm_zoom2_to(d, parent)) %>%
+        dm_insert_zoom2ed("child_parent") %>% dm_paste(options = "all")
+    Message
+      grandparent <- tibble::tibble(
+        gp_id = integer(0),
+        gp_name = character(0),
+      )
+      parent <- tibble::tibble(
+        id = integer(0),
+        gp_id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      child_parent <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+        gp_id = integer(0),
+        name = character(0),
+      )
+      dm::dm(
+        grandparent,
+        parent,
+        child,
+        child_parent,
+      ) %>%
+        dm::dm_add_pk(grandparent, gp_id) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_pk(child_parent, child_id) %>%
+        dm::dm_add_fk(parent, gp_id, grandparent) %>%
+        dm::dm_add_fk(child_parent, gp_id, grandparent) %>%
+        dm::dm_add_fk(child, parent_id, parent) %>%
+        dm::dm_add_fk(child_parent, parent_id, parent) %>%
+        dm::dm_add_fk(child, parent_id, child_parent, parent_id)
 
 # zoom2 filter() on parent table
 
@@ -822,6 +1095,58 @@
         dm::dm_add_pk(child, child_id) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
+# zoom2 ungroup() on parent table
+
+    Code
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(parent) %>% group_by(name) %>% ungroup() %>% dm_update_zoom2ed() %>%
+        dm_paste(options = "all")
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 ungroup() on child table
+
+    Code
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>% dm_add_pk(parent,
+        id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child, parent_id, parent) %>%
+        dm_zoom2_to(child) %>% group_by(parent_id) %>% ungroup() %>%
+        dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
 # zoom2 count() on parent table
 
     Code
@@ -870,43 +1195,109 @@
         dm::dm_add_pk(parent, id) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
-# zoom2 left_join() with three tables
+# zoom2 unite() on parent table
 
     Code
-      d <- dm(grandparent = tibble(gp_id = 1:2, gp_name = c("x", "y")), parent = tibble(
-        id = 1:3, gp_id = c(1L, 1L, 2L), name = c("a", "b", "c")), child = tibble(
-        child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
-        dm_add_pk(grandparent, gp_id) %>% dm_add_pk(parent, id) %>% dm_add_pk(child,
-        child_id) %>% dm_add_fk(parent, gp_id, grandparent) %>% dm_add_fk(child,
-        parent_id, parent)
-      d %>% dm_zoom2_to(child) %>% left_join(dm_zoom2_to(d, parent)) %>%
-        dm_update_zoom2ed() %>% dm_paste(options = "all")
+      dm(parent = tibble(id = 1:3, first = c("a", "b", "c"), last = c("x", "y", "z")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
+        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
+        parent_id, parent) %>% dm_zoom2_to(parent) %>% tidyr::unite(full_name, first,
+        last) %>% dm_update_zoom2ed() %>% dm_paste(options = "all")
     Message
-      grandparent <- tibble::tibble(
-        gp_id = integer(0),
-        gp_name = character(0),
-      )
       parent <- tibble::tibble(
         id = integer(0),
-        gp_id = integer(0),
-        name = character(0),
+        full_name = character(0),
       )
       child <- tibble::tibble(
         child_id = integer(0),
         parent_id = integer(0),
         val = character(0),
-        gp_id = integer(0),
-        name = character(0),
       )
       dm::dm(
-        grandparent,
         parent,
         child,
       ) %>%
-        dm::dm_add_pk(grandparent, gp_id) %>%
         dm::dm_add_pk(parent, id) %>%
         dm::dm_add_pk(child, child_id) %>%
-        dm::dm_add_fk(parent, gp_id, grandparent) %>%
-        dm::dm_add_fk(child, gp_id, grandparent) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 unite() on child table
+
+    Code
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), first = c("a", "b", "c", "d"), last = c("w",
+        "x", "y", "z"))) %>% dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>%
+        dm_add_fk(child, parent_id, parent) %>% dm_zoom2_to(child) %>% tidyr::unite(
+        full_name, first, last) %>% dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        full_name = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 separate() on parent table
+
+    Code
+      dm(parent = tibble(id = 1:3, full_name = c("a_x", "b_y", "c_z")), child = tibble(
+        child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])) %>%
+        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
+        parent_id, parent) %>% dm_zoom2_to(parent) %>% tidyr::separate(full_name,
+        into = c("first", "last")) %>% dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        first = character(0),
+        last = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        val = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
+        dm::dm_add_fk(child, parent_id, parent)
+
+# zoom2 separate() on child table
+
+    Code
+      dm(parent = tibble(id = 1:3, name = c("a", "b", "c")), child = tibble(child_id = 1:
+        4, parent_id = c(1L, 1L, 2L, 3L), full_val = c("a_1", "b_2", "c_3", "d_4"))) %>%
+        dm_add_pk(parent, id) %>% dm_add_pk(child, child_id) %>% dm_add_fk(child,
+        parent_id, parent) %>% dm_zoom2_to(child) %>% tidyr::separate(full_val, into = c(
+        "letter", "number")) %>% dm_update_zoom2ed() %>% dm_paste(options = "all")
+    Message
+      parent <- tibble::tibble(
+        id = integer(0),
+        name = character(0),
+      )
+      child <- tibble::tibble(
+        child_id = integer(0),
+        parent_id = integer(0),
+        letter = character(0),
+        number = character(0),
+      )
+      dm::dm(
+        parent,
+        child,
+      ) %>%
+        dm::dm_add_pk(parent, id) %>%
+        dm::dm_add_pk(child, child_id) %>%
         dm::dm_add_fk(child, parent_id, parent)
 
