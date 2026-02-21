@@ -44,8 +44,6 @@ test_that("dm_filter() legacy API", {
 test_that("dm_filter() deprecations", {
   local_options(lifecycle_verbosity = "warning")
 
-  skip_if_src_not("db")
-
   expect_snapshot({
     dm_filter(dm_for_filter(), tf_1, a > 4)
     dm_filter(dm = dm_for_filter(), tf_1, a > 4)
@@ -96,7 +94,6 @@ test_that("get_all_filtered_connected() calculates the paths correctly", {
     dm_filter(tf_6, TRUE) %>%
     get_all_filtered_connected("a")
   expect_identical(fc$node, "a")
-
 
   fc <-
     dm_more_complex() %>%

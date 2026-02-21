@@ -32,8 +32,13 @@
 #' dm_nycflights13() %>%
 #'   dm_examine_constraints()
 #' @autoglobal
-dm_examine_constraints <- function(.dm, ..., .progress = NA,
-                                   dm = deprecated(), progress = deprecated()) {
+dm_examine_constraints <- function(
+  .dm,
+  ...,
+  .progress = NA,
+  dm = deprecated(),
+  progress = deprecated()
+) {
   check_dots_empty()
 
   if (!is_missing(dm)) {
@@ -48,7 +53,11 @@ dm_examine_constraints <- function(.dm, ..., .progress = NA,
     if (is.na(progress)) {
       progress <- .progress
     }
-    deprecate_soft("1.0.0", "dm_examine_constraints(progress = )", "dm_examine_constraints(.progress = )")
+    deprecate_soft(
+      "1.0.0",
+      "dm_examine_constraints(progress = )",
+      "dm_examine_constraints(.progress = )"
+    )
   }
 
   check_not_zoomed(.dm)
@@ -96,13 +105,19 @@ print.dm_examine_constraints <- function(x, ...) {
         into = if_else(kind == "FK", paste0(" into table ", tick(ref_table)), "")
       ) %>%
       # FIXME: Use cli styles
-      mutate(text = paste0(
-        "Table ", tick(table), ": ",
-        kind_to_long(kind), " ",
-        format(map(problem_df$columns, tick), justify = "none"),
-        into,
-        ": ", problem
-      )) %>%
+      mutate(
+        text = paste0(
+          "Table ",
+          tick(table),
+          ": ",
+          kind_to_long(kind),
+          " ",
+          format(map(problem_df$columns, tick), justify = "none"),
+          into,
+          ": ",
+          problem
+        )
+      ) %>%
       pull(text) %>%
       cli::cat_bullet(bullet_col = "red")
   }
@@ -123,7 +138,10 @@ kind_to_long <- function(kind) {
 #' @autoglobal
 check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   pks <- bind_rows(
-    list(PK = dm_get_all_pks_impl(dm), UK = dm_get_all_uks_impl(dm) %>% rename(pk_col = uk_col) %>% select(-kind)),
+    list(
+      PK = dm_get_all_pks_impl(dm),
+      UK = dm_get_all_uks_impl(dm) %>% rename(pk_col = uk_col) %>% select(-kind)
+    ),
     .id = "kind"
   ) %>%
     distinct(table, pk_col, .keep_all = TRUE)
@@ -147,14 +165,23 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     top_level_fun = top_level_fun
   )
 
-  candidates <- map2(set_names(table_names), columns, ticker(~ {
-    tbl <- tbl_impl(dm, .x)
-    enum_pk_candidates_impl(tbl, list(.y))
-  }))
+  candidates <- map2(
+    set_names(table_names),
+    columns,
+    ticker(
+      ~ {
+        tbl <- tbl_impl(dm, .x)
+        enum_pk_candidates_impl(tbl, list(.y))
+      }
+    )
+  )
 
   tbl_is_pk <-
     tibble(table = table_names, candidate = candidates) %>%
-    unnest_df("candidate", tibble(column = new_keys(), candidate = logical(), why = character())) %>%
+    unnest_df(
+      "candidate",
+      tibble(column = new_keys(), candidate = logical(), why = character())
+    ) %>%
     rename(is_key = candidate, problem = why)
 
   tibble(
@@ -173,7 +200,14 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
   cts <- map(fks$child_table, tbl_impl, dm = dm)
   fks_tibble <-
     mutate(fks, t1 = cts, t2 = pts) %>%
-    select(t1, t1_name = child_table, colname = child_fk_cols, t2, t2_name = parent_table, pk = parent_key_cols)
+    select(
+      t1,
+      t1_name = child_table,
+      colname = child_fk_cols,
+      t2,
+      t2_name = parent_table,
+      pk = parent_key_cols
+    )
 
   ticker <- new_ticker(
     "checking fk constraints",

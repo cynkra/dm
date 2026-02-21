@@ -1,7 +1,7 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.0.12.9000
-Date: 2025-07-03
+Version: 1.0.12.9015
+Date: 2026-02-21
 Authors@R: 
     c(person(given = "Tobias",
              family = "Schieferdecker",
@@ -49,13 +49,13 @@ License: MIT + file LICENSE
 URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
 BugReports: https://github.com/cynkra/dm/issues
 Depends: 
-    R (>= 3.3)
+    R (>= 4.0)
 Imports:
     backports,
     cli (>= 2.2.0),
-    dplyr (>= 1.1.0),
+    dplyr (>= 1.2.0),
     glue,
-    igraph,
+    igraph (>= 2.2.0),
     lifecycle (>= 1.0.3),
     memoise,
     methods,
@@ -114,12 +114,14 @@ Config/Needs/website:
     whisker,
     xml2
 Config/Needs/check: anthonynorth/roxyglobals
+Remotes: r-dbi/odbc
+RemotesInfo: https://github.com/cran/odbc/commit/c12831e0e1a9ac22bf6d0d4f898a581e55cf2a60
 VignetteBuilder: 
     knitr
 Config/autostyle/scope: line_breaks
 Config/autostyle/strict: true
 Config/testthat/edition: 3
-Config/testthat/parallel: true
+Config/testthat/parallel: false
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
     draw-dm, bind, rows-dm, learn
 Encoding: UTF-8
@@ -127,4 +129,4 @@ Roxygen: list(
       markdown = TRUE,
       roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet")
     )
-RoxygenNote: 7.3.2.9000
+RoxygenNote: 7.3.3.9000

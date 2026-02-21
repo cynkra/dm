@@ -140,8 +140,7 @@ dm_from_con <- function(
 #'
 #' @export
 #' @keywords internal
-dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL,
-                        ...) {
+dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL, ...) {
   if (is_null(src)) {
     return(empty_dm())
   }

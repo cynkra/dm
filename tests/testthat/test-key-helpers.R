@@ -8,6 +8,29 @@ test_that("check_key() API", {
   })
 })
 
+test_that("check_key() returns data frame for valid keys", {
+  # Test the specific issue from #2221: check_key should return the data frame, not NULL
+  dat <- tibble(a = c(1, 2, 3), b = c(5, 5, 6), c = c(7, 8, 9))
+
+  # Single column key
+  result <- check_key(dat, a)
+  expect_identical(result, dat)
+
+  # Multiple column key
+  result2 <- check_key(dat, a, c)
+  expect_identical(result2, dat)
+
+  # All columns key
+  result3 <- check_key(dat)
+  expect_identical(result3, dat)
+
+  # Test that it can be used in piping
+  piped_result <- dat %>%
+    check_key(a) %>%
+    select(a)
+  expect_equal(piped_result, select(dat, a))
+})
+
 test_that("check_key() checks primary key properly?", {
   expect_dm_error(
     check_key(data_mcard(), c1, c2),
@@ -83,8 +106,20 @@ test_that("check_api() new interface", {
     check_api(data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
     check_api(x = data_mcard_1(), data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
     check_api(data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
-    check_api(x = data_mcard_1(), y = data_mcard_2(), x_select = a, y_select = b, by_position = TRUE),
-    check_api(y = data_mcard_2(), x = data_mcard_1(), x_select = a, y_select = b, by_position = TRUE),
+    check_api(
+      x = data_mcard_1(),
+      y = data_mcard_2(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
+    check_api(
+      y = data_mcard_2(),
+      x = data_mcard_1(),
+      x_select = a,
+      y_select = b,
+      by_position = TRUE
+    ),
     check_api(data_mcard_1(), a, data_mcard_2(), b)
   )
 })

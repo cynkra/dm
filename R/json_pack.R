@@ -46,13 +46,16 @@ json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   pack_cols <- purrr::map(dots, ~ tidyselect::vars_select(col_nms, !!.x))
   id_cols <- setdiff(col_nms, unlist(unique(pack_cols)))
 
-  sql_exprs <- purrr::imap(pack_cols, ~ sql_json_pack(
-    dbplyr::remote_con(.data),
-    cols = names(.x),
-    names_sep = .names_sep,
-    packed_col = .y,
-    data = .data
-  ))
+  sql_exprs <- purrr::imap(
+    pack_cols,
+    ~ sql_json_pack(
+      dbplyr::remote_con(.data),
+      cols = names(.x),
+      names_sep = .names_sep,
+      packed_col = .y,
+      data = .data
+    )
+  )
 
   .data %>%
     transmute(!!!syms(id_cols), !!!sql_exprs)
@@ -112,7 +115,9 @@ remove_prefix_and_sep <- function(x, prefix, sep) {
     }
 
     for_json_path_query <- glue_sql(
-      "(SELECT value FROM OPENJSON((SELECT ", selected, " FOR JSON PATH))) AS {`packing_name`}",
+      "(SELECT value FROM OPENJSON((SELECT ",
+      selected,
+      " FOR JSON PATH))) AS {`packing_name`}",
       .con = con
     )
 

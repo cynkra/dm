@@ -22,3 +22,9 @@ runs:
           sudo apt-get install mysql-common=5.8+1.0.5ubuntu2 --allow-downgrades
         fi
       shell: bash
+
+    - name: Allow installing odbc from source on macOS
+      if: runner.os == 'macOS'
+      run: |
+        brew install unixodbc
+      shell: bash
