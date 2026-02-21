@@ -83,15 +83,76 @@ new_keyed_tbl_from_keys_info <- function(tbl, keys_info) {
   new_keyed_tbl(
     tbl,
     pk = keys_info$pk,
+    uks = keys_info$uks,
     fks_in = keys_info$fks_in,
     fks_out = keys_info$fks_out,
     uuid = keys_info$uuid
   )
 }
 
+# Update key column names given a rename mapping.
+# `remap` is a named character vector: c(old_name = "new_name", ...)
+keyed_rename_key_cols <- function(keys_info, remap) {
+  if (length(remap) == 0) {
+    return(keys_info)
+  }
+
+  if (!is.null(keys_info$pk)) {
+    keys_info$pk <- recode_compat(keys_info$pk, remap)
+  }
+
+  if (nrow(keys_info$uks) > 0) {
+    keys_info$uks$column <- map(keys_info$uks$column, recode_compat, remap)
+  }
+
+  if (nrow(keys_info$fks_in) > 0) {
+    keys_info$fks_in$parent_key_cols <- new_keys(map(
+      keys_info$fks_in$parent_key_cols, recode_compat, remap
+    ))
+  }
+
+  if (nrow(keys_info$fks_out) > 0) {
+    keys_info$fks_out$child_fk_cols <- new_keys(map(
+      keys_info$fks_out$child_fk_cols, recode_compat, remap
+    ))
+  }
+
+  keys_info
+}
+
+# Drop keys whose columns no longer exist in the table.
+keyed_drop_missing_key_cols <- function(keys_info, remaining_cols) {
+  if (!is.null(keys_info$pk) && !all(keys_info$pk %in% remaining_cols)) {
+    keys_info$pk <- NULL
+  }
+
+  if (nrow(keys_info$uks) > 0) {
+    valid <- map_lgl(keys_info$uks$column, ~ all(.x %in% remaining_cols))
+    keys_info$uks <- keys_info$uks[valid, ]
+  }
+
+  if (nrow(keys_info$fks_in) > 0) {
+    valid <- map_lgl(keys_info$fks_in$parent_key_cols, ~ all(.x %in% remaining_cols))
+    keys_info$fks_in <- keys_info$fks_in[valid, ]
+  }
+
+  if (nrow(keys_info$fks_out) > 0) {
+    valid <- map_lgl(keys_info$fks_out$child_fk_cols, ~ all(.x %in% remaining_cols))
+    keys_info$fks_out <- keys_info$fks_out[valid, ]
+  }
+
+  keys_info
+}
+
 keyed_get_info <- function(x) {
   stopifnot(is_dm_keyed_tbl(x))
   attr(x, "dm_key_info")
+}
+
+# Wrap a join result in a keyed table using the LHS keys info.
+keyed_join_result <- function(joined_tbl, x_keys_info) {
+  x_keys_info <- keyed_drop_missing_key_cols(x_keys_info, colnames(joined_tbl))
+  new_keyed_tbl_from_keys_info(joined_tbl, x_keys_info)
 }
 
 is_dm_keyed_tbl <- function(x) {

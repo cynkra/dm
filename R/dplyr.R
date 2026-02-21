@@ -95,10 +95,7 @@ mutate.dm_zoomed <- function(
     .before = {{ .before }},
     .after = {{ .after }}
   )
-  # #663: user responsibility: those columns are tracked whose names remain
-  selected <- set_names(intersect(colnames(tbl), colnames(mutated_tbl)))
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
-  replace_zoomed_tbl(.data, mutated_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(.data, mutated_tbl)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -121,6 +118,7 @@ mutate.dm_keyed_tbl <- function(
     .before = {{ .before }},
     .after = {{ .after }}
   )
+  keys_info <- keyed_drop_missing_key_cols(keys_info, colnames(out))
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -133,15 +131,8 @@ transmute.dm <- function(.data, ...) {
 #' @export
 transmute.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
-  # groups are "selected"; key tracking will continue for them
-  groups <- set_names(map_chr(groups(tbl), as_string))
   transmuted_tbl <- transmute(tbl, ...)
-
-  # #663: user responsibility: those columns are tracked whose names remain
-  selected <- set_names(intersect(colnames(tbl), colnames(transmuted_tbl)))
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
-
-  replace_zoomed_tbl(.data, transmuted_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(.data, transmuted_tbl)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -150,6 +141,7 @@ transmute.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
   out <- transmute(tbl, ...)
+  keys_info <- keyed_drop_missing_key_cols(keys_info, colnames(out))
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -162,20 +154,24 @@ select.dm <- function(.data, ...) {
 #' @export
 select.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
-
-  selected <- eval_select_both(quo(c(...)), colnames(tbl))
-  selected_tbl <- select(tbl, !!!selected$indices)
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected$names)
-
-  replace_zoomed_tbl(.data, selected_tbl, new_tracked_cols_zoom)
+  selected_tbl <- select(tbl, ...)
+  replace_zoomed_tbl(.data, selected_tbl)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
 select.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
+  old_names <- colnames(.data)
   tbl <- unclass_keyed_tbl(.data)
-  out <- select(tbl, ...)
+
+  selected <- eval_select_both(quo(c(...)), old_names)
+  out <- select(tbl, !!!selected$indices)
+
+  remap <- prep_recode(selected$names)
+  keys_info <- keyed_rename_key_cols(keys_info, remap)
+  keys_info <- keyed_drop_missing_key_cols(keys_info, names(selected$names))
+
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -212,20 +208,25 @@ rename.dm <- function(.data, ...) {
 #' @export
 rename.dm_zoomed <- function(.data, ...) {
   tbl <- tbl_zoomed(.data)
-
-  renamed <- eval_rename_both(quo(c(...)), colnames(tbl))
-  renamed_tbl <- rename(tbl, !!!renamed$indices)
-  new_tracked_cols_zoom <- new_tracked_cols(.data, renamed$all_names)
-
-  replace_zoomed_tbl(.data, renamed_tbl, new_tracked_cols_zoom)
+  renamed_tbl <- rename(tbl, ...)
+  replace_zoomed_tbl(.data, renamed_tbl)
 }
 
 #' @rdname dplyr_table_manipulation
 #' @export
 rename.dm_keyed_tbl <- function(.data, ...) {
   keys_info <- keyed_get_info(.data)
+  old_names <- colnames(.data)
   tbl <- unclass_keyed_tbl(.data)
   out <- rename(tbl, ...)
+  new_names <- colnames(out)
+
+  changed <- old_names != new_names
+  if (any(changed)) {
+    remap <- set_names(new_names[changed], old_names[changed])
+    keys_info <- keyed_rename_key_cols(keys_info, remap)
+  }
+
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -240,12 +241,7 @@ distinct.dm <- function(.data, ..., .keep_all = FALSE) {
 distinct.dm_zoomed <- function(.data, ..., .keep_all = FALSE) {
   tbl <- tbl_zoomed(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
-
-  # #663: user responsibility: those columns are tracked whose names remain
-  selected <- set_names(intersect(colnames(tbl), colnames(distinct_tbl)))
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
-
-  replace_zoomed_tbl(.data, distinct_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(.data, distinct_tbl)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -254,6 +250,7 @@ distinct.dm_keyed_tbl <- function(.data, ..., .keep_all = FALSE) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
   distinct_tbl <- distinct(tbl, ..., .keep_all = .keep_all)
+  keys_info <- keyed_drop_missing_key_cols(keys_info, colnames(distinct_tbl))
   new_keyed_tbl_from_keys_info(distinct_tbl, keys_info)
 }
 
@@ -290,11 +287,12 @@ slice.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 #' This argument is specific for the `slice.dm_zoomed()` method.
 #' @export
 slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL) {
-  sliced_tbl <- slice(tbl_zoomed(.data), ..., .by = {{ .by }}, .preserve = .preserve)
+  tbl <- tbl_zoomed(.data)
+  sliced_tbl <- slice(tbl, ..., .by = {{ .by }}, .preserve = .preserve)
   orig_pk <- dm_get_pk_impl(.data, orig_name_zoomed(.data))
-  tracked_cols <- col_tracker_zoomed(.data)
   if (is_null(.keep_pk)) {
-    if (has_length(orig_pk) && any(unlist(orig_pk) %in% tracked_cols)) {
+    keys_info <- keyed_get_info(tbl)
+    if (!is.null(keys_info$pk)) {
       message(
         paste(
           "Keeping PK column, but `slice.dm_zoomed()` can potentially damage the uniqueness of PK columns (duplicated indices).",
@@ -303,9 +301,11 @@ slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk 
       )
     }
   } else if (!.keep_pk) {
-    tracked_cols <- discard(tracked_cols, tracked_cols == orig_pk)
+    keys_info <- keyed_get_info(sliced_tbl)
+    keys_info$pk <- NULL
+    sliced_tbl <- new_keyed_tbl_from_keys_info(unclass_keyed_tbl(sliced_tbl), keys_info)
   }
-  replace_zoomed_tbl(.data, sliced_tbl, tracked_cols)
+  replace_zoomed_tbl(.data, sliced_tbl)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -431,12 +431,8 @@ summarise.dm <- function(.data, ..., .by = NULL, .groups = NULL) {
 #' @export
 summarise.dm_zoomed <- function(.data, ..., .by = NULL, .groups = NULL) {
   tbl <- tbl_zoomed(.data)
-  # groups are "selected"; key tracking will continue for them
-  # #663: user responsibility: if group columns are manipulated, they are still tracked
-  groups <- set_names(map_chr(groups(tbl), as_string))
   summarized_tbl <- summarize(tbl, ..., .by = {{ .by }}, .groups = .groups)
-  new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
-  replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(.data, summarized_tbl)
 }
 
 
@@ -472,11 +468,7 @@ reframe.dm <- function(.data, ..., .by = NULL) {
 reframe.dm_zoomed <- function(.data, ..., .by = NULL) {
   tbl <- tbl_zoomed(.data)
   reframed_tbl <- reframe(tbl, ..., .by = {{ .by }})
-  # reframe() always returns ungrouped data, no group tracking needed
-  # #663: user responsibility: those columns are tracked whose names remain
-  selected <- set_names(intersect(colnames(tbl_zoomed(.data)), colnames(reframed_tbl)))
-  new_tracked_cols_zoom <- new_tracked_cols(.data, selected)
-  replace_zoomed_tbl(.data, reframed_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(.data, reframed_tbl)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -527,8 +519,6 @@ count.dm_zoomed <- function(
     out <- tbl
   }
 
-  groups <- set_names(map_chr(groups(out), as_string))
-
   out <- tally(out, wt = !!enquo(wt), sort = sort, name = name)
 
   # Ensure grouping is transient
@@ -536,8 +526,7 @@ count.dm_zoomed <- function(
     out <- dplyr_reconstruct(out, tbl)
   }
 
-  new_tracked_cols_zoom <- new_tracked_cols(x, groups)
-  replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
+  replace_zoomed_tbl(x, out)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -568,7 +557,6 @@ tally.dm <- function(x, wt = NULL, sort = FALSE, name = NULL) {
 #' @export
 tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   tbl <- tbl_zoomed(x)
-  groups <- set_names(map_chr(groups(tbl), as_string))
 
   out <- tally(tbl, wt = {{ wt }}, sort = sort, name = name)
 
@@ -577,8 +565,7 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
     out <- dplyr_reconstruct(out, tbl)
   }
 
-  new_tracked_cols_zoom <- new_tracked_cols(x, groups)
-  replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
+  replace_zoomed_tbl(x, out)
 }
 
 #' @rdname dplyr_table_manipulation
@@ -687,7 +674,7 @@ left_join.dm_zoomed <- function(
     unmatched = unmatched,
     relationship = relationship
   )
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+  replace_zoomed_tbl(x, keyed_join_result(joined_tbl, join_data$x_keys_info))
 }
 
 #' @rdname dplyr_join
@@ -780,7 +767,7 @@ inner_join.dm_zoomed <- function(
     unmatched = unmatched,
     relationship = relationship
   )
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+  replace_zoomed_tbl(x, keyed_join_result(joined_tbl, join_data$x_keys_info))
 }
 
 #' @rdname dplyr_join
@@ -870,7 +857,7 @@ full_join.dm_zoomed <- function(
     multiple = multiple,
     relationship = relationship
   )
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+  replace_zoomed_tbl(x, keyed_join_result(joined_tbl, join_data$x_keys_info))
 }
 
 #' @rdname dplyr_join
@@ -961,7 +948,7 @@ right_join.dm_zoomed <- function(
     unmatched = unmatched,
     relationship = relationship
   )
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+  replace_zoomed_tbl(x, keyed_join_result(joined_tbl, join_data$x_keys_info))
 }
 
 #' @rdname dplyr_join
@@ -1034,7 +1021,7 @@ semi_join.dm_zoomed <- function(
     ...,
     na_matches = na_matches
   )
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+  replace_zoomed_tbl(x, keyed_join_result(joined_tbl, join_data$x_keys_info))
 }
 
 #' @rdname dplyr_join
@@ -1093,7 +1080,7 @@ anti_join.dm_zoomed <- function(
     ...,
     na_matches = na_matches
   )
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+  replace_zoomed_tbl(x, keyed_join_result(joined_tbl, join_data$x_keys_info))
 }
 
 #' @rdname dplyr_join
@@ -1158,7 +1145,7 @@ nest_join.dm_zoomed <- function(
   name <- name %||% y_name
   join_data <- prepare_join(x, {{ y }}, by, NULL, NULL, NULL, disambiguate = FALSE)
   joined_tbl <- nest_join(join_data$x_tbl, join_data$y_tbl, join_data$by, copy, keep, name, ...)
-  replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
+  replace_zoomed_tbl(x, keyed_join_result(joined_tbl, join_data$x_keys_info))
 }
 
 #' @export
@@ -1173,12 +1160,12 @@ cross_join.dm_zoomed <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
     message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   }
   y_name <- dm_tbl_name(x, {{ y }})
-  zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
+  zoomed <- dm_get_zoom(x, c("table", "zoom"))
   x_tbl <- zoomed$zoom[[1]]
+  x_keys_info <- keyed_get_info(x_tbl)
   y_tbl <- dm_get_tables_impl(x)[[y_name]]
-  new_col_names <- zoomed$col_tracker_zoom[[1]]
-  joined_tbl <- cross_join(x_tbl, y_tbl, ..., copy = FALSE, suffix = suffix)
-  replace_zoomed_tbl(x, joined_tbl, new_col_names)
+  joined_tbl <- cross_join(unclass_keyed_tbl(x_tbl), y_tbl, ..., copy = FALSE, suffix = suffix)
+  replace_zoomed_tbl(x, keyed_join_result(joined_tbl, x_keys_info))
 }
 
 #' @rdname dplyr_join
@@ -1223,7 +1210,7 @@ prepare_join <- function(
     message("Tables in a `dm` are necessarily on the same `src`, setting `copy = FALSE`.")
   }
 
-  zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
+  zoomed <- dm_get_zoom(x, c("table", "zoom"))
 
   x_tbl <- zoomed$zoom[[1]]
   x_orig_name <- zoomed$table
@@ -1236,13 +1223,8 @@ prepare_join <- function(
 
   selected <- eval_select_both(select_quo, colnames(y_tbl), error_call = error_call)$names
 
-  new_col_names <- zoomed$col_tracker_zoom[[1]]
-
   if (is_null(by)) {
-    by <- get_by(x, x_orig_name, y_name)
-
-    # If the original FK-relation between original `x` and `y` got lost, `by` needs to be provided explicitly
-    if (!all(names(by) %in% new_col_names)) abort_fk_not_tracked(x_orig_name, y_name)
+    by <- keyed_get_by(x_tbl, x_orig_name, y_name, dm_get_def(x))
   }
 
   by <- normalize_join_by(by)
@@ -1279,7 +1261,6 @@ prepare_join <- function(
     if (has_length(x_renames)) {
       x_tbl <- x_tbl %>% rename(!!!x_renames[[1]])
       names(by) <- recode_compat(names2(by), prep_recode(x_renames[[1]]))
-      names(new_col_names) <- recode_compat(names(new_col_names), prep_recode(x_renames[[1]]))
     }
 
     if (has_length(y_renames)) {
@@ -1306,10 +1287,11 @@ prepare_join <- function(
   # the `by` argument needs to be updated: LHS stays, RHS needs to be replaced with new names
   repaired_by <- set_names(recode_compat(by, prep_recode(by_rhs_rename)), names(by))
 
-  # in case key columns of x_tbl have the same name as selected columns of y_tbl
-  # the column names of x will be adapted (not for `semi_join()` and `anti_join()`)
-  # We can track the new column names
-  list(x_tbl = x_tbl, y_tbl = y_tbl, by = repaired_by, new_col_names = new_col_names)
+  # Extract key info from the keyed zoomed table (after disambiguation renames)
+  x_keys_info <- keyed_get_info(x_tbl)
+  x_tbl <- unclass_keyed_tbl(x_tbl)
+
+  list(x_tbl = x_tbl, y_tbl = y_tbl, by = repaired_by, x_keys_info = x_keys_info)
 }
 
 unique_prefix <- function(x) {
