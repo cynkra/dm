@@ -552,9 +552,22 @@ count.dm_keyed_tbl <- function(
 ) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
+
+  if (!missing(...)) {
+    grouped <- group_by(tbl, ..., .add = TRUE, .drop = .drop)
+  } else {
+    grouped <- tbl
+  }
+
+  new_pk <- group_vars(grouped)
+  if (length(new_pk) == 0) {
+    new_pk <- NULL
+  }
+
   counted_tbl <- count(tbl, ..., wt = {{ wt }}, sort = sort, name = name, .drop = .drop)
   new_keyed_tbl(
     counted_tbl,
+    pk = new_pk,
     uuid = keys_info$uuid
   )
 }
@@ -586,9 +599,16 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
 tally.dm_keyed_tbl <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
+
+  new_pk <- group_vars(x)
+  if (length(new_pk) == 0) {
+    new_pk <- NULL
+  }
+
   tallied_tbl <- tally(tbl, wt = {{ wt }}, sort = sort, name = name)
   new_keyed_tbl(
     tallied_tbl,
+    pk = new_pk,
     uuid = keys_info$uuid
   )
 }

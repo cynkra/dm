@@ -562,6 +562,51 @@ test_that("summarize for keyed tables produces same output as zooming", {
   expect_equal(z_summary$avg_air_time, k_summary$avg_air_time)
 })
 
+test_that("count for keyed tables sets counted columns as pk", {
+  dm <- dm_nycflights13(cycle = TRUE)
+
+  # count on non-PK column should set it as new PK
+  by_origin <- keyed_tbl_impl(dm, "flights") %>%
+    count(origin)
+  expect_s3_class(by_origin, "dm_keyed_tbl")
+  expect_equal(keyed_get_info(by_origin)$pk, "origin")
+
+  # count on existing PK column should keep it as PK
+  by_faa <- keyed_tbl_impl(dm, "airports") %>%
+    count(faa)
+  expect_s3_class(by_faa, "dm_keyed_tbl")
+  expect_equal(keyed_get_info(by_faa)$pk, "faa")
+
+  # count on multiple columns should set them all as PK
+  by_origin_dest <- keyed_tbl_impl(dm, "flights") %>%
+    count(origin, dest)
+  expect_s3_class(by_origin_dest, "dm_keyed_tbl")
+  expect_equal(keyed_get_info(by_origin_dest)$pk, c("origin", "dest"))
+
+  # count with no columns (like tally) should have no PK
+  counted_all <- keyed_tbl_impl(dm, "airports") %>%
+    count()
+  expect_s3_class(counted_all, "dm_keyed_tbl")
+  expect_null(keyed_get_info(counted_all)$pk)
+})
+
+test_that("tally for keyed tables sets group vars as pk", {
+  dm <- dm_nycflights13(cycle = TRUE)
+
+  # tally on grouped keyed table should set group vars as PK
+  by_origin <- keyed_tbl_impl(dm, "flights") %>%
+    group_by(origin) %>%
+    tally()
+  expect_s3_class(by_origin, "dm_keyed_tbl")
+  expect_equal(keyed_get_info(by_origin)$pk, "origin")
+
+  # tally without groups should have no PK
+  tallied <- keyed_tbl_impl(dm, "airports") %>%
+    tally()
+  expect_s3_class(tallied, "dm_keyed_tbl")
+  expect_null(keyed_get_info(tallied)$pk)
+})
+
 # reconstruction ----------------------------------
 
 test_that("pks_df_from_keys_info()", {
