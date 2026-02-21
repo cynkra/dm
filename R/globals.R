@@ -133,6 +133,7 @@ utils::globalVariables(c(
   "table_catalog", # <dm_learn_from_db>
   "table_schema", # <dm_learn_from_db>
   "table_name", # <dm_learn_from_db>
+  "catalog", # <dm_learn_from_db>
   "columns", # <dm_learn_from_db>
   "ordinal_position", # <dm_learn_from_db>
   "constraint_column_usage", # <dm_learn_from_db>

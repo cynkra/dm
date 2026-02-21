@@ -60,11 +60,9 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, name_format = "{t
   from <-
     df_info$tables %>%
     select(catalog = table_catalog, schema = table_schema, table = table_name) %>%
-    pmap_chr(function(...) {
-      args <- list(...)
-      args <- args[!is.na(args)]
-      DBI::dbQuoteIdentifier(con, do.call(DBI::Id, args))
-    })
+    # RSQLite doesn't accept three-component identifiers, so we need to quote only the schema and table name
+    mutate(catalog = if (!all(is.na(catalog))) catalog) %>%
+    pmap_chr(~ DBI::dbQuoteIdentifier(con, DBI::Id(...)))
 
   df_key_info <-
     df_info %>%
