@@ -4,7 +4,14 @@
 \alias{dm_flatten}
 \title{Flatten a table in a \code{dm} by joining its parent tables}
 \usage{
-dm_flatten(dm, table, ..., .recursive = FALSE, .allow_deep = FALSE)
+dm_flatten(
+  dm,
+  table,
+  ...,
+  parent_tables = NULL,
+  recursive = FALSE,
+  allow_deep = FALSE
+)
 }
 \arguments{
 \item{dm}{A \code{\link{dm}} object.}
@@ -13,27 +20,31 @@ dm_flatten(dm, table, ..., .recursive = FALSE, .allow_deep = FALSE)
 An interesting choice could be
 for example a fact table in a star schema.}
 
-\item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{parent_tables}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Unquoted names of the parent tables to be joined into \code{table}.
 The order of the tables here determines the order of the joins.
-If the argument is empty, all direct parent tables
+If \code{NULL} (the default), all direct parent tables
 (reachable via foreign keys) are joined.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
-\item{.recursive}{Logical, defaults to \code{FALSE}.
+\item{recursive}{Logical, defaults to \code{FALSE}.
 If \code{TRUE}, recursively flatten parent tables before joining them
 into \code{table}.
 Uses simple recursion: recursively flattening the parents
 and then doing a join in order.
 If \code{FALSE}, fails if a parent table has further parents
-(unless \code{.allow_deep} is \code{TRUE}).}
+(unless \code{allow_deep} is \code{TRUE}).
+Cannot be \code{TRUE} when \code{allow_deep} is \code{TRUE}.}
 
-\item{.allow_deep}{Logical, defaults to \code{FALSE}.
-Only relevant if \code{.recursive = FALSE}.
+\item{allow_deep}{Logical, defaults to \code{FALSE}.
+Only relevant if \code{recursive = FALSE}.
 If \code{TRUE}, parent tables with further parents are allowed
 and will remain in the result with a
-foreign-key relationship to the flattened table.}
+foreign-key relationship to the flattened table.
+Cannot be \code{TRUE} when \code{recursive} is \code{TRUE}.}
 }
 \value{
 A \code{\link{dm}} object with the flattened table and removed parent tables.
@@ -43,6 +54,13 @@ A \code{\link{dm}} object with the flattened table and removed parent tables.
 
 \code{dm_flatten()} updates a table in-place by joining its parent tables into it,
 and removes the now integrated parent tables from the dm.
+}
+\examples{
+\dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
+dm_nycflights13() \%>\%
+  dm_select_tbl(-weather) \%>\%
+  dm_flatten(flights, recursive = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other flattening functions: 
