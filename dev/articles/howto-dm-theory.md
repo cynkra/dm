@@ -510,10 +510,6 @@ dm_from_con(con_sqlite)
 ```
 
 ``` fansi
-#> ! unable to fetch autoincrement metadata for src 'src_SQLiteConnection'
-```
-
-``` fansi
 #> Keys could not be queried.
 ```
 

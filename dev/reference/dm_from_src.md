@@ -24,9 +24,9 @@ dm_from_src(src = NULL, table_names = NULL, learn_keys = NULL, ...)
   **\[experimental\]**
 
   Set to `TRUE` to query the definition of primary and foreign keys from
-  the database. Currently works only for Postgres/Redshift and SQL
-  Server databases. The default attempts to query and issues an
-  informative message.
+  the database. Currently works for Postgres/Redshift, MariaDB/MySQL,
+  SQLite, SQL Server, and DuckDB databases. The default attempts to
+  query and issues an informative message.
 
 - ...:
 
