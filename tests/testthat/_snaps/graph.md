@@ -1,22 +1,19 @@
 # functions working with graphs do the right thing?
 
     Code
-      attr(igraph::E(create_graph_from_dm(nyc_comp())), "vnames")
+      attr(graph_edges(create_graph_from_dm(nyc_comp())), "vnames")
     Output
       [1] "airlines|flights" "airports|flights" "flights|planes"   "flights|weather" 
 
 # empty graph
 
     Code
-      create_graph_from_dm(empty_dm())
+      print(g0)
     Output
-      IGRAPH UN-- 0 0 -- 
-      + attr: name (v/c)
-      + edges (vertex names):
+      <dm_graph> undirected, 0 vertices, 0 edges
     Code
-      create_graph_from_dm(dm(x = tibble(a = 1)))
+      print(g1)
     Output
-      IGRAPH UN-- 1 0 -- 
-      + attr: name (v/c)
-      + edges (vertex names):
+      <dm_graph> undirected, 1 vertex, 0 edges
+      Vertices: x 
 

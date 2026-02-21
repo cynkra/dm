@@ -141,7 +141,7 @@ test_that("zoom output for compound keys", {
       dm_insert_zoomed("weather_2")
     nyc_comp_2 %>%
       get_all_keys()
-    attr(igraph::E(create_graph_from_dm(nyc_comp_2)), "vnames")
+    attr(graph_edges(create_graph_from_dm(nyc_comp_2)), "vnames")
 
     nyc_comp_3 <-
       nyc_comp() %>%
@@ -149,7 +149,7 @@ test_that("zoom output for compound keys", {
       dm_insert_zoomed("flights_2")
     nyc_comp_3 %>%
       get_all_keys()
-    attr(igraph::E(create_graph_from_dm(nyc_comp_3)), "vnames")
+    attr(graph_edges(create_graph_from_dm(nyc_comp_3)), "vnames")
   })
 })
 
