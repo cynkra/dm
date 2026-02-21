@@ -399,16 +399,20 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
 }
 
 #' @autoglobal
-enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
+enum_pk_candidates_impl <- function(
+  table,
+  columns = new_keys(colnames(table)),
+  max_value = MAX_COMMAS
+) {
   tibble(column = new_keys(columns)) %>%
-    mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
+    mutate(why = map_chr(column, ~ check_pk(table, .x, max_value = max_value))) %>%
     mutate(candidate = (why == "")) %>%
     select(column, candidate, why) %>%
     arrange(desc(candidate), column)
 }
 
-check_pk <- function(table, columns) {
-  duplicate_values <- is_unique_key_se(table, columns)
+check_pk <- function(table, columns, max_value = MAX_COMMAS) {
+  duplicate_values <- is_unique_key_se(table, columns, max_value = max_value)
   if (duplicate_values$unique) {
     return("")
   }
@@ -431,7 +435,7 @@ check_pk <- function(table, columns) {
 
   if (length(values) > 0) {
     values_count <- paste0(values, " (", n[!values_na], ")")
-    values_text <- commas(values_count, capped = TRUE, fun = fun)
+    values_text <- commas(values_count, max_commas = max_value, capped = TRUE, fun = fun)
     duplicate <- paste0("duplicate values: ", values_text)
   } else {
     duplicate <- NULL
