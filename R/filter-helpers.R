@@ -46,6 +46,8 @@ repair_by <- function(by) {
   by
 }
 
+# Convert `dplyr_join_by` objects (from `join_by()`) to named character vectors
+# where names are LHS columns and values are RHS columns.
 flatten_join_by <- function(by) {
   if (!inherits(by, "dplyr_join_by")) {
     return(by)
