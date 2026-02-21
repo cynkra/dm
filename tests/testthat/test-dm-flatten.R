@@ -1,3 +1,15 @@
+dm_for_flatten_deep <- function() {
+  dm(
+    A = tibble::tibble(id = 1:3, b_id = 1:3, val_a = letters[1:3]),
+    B = tibble::tibble(id = 1:3, c_id = 1:3, val_b = LETTERS[1:3]),
+    C = tibble::tibble(id = 1:3, val_c = c("x", "y", "z"))
+  ) %>%
+    dm_add_pk(B, id) %>%
+    dm_add_pk(C, id) %>%
+    dm_add_fk(A, b_id, B) %>%
+    dm_add_fk(B, c_id, C)
+}
+
 test_that("`dm_flatten()` works for basic star schema", {
   # Basic flatten: join all parents into fact
   result <- expect_message_obj(dm_flatten(dm_for_flatten(), fact))
@@ -48,15 +60,7 @@ test_that("`dm_flatten()` recursive snapshot with `dm_paste()`", {
 })
 
 test_that("`dm_flatten()` allow_deep snapshot with `dm_paste()`", {
-  dm_deep <- dm(
-    A = tibble::tibble(id = 1:3, b_id = 1:3, val_a = letters[1:3]),
-    B = tibble::tibble(id = 1:3, c_id = 1:3, val_b = LETTERS[1:3]),
-    C = tibble::tibble(id = 1:3, val_c = c("x", "y", "z"))
-  ) %>%
-    dm_add_pk(B, id) %>%
-    dm_add_pk(C, id) %>%
-    dm_add_fk(A, b_id, B) %>%
-    dm_add_fk(B, c_id, C)
+  dm_deep <- dm_for_flatten_deep()
 
   expect_snapshot({
     dm_flatten(dm_deep, A, allow_deep = TRUE) %>%
@@ -132,16 +136,7 @@ test_that("`dm_flatten()` with recursive = TRUE auto-detect", {
 })
 
 test_that("`dm_flatten()` with allow_deep = TRUE keeps grandparents", {
-  # Create a simple 3-level hierarchy: A -> B -> C
-  dm_deep <- dm(
-    A = tibble::tibble(id = 1:3, b_id = 1:3, val_a = letters[1:3]),
-    B = tibble::tibble(id = 1:3, c_id = 1:3, val_b = LETTERS[1:3]),
-    C = tibble::tibble(id = 1:3, val_c = c("x", "y", "z"))
-  ) %>%
-    dm_add_pk(B, id) %>%
-    dm_add_pk(C, id) %>%
-    dm_add_fk(A, b_id, B) %>%
-    dm_add_fk(B, c_id, C)
+  dm_deep <- dm_for_flatten_deep()
 
   result <- dm_flatten(dm_deep, A, allow_deep = TRUE)
 

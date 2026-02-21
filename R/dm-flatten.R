@@ -161,12 +161,12 @@ dm_flatten_recursive_reduce <- function(dm, start, list_of_pts, dfs_order) {
   # Order parents by DFS order
   parents_to_join <- intersect(dfs_order, parents_to_join)
 
-  all_renames <- list()
-
   # For each direct parent, recursively flatten it first, then join into start
-  dm <- reduce(
+  # Accumulate both dm and renames in the reduce result
+  acc <- reduce(
     parents_to_join,
-    function(dm, pt) {
+    function(acc, pt) {
+      dm <- acc$dm
       # Find what pt's ancestors are (those in list_of_pts but not start's direct parents)
       current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
       pt_parents <- current_fks %>%
@@ -179,14 +179,16 @@ dm_flatten_recursive_reduce <- function(dm, start, list_of_pts, dfs_order) {
       if (length(pt_parents_in_list) > 0) {
         # Recursively flatten pt's parents into pt
         out <- dm_flatten_impl(dm, pt, pt_parents_in_list, recursive = TRUE, allow_deep = FALSE)
-        dm <- out$dm
-        all_renames <<- c(all_renames, out$all_renames)
+        list(dm = out$dm, all_renames = c(acc$all_renames, out$all_renames))
+      } else {
+        acc
       }
-
-      dm
     },
-    .init = dm
+    .init = list(dm = dm, all_renames = list())
   )
+
+  dm <- acc$dm
+  all_renames <- acc$all_renames
 
   # Now join all (possibly flattened) direct parents into start
   current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
