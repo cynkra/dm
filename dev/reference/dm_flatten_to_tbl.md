@@ -83,6 +83,11 @@ Additionally, these functions differ from
 [`dm_wrap_tbl()`](https://dm.cynkra.com/dev/reference/dm_wrap_tbl.md),
 which always returns a `dm` object.
 
+## See also
+
+Other flattening functions:
+[`dm_flatten()`](https://dm.cynkra.com/dev/reference/dm_flatten.md)
+
 ## Examples
 
 ``` r

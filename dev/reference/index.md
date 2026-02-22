@@ -132,6 +132,11 @@ Rip a `dm` object apart and put it together, see also
 Combine multiple related tables, see also
 [`vignette("tech-dm-join")`](https://dm.cynkra.com/dev/articles/tech-dm-join.md).
 
+- [`dm_flatten()`](https://dm.cynkra.com/dev/reference/dm_flatten.md)
+  **\[experimental\]** :
+
+  Flatten a table in a `dm` by joining its parent tables
+
 - [`dm_flatten_to_tbl()`](https://dm.cynkra.com/dev/reference/dm_flatten_to_tbl.md)
   :
 
