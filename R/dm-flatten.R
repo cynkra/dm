@@ -67,11 +67,11 @@ dm_flatten <- function(
   join_name <- as_label(enexpr(join))
 
   if (join_name == "nest_join") {
-    abort_no_flatten_with_nest_join()
+    abort_no_flatten_with_nest_join("dm_flatten")
   }
 
   if (recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) {
-    abort_squash_limited()
+    abort_squash_limited("dm_flatten", "recursive")
   }
 
   if (recursive && allow_deep) {
@@ -120,7 +120,7 @@ dm_flatten <- function(
       reachable <- get_names_of_connected(g, start, squash = TRUE)
       non_reachable <- setdiff(non_parents, reachable)
       if (length(non_reachable) > 0) {
-        abort_tables_not_reachable_from_start()
+        abort_tables_not_reachable_from_start("table")
       }
     } else {
       g <- create_graph_from_dm(dm, directed = TRUE)
@@ -128,7 +128,7 @@ dm_flatten <- function(
       if (all(non_parents %in% reachable)) {
         abort_only_parents("dm_flatten", "table", "recursive")
       } else {
-        abort_tables_not_reachable_from_start()
+        abort_tables_not_reachable_from_start("table")
       }
     }
   }
