@@ -21,7 +21,7 @@
 #' @return For `dm_zoom2_to()`: A `dm_keyed_tbl` object with zoom2 info
 #'   stored in `dm_key_info`.
 #'
-#' @export
+#' @noRd
 #' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' flights_keyed <- dm_zoom2_to(dm_nycflights13(), flights)
 #'
@@ -64,7 +64,7 @@ dm_zoom2_to <- function(dm, table) {
 #' @return For `dm_update_zoom2ed()`, `dm_insert_zoom2ed()` and
 #'   `dm_discard_zoom2ed()`: A `dm` object.
 #'
-#' @export
+#' @noRd
 dm_update_zoom2ed <- function(zoomed_tbl) {
   zoom2_info <- zoom2_get_info(zoomed_tbl)
   dm <- zoom2_info$dm
@@ -81,7 +81,7 @@ dm_update_zoom2ed <- function(zoomed_tbl) {
 #' @param new_tbl_name Name of the new table.
 #' @inheritParams vctrs::vec_as_names
 #'
-#' @export
+#' @noRd
 dm_insert_zoom2ed <- function(zoomed_tbl, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
   zoom2_info <- zoom2_get_info(zoomed_tbl)
   dm <- zoom2_info$dm
@@ -121,7 +121,7 @@ dm_insert_zoom2ed <- function(zoomed_tbl, new_tbl_name = NULL, repair = "unique"
 }
 
 #' @rdname dm_zoom2_to
-#' @export
+#' @noRd
 dm_discard_zoom2ed <- function(zoomed_tbl) {
   zoom2_info <- zoom2_get_info(zoomed_tbl)
   zoom2_info$dm
