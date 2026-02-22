@@ -311,8 +311,8 @@ check_card_api_impl <- function(
   if (!isTRUE(by_position)) {
     y_idx <- match(colnames(parent_table), colnames(child_table))
     if (anyNA(y_idx)) {
-      abort(
-        "`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`."
+      cli::cli_abort(
+        "{.code by_position = FALSE} or {.code by_position = NULL} require column names in {.arg x} to match those in {.arg y}."
       )
     }
 

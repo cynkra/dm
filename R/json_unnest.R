@@ -30,7 +30,7 @@ json_unnest.data.frame <- function(
   names_repair = "check_unique"
 ) {
   if (missing(cols)) {
-    abort("The `cols` argument must be provided")
+    cli::cli_abort("The {.arg cols} argument must be provided.")
   }
   data %>%
     mutate(across({{ cols }}, ~ map(., ~ jsonlite::fromJSON(.) %>% as_tibble()))) %>%
