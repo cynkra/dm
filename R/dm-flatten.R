@@ -260,10 +260,12 @@ dm_flatten_join <- function(dm, start, parents) {
   start_tbl <- tbl_impl(dm, start)
   current_cols <- colnames(start_tbl)
 
+  # Track renames per parent for allow_deep FK transfer
   col_renames <- list()
   all_renames <- list()
 
   for (pt in parents) {
+    # Get FK between start and parent
     fk_info <- all_fks %>%
       filter(child_table == start, parent_table == pt)
     if (nrow(fk_info) == 0) {
@@ -280,9 +282,14 @@ dm_flatten_join <- function(dm, start, parents) {
     parent_tbl <- tbl_impl(dm, pt)
     parent_cols <- colnames(parent_tbl)
 
+    # Columns from parent that will appear in the result
+    # (all parent columns EXCEPT the key columns used in the join)
     parent_incoming_cols <- setdiff(parent_cols, parent_key_cols)
+
+    # Find conflicts with current columns
     conflicting <- intersect(current_cols, parent_incoming_cols)
 
+    # Rename conflicting columns in parent table
     renames <- character(0)
     if (length(conflicting) > 0) {
       new_names <- paste0(conflicting, ".", pt)
@@ -293,16 +300,21 @@ dm_flatten_join <- function(dm, start, parents) {
     }
     col_renames[[pt]] <- renames
 
+    # Perform the join
     start_tbl <- left_join(start_tbl, parent_tbl, by = by)
+
+    # Update current columns for next iteration
     current_cols <- colnames(start_tbl)
   }
 
+  # Build result dm
   def <- dm_get_def(dm)
   start_idx <- which(def$table == start)
   def$data[[start_idx]] <- start_tbl
 
   dm_result <- dm_from_def(def)
 
+  # Remove parent tables
   remaining <- setdiff(def$table, parents)
   remaining <- set_names(remaining)
 
@@ -376,11 +388,13 @@ dm_flatten_transfer_fks <- function(dm, start, parents, col_renames, all_fks) {
   def <- dm_get_def(dm)
 
   for (pt in parents) {
+    # Find FKs where pt is the child (pt references other tables as parent)
     pt_child_fks <- all_fks %>%
       filter(child_table == pt)
 
     for (i in seq_len(nrow(pt_child_fks))) {
       gp <- pt_child_fks$parent_table[i]
+      # Skip if grandparent is also being absorbed or is the start table
       if (gp %in% parents || gp == start) {
         next
       }
@@ -388,6 +402,7 @@ dm_flatten_transfer_fks <- function(dm, start, parents, col_renames, all_fks) {
       child_cols <- pt_child_fks$child_fk_cols[[i]]
       parent_cols <- pt_child_fks$parent_key_cols[[i]]
 
+      # Apply renames: if any FK columns were renamed during disambiguation
       renames <- col_renames[[pt]]
       if (length(renames) > 0) {
         for (k in seq_along(child_cols)) {
@@ -397,6 +412,8 @@ dm_flatten_transfer_fks <- function(dm, start, parents, col_renames, all_fks) {
         }
       }
 
+      # Handle the case where a FK column is the same as the join key
+      # (it was dropped during the join, so use start's FK column instead)
       fk_to_parent <- all_fks %>%
         filter(child_table == start, parent_table == pt)
       if (nrow(fk_to_parent) > 0) {
@@ -410,6 +427,7 @@ dm_flatten_transfer_fks <- function(dm, start, parents, col_renames, all_fks) {
         }
       }
 
+      # Add FK from start to grandparent
       gp_idx <- which(def$table == gp)
       def$fks[[gp_idx]] <- vec_rbind(
         def$fks[[gp_idx]],
