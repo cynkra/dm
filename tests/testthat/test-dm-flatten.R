@@ -471,7 +471,13 @@ test_that("`dm_flatten()` recursive with non-left join errors", {
 })
 
 test_that("`dm_flatten()` recursive with `join = inner_join`", {
-  result <- dm_flatten(dm_more_complex(), tf_5, parent_tables = c(tf_4, tf_3), recursive = TRUE, join = inner_join)
+  result <- dm_flatten(
+    dm_more_complex(),
+    tf_5,
+    parent_tables = c(tf_4, tf_3),
+    recursive = TRUE,
+    join = inner_join
+  )
 
   expect_s3_class(result, "dm")
   expect_true("tf_5" %in% names(dm_get_tables(result)))
