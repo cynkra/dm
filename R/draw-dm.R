@@ -158,7 +158,7 @@ dm_draw <- function(
   view_type <- arg_match(view_type)
 
   if (!is.null(col_attr)) {
-    deprecate_soft("0.1.13", "dm::dm_draw(col_attr = )", "dm::dm_draw(column_types = )")
+    deprecate_warn("0.1.13", "dm::dm_draw(col_attr = )", "dm::dm_draw(column_types = )")
     if (is.null(column_types) && "type" %in% col_attr) {
       column_types <- TRUE
     }

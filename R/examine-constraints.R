@@ -46,7 +46,7 @@ dm_examine_constraints <- function(
   check_dots_empty()
 
   if (!is_missing(dm)) {
-    deprecate_soft("1.0.0", "dm_examine_constraints(dm = )", "dm_examine_constraints(.dm = )")
+    deprecate_warn("1.0.0", "dm_examine_constraints(dm = )", "dm_examine_constraints(.dm = )")
   }
 
   if (is_missing(.dm)) {
@@ -62,7 +62,7 @@ dm_examine_constraints <- function(
     if (is.na(progress)) {
       progress <- .progress
     }
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       "dm_examine_constraints(progress = )",
       "dm_examine_constraints(.progress = )"
