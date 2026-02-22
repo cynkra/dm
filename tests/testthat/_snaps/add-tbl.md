@@ -8,7 +8,7 @@
       i Please use `dm()` instead.
       i Use `.name_repair = "unique"` if necessary.
       Error in `abort_need_unique_names()`:
-      ! Each new table needs to have a unique name. Duplicate new name(s): `tf_1`.
+      ! Each new table needs to have a unique name. Duplicate new name: tf_1.
 
 ---
 
