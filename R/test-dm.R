@@ -106,7 +106,7 @@ abort_table_missing <- function(arg_name) {
 
 abort_table_not_in_dm <- function(table_name, dm_tables) {
   cli::cli_abort(
-    "Table {.code {table_name}} not in {.cls dm} object. Available table names: {.code {dm_tables}}.",
+    "Table {.field {table_name}} not in {.cls dm} object. Available table names: {.field {dm_tables}}.",
     class = dm_error_full("table_not_in_dm")
   )
 }

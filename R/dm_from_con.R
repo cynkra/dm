@@ -189,7 +189,7 @@ abort_learn_keys <- function(parent) {
 abort_tbl_access <- function(bad) {
   cli::cli_abort(
     c(
-      "Table(s) {.code {bad}} cannot be accessed.",
+      "{cli::qty(length(bad))}Table{?s} {.field {bad}} cannot be accessed.",
       i = "Use {.code tbl(src, ...)} to troubleshoot."
     ),
     class = dm_error_full("tbl_access")
@@ -199,7 +199,7 @@ abort_tbl_access <- function(bad) {
 warn_tbl_access <- function(bad) {
   cli::cli_warn(
     c(
-      "Table(s) {.code {bad}} cannot be accessed.",
+      "{cli::qty(length(bad))}Table{?s} {.field {bad}} cannot be accessed.",
       i = "Use {.code tbl(src, ...)} to troubleshoot.",
       i = "Set the {.arg table_name} argument to avoid this warning."
     ),

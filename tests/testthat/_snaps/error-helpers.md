@@ -4,7 +4,7 @@
       abort_key_set_force_false("pk_table")
     Condition
       Error in `abort_key_set_force_false()`:
-      ! Table `pk_table` already has a primary key. Use `force = TRUE` to change the existing primary key.
+      ! Table pk_table already has a primary key. Use `force = TRUE` to change the existing primary key.
     Code
       abort_not_unique_key("Christmas", "Rudolph")
     Condition
@@ -19,12 +19,12 @@
       abort_table_not_in_dm("laziness", "hard_work")
     Condition
       Error in `abort_table_not_in_dm()`:
-      ! Table `laziness` not in <dm> object. Available table names: `hard_work`.
+      ! Table laziness not in <dm> object. Available table names: hard_work.
     Code
       abort_not_subset_of("playing", "game", "hunting", "game")
     Condition
       Error in `abort_not_subset_of()`:
-      ! Column (`game`) of table `playing` contains values (see examples above) that are not present in column (`game`) of table `hunting`.
+      ! Column (game) of table playing contains values (see examples above) that are not present in column (game) of table hunting.
     Code
       abort_sets_not_equal(c("A problem occurred.",
         "And another, even worse problem, occurred shortly after."))
@@ -36,17 +36,17 @@
       abort_not_bijective("child_table_name", "fk_col_name")
     Condition
       Error in `abort_not_bijective()`:
-      ! 1..1 cardinality (bijectivity) is not given: Column (`fk_col_name`) in table `child_table_name` contains duplicate values.
+      ! 1..1 cardinality (bijectivity) is not given: Column (fk_col_name) in table child_table_name contains duplicate values.
     Code
       abort_not_injective("child_table_name", "fk_col_name")
     Condition
       Error in `abort_not_injective()`:
-      ! 0..1 cardinality (injectivity from child table to parent table) is not given: Column (`fk_col_name`) in table `child_table_name` contains duplicate values.
+      ! 0..1 cardinality (injectivity from child table to parent table) is not given: Column (fk_col_name) in table child_table_name contains duplicate values.
     Code
       abort_ref_tbl_has_no_pk("parent_table")
     Condition
       Error in `abort_ref_tbl_has_no_pk()`:
-      ! ref_table `parent_table` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.
+      ! ref_table parent_table needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.
     Code
       abort_is_not_fkc()
     Condition
@@ -56,7 +56,7 @@
       abort_rm_fk_col_missing()
     Condition
       Error in `abort_rm_fk_col_missing()`:
-      ! Parameter `columns` has to be set. Pass `NULL` for removing all references.
+      ! Parameter `columns` has to be set. Pass NULL for removing all references.
     Code
       abort_last_col_missing()
     Condition
@@ -77,7 +77,7 @@
       abort_dupl_new_id_col_name("tibbletable")
     Condition
       Error in `abort_dupl_new_id_col_name()`:
-      ! `new_id_column` can't have an identical name as one of the columns of `tibbletable`.
+      ! `new_id_column` can't have an identical name as one of the columns of tibbletable.
     Code
       abort_no_overwrite()
     Condition
@@ -92,12 +92,12 @@
       abort_fk_exists("child", c("child_1", "child_2"), "parent")
     Condition
       Error in `abort_fk_exists()`:
-      ! (`child_1`, `child_2`) is already a foreign key of table `child` into table `parent`.
+      ! (`child_1`, `child_2`) is already a foreign key of table child into table parent.
     Code
       abort_first_rm_fks("parent", c("child_1", "child_2"))
     Condition
       Error in `abort_first_rm_fks()`:
-      ! There are foreign keys pointing from table(s) `child_1`, `child_2` to table `parent`. First remove those, or set `fail_fk = FALSE`.
+      ! There are foreign keys pointing from tables child_1 and child_2 to table parent. First remove those, or set `fail_fk = FALSE`.
     Code
       abort_update_not_supported()
     Condition
@@ -112,7 +112,7 @@
       abort_tables_not_neighbors("subjects", "king")
     Condition
       Error in `abort_tables_not_neighbors()`:
-      ! Tables `subjects` and `king` are not directly linked by a foreign key relation.
+      ! Tables subjects and king are not directly linked by a foreign key relation.
     Code
       abort_only_parents()
     Condition
@@ -137,12 +137,12 @@
       abort_squash_limited()
     Condition
       Error in `abort_squash_limited()`:
-      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`.
+      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports joins using `left_join()`, `inner_join()`, or `full_join()`.
     Code
       abort_apply_filters_first("join_tightly")
     Condition
       Error in `abort_apply_filters_first()`:
-      ! `dm_..._to_tbl()` with join method `join_tightly` generally wouldn't produce the correct result when filters are set. Please consider calling `dm_apply_filters()` first.
+      ! `dm_..._to_tbl()` with join using `join_tightly()` generally wouldn't produce the correct result when filters are set. Please consider calling `dm_apply_filters()` first.
     Code
       abort_no_flatten_with_nest_join()
     Condition
@@ -180,18 +180,18 @@
       abort_tbl_access("accessdenied")
     Condition
       Error in `abort_tbl_access()`:
-      ! Table(s) `accessdenied` cannot be accessed.
+      ! Table accessdenied cannot be accessed.
       i Use `tbl(src, ...)` to troubleshoot.
     Code
       abort_need_unique_names("clone")
     Condition
       Error in `abort_need_unique_names()`:
-      ! Each new table needs to have a unique name. Duplicate new name(s): `clone`.
+      ! Each new table needs to have a unique name. Duplicate new name: clone.
     Code
       abort_fk_not_tracked("hook", "eye")
     Condition
       Error in `abort_fk_not_tracked()`:
-      ! The foreign key that existed between the originally zoomed table `hook` and `eye` got lost in transformations. Please explicitly provide the `by` argument.
+      ! The foreign key that existed between the originally zoomed table hook and eye got lost in transformations. Please explicitly provide the `by` argument.
     Code
       abort_dm_invalid("it's ugly.")
     Condition
@@ -211,12 +211,12 @@
       abort_not_pulling_multiple_zoomed()
     Condition
       Error in `abort_not_pulling_multiple_zoomed()`:
-      ! If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.dm_zoomed()`.
+      ! If more than one zoomed table is available, you need to specify argument `table` in `pull_tbl.dm_zoomed()`.
     Code
       abort_cols_not_avail(c("pink5", "elephant"))
     Condition
       Error in `abort_cols_not_avail()`:
-      ! The color(s) `pink5`, `elephant` are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
+      ! The colors "pink5" and "elephant" are not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
     Code
       abort_only_named_args("give_names", "frobnicability")
     Condition
@@ -231,7 +231,7 @@
       abort_pk_not_tracked("house", "house_number")
     Condition
       Error in `abort_pk_not_tracked()`:
-      ! The primary key column(s) `house_number` of the originally zoomed table `house` got lost in transformations. Therefore it is not possible to use `nest.dm_zoomed()`.
+      ! The primary key column(s) house_number of the originally zoomed table house got lost in transformations. Therefore it is not possible to use `nest.dm_zoomed()`.
     Code
       abort_only_for_local_src(mtcars)
     Condition
@@ -246,7 +246,7 @@
       abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
     Condition
       Error in `abort_parameter_not_correct_length()`:
-      ! Parameter `length_1_parameter` needs to be of length 1 but is of length 26 (`a`, `b`, `c`, `d`, `e`, ... (26 total)).
+      ! Argument `length_1_parameter` needs to be of length 1 but is of length 26 ("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", ..., "y", and "z").
     Code
       warn_if_arg_not("NULL", c("MSSQL", "Postgres"), arg_name = "dbms_dependent_arg")
     Condition
@@ -274,10 +274,66 @@
       abort_temporary_not_in_schema()
     Condition
       Error in `abort_temporary_not_in_schema()`:
-      ! If argument `temporary` is `TRUE`, argument `schema` has to be `NULL`.
+      ! If argument `temporary` is TRUE, argument `schema` has to be NULL.
     Code
       abort_one_of_schema_table_names()
     Condition
       Error in `abort_one_of_schema_table_names()`:
-      ! Only one of the arguments `schema` and `table_names` can be different from `NULL`.
+      ! Only one of the arguments `schema` and `table_names` can be different from NULL.
+
+# singular and plural
+
+    Code
+      abort_not_subset_of("t1", c("a", "b"), "t2", c("c", "d"))
+    Condition
+      Error in `abort_not_subset_of()`:
+      ! Columns (a and b) of table t1 contain values (see examples above) that are not present in columns (c and d) of table t2.
+    Code
+      abort_not_bijective("child_tbl", c("col_a", "col_b"))
+    Condition
+      Error in `abort_not_bijective()`:
+      ! 1..1 cardinality (bijectivity) is not given: Columns (col_a and col_b) in table child_tbl contain duplicate values.
+    Code
+      abort_not_injective("child_tbl", c("col_a", "col_b"))
+    Condition
+      Error in `abort_not_injective()`:
+      ! 0..1 cardinality (injectivity from child table to parent table) is not given: Columns (col_a and col_b) in table child_tbl contain duplicate values.
+    Code
+      abort_need_unique_names(c("clone_a", "clone_b"))
+    Condition
+      Error in `abort_need_unique_names()`:
+      ! Each new table needs to have a unique name. Duplicate new names: clone_a and clone_b.
+    Code
+      abort_first_rm_fks("parent", "child_1")
+    Condition
+      Error in `abort_first_rm_fks()`:
+      ! There is a foreign key pointing from table child_1 to table parent. First remove those, or set `fail_fk = FALSE`.
+    Code
+      abort_tbl_access(c("table_a", "table_b"))
+    Condition
+      Error in `abort_tbl_access()`:
+      ! Tables table_a and table_b cannot be accessed.
+      i Use `tbl(src, ...)` to troubleshoot.
+    Code
+      abort_cols_not_avail("pink5")
+    Condition
+      Error in `abort_cols_not_avail()`:
+      ! The color "pink5" is not available. Call `dm_get_available_colors()` for possible color names or use hex color codes.
+
+---
+
+    Code
+      warn_tbl_access("table_a")
+    Condition
+      Warning:
+      Table table_a cannot be accessed.
+      i Use `tbl(src, ...)` to troubleshoot.
+      i Set the `table_name` argument to avoid this warning.
+    Code
+      warn_tbl_access(c("table_a", "table_b"))
+    Condition
+      Warning:
+      Tables table_a and table_b cannot be accessed.
+      i Use `tbl(src, ...)` to troubleshoot.
+      i Set the `table_name` argument to avoid this warning.
 

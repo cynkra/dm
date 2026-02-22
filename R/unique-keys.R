@@ -281,7 +281,7 @@ abort_uk_not_defined <- function() {
 
 abort_no_uk_if_pk <- function(table, column, type = "PK") {
   cli::cli_abort(
-    "A {type} ({commas(tick(column))}) for table {.code {table}} already exists, not adding UK.",
+    "A {type} ({.field {column}}) for table {.field {table}} already exists, not adding UK.",
     class = dm_error_full("no_uk_if_pk")
   )
 }

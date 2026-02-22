@@ -38,10 +38,9 @@ abort_not_unique_key <- function(table_name, column_names) {
 # error: is not subset of -------------------------------------------------
 
 abort_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2) {
-  # taking care of singular/plural of the word "columns" and the corresponding ending of the verb
-  plural <- s_if_plural(colname_1)
+  n <- length(colname_1)
   cli::cli_abort(
-    "Column{plural['n']} ({commas(tick(colname_1))}) of table {.code {table_name_1}} contain{plural['v']} values (see examples above) that are not present in column{plural['n']} ({commas(tick(colname_2))}) of table {.code {table_name_2}}.",
+    "{cli::qty(n)}Column{?s} ({.field {colname_1}}) of table {.field {table_name_1}} {cli::qty(n)}contain{?s/} values (see examples above) that are not present in column{?s} ({.field {colname_2}}) of table {.field {table_name_2}}.",
     class = dm_error_full("not_subset_of")
   )
 }
@@ -55,17 +54,17 @@ abort_sets_not_equal <- function(error_msgs) {
 # cardinality check errors ------------------------------------------------
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
-  plural <- s_if_plural(fk_col_name)
+  n <- length(fk_col_name)
   cli::cli_abort(
-    "1..1 cardinality (bijectivity) is not given: Column{plural['n']} ({commas(tick(fk_col_name))}) in table {.code {child_table_name}} contain{plural['v']} duplicate values.",
+    "{cli::qty(n)}1..1 cardinality (bijectivity) is not given: Column{?s} ({.field {fk_col_name}}) in table {.field {child_table_name}} {cli::qty(n)}contain{?s/} duplicate values.",
     class = dm_error_full("not_bijective")
   )
 }
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
-  plural <- s_if_plural(fk_col_name)
+  n <- length(fk_col_name)
   cli::cli_abort(
-    "0..1 cardinality (injectivity from child table to parent table) is not given: Column{plural['n']} ({commas(tick(fk_col_name))}) in table {.code {child_table_name}} contain{plural['v']} duplicate values.",
+    "{cli::qty(n)}0..1 cardinality (injectivity from child table to parent table) is not given: Column{?s} ({.field {fk_col_name}}) in table {.field {child_table_name}} {cli::qty(n)}contain{?s/} duplicate values.",
     class = dm_error_full("not_injective")
   )
 }
@@ -74,7 +73,7 @@ abort_not_injective <- function(child_table_name, fk_col_name) {
 
 abort_ref_tbl_has_no_pk <- function(ref_table_name) {
   cli::cli_abort(
-    "ref_table {.code {ref_table_name}} needs a primary key first. Use {.fn dm_enum_pk_candidates} to find appropriate columns and {.fn dm_add_pk} to define a primary key.",
+    "ref_table {.field {ref_table_name}} needs a primary key first. Use {.fn dm_enum_pk_candidates} to find appropriate columns and {.fn dm_add_pk} to define a primary key.",
     class = dm_error_full("ref_tbl_has_no_pk")
   )
 }
@@ -117,7 +116,7 @@ abort_tables_not_reachable_from_start <- function() {
 
 abort_dupl_new_id_col_name <- function(table_name) {
   cli::cli_abort(
-    "{.arg new_id_column} can't have an identical name as one of the columns of {.code {table_name}}.",
+    "{.arg new_id_column} can't have an identical name as one of the columns of {.field {table_name}}.",
     class = dm_error_full("dupl_new_id_col_name")
   )
 }
@@ -150,7 +149,7 @@ abort_only_possible_wo_filters <- function(fun_name) {
 
 abort_tables_not_neighbors <- function(t1_name, t2_name) {
   cli::cli_abort(
-    "Tables {.code {t1_name}} and {.code {t2_name}} are not directly linked by a foreign key relation.",
+    "Tables {.field {t1_name}} and {.field {t2_name}} are not directly linked by a foreign key relation.",
     class = dm_error_full("tables_not_neighbors")
   )
 }
@@ -191,14 +190,14 @@ abort_what_a_weird_object <- function(class) {
 
 abort_squash_limited <- function() {
   cli::cli_abort(
-    "{.code dm_flatten_to_tbl(.recursive = TRUE)} only supports join methods {.code left_join}, {.code inner_join}, {.code full_join}.",
+    "{.code dm_flatten_to_tbl(.recursive = TRUE)} only supports joins using {.fn left_join}, {.fn inner_join}, or {.fn full_join}.",
     class = dm_error_full("squash_limited")
   )
 }
 
 abort_apply_filters_first <- function(join_name) {
   cli::cli_abort(
-    "{.fn dm_..._to_tbl} with join method {.code {join_name}} generally wouldn't produce the correct result when filters are set. Please consider calling {.fn dm_apply_filters} first.",
+    "{.fn dm_..._to_tbl} with join using {.fn {join_name}} generally wouldn't produce the correct result when filters are set. Please consider calling {.fn dm_apply_filters} first.",
     class = dm_error_txt_apply_filters_first(join_name)
   )
 }
@@ -269,8 +268,9 @@ abort_one_name_for_copy_to <- function(name) {
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
+  dupl <- unique(duplicate_names)
   cli::cli_abort(
-    "Each new table needs to have a unique name. Duplicate new name(s): {.code {unique(duplicate_names)}}.",
+    "{cli::qty(length(dupl))}Each new table needs to have a unique name. Duplicate new name{?s}: {.field {dupl}}.",
     class = dm_error_full("need_unique_names")
   )
 }
@@ -279,7 +279,7 @@ abort_need_unique_names <- function(duplicate_names) {
 
 abort_fk_not_tracked <- function(x_orig_name, y_name) {
   cli::cli_abort(
-    "The foreign key that existed between the originally zoomed table {.code {x_orig_name}} and {.code {y_name}} got lost in transformations. Please explicitly provide the {.arg by} argument.",
+    "The foreign key that existed between the originally zoomed table {.field {x_orig_name}} and {.field {y_name}} got lost in transformations. Please explicitly provide the {.arg by} argument.",
     class = dm_error_full("fk_not_tracked")
   )
 }
@@ -288,7 +288,7 @@ abort_fk_not_tracked <- function(x_orig_name, y_name) {
 
 abort_pk_not_tracked <- function(orig_table, orig_pk) {
   cli::cli_abort(
-    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {.code {orig_table}} got lost in transformations. Therefore it is not possible to use {.fn nest.dm_zoomed}.",
+    "The primary key column(s) {.field {orig_pk}} of the originally zoomed table {.field {orig_table}} got lost in transformations. Therefore it is not possible to use {.fn nest.dm_zoomed}.",
     class = dm_error_full("pk_not_tracked")
   )
 }
@@ -321,14 +321,14 @@ abort_table_not_zoomed <- function(table_name, zoomed_tables) {
 
 abort_not_pulling_multiple_zoomed <- function() {
   cli::cli_abort(
-    "If more than 1 zoomed table is available you need to specify argument {.arg table} in {.fn pull_tbl.dm_zoomed}.",
+    "If more than one zoomed table is available, you need to specify argument {.arg table} in {.fn pull_tbl.dm_zoomed}.",
     class = dm_error_full("not_pulling_multiple_zoomed")
   )
 }
 
 abort_cols_not_avail <- function(wrong_col) {
   cli::cli_abort(
-    "The color(s) {commas(tick(wrong_col))} are not available. Call {.fn dm_get_available_colors} for possible color names or use hex color codes.",
+    "{cli::qty(length(wrong_col))}The color{?s} {.val {wrong_col}} {?is/are} not available. Call {.fn dm_get_available_colors} for possible color names or use hex color codes.",
     class = dm_error_full("cols_not_avail")
   )
 }
@@ -356,7 +356,7 @@ abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
 
 abort_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
   cli::cli_abort(
-    "Parameter {.arg {parameter}} needs to be of length {correct_length} but is of length {length(parameter_value)} ({commas(tick(parameter_value))}).",
+    "Argument {.arg {parameter}} needs to be of length {.val {correct_length}} but is of length {.val {length(parameter_value)}} ({.val {parameter_value}}).",
     class = dm_error_full("parameter_not_correct_length")
   )
 }
@@ -405,14 +405,14 @@ abort_no_schemas_supported <- function(dbms = NULL, con = NULL) {
 
 abort_temporary_not_in_schema <- function() {
   cli::cli_abort(
-    "If argument {.arg temporary} is {.code TRUE}, argument {.arg schema} has to be {.code NULL}.",
+    "If argument {.arg temporary} is {.val {TRUE}}, argument {.arg schema} has to be {.val {I('NULL')}}.",
     class = dm_error_full("temporary_not_in_schema")
   )
 }
 
 abort_one_of_schema_table_names <- function() {
   cli::cli_abort(
-    "Only one of the arguments {.arg schema} and {.arg table_names} can be different from {.code NULL}.",
+    "Only one of the arguments {.arg schema} and {.arg table_names} can be different from {.val {I('NULL')}}.",
     class = dm_error_full("one_of_schema_table_names")
   )
 }

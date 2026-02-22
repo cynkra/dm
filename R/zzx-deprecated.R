@@ -750,7 +750,7 @@ dm_rm_tbl_impl <- function(dm, ...) {
 
 abort_rm_fk_col_missing <- function() {
   cli::cli_abort(
-    "Parameter {.arg columns} has to be set. Pass {.code NULL} for removing all references.",
+    "Parameter {.arg columns} has to be set. Pass {.val {I('NULL')}} for removing all references.",
     class = dm_error_full("rm_fk_col_missing")
   )
 }

@@ -454,14 +454,14 @@ abort_pk_not_defined <- function() {
 
 abort_key_set_force_false <- function(table) {
   cli::cli_abort(
-    "Table {.code {table}} already has a primary key. Use {.arg force = TRUE} to change the existing primary key.",
+    "Table {.field {table}} already has a primary key. Use {.code force = TRUE} to change the existing primary key.",
     class = dm_error_full("key_set_force_false")
   )
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
   cli::cli_abort(
-    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {.code {table}}. First remove those, or set {.arg fail_fk = FALSE}.",
+    "{cli::qty(length(fk_tables))}There {?is/are} {?a foreign key/foreign keys} pointing from table{?s} {.field {fk_tables}} to table {.field {table}}. First remove those, or set {.code fail_fk = FALSE}.",
     class = dm_error_full("first_rm_fks")
   )
 }
