@@ -746,21 +746,22 @@ test_that("key tracking works for distinct() and arrange()", {
 
 test_that("key tracking works for slice()", {
   skip_if_remote_src()
-  expect_identical(
-    slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE) %>% col_tracker_zoomed(),
-    set_names(c("d", "e", "e1"))
-  )
+  # .keep_pk = FALSE should drop the PK
+  sliced <- slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = FALSE)
+  expect_null(keyed_get_info(tbl_zoomed(sliced))$pk)
+
+  # default .keep_pk: keep PK with message
   expect_message(
-    expect_identical(
-      slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2)) %>% col_tracker_zoomed(),
-      set_names(c("c", "d", "e", "e1"))
-    ),
+    {
+      sliced_default <- slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2))
+    },
     "Keeping PK"
   )
-  expect_identical(
-    slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE) %>% col_tracker_zoomed(),
-    set_names(c("c", "d", "e", "e1"))
-  )
+  expect_identical(keyed_get_info(tbl_zoomed(sliced_default))$pk, "c")
+
+  # .keep_pk = TRUE: keep PK without message
+  sliced_keep <- slice(dm_zoomed(), if_else(d < 5, 1:6, 7:2), .keep_pk = TRUE)
+  expect_identical(keyed_get_info(tbl_zoomed(sliced_keep))$pk, "c")
 })
 
 

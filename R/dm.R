@@ -431,8 +431,12 @@ as_dm_zoomed_df <- function(x) {
   zoomed <- dm_get_zoom(x)
 
   # for tests
+  tbl <- zoomed$zoom[[1]]
+  if (is_dm_keyed_tbl(tbl)) {
+    tbl <- unclass_keyed_tbl(tbl)
+  }
   new_dm_zoomed_df(
-    zoomed$zoom[[1]],
+    tbl,
     name_df = zoomed$table
   )
 }
@@ -518,8 +522,11 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
 
 #' @export
 `[.dm_zoomed` <- function(x, id) {
-  # for both dm and dm_zoomed
-  `[`(tbl_zoomed(x), id)
+  tbl <- tbl_zoomed(x)
+  if (is_dm_keyed_tbl(tbl)) {
+    tbl <- unclass_keyed_tbl(tbl)
+  }
+  `[`(tbl, id)
 }
 
 
@@ -868,8 +875,11 @@ as.list.dm <- function(x, ...) {
 #' @export
 as.list.dm_zoomed <- function(x, ...) {
   check_dots_empty()
-
-  as.list(tbl_zoomed(x))
+  tbl <- tbl_zoomed(x)
+  if (is_dm_keyed_tbl(tbl)) {
+    tbl <- unclass_keyed_tbl(tbl)
+  }
+  as.list(tbl)
 }
 
 #' Get a glimpse of your `dm` object
@@ -1019,8 +1029,24 @@ collapse_key_names <- function(keys, tab = FALSE) {
 #' @noRd
 print_glimpse_table_fk <- function(x, table_name, width) {
   all_fks <- if (is_zoomed(x)) {
-    # anticipate that some key columns could have been removed/renamed by the user
-    update_zoomed_fks(x, table_name, col_tracker_zoomed(x))
+    # Use keyed table FK info to get current FK state
+    keyed_tbl <- tbl_zoomed(x)
+    keys_info <- keyed_get_info(keyed_tbl)
+    def <- dm_get_def(x)
+    uuid_to_table <- set_names(def$table, def$uuid)
+
+    fks_out_df <- if (nrow(keys_info$fks_out) > 0) {
+      tibble(
+        child_table = table_name,
+        child_fk_cols = keys_info$fks_out$child_fk_cols,
+        parent_table = unname(uuid_to_table[keys_info$fks_out$parent_uuid]),
+        parent_key_cols = keys_info$fks_out$parent_key_cols,
+        on_delete = "no_action"
+      )
+    } else {
+      dm_get_all_fks_impl(x)[0, ]
+    }
+    fks_out_df
   } else {
     dm_get_all_fks_impl(x)
   }
