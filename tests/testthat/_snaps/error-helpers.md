@@ -114,12 +114,10 @@
       Error in `abort_tables_not_neighbors()`:
       ! Tables subjects and king are not directly linked by a foreign key relation.
     Code
-      abort_only_parents()
+      abort_only_parents("dm_flatten", "table", "recursive")
     Condition
-      Error:
-      ! ! Could not evaluate cli `{}` expression: `func`.
-      Caused by error in `eval(expr, envir = envir)`:
-      ! argument "func" is missing, with no default
+      Error in `abort_only_parents()`:
+      ! When using `dm_flatten()`, all join partners of table `table` must be its direct neighbors. Use `recursive = TRUE` for recursive flattening.
     Code
       abort_not_same_src()
     Condition
