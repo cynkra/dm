@@ -156,6 +156,17 @@ dm_flatten_to_tbl_impl <- function(
   ordered_table_list <- dm_get_tables(prep_dm)[order_df$name]
   by <- map2(order_df$pred, order_df$name, ~ get_by(prep_dm, .x, .y))
 
+  # After each join, RHS key columns are consumed into LHS key columns.
+  # Update `by` so that subsequent joins reference the surviving column name.
+  col_map <- character(0)
+  for (i in seq_along(by)) {
+    lhs_names <- names(by[[i]])
+    mapped <- lhs_names %in% names(col_map)
+    lhs_names[mapped] <- col_map[lhs_names[mapped]]
+    names(by[[i]]) <- lhs_names
+    col_map[unname(by[[i]])] <- lhs_names
+  }
+
   # perform the joins according to the list, starting with table `initial_LHS`
   reduce2(ordered_table_list, by, ~ join(..1, ..2, by = ..3), .init = tbl_impl(prep_dm, start))
 }
