@@ -156,9 +156,9 @@ abort_tables_not_neighbors <- function(t1_name, t2_name) {
 
 # `dm_flatten_to_tbl()` and `dm_join_to_tbl()` only supported for parents
 
-abort_only_parents <- function() {
+abort_only_parents <- function(func, table_arg, recursive_arg) {
   cli::cli_abort(
-    "When using {.fn dm_join_to_tbl} or {.fn dm_flatten_to_tbl} all join partners of table {.arg .start} have to be its direct neighbors. For 'flattening' with {.fn left_join}, {.fn inner_join} or {.fn full_join} use {.code dm_flatten_to_tbl(.recursive = TRUE)} as an alternative.",
+    "When using {.fn {func}}, all join partners of table {.arg {table_arg}} must be its direct neighbors. Use {.code {recursive_arg} = TRUE} for recursive flattening.",
     class = dm_error_full("only_parents")
   )
 }

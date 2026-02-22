@@ -109,7 +109,7 @@ dm_flatten <- function(
       g <- create_graph_from_dm(dm, directed = TRUE)
       reachable <- get_names_of_connected(g, start, squash = TRUE)
       if (all(non_parents %in% reachable)) {
-        abort_only_parents()
+        abort_only_parents("dm_flatten", "table", "recursive")
       } else {
         abort_tables_not_reachable_from_start()
       }
@@ -122,7 +122,7 @@ dm_flatten <- function(
       filter(child_table %in% list_of_pts) %>%
       nrow()
     if (has_parents > 0 && !allow_deep) {
-      abort_only_parents()
+      abort_only_parents("dm_flatten", "table", "recursive")
     }
   }
 
