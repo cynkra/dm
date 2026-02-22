@@ -218,3 +218,32 @@ test_that("DiagrammeR-specific options are soft-deprecated", {
       invisible()
   })
 })
+
+test_that("unsupported backend_opts fail with clear error", {
+  expect_snapshot(
+    dm_nycflights13() |> dm_draw(backend_opts = list(columnArrows = TRUE)),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    dm_nycflights13() |> dm_draw(backend_opts = list(foo = 1, bar = 2)),
+    error = TRUE
+  )
+})
+
+test_that("column_arrow backend option works", {
+  skip_if_not_installed("DiagrammeR")
+
+  expect_snapshot({
+    dm_nycflights13() |>
+      dm_draw(columnArrows = FALSE) |>
+      invisible()
+  })
+
+  # Directly using column_arrow in backend_opts should work without warning
+  expect_no_warning(
+    dm_nycflights13() |>
+      dm_draw(backend_opts = list(column_arrow = FALSE)) |>
+      invisible()
+  )
+})

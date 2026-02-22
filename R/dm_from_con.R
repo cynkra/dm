@@ -30,8 +30,9 @@
 #'
 #'   Additional parameters for the schema learning query.
 #'
-#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres/Redshift (default: `"public"`), and MariaDB/MySQL
-#'     (default: current database). Learn the tables in a specific schema (or database for MariaDB/MySQL).
+#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres/Redshift (default: `"public"`), MariaDB/MySQL
+#'     (default: current database) and SQLite (default: main schema).
+#'     Learn the tables in a specific schema (or database for MariaDB/MySQL).
 #'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
 #'     default: active database.
 #'   - `table_type`: supported for Postgres/Redshift (default: `"BASE TABLE"`). Specify the table type. Options are:
@@ -65,11 +66,22 @@ dm_from_con <- function(
 
   src <- src_from_src_or_con(con)
 
+  # Use smart default for `.names`, if it wasn't provided
+  dots <- list2(...)
+  if (!is.null(.names)) {
+    names_pattern <- .names
+  } else if (is.null(dots$schema) || length(dots$schema) == 1) {
+    names_pattern <- "{.table}"
+  } else {
+    names_pattern <- "{.schema}.{.table}"
+    cli::cli_inform('Using {.code .names = "{names_pattern}"}')
+  }
+
   if (is.null(learn_keys) || isTRUE(learn_keys)) {
     # FIXME: Try to make it work everywhere
     tryCatch(
       {
-        dm_learned <- dm_learn_from_db(con, ...)
+        dm_learned <- dm_learn_from_db(con, ..., names_pattern = names_pattern)
         if (is_null(learn_keys)) {
           cli::cli_inform(c(
             "Keys queried successfully.",
@@ -105,7 +117,7 @@ dm_from_con <- function(
   }
 
   if (is_null(table_names)) {
-    src_tbl_names <- get_src_tbl_names(src, ..., names = .names)
+    src_tbl_names <- get_src_tbl_names(src, ..., names_pattern = names_pattern)
   } else {
     src_tbl_names <- table_names
     if (is.null(names(src_tbl_names))) {
@@ -145,7 +157,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL, ...) 
     return(empty_dm())
   }
 
-  deprecate_soft("0.3.0", "dm::dm_from_src()", "dm::dm_from_con()")
+  deprecate_warn("0.3.0", "dm::dm_from_src()", "dm::dm_from_con()")
   dm_from_con(con = con_from_src_or_con(src), table_names, learn_keys, ...)
 }
 
@@ -164,36 +176,33 @@ quote_ids <- function(x, con, schema = NULL) {
 # Errors ------------------------------------------------------------------
 
 abort_learn_keys <- function(parent) {
-  abort(error_txt_learn_keys(), class = dm_error_full("learn_keys"), parent = parent)
-}
-
-error_txt_learn_keys <- function() {
-  c(
-    "Failed to learn keys from database.",
-    i = "Use `learn_keys = FALSE` to work around, or `dm:::dm_meta()` to debug."
+  cli::cli_abort(
+    c(
+      "Failed to learn keys from database.",
+      i = "Use {.code learn_keys = FALSE} to work around, or {.code dm:::dm_meta()} to debug."
+    ),
+    class = dm_error_full("learn_keys"),
+    parent = parent
   )
 }
 
 abort_tbl_access <- function(bad) {
-  dm_abort(
-    error_txt_tbl_access(bad),
-    "tbl_access"
+  cli::cli_abort(
+    c(
+      "{cli::qty(length(bad))}Table{?s} {.field {bad}} cannot be accessed.",
+      i = "Use {.code tbl(src, ...)} to troubleshoot."
+    ),
+    class = dm_error_full("tbl_access")
   )
 }
 
 warn_tbl_access <- function(bad) {
-  dm_warn(
+  cli::cli_warn(
     c(
-      error_txt_tbl_access(bad),
-      i = "Set the `table_name` argument to avoid this warning."
+      "{cli::qty(length(bad))}Table{?s} {.field {bad}} cannot be accessed.",
+      i = "Use {.code tbl(src, ...)} to troubleshoot.",
+      i = "Set the {.arg table_name} argument to avoid this warning."
     ),
-    "tbl_access"
-  )
-}
-
-error_txt_tbl_access <- function(bad) {
-  c(
-    glue("Table(s) {commas(tick(bad))} cannot be accessed."),
-    i = "Use `tbl(src, ...)` to troubleshoot."
+    class = dm_warning_full("tbl_access")
   )
 }

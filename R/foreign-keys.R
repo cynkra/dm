@@ -191,7 +191,7 @@ dm_has_fk <- function(dm, table, ref_table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
 
-  deprecate_soft("0.2.1", "dm::dm_has_fk()", "dm::dm_get_all_fks()")
+  deprecate_warn("0.2.1", "dm::dm_has_fk()", "dm::dm_get_all_fks()")
 
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
@@ -208,7 +208,7 @@ dm_get_fk <- function(dm, table, ref_table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
 
-  deprecate_soft("0.2.1", "dm::dm_get_fk()", "dm::dm_get_all_fks()")
+  deprecate_warn("0.2.1", "dm::dm_get_fk()", "dm::dm_get_all_fks()")
 
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
@@ -614,7 +614,7 @@ enum_fk_candidates_impl <- function(table_name, tbl, ref_table_name, ref_tbl, re
     arrange(desc(candidate))
 }
 
-check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
+check_fk <- function(t1, t1_name, colname, t2, t2_name, pk, max_value = MAX_COMMAS) {
   stopifnot(length(colname) == length(pk))
 
   val_names <- paste0("value", seq_along(colname))
@@ -646,7 +646,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
       filter(!(!!any_value_na_expr)) %>%
       anti_join(t2_join, by = val_names) %>%
       arrange(desc(n), !!!syms(val_names)) %>%
-      head(MAX_COMMAS + 1L) %>%
+      head(max_value + 1L) %>%
       collect(),
     error = identity
   )
@@ -667,6 +667,7 @@ check_fk <- function(t1, t1_name, colname, t2, t2_name, pk) {
 
   vals_formatted <- commas(
     glue("{res_tbl$value} ({res_tbl$n})"),
+    max_commas = max_value,
     capped = TRUE
   )
   glue(
@@ -697,30 +698,12 @@ fk_table_to_def_fks <- function(
 # Errors ------------------------------------------------------------------
 
 abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
-  abort(
-    error_txt_fk_exists(
-      child_table_name,
-      colnames,
-      parent_table_name
-    ),
+  cli::cli_abort(
+    "({commas(tick(colnames))}) is already a foreign key of table {.field {child_table_name}} into table {.field {parent_table_name}}.",
     class = dm_error_full("fk_exists")
   )
 }
 
-error_txt_fk_exists <- function(child_table_name, colnames, parent_table_name) {
-  glue(
-    "({commas(tick(colnames))}) is already a foreign key of table ",
-    "{tick(child_table_name)} into table {tick(parent_table_name)}."
-  )
-}
-
 abort_is_not_fkc <- function() {
-  abort(
-    error_txt_is_not_fkc(),
-    class = dm_error_full("is_not_fkc")
-  )
-}
-
-error_txt_is_not_fkc <- function() {
-  "No foreign keys to remove."
+  cli::cli_abort("No foreign keys to remove.", class = dm_error_full("is_not_fkc"))
 }

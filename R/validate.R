@@ -43,7 +43,7 @@ dm_validate <- function(x) {
     )
   }
   if (!all_same_source(def$data)) {
-    abort_dm_invalid(error_txt_not_same_src())
+    abort_dm_invalid("Not all tables in the object share the same `src`.")
   }
 
   check_df_structure(c_list_of(def$pks), c_list_of(boilerplate$pks), "`pks` column")
@@ -113,7 +113,7 @@ dm_validate <- function(x) {
 #' @rdname deprecated
 #' @keywords internal
 validate_dm <- function(x) {
-  deprecate_soft("0.3.0", "dm::validate_dm()", "dm::dm_validate()")
+  deprecate_warn("0.3.0", "dm::validate_dm()", "dm::dm_validate()")
   dm_validate(x)
 }
 
@@ -203,9 +203,8 @@ check_no_nulls_col <- function(x, where) {
 # dm invalid --------------------------------------------------------------
 
 abort_dm_invalid <- function(why) {
-  abort(error_txt_dm_invalid(why), class = dm_error_full("dm_invalid"))
-}
-
-error_txt_dm_invalid <- function(why) {
-  glue("This `dm` is invalid, reason: {why}")
+  cli::cli_abort(
+    "This {.cls dm} is invalid, reason: {why}",
+    class = dm_error_full("dm_invalid")
+  )
 }

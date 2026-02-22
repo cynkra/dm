@@ -4,7 +4,7 @@
       dm_get_def(structure(list(table = "a"), class = "bogus"))
     Condition
       Error in `abort_is_not_dm()`:
-      ! Required class `dm` but instead is `bogus`.
+      ! Required class <dm> but instead is <bogus>.
 
 # can upgrade from v1
 
