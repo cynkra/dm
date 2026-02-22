@@ -105,9 +105,9 @@ abort_no_cycles <- function(g) {
 
 # error in dm_flatten_to_tbl() ----------------------------------------------
 
-abort_tables_not_reachable_from_start <- function() {
+abort_tables_not_reachable_from_start <- function(table_arg = ".start") {
   cli::cli_abort(
-    "All selected tables must be reachable from {.arg .start}.",
+    "All selected tables must be reachable from {.arg {table_arg}}.",
     class = dm_error_full("tables_not_reachable_from_start")
   )
 }
@@ -156,9 +156,9 @@ abort_tables_not_neighbors <- function(t1_name, t2_name) {
 
 # `dm_flatten_to_tbl()` and `dm_join_to_tbl()` only supported for parents
 
-abort_only_parents <- function() {
+abort_only_parents <- function(func, table_arg, recursive_arg) {
   cli::cli_abort(
-    "When using {.fn dm_join_to_tbl} or {.fn dm_flatten_to_tbl} all join partners of table {.arg .start} have to be its direct neighbors. For 'flattening' with {.fn left_join}, {.fn inner_join} or {.fn full_join} use {.code dm_flatten_to_tbl(.recursive = TRUE)} as an alternative.",
+    "When using {.fn {func}}, all join partners of table {.arg {table_arg}} must be its direct neighbors. Use {.code {recursive_arg} = TRUE} for recursive flattening.",
     class = dm_error_full("only_parents")
   )
 }
@@ -188,9 +188,9 @@ abort_what_a_weird_object <- function(class) {
   )
 }
 
-abort_squash_limited <- function() {
+abort_squash_limited <- function(func = "dm_flatten_to_tbl", recursive_arg = ".recursive") {
   cli::cli_abort(
-    "{.code dm_flatten_to_tbl(.recursive = TRUE)} only supports joins using {.fn left_join}, {.fn inner_join}, or {.fn full_join}.",
+    "{.code {func}({recursive_arg} = TRUE)} only supports joins using {.fn left_join}, {.fn inner_join}, or {.fn full_join}.",
     class = dm_error_full("squash_limited")
   )
 }
@@ -206,9 +206,9 @@ dm_error_txt_apply_filters_first <- function(join_name) {
   dm_error(c(paste0("apply_filters_first_", join_name), "apply_filters_first"))
 }
 
-abort_no_flatten_with_nest_join <- function() {
+abort_no_flatten_with_nest_join <- function(func = "dm_..._to_tbl") {
   cli::cli_abort(
-    "{.fn dm_..._to_tbl} can't be called with {.code join = nest_join}, see the help pages for these functions. Consider {.code join = left_join}.",
+    "{.fn {func}} can't be called with {.code join = nest_join}, see the help pages for these functions. Consider {.code join = left_join}.",
     class = dm_error_full("no_flatten_with_nest_join")
   )
 }

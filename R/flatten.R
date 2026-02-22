@@ -248,10 +248,10 @@ check_flatten_to_tbl <- function(
   # the result for `right_join()` depends on the order of the dim-tables in the `dm`
   # if 2 or more of them are joined to the fact table and ellipsis is empty.
 
-  # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()`, the argument `squash = FALSE`.
+  # If called by `dm_join_to_tbl()` or `dm_flatten_to_tbl()` with `.recursive = FALSE`.
   # Then only one level of hierarchy is allowed (direct neighbors to table `.start`).
   if (!squash && has_grandparent) {
-    abort_only_parents()
+    abort_only_parents("dm_join_to_tbl", ".start", ".recursive")
   }
 
   if (join_name == "right_join" && auto_detect && more_than_1_pt) {
