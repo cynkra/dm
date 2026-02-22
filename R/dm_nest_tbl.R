@@ -125,7 +125,7 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   fk <- filter(fks, parent_table == !!table_name)
   children_names <- pull(fk, child_table)
 
-  check_table_can_be_packed(table_name, children_names, fks)
+  check_table_can_be_packed(table_name, children_names, fks, call = current_env())
   child_name <- children_names # we checked we had only one
 
   pks <- dm_get_all_pks(dm)
@@ -161,7 +161,7 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   dm_from_def(def)
 }
 
-check_table_can_be_packed <- function(table_name, children_names, fks) {
+check_table_can_be_packed <- function(table_name, children_names, fks, call = caller_env()) {
   # make sure we have a terminal parent
   parents <-
     fks %>%
@@ -178,7 +178,7 @@ check_table_can_be_packed <- function(table_name, children_names, fks) {
       if (length(children_names) > 0) {
         paste0("children: ", toString(paste0("`", children_names, "`")))
       }
-    ))
+    ), call = call)
   }
   invisible(NULL)
 }

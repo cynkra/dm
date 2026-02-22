@@ -80,7 +80,7 @@
     Code
       dm_pack_tbl(dm_for_filter(), tf_2)
     Condition
-      Error in `check_table_can_be_packed()`:
+      Error in `dm_pack_tbl()`:
       ! "tf_2" can't be packed because it is not a terminal parent table.
       parents : `tf_1`, `tf_3`
 
@@ -89,7 +89,7 @@
     Code
       dm_pack_tbl(dm_for_filter(), tf_3)
     Condition
-      Error in `check_table_can_be_packed()`:
+      Error in `dm_pack_tbl()`:
       ! "tf_3" can't be packed because it is not a terminal parent table.
       children: `tf_2`, `tf_4`
 
@@ -98,7 +98,7 @@
     Code
       dm_pack_tbl(dm_for_filter(), tf_4)
     Condition
-      Error in `check_table_can_be_packed()`:
+      Error in `dm_pack_tbl()`:
       ! "tf_4" can't be packed because it is not a terminal parent table.
       parents : `tf_3`
       children: `tf_5`

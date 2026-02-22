@@ -199,7 +199,7 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
     in_place <- FALSE
   }
 
-  dm_rows_run(x, y, operation_name, top_down, in_place, require_keys, progress = progress)
+  dm_rows_run(x, y, operation_name, top_down, in_place, require_keys, progress = progress, call = caller_env())
 }
 
 dm_rows_check <- function(x, y) {
@@ -358,7 +358,7 @@ do_rows_delete <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   rows_delete(x, y, by = by, ..., unmatched = "ignore")
 }
 
-dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA) {
+dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA, call = caller_env()) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- graph_topo_sort(graph, mode = if (top_down) "in" else "out")
@@ -372,7 +372,8 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
     all_pks <- dm_get_all_pks(x)
     if (!(all(tables %in% all_pks$table))) {
       cli::cli_abort(
-        "{.fun dm_rows_{rows_op_name}} requires the {.cls dm} object to have primary keys for all target tables."
+        "{.fun dm_rows_{rows_op_name}} requires the {.cls dm} object to have primary keys for all target tables.",
+        call = call
       )
     }
     keys <- all_pks$pk_col[match(tables, all_pks$table)]

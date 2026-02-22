@@ -30,7 +30,7 @@
     Code
       check_subset(data_mcard_1(), data_mcard_2(), x_select = c(x = a))
     Condition
-      Error in `check_api_impl()`:
+      Error in `check_subset()`:
       ! `by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.
 
 ---
