@@ -449,30 +449,19 @@ check_pk <- function(table, columns, max_value = MAX_COMMAS) {
 # Error -------------------------------------------------------------------
 
 abort_pk_not_defined <- function() {
-  abort(error_txt_pk_not_defined(), class = dm_error_full("pk_not_defined"))
-}
-
-error_txt_pk_not_defined <- function() {
-  glue("No primary keys to remove.")
+  cli::cli_abort("No primary keys to remove.", class = dm_error_full("pk_not_defined"))
 }
 
 abort_key_set_force_false <- function(table) {
-  abort(error_txt_key_set_force_false(table), class = dm_error_full("key_set_force_false"))
-}
-
-error_txt_key_set_force_false <- function(table) {
-  glue(
-    "Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key."
+  cli::cli_abort(
+    "Table {.field {table}} already has a primary key. Use {.code force = TRUE} to change the existing primary key.",
+    class = dm_error_full("key_set_force_false")
   )
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
-  abort(error_txt_first_rm_fks(table, fk_tables), class = dm_error_full("first_rm_fks"))
-}
-
-error_txt_first_rm_fks <- function(table, fk_tables) {
-  glue(
-    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
-    "First remove those, or set `fail_fk = FALSE`."
+  cli::cli_abort(
+    "{cli::qty(length(fk_tables))}There {?is/are} {?a foreign key/foreign keys} pointing from table{?s} {.field {fk_tables}} to table {.field {table}}. First remove those, or set {.code fail_fk = FALSE}.",
+    class = dm_error_full("first_rm_fks")
   )
 }
