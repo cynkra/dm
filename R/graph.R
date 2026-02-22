@@ -8,7 +8,7 @@
 #' @rdname deprecated
 #' @export
 dm_is_referenced <- function(dm, table) {
-  deprecate_soft("0.3.0", "dm::dm_is_referenced()", "dm::dm_get_all_fks()")
+  deprecate_warn("0.3.0", "dm::dm_is_referenced()", "dm::dm_get_all_fks()")
 
   check_not_zoomed(dm)
   has_length(dm_get_referencing_tables(dm, !!ensym(table)))
@@ -24,7 +24,7 @@ dm_is_referenced <- function(dm, table) {
 #'
 #' @export
 dm_get_referencing_tables <- function(dm, table) {
-  deprecate_soft("0.3.0", "dm::dm_get_referencing_tables()", "dm::dm_get_all_fks()")
+  deprecate_warn("0.3.0", "dm::dm_get_referencing_tables()", "dm::dm_get_all_fks()")
 
   check_not_zoomed(dm)
   table <- dm_tbl_name(dm, {{ table }})

@@ -70,7 +70,7 @@ check_paste_options <- function(options, select, env) {
   }
 
   if (!is.null(select)) {
-    deprecate_soft(
+    deprecate_warn(
       "0.1.2",
       "dm::dm_paste(select = )",
       "dm::dm_paste(options = 'select')",
@@ -346,12 +346,9 @@ dquote <- function(x) {
 # Errors ------------------------------------------------------------------
 
 abort_unknown_option <- function(options, all_options) {
-  abort(error_txt_unknown_option(options, all_options), class = dm_error_full("unknown_option"))
-}
-
-error_txt_unknown_option <- function(options, all_options) {
   bad_options <- setdiff(options, all_options)
-  glue(
-    "Option unknown: {commas(dquote(bad_options))}. Must be one of {commas(dquote(all_options))}."
+  cli::cli_abort(
+    "{qty(length(bad_options))}Option{?s} unknown: {.val {bad_options}}. Must be one of {.val {all_options}}.",
+    class = dm_error_full("unknown_option")
   )
 }

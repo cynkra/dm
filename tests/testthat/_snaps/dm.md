@@ -109,7 +109,7 @@
       writeLines(conditionMessage(expect_error(dm(dm_for_flatten(),
       dm_for_filter_duckdb()))))
     Output
-      All `dm` objects need to share the same `src`.
+      All <dm> objects need to share the same `src`.
 
 # output for dm() with dm
 
