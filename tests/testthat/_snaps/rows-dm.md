@@ -425,3 +425,11 @@
       5     1 tree       f    
       
 
+# dm_rows_update() requires primary keys
+
+    Code
+      dm_rows_update(x, y, in_place = FALSE)
+    Condition
+      Error in `dm_rows_update()`:
+      ! `dm_rows_update()` requires the <dm> object to have primary keys for all target tables.
+

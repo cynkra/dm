@@ -199,7 +199,16 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
     in_place <- FALSE
   }
 
-  dm_rows_run(x, y, operation_name, top_down, in_place, require_keys, progress = progress)
+  dm_rows_run(
+    x,
+    y,
+    operation_name,
+    top_down,
+    in_place,
+    require_keys,
+    progress = progress,
+    call = caller_env()
+  )
 }
 
 dm_rows_check <- function(x, y) {
@@ -276,7 +285,7 @@ do_rows_append <- function(x, y, by = NULL, ..., in_place = FALSE, autoinc_col =
     pull()
 
   if (anyDuplicated(key_values)) {
-    abort(paste0("Duplicate values for autoincrement primary key ", autoinc_col, "."))
+    cli::cli_abort("Duplicate values for autoincrement primary key {.field {autoinc_col}}.")
   }
 
   autoinc_col_new <- paste0(autoinc_col, "_new")
@@ -358,7 +367,16 @@ do_rows_delete <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   rows_delete(x, y, by = by, ..., unmatched = "ignore")
 }
 
-dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA) {
+dm_rows_run <- function(
+  x,
+  y,
+  rows_op_name,
+  top_down,
+  in_place,
+  require_keys,
+  progress = NA,
+  call = caller_env()
+) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- graph_topo_sort(graph, mode = if (top_down) "in" else "out")
@@ -371,9 +389,10 @@ dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, pr
   if (require_keys) {
     all_pks <- dm_get_all_pks(x)
     if (!(all(tables %in% all_pks$table))) {
-      abort(glue(
-        "`dm_rows_{rows_op_name}()` requires the 'dm' object to have primary keys for all target tables."
-      ))
+      cli::cli_abort(
+        "{.fun dm_rows_{rows_op_name}} requires the {.cls dm} object to have primary keys for all target tables.",
+        call = call
+      )
     }
     keys <- all_pks$pk_col[match(tables, all_pks$table)]
   } else {
@@ -543,7 +562,7 @@ rows_append_ai_local <- function(x, y, autoinc_col) {
 
 abort_columns_missing <- function(...) {
   # FIXME
-  abort("abort_columns_missing()")
+  cli::cli_abort("abort_columns_missing()")
 }
 
 error_txt_columns_missing <- function(...) {
@@ -552,7 +571,7 @@ error_txt_columns_missing <- function(...) {
 
 abort_tables_missing <- function(...) {
   # FIXME
-  abort("abort_tables_missing()")
+  cli::cli_abort("abort_tables_missing()")
 }
 
 error_txt_tables_missing <- function(...) {

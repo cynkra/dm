@@ -89,6 +89,6 @@ mw_cg_make <- function(dm, op_name, ...) {
     "dm_set_colors" = mw_cg_make_dm_set_colors(dm, ...),
     "dm_disentangle" = mw_cg_make_dm_disentangle(dm, ...),
     "dm_select" = mw_cg_make_dm_select(dm, ...),
-    abort(paste0("Unknown op in `mw_cg_make()`: ", op))
+    cli::cli_abort("Unknown op in {.fn mw_cg_make}: {.val {op}}.")
   )
 }

@@ -42,7 +42,9 @@ pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALS
   check_dots_empty()
   name_var <- name %||% as_label(enexpr(y))
   if (!copy && inherits(y, "tbl_lazy")) {
-    abort("`x` and `y` must share the same src, set `copy` = TRUE (may be slow)")
+    cli::cli_abort(
+      "{.arg x} and {.arg y} must share the same src, set {.code copy = TRUE} (may be slow)."
+    )
   }
   y_local <- collect(y)
   x_nms <- colnames(x)

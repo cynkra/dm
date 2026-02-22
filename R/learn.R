@@ -200,7 +200,7 @@ dm_learn_from_db <- function(dest, dbname = NA, schema = NULL, names_pattern = "
           ) %>%
             unique()
           if (!is_empty(x) & !is_scalar_character(x)) {
-            abort("delete_rule for all fk_cols in one constraint_name should be the same")
+            cli::cli_abort("delete_rule for all fk_cols in one constraint_name should be the same.")
           }
           x
         }
@@ -234,7 +234,7 @@ schema_if <- function(schema, table, con, dbname = NULL) {
     # 'schema_if()' only used internally (can e.g. be set to default schema beforehand)
     # so IMHO we don't need a formal 'dm_error' here
     if (anyNA(schema)) {
-      abort("`schema` must be given if `dbname` is not NULL`.")
+      cli::cli_abort("{.arg schema} must be given if {.arg dbname} is not {.code NULL}.")
     }
     purrr::map2(
       table,

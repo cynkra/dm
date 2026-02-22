@@ -10,6 +10,13 @@ test_that("`json_nest()` and `json_unnest()` work", {
   expect_equal(df, df_roundtrip)
 })
 
+test_that("`json_nest()` fails with unnamed elements", {
+  df <- tibble::tibble(x = 1, y = 2, z = 3)
+  expect_snapshot(error = TRUE, {
+    json_nest(df, c(y, z))
+  })
+})
+
 test_that("`json_nest()` works remotely", {
   skip_if_src_not("postgres", "mssql")
   con <- my_test_src()$con
@@ -44,4 +51,11 @@ test_that("`json_nest()` works remotely", {
     local %>% json_nest(A = starts_with("a")) %>% unjson_nested(),
     remote %>% json_nest(A = starts_with("a")) %>% collect() %>% unjson_nested()
   )
+})
+
+test_that("`json_unnest()` fails without cols argument", {
+  df <- tibble::tibble(x = '{"a":1}')
+  expect_snapshot(error = TRUE, {
+    json_unnest(df)
+  })
 })

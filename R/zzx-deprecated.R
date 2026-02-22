@@ -912,7 +912,9 @@ target_table_name <- function(x, in_place) {
 
   # Abort if requested but can't write
   if (is_null(name) && is_true(in_place)) {
-    abort("Can't determine name for target table. Set `in_place = FALSE` to return a lazy table.")
+    cli::cli_abort(
+      "Can't determine name for target table. Set {.code in_place = FALSE} to return a lazy table."
+    )
   }
 
   # Verbose by default
