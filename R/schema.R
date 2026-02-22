@@ -34,7 +34,7 @@ db_schema_list <- function(con, include_default = TRUE, ...) {
 
   # If we check in the method, we need to specify the user_env argument
   if (inherits(con, "src_dbi")) {
-    deprecate_soft(
+    deprecate_warn(
       "0.2.5",
       'dm::db_schema_list(con = "must be a DBI connection, not a dbplyr source,")',
     )
@@ -131,7 +131,7 @@ db_schema_exists <- function(con, schema, ...) {
 
   # If we check in the method, we need to specify the user_env argument
   if (inherits(con, "src_dbi")) {
-    deprecate_soft(
+    deprecate_warn(
       "0.2.5",
       'dm::db_schema_exists(con = "must be a DBI connection, not a dbplyr source,")',
     )
@@ -197,7 +197,7 @@ db_schema_create <- function(con, schema, ...) {
 
   # If we check in the method, we need to specify the user_env argument
   if (inherits(con, "src_dbi")) {
-    deprecate_soft(
+    deprecate_warn(
       "0.2.5",
       'dm::db_schema_create(con = "must be a DBI connection, not a dbplyr source,")',
     )
@@ -347,7 +347,7 @@ db_schema_drop <- function(con, schema, force = FALSE, ...) {
 
   # If we check in the method, we need to specify the user_env argument
   if (inherits(con, "src_dbi")) {
-    deprecate_soft(
+    deprecate_warn(
       "0.2.5",
       'dm::db_schema_drop(con = "must be a DBI connection, not a dbplyr source,")',
     )

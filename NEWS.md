@@ -1,5 +1,56 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9016
+
+## Bug fixes
+
+- `dm_from_con(learn_keys = TRUE, .names = )` applies the specified table naming pattern (@owenjonesuob, #2213, #2214).
+
+- `dm_from_con()` no longer learns tables from all schemas by default for Postgres, MSSQL, and MariaDB; instead, `"public"`, `"dbo"` and the current database, respectively, are used (@mgirlich, #1440, #1448).
+
+- Ensure compatibility with upcoming update of the pixarfilms package (@erictleung, erictleung/pixarfilms#39, #2256).
+
+- Fix `dm_paste()` pipe length issue by implementing operation chunking (#2301).
+
+## Features
+
+- Add `.max_value` parameter to `dm_examine_constraints()` (#2200, #2387).
+
+- Introduce `dm_draw(backend_opts = list())`, soft-deprecate backend-specific arguments (#2381).
+
+- Learn keys from SQLite databases (@gadenbuie, #352).
+
+- Use `cli::cli_inform()` with native formatting (#2374).
+
+- Follow all updates from dplyr 1.2.0 (#2361, #2362).
+
+- Vendor pixarfilms data and add `version` argument to `dm_pixarfilms()` (#2368, #2369).
+
+## Chore
+
+- Comment.
+
+- Adapt to dplyr 1.2.0.
+
+- Restore recent soft-deprecation.
+
+- Bump deprecation level (#2395).
+
+- Wrap all igraph functions (#2390).
+
+- Tweak `dm_draw()`: rename `column_arrow` backend opt and validate `backend_opts` (#2383, #2384).
+
+- Wrap all igraph functions (#2382).
+
+- Wrap all igraph functions (#2382).
+
+- Require R \>= 4.0.
+
+## Continuous integration
+
+- Remove Docker image build, centralized now.
+
+
 # dm 1.0.12.9015
 
 ## Bug fixes

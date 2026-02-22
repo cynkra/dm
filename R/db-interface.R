@@ -332,23 +332,18 @@ db_append_table <- function(
 # Errors ------------------------------------------------------------------
 
 abort_copy_dm_to_table_names <- function() {
-  abort(error_txt_copy_dm_to_table_names(), class = dm_error_full("copy_dm_to_table_names"))
-}
-
-error_txt_copy_dm_to_table_names <- function() {
-  "`table_names` must have names that are the same as the table names in `dm`."
-}
-
-abort_copy_dm_to_table_names_duplicated <- function(problem) {
-  abort(
-    error_txt_copy_dm_to_table_names_duplicated(problem),
-    class = dm_error_full("copy_dm_to_table_names_duplicated")
+  cli::cli_abort(
+    "{.arg table_names} must have names that are the same as the table names in {.arg dm}.",
+    class = dm_error_full("copy_dm_to_table_names")
   )
 }
 
-error_txt_copy_dm_to_table_names_duplicated <- function(problem) {
-  c(
-    "`table_names` must be unique.",
-    i = paste0("Duplicate: ", tick(problem))
+abort_copy_dm_to_table_names_duplicated <- function(problem) {
+  cli::cli_abort(
+    c(
+      "{.arg table_names} must be unique.",
+      i = "Duplicate: {.code {problem}}"
+    ),
+    class = dm_error_full("copy_dm_to_table_names_duplicated")
   )
 }

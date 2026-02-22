@@ -58,6 +58,15 @@ test_that("output as tibble", {
   })
 })
 
+test_that(".max_value parameter works", {
+  skip_if_ide()
+
+  expect_snapshot({
+    dm_nycflights_small_cycle() %>%
+      dm_examine_constraints(.max_value = Inf)
+  })
+})
+
 
 # test compound keys ------------------------------------------------------
 

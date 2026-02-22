@@ -361,7 +361,7 @@ do_rows_delete <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
 dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
-  topo <- igraph::topo_sort(graph, mode = if (top_down) "in" else "out")
+  topo <- graph_topo_sort(graph, mode = if (top_down) "in" else "out")
   tables <- intersect(names(topo), src_tbls_impl(y))
 
   # Use tables and keys
