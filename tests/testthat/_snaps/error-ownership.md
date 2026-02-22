@@ -298,7 +298,7 @@
       dm_flatten_to_tbl(d, a, b, c)
     Condition
       Error in `abort_only_parents()`:
-      ! When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `.start` have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_flatten_to_tbl(.recursive = TRUE)` as an alternative.
+      ! When using `dm_join_to_tbl()`, all join partners of table `.start` must be its direct neighbors. Use `.recursive = TRUE` for recursive flattening.
 
 # dm_flatten_to_tbl() with cycle - abort_no_cycles
 
