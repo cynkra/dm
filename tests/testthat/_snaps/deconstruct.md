@@ -55,9 +55,6 @@
       $uuid
       [1] "0a0c060f-0d01-0b03-0402-05090800070e"
       
-      $zoom2
-      NULL
-      
 
 # dm_get_keyed_tables_impl()
 
@@ -87,9 +84,6 @@
       $airlines$uuid
       [1] "0109020c-0b0a-030e-0d04-05060f070008"
       
-      $airlines$zoom2
-      NULL
-      
       
       $airports
       $airports$pk
@@ -113,9 +107,6 @@
       
       $airports$uuid
       [1] "04080601-0b0a-0c02-0503-0e070f0d0009"
-      
-      $airports$zoom2
-      NULL
       
       
       $flights
@@ -143,9 +134,6 @@
       $flights$uuid
       [1] "0800020b-0c07-030f-0a0e-0105060d0904"
       
-      $flights$zoom2
-      NULL
-      
       
       $planes
       $planes$pk
@@ -169,9 +157,6 @@
       $planes$uuid
       [1] "0c0e080a-0307-0904-0b06-0205010f000d"
       
-      $planes$zoom2
-      NULL
-      
       
       $weather
       $weather$pk
@@ -194,9 +179,6 @@
       
       $weather$uuid
       [1] "0a090204-0108-0b00-0c0d-0705060e0f03"
-      
-      $weather$zoom2
-      NULL
       
       
 

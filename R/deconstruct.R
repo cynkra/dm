@@ -69,14 +69,19 @@ new_keyed_tbl <- function(
   }
 
   class(x) <- unique(c("dm_keyed_tbl", class(x)))
-  attr(x, "dm_key_info") <- list(
+  dm_key_info <- list(
     pk = pk,
     uks = uks,
     fks_in = fks_in,
     fks_out = fks_out,
-    uuid = uuid,
-    zoom2 = zoom2
+    uuid = uuid
   )
+
+  if (!is.null(zoom2)) {
+    dm_key_info$zoom2 <- zoom2
+  }
+
+  attr(x, "dm_key_info") <- dm_key_info
 
   x
 }
