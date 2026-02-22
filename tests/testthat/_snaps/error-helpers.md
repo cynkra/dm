@@ -116,8 +116,10 @@
     Code
       abort_only_parents()
     Condition
-      Error in `abort_only_parents()`:
-      ! When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `.start` have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_flatten_to_tbl(.recursive = TRUE)` as an alternative.
+      Error:
+      ! ! Could not evaluate cli `{}` expression: `func`.
+      Caused by error in `eval(expr, envir = envir)`:
+      ! argument "func" is missing, with no default
     Code
       abort_not_same_src()
     Condition
