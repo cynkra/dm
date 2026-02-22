@@ -53,6 +53,7 @@
 #' # only the three New York airports.
 #' @export
 dm_filter <- function(.dm, ...) {
+  dm_local_error_call()
   dm_filter_api0({{ .dm }}, ..., target = dm_filter_impl0, apply_target = dm_apply_filters_impl)
 }
 

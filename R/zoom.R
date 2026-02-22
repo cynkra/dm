@@ -74,6 +74,7 @@
 #' flights_zoomed_transformed %>%
 #'   dm_discard_zoomed()
 dm_zoom_to <- function(dm, table) {
+  dm_local_error_call()
   check_not_zoomed(dm)
   # for now only one table can be zoomed on
   zoom <- dm_tbl_name(dm, {{ table }})
@@ -101,6 +102,7 @@ is_zoomed <- function(dm) {
 #'
 #' @export
 dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet = FALSE) {
+  dm_local_error_call()
   check_zoomed(dm)
   if (is_null(enexpr(new_tbl_name))) {
     new_tbl_name_chr <- orig_name_zoomed(dm)
@@ -175,6 +177,7 @@ dm_insert_zoomed <- function(dm, new_tbl_name = NULL, repair = "unique", quiet =
 #' @rdname dm_zoom_to
 #' @export
 dm_update_zoomed <- function(dm) {
+  dm_local_error_call()
   check_zoomed(dm)
 
   def <- dm_get_def(dm)
@@ -213,6 +216,7 @@ dm_update_zoomed <- function(dm) {
 #' @export
 #' @autoglobal
 dm_discard_zoomed <- function(dm) {
+  dm_local_error_call()
   if (!is_zoomed(dm)) {
     return(dm)
   }

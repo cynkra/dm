@@ -44,6 +44,7 @@ dm_examine_constraints <- function(
   progress = deprecated()
 ) {
   check_dots_empty()
+  dm_local_error_call()
 
   if (!is_missing(dm)) {
     deprecate_warn("1.0.0", "dm_examine_constraints(dm = )", "dm_examine_constraints(.dm = )")

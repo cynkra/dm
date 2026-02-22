@@ -114,6 +114,7 @@ copy_dm_to <- function(
   }
 
   check_dots_empty()
+  dm_local_error_call()
 
   check_not_zoomed(dm)
 
@@ -334,7 +335,8 @@ db_append_table <- function(
 abort_copy_dm_to_table_names <- function() {
   cli::cli_abort(
     "{.arg table_names} must have names that are the same as the table names in {.arg dm}.",
-    class = dm_error_full("copy_dm_to_table_names")
+    class = dm_error_full("copy_dm_to_table_names"),
+    call = dm_error_call()
   )
 }
 
@@ -344,6 +346,7 @@ abort_copy_dm_to_table_names_duplicated <- function(problem) {
       "{.arg table_names} must be unique.",
       i = "Duplicate: {.code {problem}}"
     ),
-    class = dm_error_full("copy_dm_to_table_names_duplicated")
+    class = dm_error_full("copy_dm_to_table_names_duplicated"),
+    call = dm_error_call()
   )
 }

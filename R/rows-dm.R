@@ -116,6 +116,7 @@ NULL
 #' @aliases dm_rows_...
 #' @export
 dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
+  dm_local_error_call()
   check_dots_empty()
 
   dm_rows(x, y, "insert", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)

@@ -41,6 +41,7 @@ dm_examine_cardinalities <- function(
   progress = deprecated()
 ) {
   check_dots_empty()
+  dm_local_error_call()
 
   if (!is_missing(dm)) {
     deprecate_warn("1.0.0", "dm_examine_cardinalities(dm = )", "dm_examine_cardinalities(.dm = )")

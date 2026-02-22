@@ -15,6 +15,7 @@
 #'   dm_select_tbl(airports, fl = flights)
 #' @export
 dm_select_tbl <- function(dm, ...) {
+  dm_local_error_call()
   check_not_zoomed(dm)
   check_no_filter(dm)
 
@@ -34,6 +35,7 @@ dm_select_tbl <- function(dm, ...) {
 #'   dm_rename_tbl(ap = airports, fl = flights)
 #' @export
 dm_rename_tbl <- function(dm, ...) {
+  dm_local_error_call()
   check_not_zoomed(dm)
 
   selected <- eval_rename_table_all(quo(c(...)), src_tbls_impl(dm))

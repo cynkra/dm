@@ -61,6 +61,7 @@
 #'
 #' @export
 dm_flatten_to_tbl <- function(dm, .start, ..., .recursive = FALSE, .join = left_join) {
+  dm_local_error_call()
   check_not_zoomed(dm)
   join_name <- as_label(enexpr(.join))
   if (.recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) {
@@ -172,6 +173,7 @@ dm_flatten_to_tbl_impl <- function(
 #' @rdname deprecated
 #' @export
 dm_join_to_tbl <- function(dm, table_1, table_2, join = left_join) {
+  dm_local_error_call()
   deprecate_warn("0.3.0", "dm::dm_join_to_tbl()", "dm::dm_flatten_to_tbl()")
 
   check_not_zoomed(dm)
