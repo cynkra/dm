@@ -18,7 +18,11 @@
 #'   (only primary and foreign keys, all columns, or no columns).
 #' @inheritParams rlang::args_dots_empty
 #' @param column_types Set to `TRUE` to show column types.
-#' @param backend Currently, only the default `"DiagrammeR"` is accepted.
+#' @param backend The rendering backend to use. Options are:
+#'   - `"DiagrammeR"` (default): Uses DiagrammeR/Graphviz for rendering.
+#'     Returns a `grViz` object.
+#'   - `"g6R"`: Uses g6R for interactive rendering with pan/zoom support.
+#'     Returns a `g6` htmlwidget.
 #'   Pass this value explicitly if your code relies on the type of the return value.
 #' @param backend_opts A named list of backend-specific options.
 #'   For the `"DiagrammeR"` backend, supported options are:
@@ -55,8 +59,9 @@
 #'
 #' @return An object with a [print()] method, which,
 #' when printed, produces the output seen in the viewer as a side effect.
-#' Currently, this is an object of class `grViz` (see also
-#' [DiagrammeR::grViz()]), but this is subject to change.
+#' For the `"DiagrammeR"` backend this is an object of class `grViz`
+#' (see also [DiagrammeR::grViz()]).
+#' For the `"g6R"` backend this is an object of class `g6`.
 #'
 #' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13() %>%
@@ -77,7 +82,7 @@ dm_draw <- function(
   col_attr = NULL,
   view_type = c("keys_only", "all", "title_only"),
   column_types = NULL,
-  backend = c("DiagrammeR"),
+  backend = c("DiagrammeR", "g6R"),
   backend_opts = list(),
   columnArrows = lifecycle::deprecated(),
   graph_attrs = lifecycle::deprecated(),
@@ -194,6 +199,15 @@ dm_draw <- function(
   column_types <- isTRUE(column_types)
 
   data_model <- dm_get_data_model(dm, column_types)
+
+  if (backend == "g6R") {
+    return(bdm_render_g6r(
+      data_model,
+      rankdir = rankdir,
+      view_type = view_type,
+      top_level_fun = "dm_draw"
+    ))
+  }
 
   # DiagrammeR backend (default)
   graph <- bdm_create_graph(
