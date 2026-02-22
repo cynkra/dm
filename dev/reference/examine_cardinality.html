@@ -29,7 +29,7 @@ to a set of key columns without affecting the return value."><meta property="og:
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9015</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9016</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -237,10 +237,12 @@ the result will contain the information which prerequisite was violated.</p>
 <span class="r-in"><span><span class="co"># This does not pass, injectivity is violated:</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_1_1</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d3</span>, y_select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_bijective(y_label, colnames(y)) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1..1 cardinality (bijectivity) is not given: Column (`a`) in table `d3` contains duplicate values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1..1 cardinality (bijectivity) is not given: Column (`a`) in table <span style="color: #00BB00;">d3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> contains duplicate values.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_0_1</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d3</span>, x_select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>c <span class="op">=</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_injective(y_label, colnames(y)) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0..1 cardinality (injectivity from child table to parent table) is not given: Column (`c`) in table `d3` contains duplicate values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0..1 cardinality (injectivity from child table to parent table) is not</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> given: Column (`c`) in table <span style="color: #00BB00;">d3</span> contains duplicate values.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># What kind of cardinality is it?</span></span></span>
 <span class="r-in"><span><span class="fu">examine_cardinality</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d3</span>, x_select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>c <span class="op">=</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span></span></span>

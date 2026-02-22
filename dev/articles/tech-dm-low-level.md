@@ -80,7 +80,8 @@ check_subset(data_2, a, data_1, a)
 ```
 
     #> Error in `abort_not_subset_of()` at dm/R/key-helpers.R:240:3:
-    #> ! Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.
+    #> ! Column (`a`) of table data_2 contains values (see examples above)
+    #>   that are not present in column (`a`) of table data_1.
 
 It should be kept in mind that
 [`check_subset()`](https://dm.cynkra.com/dev/reference/check_subset.md)
@@ -121,7 +122,8 @@ check_set_equality(data_1, a, data_2, a)
 ```
 
     #> Error in `abort_sets_not_equal()` at dm/R/key-helpers.R:191:5:
-    #> ! Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.
+    #> ! Column (`a`) of table data_2 contains values (see examples above)
+    #>   that are not present in column (`a`) of table data_1.
 
 Introducing one more table enables us to show how it looks when the test
 is passed:
@@ -239,7 +241,8 @@ check_cardinality_1_1(d1, a, d2, c)
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 #> Error in `abort_not_bijective()` at dm/R/check-cardinalities.R:158:3:
-#> ! 1..1 cardinality (bijectivity) is not given: Column (`c`) in table `d2` contains duplicate values.
+#> ! 1..1 cardinality (bijectivity) is not given: Column (`c`) in
+#>   table d2 contains duplicate values.
 
 # This passes:
 check_cardinality_0_1(d1, a, d3, c)

@@ -141,5 +141,6 @@ try(
     dm_add_fk(flights, tailnum, planes, check = TRUE)
 )
 #> Error in abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name) : 
-#>   Column (`tailnum`) of table `flights` contains values (see examples above) that are not present in column (`tailnum`) of table `planes`.
+#>   Column (`tailnum`) of table flights contains values (see examples above)
+#> that are not present in column (`tailnum`) of table planes.
 ```

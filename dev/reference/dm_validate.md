@@ -34,5 +34,6 @@ dm_validate(dm())
 bad_dm <- structure(list(bad = "dm"), class = "dm")
 try(dm_validate(bad_dm))
 #> Error in abort_dm_invalid("A `dm` needs to be a list of one item named `def`.") : 
-#>   This `dm` is invalid, reason: A `dm` needs to be a list of one item named `def`.
+#>   This <dm> is invalid, reason: A `dm` needs to be a list of one item
+#> named `def`.
 ```

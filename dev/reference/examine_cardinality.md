@@ -169,10 +169,12 @@ check_cardinality_0_n(d1, d2)
 # This does not pass, injectivity is violated:
 try(check_cardinality_1_1(d1, d3, y_select = c(a = c)))
 #> Error in abort_not_bijective(y_label, colnames(y)) : 
-#>   1..1 cardinality (bijectivity) is not given: Column (`a`) in table `d3` contains duplicate values.
+#>   1..1 cardinality (bijectivity) is not given: Column (`a`) in table d3
+#> contains duplicate values.
 try(check_cardinality_0_1(d1, d3, x_select = c(c = a)))
 #> Error in abort_not_injective(y_label, colnames(y)) : 
-#>   0..1 cardinality (injectivity from child table to parent table) is not given: Column (`c`) in table `d3` contains duplicate values.
+#>   0..1 cardinality (injectivity from child table to parent table) is not
+#> given: Column (`c`) in table d3 contains duplicate values.
 
 # What kind of cardinality is it?
 examine_cardinality(d1, d3, x_select = c(c = a))

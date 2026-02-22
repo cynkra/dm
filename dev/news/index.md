@@ -1,5 +1,92 @@
 # Changelog
 
+## dm 1.0.12.9016
+
+### Bug fixes
+
+- `dm_from_con(learn_keys = TRUE, .names = )` applies the specified
+  table naming pattern
+  ([@owenjonesuob](https://github.com/owenjonesuob),
+  [\#2213](https://github.com/cynkra/dm/issues/2213),
+  [\#2214](https://github.com/cynkra/dm/issues/2214)).
+
+- [`dm_from_con()`](https://dm.cynkra.com/dev/reference/dm_from_con.md)
+  no longer learns tables from all schemas by default for Postgres,
+  MSSQL, and MariaDB; instead, `"public"`, `"dbo"` and the current
+  database, respectively, are used
+  ([@mgirlich](https://github.com/mgirlich),
+  [\#1440](https://github.com/cynkra/dm/issues/1440),
+  [\#1448](https://github.com/cynkra/dm/issues/1448)).
+
+- Ensure compatibility with upcoming update of the pixarfilms package
+  ([@erictleung](https://github.com/erictleung),
+  erictleung/pixarfilms#39,
+  [\#2256](https://github.com/cynkra/dm/issues/2256)).
+
+- Fix [`dm_paste()`](https://dm.cynkra.com/dev/reference/dm_paste.md)
+  pipe length issue by implementing operation chunking
+  ([\#2301](https://github.com/cynkra/dm/issues/2301)).
+
+### Features
+
+- Add `.max_value` parameter to
+  [`dm_examine_constraints()`](https://dm.cynkra.com/dev/reference/dm_examine_constraints.md)
+  ([\#2200](https://github.com/cynkra/dm/issues/2200),
+  [\#2387](https://github.com/cynkra/dm/issues/2387)).
+
+- Introduce `dm_draw(backend_opts = list())`, soft-deprecate
+  backend-specific arguments
+  ([\#2381](https://github.com/cynkra/dm/issues/2381)).
+
+- Learn keys from SQLite databases
+  ([@gadenbuie](https://github.com/gadenbuie),
+  [\#352](https://github.com/cynkra/dm/issues/352)).
+
+- Use
+  [`cli::cli_inform()`](https://cli.r-lib.org/reference/cli_abort.html)
+  with native formatting
+  ([\#2374](https://github.com/cynkra/dm/issues/2374)).
+
+- Follow all updates from dplyr 1.2.0
+  ([\#2361](https://github.com/cynkra/dm/issues/2361),
+  [\#2362](https://github.com/cynkra/dm/issues/2362)).
+
+- Vendor pixarfilms data and add `version` argument to
+  [`dm_pixarfilms()`](https://dm.cynkra.com/dev/reference/dm_pixarfilms.md)
+  ([\#2368](https://github.com/cynkra/dm/issues/2368),
+  [\#2369](https://github.com/cynkra/dm/issues/2369)).
+
+### Chore
+
+- Comment.
+
+- Adapt to dplyr 1.2.0.
+
+- Restore recent soft-deprecation.
+
+- Bump deprecation level
+  ([\#2395](https://github.com/cynkra/dm/issues/2395)).
+
+- Wrap all igraph functions
+  ([\#2390](https://github.com/cynkra/dm/issues/2390)).
+
+- Tweak [`dm_draw()`](https://dm.cynkra.com/dev/reference/dm_draw.md):
+  rename `column_arrow` backend opt and validate `backend_opts`
+  ([\#2383](https://github.com/cynkra/dm/issues/2383),
+  [\#2384](https://github.com/cynkra/dm/issues/2384)).
+
+- Wrap all igraph functions
+  ([\#2382](https://github.com/cynkra/dm/issues/2382)).
+
+- Wrap all igraph functions
+  ([\#2382](https://github.com/cynkra/dm/issues/2382)).
+
+- Require R \>= 4.0.
+
+### Continuous integration
+
+- Remove Docker image build, centralized now.
+
 ## dm 1.0.12.9015
 
 ### Bug fixes

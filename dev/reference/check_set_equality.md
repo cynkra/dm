@@ -57,7 +57,8 @@ try(check_set_equality(data_1, data_2, x_select = a, y_select = a))
 #>   <dbl>
 #> 1     3
 #> Error in abort_sets_not_equal(map_chr(catchers, conditionMessage)) : 
-#>   Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.
+#>   Column (`a`) of table data_2 contains values (see examples above) that
+#> are not present in column (`a`) of table data_1.
 
 data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 # this is passing:
@@ -77,6 +78,8 @@ try(check_set_equality(data_2, data_3))
 #> 2     1     5     8
 #> 3     2     6     9
 #> Error in abort_sets_not_equal(map_chr(catchers, conditionMessage)) : 
-#>   Columns (`a`, `b`, `c`) of table `data_2` contain values (see examples above) that are not present in columns (`a`, `b`, `c`) of table `data_3`.
-#>   Columns (`a`, `b`, `c`) of table `data_3` contain values (see examples above) that are not present in columns (`a`, `b`, `c`) of table `data_2`.
+#>   Columns (`a`, `b`, `c`) of table data_2 contain values (see examples
+#> above) that are not present in columns (`a`, `b`, `c`) of table data_3.
+#> Columns (`a`, `b`, `c`) of table data_3 contain values (see examples above)
+#> that are not present in columns (`a`, `b`, `c`) of table data_2.
 ```

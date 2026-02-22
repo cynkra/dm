@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9015</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9016</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +54,41 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9016" id="dm-10129016">dm 1.0.12.9016<a class="anchor" aria-label="anchor" href="#dm-10129016"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-12-9016">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-12-9016"></a></h3>
+<ul><li><p><code>dm_from_con(learn_keys = TRUE, .names = )</code> applies the specified table naming pattern (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2213" class="external-link">#2213</a>, <a href="https://github.com/cynkra/dm/issues/2214" class="external-link">#2214</a>).</p></li>
+<li><p><code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> no longer learns tables from all schemas by default for Postgres, MSSQL, and MariaDB; instead, <code>"public"</code>, <code>"dbo"</code> and the current database, respectively, are used (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1440" class="external-link">#1440</a>, <a href="https://github.com/cynkra/dm/issues/1448" class="external-link">#1448</a>).</p></li>
+<li><p>Ensure compatibility with upcoming update of the pixarfilms package (<a href="https://github.com/erictleung" class="external-link">@erictleung</a>, erictleung/pixarfilms#39, <a href="https://github.com/cynkra/dm/issues/2256" class="external-link">#2256</a>).</p></li>
+<li><p>Fix <code><a href="../reference/dm_paste.html">dm_paste()</a></code> pipe length issue by implementing operation chunking (<a href="https://github.com/cynkra/dm/issues/2301" class="external-link">#2301</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-1-0-12-9016">Features<a class="anchor" aria-label="anchor" href="#features-1-0-12-9016"></a></h3>
+<ul><li><p>Add <code>.max_value</code> parameter to <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> (<a href="https://github.com/cynkra/dm/issues/2200" class="external-link">#2200</a>, <a href="https://github.com/cynkra/dm/issues/2387" class="external-link">#2387</a>).</p></li>
+<li><p>Introduce <code>dm_draw(backend_opts = list())</code>, soft-deprecate backend-specific arguments (<a href="https://github.com/cynkra/dm/issues/2381" class="external-link">#2381</a>).</p></li>
+<li><p>Learn keys from SQLite databases (<a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>, <a href="https://github.com/cynkra/dm/issues/352" class="external-link">#352</a>).</p></li>
+<li><p>Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_inform()</a></code> with native formatting (<a href="https://github.com/cynkra/dm/issues/2374" class="external-link">#2374</a>).</p></li>
+<li><p>Follow all updates from dplyr 1.2.0 (<a href="https://github.com/cynkra/dm/issues/2361" class="external-link">#2361</a>, <a href="https://github.com/cynkra/dm/issues/2362" class="external-link">#2362</a>).</p></li>
+<li><p>Vendor pixarfilms data and add <code>version</code> argument to <code><a href="../reference/dm_pixarfilms.html">dm_pixarfilms()</a></code> (<a href="https://github.com/cynkra/dm/issues/2368" class="external-link">#2368</a>, <a href="https://github.com/cynkra/dm/issues/2369" class="external-link">#2369</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-12-9016">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9016"></a></h3>
+<ul><li><p>Comment.</p></li>
+<li><p>Adapt to dplyr 1.2.0.</p></li>
+<li><p>Restore recent soft-deprecation.</p></li>
+<li><p>Bump deprecation level (<a href="https://github.com/cynkra/dm/issues/2395" class="external-link">#2395</a>).</p></li>
+<li><p>Wrap all igraph functions (<a href="https://github.com/cynkra/dm/issues/2390" class="external-link">#2390</a>).</p></li>
+<li><p>Tweak <code><a href="../reference/dm_draw.html">dm_draw()</a></code>: rename <code>column_arrow</code> backend opt and validate <code>backend_opts</code> (<a href="https://github.com/cynkra/dm/issues/2383" class="external-link">#2383</a>, <a href="https://github.com/cynkra/dm/issues/2384" class="external-link">#2384</a>).</p></li>
+<li><p>Wrap all igraph functions (<a href="https://github.com/cynkra/dm/issues/2382" class="external-link">#2382</a>).</p></li>
+<li><p>Wrap all igraph functions (<a href="https://github.com/cynkra/dm/issues/2382" class="external-link">#2382</a>).</p></li>
+<li><p>Require R &gt;= 4.0.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9016">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9016"></a></h3>
+<ul><li>Remove Docker image build, centralized now.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.12.9015" id="dm-10129015">dm 1.0.12.9015<a class="anchor" aria-label="anchor" href="#dm-10129015"></a></h2>
 <div class="section level3">
