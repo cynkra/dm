@@ -167,3 +167,25 @@
         dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
         dm::dm_add_fk(fact, dim_4_key, dim_4)
 
+# `dm_flatten()` join argument snapshot with `dm_paste()`
+
+    Code
+      dm_flatten(dm_for_flatten(), fact, parent_tables = c(dim_1, dim_2), join = inner_join) %>%
+        dm_paste(options = c("select", "keys"))
+    Message
+      Renaming ambiguous columns: %>%
+        dm_rename(dim_1, something.dim_1 = something) %>%
+        dm_rename(dim_2, something.dim_2 = something)
+      dm::dm(
+        fact,
+        dim_3,
+        dim_4,
+      ) %>%
+        dm::dm_select(fact, fact, dim_1_key_1, dim_1_key_2, dim_2_key, dim_3_key, dim_4_key, something, something.dim_1, something.dim_2) %>%
+        dm::dm_select(dim_3, dim_3_pk, something) %>%
+        dm::dm_select(dim_4, dim_4_pk, something) %>%
+        dm::dm_add_pk(dim_3, dim_3_pk) %>%
+        dm::dm_add_pk(dim_4, dim_4_pk) %>%
+        dm::dm_add_fk(fact, dim_3_key, dim_3) %>%
+        dm::dm_add_fk(fact, dim_4_key, dim_4)
+

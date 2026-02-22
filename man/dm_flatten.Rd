@@ -10,7 +10,8 @@ dm_flatten(
   ...,
   parent_tables = NULL,
   recursive = FALSE,
-  allow_deep = FALSE
+  allow_deep = FALSE,
+  join = left_join
 )
 }
 \arguments{
@@ -46,6 +47,13 @@ If \code{TRUE}, parent tables with further parents are allowed
 and will remain in the result with a
 foreign-key relationship to the flattened table.
 Cannot be \code{TRUE} when \code{recursive} is \code{TRUE}.}
+
+\item{join}{The type of join to use when combining parent tables,
+see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.
+Defaults to \code{\link[dplyr:mutate-joins]{dplyr::left_join()}}.
+\code{nest_join} is not supported.
+When \code{recursive = TRUE}, only \code{\link[dplyr:mutate-joins]{dplyr::left_join()}},
+\code{\link[dplyr:mutate-joins]{dplyr::inner_join()}}, and \code{\link[dplyr:mutate-joins]{dplyr::full_join()}} are supported.}
 }
 \value{
 A \code{\link{dm}} object with the flattened table and removed parent tables.

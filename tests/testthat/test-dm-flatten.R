@@ -248,7 +248,7 @@ test_that("`dm_flatten_impl()` joins single parent without recursion", {
     dm_add_pk(parent, id) %>%
     dm_add_fk(child, pid, parent)
 
-  out <- dm_flatten_impl(dm_test, "child", "parent", dfs_order = NULL)
+  out <- dm_flatten_impl(dm_test, "child", "parent", dfs_order = NULL, left_join)
 
   expect_s3_class(out$dm, "dm")
   expect_equal(names(dm_get_tables(out$dm)), "child")
@@ -264,7 +264,7 @@ test_that("`dm_flatten_impl()` recurses with dfs_order", {
   dfs <- graph_dfs(g_sub, "A", unreachable = FALSE, dist = TRUE)
   dfs_order <- names(dfs$order) %>% purrr::discard(is.na)
 
-  out <- dm_flatten_impl(dm_deep, "A", c("B", "C"), dfs_order)
+  out <- dm_flatten_impl(dm_deep, "A", c("B", "C"), dfs_order, left_join)
 
   expect_equal(names(dm_get_tables(out$dm)), "A")
   a_tbl <- pull_tbl(out$dm, A)
@@ -280,7 +280,7 @@ test_that("`dm_flatten_impl()` returns empty renames when no conflicts", {
     dm_add_pk(parent, id) %>%
     dm_add_fk(child, pid, parent)
 
-  out <- dm_flatten_impl(dm_test, "child", "parent", dfs_order = NULL)
+  out <- dm_flatten_impl(dm_test, "child", "parent", dfs_order = NULL, left_join)
   expect_equal(out$all_renames, list())
   expect_equal(out$col_renames, list(parent = character(0)))
 })
@@ -293,7 +293,7 @@ test_that("`dm_flatten_join()` disambiguates conflicting columns", {
     dm_add_pk(parent, id) %>%
     dm_add_fk(child, pid, parent)
 
-  out <- dm_flatten_join(dm_test, "child", "parent")
+  out <- dm_flatten_join(dm_test, "child", "parent", left_join)
 
   child_tbl <- pull_tbl(out$dm, child)
   expect_true("val" %in% colnames(child_tbl))
@@ -312,7 +312,7 @@ test_that("`dm_flatten_join()` returns col_renames for each parent", {
     dm_add_pk(parent, id) %>%
     dm_add_fk(child, pid, parent)
 
-  out <- dm_flatten_join(dm_test, "child", "parent")
+  out <- dm_flatten_join(dm_test, "child", "parent", left_join)
   expect_true("parent" %in% names(out$col_renames))
   expect_equal(out$col_renames[["parent"]], c(val = "val.parent"))
 })
@@ -326,13 +326,13 @@ test_that("`dm_flatten_join()` removes parent tables", {
     dm_add_pk(parent, id) %>%
     dm_add_fk(child, pid, parent)
 
-  out <- dm_flatten_join(dm_test, "child", "parent")
+  out <- dm_flatten_join(dm_test, "child", "parent", left_join)
   expect_equal(sort(names(dm_get_tables(out$dm))), c("child", "other"))
 })
 
 test_that("`dm_flatten_join()` with empty parents returns unchanged dm", {
   dm_test <- dm(child = tibble::tibble(id = 1:2))
-  out <- dm_flatten_join(dm_test, "child", character(0))
+  out <- dm_flatten_join(dm_test, "child", character(0), left_join)
   expect_equal(names(dm_get_tables(out$dm)), "child")
   expect_equal(out$all_renames, list())
   expect_equal(out$col_renames, list())
@@ -354,7 +354,7 @@ test_that("`dm_flatten_transfer_fks()` re-points FKs to start table", {
   all_fks <- dm_get_all_fks_impl(dm_deep, ignore_on_delete = TRUE)
 
   # Simulate: join B into A, remove B
-  out <- dm_flatten_join(dm_deep, "A", "B")
+  out <- dm_flatten_join(dm_deep, "A", "B", left_join)
 
   # Transfer B's FK to C so it now points from A to C
   result <- dm_flatten_transfer_fks(out$dm, "A", "B", out$col_renames, all_fks)
@@ -376,7 +376,7 @@ test_that("`dm_flatten_transfer_fks()` handles renamed FK columns", {
     dm_add_fk(parent, ref, grandparent)
 
   all_fks <- dm_get_all_fks_impl(dm_test, ignore_on_delete = TRUE)
-  out <- dm_flatten_join(dm_test, "child", "parent")
+  out <- dm_flatten_join(dm_test, "child", "parent", left_join)
 
   # ref was renamed to ref.parent
   expect_equal(out$col_renames[["parent"]], c(ref = "ref.parent"))
@@ -388,4 +388,100 @@ test_that("`dm_flatten_transfer_fks()` handles renamed FK columns", {
   fk_row <- fks[fks$child_table == "child" & fks$parent_table == "grandparent", ]
   expect_equal(nrow(fk_row), 1)
   expect_equal(fk_row$child_fk_cols[[1]], "ref.parent")
+})
+
+# --- Join argument tests ---
+
+test_that("`dm_flatten()` with `join = inner_join`", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:4, pid = c(1L, 2L, 3L, NA), val = letters[1:4]),
+    parent = tibble::tibble(id = 1:3, info = LETTERS[1:3])
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  result <- dm_flatten(dm_test, child, join = inner_join)
+
+  child_tbl <- pull_tbl(result, child)
+  # inner_join drops unmatched rows (pid = NA)
+  expect_equal(nrow(child_tbl), 3)
+  expect_true("info" %in% colnames(child_tbl))
+})
+
+test_that("`dm_flatten()` with `join = full_join`", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:2, pid = c(1L, 3L)),
+    parent = tibble::tibble(id = 1:3, info = LETTERS[1:3])
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  result <- dm_flatten(dm_test, child, join = full_join)
+
+  child_tbl <- pull_tbl(result, child)
+  # full_join keeps all rows from both sides
+  expect_true(nrow(child_tbl) >= 2)
+  expect_true("info" %in% colnames(child_tbl))
+})
+
+test_that("`dm_flatten()` with `join = semi_join`", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:4, pid = c(1L, 2L, 3L, NA), val = letters[1:4]),
+    parent = tibble::tibble(id = 1:3, info = LETTERS[1:3])
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  result <- dm_flatten(dm_test, child, join = semi_join)
+
+  child_tbl <- pull_tbl(result, child)
+  # semi_join keeps only matching child rows, no parent columns added
+  expect_equal(nrow(child_tbl), 3)
+  expect_false("info" %in% colnames(child_tbl))
+})
+
+test_that("`dm_flatten()` with `join = anti_join`", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:4, pid = c(1L, 2L, 3L, NA), val = letters[1:4]),
+    parent = tibble::tibble(id = 1:3, info = LETTERS[1:3])
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  result <- dm_flatten(dm_test, child, join = anti_join)
+
+  child_tbl <- pull_tbl(result, child)
+  # anti_join keeps only non-matching child rows
+  expect_equal(nrow(child_tbl), 1)
+  expect_false("info" %in% colnames(child_tbl))
+})
+
+test_that("`dm_flatten()` errors with `join = nest_join`", {
+  expect_dm_error(
+    dm_flatten(dm_for_flatten(), fact, join = nest_join),
+    class = "no_flatten_with_nest_join"
+  )
+})
+
+test_that("`dm_flatten()` recursive with non-left join errors", {
+  expect_dm_error(
+    dm_flatten(dm_more_complex(), tf_5, recursive = TRUE, join = semi_join),
+    class = "squash_limited"
+  )
+})
+
+test_that("`dm_flatten()` recursive with `join = inner_join`", {
+  result <- dm_flatten(dm_more_complex(), tf_5, parent_tables = c(tf_4, tf_3), recursive = TRUE, join = inner_join)
+
+  expect_s3_class(result, "dm")
+  expect_true("tf_5" %in% names(dm_get_tables(result)))
+  expect_false("tf_4" %in% names(dm_get_tables(result)))
+  expect_false("tf_3" %in% names(dm_get_tables(result)))
+})
+
+test_that("`dm_flatten()` join argument snapshot with `dm_paste()`", {
+  expect_snapshot({
+    dm_flatten(dm_for_flatten(), fact, parent_tables = c(dim_1, dim_2), join = inner_join) %>%
+      dm_paste(options = c("select", "keys"))
+  })
 })

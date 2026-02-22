@@ -34,6 +34,12 @@
 #'   and will remain in the result with a
 #'   foreign-key relationship to the flattened table.
 #'   Cannot be `TRUE` when `recursive` is `TRUE`.
+#' @param join The type of join to use when combining parent tables,
+#'   see [dplyr::join()].
+#'   Defaults to [dplyr::left_join()].
+#'   `nest_join` is not supported.
+#'   When `recursive = TRUE`, only [dplyr::left_join()],
+#'   [dplyr::inner_join()], and [dplyr::full_join()] are supported.
 #'
 #' @return A [`dm`] object with the flattened table and removed parent tables.
 #'
@@ -51,11 +57,22 @@ dm_flatten <- function(
   ...,
   parent_tables = NULL,
   recursive = FALSE,
-  allow_deep = FALSE
+  allow_deep = FALSE,
+  join = left_join
 ) {
   check_not_zoomed(dm)
   check_no_filter(dm)
   check_dots_empty()
+
+  join_name <- as_label(enexpr(join))
+
+  if (join_name == "nest_join") {
+    abort_no_flatten_with_nest_join()
+  }
+
+  if (recursive && !(join_name %in% c("left_join", "full_join", "inner_join"))) {
+    abort_squash_limited()
+  }
 
   if (recursive && allow_deep) {
     cli::cli_abort(
@@ -140,7 +157,7 @@ dm_flatten <- function(
     dfs_order <- NULL
   }
 
-  out <- dm_flatten_impl(dm, start, list_of_pts, dfs_order)
+  out <- dm_flatten_impl(dm, start, list_of_pts, dfs_order, join)
 
   # Handle allow_deep: transfer FKs from absorbed parents to start
   if (allow_deep) {
@@ -165,6 +182,7 @@ dm_flatten <- function(
 #' @param list_of_pts Character vector of parent table names to absorb.
 #' @param dfs_order Character vector giving DFS traversal order from the main
 #'   function, or `NULL` for non-recursive mode.
+#' @param join The join function to use (e.g. [dplyr::left_join()]).
 #'
 #' @return A list with components:
 #'   - `dm`: the updated `dm` with parents joined into `start` and removed.
@@ -173,7 +191,7 @@ dm_flatten <- function(
 #'
 #' @noRd
 #' @autoglobal
-dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order) {
+dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order, join) {
   all_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
 
   # Find direct parents of start
@@ -200,7 +218,7 @@ dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order) {
 
       if (length(pt_parents_in_list) > 0) {
         # Recurse: flatten pt's ancestors into pt
-        out <- dm_flatten_impl(dm, pt, pt_parents_in_list, dfs_order)
+        out <- dm_flatten_impl(dm, pt, pt_parents_in_list, dfs_order, join)
         dm <- out$dm
         all_renames <- c(all_renames, out$all_renames)
       }
@@ -216,7 +234,7 @@ dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order) {
   parents_to_join <- intersect(parents_to_join, intersect(direct_parents, list_of_pts))
   parents_to_join <- intersect(parents_to_join, src_tbls_impl(dm))
 
-  out <- dm_flatten_join(dm, start, parents_to_join)
+  out <- dm_flatten_join(dm, start, parents_to_join, join)
   out$all_renames <- c(all_renames, out$all_renames)
   out
 }
@@ -232,6 +250,7 @@ dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order) {
 #' @param dm A `dm` object.
 #' @param start Name of the table to join parents into.
 #' @param parents Character vector of parent table names to join.
+#' @param join The join function to use (e.g. [dplyr::left_join()]).
 #'
 #' @return A list with components:
 #'   - `dm`: the updated `dm` with parents joined and removed.
@@ -241,7 +260,7 @@ dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order) {
 #'
 #' @noRd
 #' @autoglobal
-dm_flatten_join <- function(dm, start, parents) {
+dm_flatten_join <- function(dm, start, parents, join) {
   if (is_empty(parents)) {
     return(list(dm = dm, all_renames = list(), col_renames = list()))
   }
@@ -292,7 +311,7 @@ dm_flatten_join <- function(dm, start, parents) {
     col_renames[[pt]] <- renames
 
     # Perform the join
-    start_tbl <- left_join(start_tbl, parent_tbl, by = by)
+    start_tbl <- join(start_tbl, parent_tbl, by = by)
 
     # Update current columns for next iteration
     current_cols <- colnames(start_tbl)
