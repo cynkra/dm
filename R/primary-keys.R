@@ -455,7 +455,11 @@ check_pk <- function(table, columns, max_value = MAX_COMMAS) {
 # Error -------------------------------------------------------------------
 
 abort_pk_not_defined <- function() {
-  cli::cli_abort("No primary keys to remove.", class = dm_error_full("pk_not_defined"), call = dm_error_call())
+  cli::cli_abort(
+    "No primary keys to remove.",
+    class = dm_error_full("pk_not_defined"),
+    call = dm_error_call()
+  )
 }
 
 abort_key_set_force_false <- function(table) {

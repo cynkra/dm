@@ -279,7 +279,11 @@ dm_rm_uk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
 # Error -------------------------------------------------------------------
 
 abort_uk_not_defined <- function() {
-  cli::cli_abort("No unique keys to remove.", class = dm_error_full("uk_not_defined"), call = dm_error_call())
+  cli::cli_abort(
+    "No unique keys to remove.",
+    class = dm_error_full("uk_not_defined"),
+    call = dm_error_call()
+  )
 }
 
 abort_no_uk_if_pk <- function(table, column, type = "PK") {

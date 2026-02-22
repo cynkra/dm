@@ -22,7 +22,12 @@ dm_error_call <- function(call) {
   n <- sys.nframe()
   for (i in seq_len(n)) {
     caller <- eval_bare(quote(base::parent.frame()), frame)
-    if (identical(caller, frame) || identical(caller, global_env()) || identical(caller, base_env()) || identical(caller, empty_env())) {
+    if (
+      identical(caller, frame) ||
+        identical(caller, global_env()) ||
+        identical(caller, base_env()) ||
+        identical(caller, empty_env())
+    ) {
       break
     }
     caller_call <- caller[[".__dm_error_call__."]]
@@ -122,7 +127,11 @@ abort_ref_tbl_has_no_pk <- function(ref_table_name) {
 # error helpers for draw_dm -----------------------------------------------
 
 abort_last_col_missing <- function() {
-  cli::cli_abort("The last color can't be missing.", class = dm_error_full("last_col_missing"), call = dm_error_call())
+  cli::cli_abort(
+    "The last color can't be missing.",
+    class = dm_error_full("last_col_missing"),
+    call = dm_error_call()
+  )
 }
 
 # errors in graph-functions -----------------------------------------------

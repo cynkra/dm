@@ -712,5 +712,9 @@ abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
 }
 
 abort_is_not_fkc <- function() {
-  cli::cli_abort("No foreign keys to remove.", class = dm_error_full("is_not_fkc"), call = dm_error_call())
+  cli::cli_abort(
+    "No foreign keys to remove.",
+    class = dm_error_full("is_not_fkc"),
+    call = dm_error_call()
+  )
 }
