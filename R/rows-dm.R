@@ -199,7 +199,16 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
     in_place <- FALSE
   }
 
-  dm_rows_run(x, y, operation_name, top_down, in_place, require_keys, progress = progress, call = caller_env())
+  dm_rows_run(
+    x,
+    y,
+    operation_name,
+    top_down,
+    in_place,
+    require_keys,
+    progress = progress,
+    call = caller_env()
+  )
 }
 
 dm_rows_check <- function(x, y) {
@@ -358,7 +367,16 @@ do_rows_delete <- function(x, y, by = NULL, ..., autoinc_col = NULL) {
   rows_delete(x, y, by = by, ..., unmatched = "ignore")
 }
 
-dm_rows_run <- function(x, y, rows_op_name, top_down, in_place, require_keys, progress = NA, call = caller_env()) {
+dm_rows_run <- function(
+  x,
+  y,
+  rows_op_name,
+  top_down,
+  in_place,
+  require_keys,
+  progress = NA,
+  call = caller_env()
+) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
   topo <- graph_topo_sort(graph, mode = if (top_down) "in" else "out")

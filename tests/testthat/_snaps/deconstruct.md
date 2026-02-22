@@ -346,7 +346,7 @@
     Code
       keyed_by(x_no_fk, y_no_fk)
     Condition
-      Error in `keyed_by()`:
+      Error:
       ! Can't infer `by`: foreign key information lost?
 
 ---
@@ -354,7 +354,7 @@
     Code
       keyed_by(x_both_fk, y_both_fk)
     Condition
-      Error in `keyed_by()`:
+      Error:
       ! Can't infer `by`: foreign key available in both directions.
 
 ---
@@ -362,7 +362,7 @@
     Code
       keyed_by(x_multi_fk, y_multi_fk)
     Condition
-      Error in `keyed_by()`:
+      Error:
       ! Can't infer `by`: multiple foreign keys available.
 
 # joins without child PK
