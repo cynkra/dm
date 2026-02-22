@@ -56,13 +56,6 @@
     Code
       nyc_comp_3 <- nyc_comp() %>% dm_zoom2_to(flights) %>% dm_insert_zoom2ed(
         "flights_2")
-    Condition
-      Warning in `left_join()`:
-      Detected an unexpected many-to-many relationship between `x` and `y`.
-      i Row 1 of `x` matches multiple rows in `y`.
-      i Row 3 of `y` matches multiple rows in `x`.
-      i If a many-to-many relationship is expected, set `relationship = "many-to-many"` to silence this warning.
-    Code
       nyc_comp_3 %>% get_all_keys()
     Output
       $pks
