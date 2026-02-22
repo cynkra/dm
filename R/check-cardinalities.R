@@ -95,6 +95,7 @@
 #' examine_cardinality(d1, d3, x_select = c(c = a))
 #' examine_cardinality(d1, d2)
 check_cardinality_0_n <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
+  dm_local_error_call()
   check_card_api(
     {{ x }},
     {{ y }},
@@ -117,6 +118,7 @@ check_cardinality_0_n_impl0 <- function(x, y, x_label, y_label) {
 #' @rdname examine_cardinality
 #' @export
 check_cardinality_1_n <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
+  dm_local_error_call()
   check_card_api(
     {{ x }},
     {{ y }},
@@ -139,6 +141,7 @@ check_cardinality_1_n_impl0 <- function(x, y, x_label, y_label) {
 #' @rdname examine_cardinality
 #' @export
 check_cardinality_1_1 <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
+  dm_local_error_call()
   check_card_api(
     {{ x }},
     {{ y }},
@@ -169,6 +172,7 @@ check_cardinality_1_1_impl0 <- function(x, y, x_label, y_label) {
 #' @rdname examine_cardinality
 #' @export
 check_cardinality_0_1 <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
+  dm_local_error_call()
   check_card_api(
     {{ x }},
     {{ y }},

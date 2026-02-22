@@ -63,6 +63,7 @@ dm_flatten <- function(
   check_not_zoomed(dm)
   check_no_filter(dm)
   check_dots_empty()
+  dm_local_error_call()
 
   join_name <- as_label(enexpr(join))
 
@@ -77,7 +78,8 @@ dm_flatten <- function(
   if (recursive && allow_deep) {
     cli::cli_abort(
       "{.arg allow_deep} can't be {.code TRUE} when {.arg recursive} is {.code TRUE}.",
-      class = dm_error_full("recursive_and_allow_deep")
+      class = dm_error_full("recursive_and_allow_deep"),
+      call = dm_error_call()
     )
   }
 

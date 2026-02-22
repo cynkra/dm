@@ -24,6 +24,7 @@
 #' check_key(data, a, c)
 #' check_key(data)
 check_key <- function(x, ..., .data = deprecated()) {
+  dm_local_error_call()
   if (!is_missing(.data)) {
     deprecate_warn("1.0.0", "check_key(.data = )", "check_key(x = )")
     return(check_key_impl0({{ .data }}, {{ x }}, ...))
@@ -156,6 +157,7 @@ is_unique_key_se <- function(.data, colname, max_value = MAX_COMMAS) {
 #' # this is still failing:
 #' try(check_set_equality(data_2, data_3))
 check_set_equality <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
+  dm_local_error_call()
   check_api(
     {{ x }},
     {{ y }},
@@ -214,6 +216,7 @@ check_set_equality_impl0 <- function(x, y, x_label, y_label) {
 #' # this is failing:
 #' try(check_subset(data_2, data_1))
 check_subset <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
+  dm_local_error_call()
   check_api(
     {{ x }},
     {{ y }},

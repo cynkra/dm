@@ -43,6 +43,7 @@
 #' pull_tbl(nyc_desc, flights) %>%
 #'   labelled::label_attribute()
 dm_set_table_description <- function(dm, ...) {
+  dm_local_error_call()
   check_not_zoomed(dm)
 
   check_suggested("labelled (>= 2.12.0)", "dm_set_table_description")

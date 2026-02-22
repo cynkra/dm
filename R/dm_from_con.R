@@ -55,6 +55,7 @@ dm_from_con <- function(
   .names = NULL,
   ...
 ) {
+  dm_local_error_call()
   stopifnot(is(con, "DBIConnection") || inherits(con, "Pool"))
 
   check_suggested("dbplyr", "dm_from_con")
@@ -182,7 +183,8 @@ abort_learn_keys <- function(parent) {
       i = "Use {.code learn_keys = FALSE} to work around, or {.code dm:::dm_meta()} to debug."
     ),
     class = dm_error_full("learn_keys"),
-    parent = parent
+    parent = parent,
+    call = dm_error_call()
   )
 }
 
@@ -192,7 +194,8 @@ abort_tbl_access <- function(bad) {
       "{cli::qty(length(bad))}Table{?s} {.field {bad}} cannot be accessed.",
       i = "Use {.code tbl(src, ...)} to troubleshoot."
     ),
-    class = dm_error_full("tbl_access")
+    class = dm_error_full("tbl_access"),
+    call = dm_error_call()
   )
 }
 

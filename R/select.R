@@ -28,6 +28,7 @@
 #'   dm_rename(airports, code = faa, altitude = alt)
 #' @export
 dm_rename <- function(dm, table, ...) {
+  dm_local_error_call()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 
@@ -53,6 +54,7 @@ dm_rename <- function(dm, table, ...) {
 #'   dm_select(airports, code = faa, altitude = alt)
 #' @export
 dm_select <- function(dm, table, ...) {
+  dm_local_error_call()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
 

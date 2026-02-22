@@ -35,6 +35,7 @@ dm_disambiguate_cols <- function(
   .quiet = FALSE,
   .position = c("suffix", "prefix")
 ) {
+  dm_local_error_call()
   check_not_zoomed(dm)
   check_dots_empty()
   .position <- arg_match(.position)

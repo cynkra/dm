@@ -83,6 +83,7 @@ copy_to.dm <- function(
   quiet = FALSE,
   ...
 ) {
+  dm_local_error_call()
   deprecate_warn(
     "0.2.0",
     "dm::copy_to.dm()",

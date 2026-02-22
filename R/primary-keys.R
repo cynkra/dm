@@ -62,6 +62,7 @@ dm_add_pk <- function(
   force = FALSE
 ) {
   check_dots_empty()
+  dm_local_error_call()
 
   check_not_zoomed(dm)
 
@@ -131,6 +132,7 @@ dm_add_pk_impl <- function(dm, table, column, autoincrement, force) {
 #' @export
 dm_has_pk <- function(dm, table, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   dm_has_pk_impl(dm, table_name)
@@ -153,6 +155,7 @@ dm_has_pk_impl <- function(dm, table) {
 #' @keywords internal
 dm_get_pk <- function(dm, table, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
 
   deprecate_warn("0.2.1", "dm::dm_get_pk()", "dm::dm_get_all_pks()")
@@ -194,6 +197,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #'   dm_get_all_pks()
 dm_get_all_pks <- function(dm, table = NULL, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
   table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
@@ -253,6 +257,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #'   dm_rm_pk(airports) %>%
 #'   dm_draw()
 dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = NULL) {
+  dm_local_error_call()
   if (!is.null(fail_fk)) {
     lifecycle::deprecate_warn(
       "1.0.4",
@@ -384,6 +389,7 @@ enum_pk_candidates <- function(table, ...) {
 #'   dm_enum_pk_candidates(airports)
 dm_enum_pk_candidates <- function(dm, table, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
@@ -449,19 +455,25 @@ check_pk <- function(table, columns, max_value = MAX_COMMAS) {
 # Error -------------------------------------------------------------------
 
 abort_pk_not_defined <- function() {
-  cli::cli_abort("No primary keys to remove.", class = dm_error_full("pk_not_defined"))
+  cli::cli_abort(
+    "No primary keys to remove.",
+    class = dm_error_full("pk_not_defined"),
+    call = dm_error_call()
+  )
 }
 
 abort_key_set_force_false <- function(table) {
   cli::cli_abort(
     "Table {.field {table}} already has a primary key. Use {.code force = TRUE} to change the existing primary key.",
-    class = dm_error_full("key_set_force_false")
+    class = dm_error_full("key_set_force_false"),
+    call = dm_error_call()
   )
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
   cli::cli_abort(
     "{cli::qty(length(fk_tables))}There {?is/are} {?a foreign key/foreign keys} pointing from table{?s} {.field {fk_tables}} to table {.field {table}}. First remove those, or set {.code fail_fk = FALSE}.",
-    class = dm_error_full("first_rm_fks")
+    class = dm_error_full("first_rm_fks"),
+    call = dm_error_call()
   )
 }

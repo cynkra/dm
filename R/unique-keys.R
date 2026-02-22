@@ -45,6 +45,7 @@
 #' @export
 dm_add_uk <- function(dm, table, columns, ..., check = FALSE) {
   check_dots_empty()
+  dm_local_error_call()
 
   check_not_zoomed(dm)
 
@@ -117,6 +118,7 @@ dm_add_uk_impl <- function(dm, table, column) {
 #'   dm_get_all_uks()
 dm_get_all_uks <- function(dm, table = NULL, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
   table_expr <- enexpr(table) %||% src_tbls_impl(dm, quiet = TRUE)
   table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
@@ -191,6 +193,7 @@ dm_get_all_implicit_uks_def_impl <- function(def, table = NULL, all_explicit) {
 #'
 #' @export
 dm_rm_uk <- function(dm, table = NULL, columns = NULL, ...) {
+  dm_local_error_call()
   dm_rm_uk_(dm, {{ table }}, {{ columns }}, ...)
 }
 
@@ -276,12 +279,17 @@ dm_rm_uk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
 # Error -------------------------------------------------------------------
 
 abort_uk_not_defined <- function() {
-  cli::cli_abort("No unique keys to remove.", class = dm_error_full("uk_not_defined"))
+  cli::cli_abort(
+    "No unique keys to remove.",
+    class = dm_error_full("uk_not_defined"),
+    call = dm_error_call()
+  )
 }
 
 abort_no_uk_if_pk <- function(table, column, type = "PK") {
   cli::cli_abort(
     "A {type} ({commas(tick(column))}) for table {.field {table}} already exists, not adding UK.",
-    class = dm_error_full("no_uk_if_pk")
+    class = dm_error_full("no_uk_if_pk"),
+    call = dm_error_call()
   )
 }
