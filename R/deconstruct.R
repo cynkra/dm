@@ -54,7 +54,8 @@ new_keyed_tbl <- function(
   uks = NULL,
   fks_in = NULL,
   fks_out = NULL,
-  uuid = NULL
+  uuid = NULL,
+  zoom2 = NULL
 ) {
   check_dots_empty()
 
@@ -68,13 +69,19 @@ new_keyed_tbl <- function(
   }
 
   class(x) <- unique(c("dm_keyed_tbl", class(x)))
-  attr(x, "dm_key_info") <- list(
+  dm_key_info <- list(
     pk = pk,
     uks = uks,
     fks_in = fks_in,
     fks_out = fks_out,
     uuid = uuid
   )
+
+  if (!is.null(zoom2)) {
+    dm_key_info$zoom2 <- zoom2
+  }
+
+  attr(x, "dm_key_info") <- dm_key_info
 
   x
 }
@@ -85,7 +92,8 @@ new_keyed_tbl_from_keys_info <- function(tbl, keys_info) {
     pk = keys_info$pk,
     fks_in = keys_info$fks_in,
     fks_out = keys_info$fks_out,
-    uuid = keys_info$uuid
+    uuid = keys_info$uuid,
+    zoom2 = keys_info$zoom2
   )
 }
 
