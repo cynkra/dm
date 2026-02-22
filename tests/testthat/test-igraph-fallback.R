@@ -1,6 +1,30 @@
 # Fallback vs igraph parity tests -----------------------------------------------
 # Require igraph to compare results. Build a dm_graph directly to feed fallbacks.
 
+# Helper: simple directed graph a->b->c, b->d
+make_graph_abc <- function(directed = TRUE) {
+  graph_from_data_frame(
+    tibble::tibble(
+      from = c("a", "b", "b"),
+      to = c("b", "c", "d")
+    ),
+    directed = directed,
+    vertices = c("a", "b", "c", "d")
+  )
+}
+
+# Helper: directed cycle a->b->c->a
+make_graph_cycle <- function() {
+  graph_from_data_frame(
+    tibble::tibble(
+      from = c("a", "b", "c"),
+      to = c("b", "c", "a")
+    ),
+    directed = TRUE,
+    vertices = c("a", "b", "c")
+  )
+}
+
 make_dm_graph_abc <- function(directed = TRUE) {
   new_dm_graph(
     directed = directed,
