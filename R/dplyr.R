@@ -458,7 +458,8 @@ summarise.dm_keyed_tbl <- function(.data, ..., .by = NULL, .groups = NULL) {
   new_keyed_tbl(
     summarised_tbl,
     pk = new_pk,
-    uuid = keys_info$uuid
+    uuid = keys_info$uuid,
+    zoom2 = keys_info$zoom2
   )
 }
 
@@ -492,7 +493,8 @@ reframe.dm_keyed_tbl <- function(.data, ..., .by = NULL) {
   # so the primary key is not preserved
   new_keyed_tbl(
     reframed_tbl,
-    uuid = keys_info$uuid
+    uuid = keys_info$uuid,
+    zoom2 = keys_info$zoom2
   )
 }
 
@@ -555,7 +557,8 @@ count.dm_keyed_tbl <- function(
   counted_tbl <- count(tbl, ..., wt = {{ wt }}, sort = sort, name = name, .drop = .drop)
   new_keyed_tbl(
     counted_tbl,
-    uuid = keys_info$uuid
+    uuid = keys_info$uuid,
+    zoom2 = keys_info$zoom2
   )
 }
 
@@ -589,7 +592,8 @@ tally.dm_keyed_tbl <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   tallied_tbl <- tally(tbl, wt = {{ wt }}, sort = sort, name = name)
   new_keyed_tbl(
     tallied_tbl,
-    uuid = keys_info$uuid
+    uuid = keys_info$uuid,
+    zoom2 = keys_info$zoom2
   )
 }
 
@@ -729,7 +733,8 @@ left_join.dm_keyed_tbl <- function(
     pk = join_spec$new_pk,
     fks_in = join_spec$new_fks_in,
     fks_out = join_spec$new_fks_out,
-    uuid = join_spec$new_uuid
+    uuid = join_spec$new_uuid,
+    zoom2 = keyed_get_info(x)$zoom2
   )
 }
 
@@ -822,7 +827,8 @@ inner_join.dm_keyed_tbl <- function(
     pk = join_spec$new_pk,
     fks_in = join_spec$new_fks_in,
     fks_out = join_spec$new_fks_out,
-    uuid = join_spec$new_uuid
+    uuid = join_spec$new_uuid,
+    zoom2 = keyed_get_info(x)$zoom2
   )
 }
 
@@ -910,7 +916,8 @@ full_join.dm_keyed_tbl <- function(
     pk = join_spec$new_pk,
     fks_in = join_spec$new_fks_in,
     fks_out = join_spec$new_fks_out,
-    uuid = join_spec$new_uuid
+    uuid = join_spec$new_uuid,
+    zoom2 = keyed_get_info(x)$zoom2
   )
 }
 
@@ -1003,7 +1010,8 @@ right_join.dm_keyed_tbl <- function(
     pk = join_spec$new_pk,
     fks_in = join_spec$new_fks_in,
     fks_out = join_spec$new_fks_out,
-    uuid = join_spec$new_uuid
+    uuid = join_spec$new_uuid,
+    zoom2 = keyed_get_info(x)$zoom2
   )
 }
 
@@ -1198,7 +1206,8 @@ cross_join.dm_keyed_tbl <- function(x, y, ..., copy = NULL, suffix = c(".x", ".y
 
   new_keyed_tbl(
     joined_tbl,
-    uuid = keyed_get_info(x)$uuid
+    uuid = keyed_get_info(x)$uuid,
+    zoom2 = keyed_get_info(x)$zoom2
   )
 }
 
