@@ -157,7 +157,7 @@ dm_flatten <- function(
 #'
 #' Workhorse that performs joining of parent tables into a start table.
 #' In recursive mode (`dfs_order` not `NULL`), first recursively flattens each
-#' direct parent's own ancestors via `reduce()`, then unconditionally joins
+#' direct parent's own ancestors via a loop, then unconditionally joins
 #' the resulting direct parents into the start table.
 #'
 #' @param dm A `dm` object.
@@ -189,31 +189,22 @@ dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order) {
     parents_to_process <- intersect(direct_parents, list_of_pts)
     parents_to_process <- intersect(dfs_order, parents_to_process)
 
-    acc <- reduce(
-      parents_to_process,
-      function(acc, pt) {
-        dm <- acc$dm
-        current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
-        pt_direct_parents <- current_fks %>%
-          filter(child_table == pt) %>%
-          pull(parent_table) %>%
-          unique()
-        pt_parents_in_list <- intersect(pt_direct_parents, list_of_pts)
-        pt_parents_in_list <- intersect(pt_parents_in_list, src_tbls_impl(dm))
+    for (pt in parents_to_process) {
+      current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
+      pt_direct_parents <- current_fks %>%
+        filter(child_table == pt) %>%
+        pull(parent_table) %>%
+        unique()
+      pt_parents_in_list <- intersect(pt_direct_parents, list_of_pts)
+      pt_parents_in_list <- intersect(pt_parents_in_list, src_tbls_impl(dm))
 
-        if (length(pt_parents_in_list) > 0) {
-          # Recurse: flatten pt's ancestors into pt
-          out <- dm_flatten_impl(dm, pt, pt_parents_in_list, dfs_order)
-          list(dm = out$dm, all_renames = c(acc$all_renames, out$all_renames))
-        } else {
-          acc
-        }
-      },
-      .init = list(dm = dm, all_renames = list())
-    )
-
-    dm <- acc$dm
-    all_renames <- acc$all_renames
+      if (length(pt_parents_in_list) > 0) {
+        # Recurse: flatten pt's ancestors into pt
+        out <- dm_flatten_impl(dm, pt, pt_parents_in_list, dfs_order)
+        dm <- out$dm
+        all_renames <- c(all_renames, out$all_renames)
+      }
+    }
   }
 
   # --- Non-recursive part: join direct parents into start ---
