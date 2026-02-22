@@ -44,7 +44,7 @@
       1     3
     Condition
       Error in `abort_not_subset_of()`:
-      ! Column (a) of table data_mcard_2() contains values (see examples above) that are not present in column (a) of table data_mcard_1().
+      ! Column (`a`) of table data_mcard_2() contains values (see examples above) that are not present in column (`a`) of table data_mcard_1().
 
 # output for compound keys
 
@@ -59,7 +59,7 @@
       3     3     6
     Condition
       Error in `abort_not_subset_of()`:
-      ! Columns (a and b) of table data_mcard_2() contain values (see examples above) that are not present in columns (a and b) of table data_mcard_1().
+      ! Columns (`a`, `b`) of table data_mcard_2() contain values (see examples above) that are not present in columns (`a`, `b`) of table data_mcard_1().
 
 # check_set_equality() checks properly if 2 sets of values are equal?
 
@@ -78,6 +78,6 @@
       2     3     9
     Condition
       Error in `abort_sets_not_equal()`:
-      ! Columns (a and c) of table data_mcard_1() contain values (see examples above) that are not present in columns (a and c) of table data_mcard_2().
-      Columns (a and c) of table data_mcard_2() contain values (see examples above) that are not present in columns (a and c) of table data_mcard_1().
+      ! Columns (`a`, `c`) of table data_mcard_1() contain values (see examples above) that are not present in columns (`a`, `c`) of table data_mcard_2().
+      Columns (`a`, `c`) of table data_mcard_2() contain values (see examples above) that are not present in columns (`a`, `c`) of table data_mcard_1().
 

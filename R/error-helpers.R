@@ -38,9 +38,9 @@ abort_not_unique_key <- function(table_name, column_names) {
 # error: is not subset of -------------------------------------------------
 
 abort_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2) {
-  n <- length(colname_1)
+  plural <- s_if_plural(colname_1)
   cli::cli_abort(
-    "{cli::qty(n)}Column{?s} ({.field {colname_1}}) of table {.field {table_name_1}} {cli::qty(n)}contain{?s/} values (see examples above) that are not present in column{?s} ({.field {colname_2}}) of table {.field {table_name_2}}.",
+    "Column{plural['n']} ({commas(tick(colname_1))}) of table {.field {table_name_1}} contain{plural['v']} values (see examples above) that are not present in column{plural['n']} ({commas(tick(colname_2))}) of table {.field {table_name_2}}.",
     class = dm_error_full("not_subset_of")
   )
 }
@@ -54,17 +54,17 @@ abort_sets_not_equal <- function(error_msgs) {
 # cardinality check errors ------------------------------------------------
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
-  n <- length(fk_col_name)
+  plural <- s_if_plural(fk_col_name)
   cli::cli_abort(
-    "{cli::qty(n)}1..1 cardinality (bijectivity) is not given: Column{?s} ({.field {fk_col_name}}) in table {.field {child_table_name}} {cli::qty(n)}contain{?s/} duplicate values.",
+    "1..1 cardinality (bijectivity) is not given: Column{plural['n']} ({commas(tick(fk_col_name))}) in table {.field {child_table_name}} contain{plural['v']} duplicate values.",
     class = dm_error_full("not_bijective")
   )
 }
 
 abort_not_injective <- function(child_table_name, fk_col_name) {
-  n <- length(fk_col_name)
+  plural <- s_if_plural(fk_col_name)
   cli::cli_abort(
-    "{cli::qty(n)}0..1 cardinality (injectivity from child table to parent table) is not given: Column{?s} ({.field {fk_col_name}}) in table {.field {child_table_name}} {cli::qty(n)}contain{?s/} duplicate values.",
+    "0..1 cardinality (injectivity from child table to parent table) is not given: Column{plural['n']} ({commas(tick(fk_col_name))}) in table {.field {child_table_name}} contain{plural['v']} duplicate values.",
     class = dm_error_full("not_injective")
   )
 }
@@ -288,7 +288,7 @@ abort_fk_not_tracked <- function(x_orig_name, y_name) {
 
 abort_pk_not_tracked <- function(orig_table, orig_pk) {
   cli::cli_abort(
-    "The primary key column(s) {.field {orig_pk}} of the originally zoomed table {.field {orig_table}} got lost in transformations. Therefore it is not possible to use {.fn nest.dm_zoomed}.",
+    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {.field {orig_table}} got lost in transformations. Therefore it is not possible to use {.fn nest.dm_zoomed}.",
     class = dm_error_full("pk_not_tracked")
   )
 }

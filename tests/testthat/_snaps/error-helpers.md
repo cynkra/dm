@@ -24,7 +24,7 @@
       abort_not_subset_of("playing", "game", "hunting", "game")
     Condition
       Error in `abort_not_subset_of()`:
-      ! Column (game) of table playing contains values (see examples above) that are not present in column (game) of table hunting.
+      ! Column (`game`) of table playing contains values (see examples above) that are not present in column (`game`) of table hunting.
     Code
       abort_sets_not_equal(c("A problem occurred.",
         "And another, even worse problem, occurred shortly after."))
@@ -36,12 +36,12 @@
       abort_not_bijective("child_table_name", "fk_col_name")
     Condition
       Error in `abort_not_bijective()`:
-      ! 1..1 cardinality (bijectivity) is not given: Column (fk_col_name) in table child_table_name contains duplicate values.
+      ! 1..1 cardinality (bijectivity) is not given: Column (`fk_col_name`) in table child_table_name contains duplicate values.
     Code
       abort_not_injective("child_table_name", "fk_col_name")
     Condition
       Error in `abort_not_injective()`:
-      ! 0..1 cardinality (injectivity from child table to parent table) is not given: Column (fk_col_name) in table child_table_name contains duplicate values.
+      ! 0..1 cardinality (injectivity from child table to parent table) is not given: Column (`fk_col_name`) in table child_table_name contains duplicate values.
     Code
       abort_ref_tbl_has_no_pk("parent_table")
     Condition
@@ -231,7 +231,7 @@
       abort_pk_not_tracked("house", "house_number")
     Condition
       Error in `abort_pk_not_tracked()`:
-      ! The primary key column(s) house_number of the originally zoomed table house got lost in transformations. Therefore it is not possible to use `nest.dm_zoomed()`.
+      ! The primary key column(s) `house_number` of the originally zoomed table house got lost in transformations. Therefore it is not possible to use `nest.dm_zoomed()`.
     Code
       abort_only_for_local_src(mtcars)
     Condition
@@ -287,17 +287,17 @@
       abort_not_subset_of("t1", c("a", "b"), "t2", c("c", "d"))
     Condition
       Error in `abort_not_subset_of()`:
-      ! Columns (a and b) of table t1 contain values (see examples above) that are not present in columns (c and d) of table t2.
+      ! Columns (`a`, `b`) of table t1 contain values (see examples above) that are not present in columns (`c`, `d`) of table t2.
     Code
       abort_not_bijective("child_tbl", c("col_a", "col_b"))
     Condition
       Error in `abort_not_bijective()`:
-      ! 1..1 cardinality (bijectivity) is not given: Columns (col_a and col_b) in table child_tbl contain duplicate values.
+      ! 1..1 cardinality (bijectivity) is not given: Columns (`col_a`, `col_b`) in table child_tbl contain duplicate values.
     Code
       abort_not_injective("child_tbl", c("col_a", "col_b"))
     Condition
       Error in `abort_not_injective()`:
-      ! 0..1 cardinality (injectivity from child table to parent table) is not given: Columns (col_a and col_b) in table child_tbl contain duplicate values.
+      ! 0..1 cardinality (injectivity from child table to parent table) is not given: Columns (`col_a`, `col_b`) in table child_tbl contain duplicate values.
     Code
       abort_need_unique_names(c("clone_a", "clone_b"))
     Condition
