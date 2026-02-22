@@ -155,7 +155,7 @@ dm_get_pk <- function(dm, table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
 
-  deprecate_soft("0.2.1", "dm::dm_get_pk()", "dm::dm_get_all_pks()")
+  deprecate_warn("0.2.1", "dm::dm_get_pk()", "dm::dm_get_all_pks()")
 
   table_name <- dm_tbl_name(dm, {{ table }})
   new_keys(dm_get_pk_impl(dm, table_name))
@@ -254,7 +254,7 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #'   dm_draw()
 dm_rm_pk <- function(dm, table = NULL, columns = NULL, ..., fail_fk = NULL) {
   if (!is.null(fail_fk)) {
-    lifecycle::deprecate_soft(
+    lifecycle::deprecate_warn(
       "1.0.4",
       "dm_rm_pk(fail_fk =)",
       details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
@@ -268,7 +268,7 @@ dm_rm_pk_ <- function(dm, table, columns, ..., rm_referencing_fks = NULL) {
   check_not_zoomed(dm)
 
   if (!is.null(rm_referencing_fks)) {
-    deprecate_soft(
+    deprecate_warn(
       "0.2.1",
       "dm::dm_rm_pk(rm_referencing_fks = )",
       details = "When removing a primary key, potential associated foreign keys will be pointing at an implicit unique key."
@@ -399,16 +399,20 @@ dm_enum_pk_candidates <- function(dm, table, ...) {
 }
 
 #' @autoglobal
-enum_pk_candidates_impl <- function(table, columns = new_keys(colnames(table))) {
+enum_pk_candidates_impl <- function(
+  table,
+  columns = new_keys(colnames(table)),
+  max_value = MAX_COMMAS
+) {
   tibble(column = new_keys(columns)) %>%
-    mutate(why = map_chr(column, ~ check_pk(table, .x))) %>%
+    mutate(why = map_chr(column, ~ check_pk(table, .x, max_value = max_value))) %>%
     mutate(candidate = (why == "")) %>%
     select(column, candidate, why) %>%
     arrange(desc(candidate), column)
 }
 
-check_pk <- function(table, columns) {
-  duplicate_values <- is_unique_key_se(table, columns)
+check_pk <- function(table, columns, max_value = MAX_COMMAS) {
+  duplicate_values <- is_unique_key_se(table, columns, max_value = max_value)
   if (duplicate_values$unique) {
     return("")
   }
@@ -431,7 +435,7 @@ check_pk <- function(table, columns) {
 
   if (length(values) > 0) {
     values_count <- paste0(values, " (", n[!values_na], ")")
-    values_text <- commas(values_count, capped = TRUE, fun = fun)
+    values_text <- commas(values_count, max_commas = max_value, capped = TRUE, fun = fun)
     duplicate <- paste0("duplicate values: ", values_text)
   } else {
     duplicate <- NULL
@@ -445,30 +449,19 @@ check_pk <- function(table, columns) {
 # Error -------------------------------------------------------------------
 
 abort_pk_not_defined <- function() {
-  abort(error_txt_pk_not_defined(), class = dm_error_full("pk_not_defined"))
-}
-
-error_txt_pk_not_defined <- function() {
-  glue("No primary keys to remove.")
+  cli::cli_abort("No primary keys to remove.", class = dm_error_full("pk_not_defined"))
 }
 
 abort_key_set_force_false <- function(table) {
-  abort(error_txt_key_set_force_false(table), class = dm_error_full("key_set_force_false"))
-}
-
-error_txt_key_set_force_false <- function(table) {
-  glue(
-    "Table {tick(table)} already has a primary key. Use `force = TRUE` to change the existing primary key."
+  cli::cli_abort(
+    "Table {.field {table}} already has a primary key. Use {.code force = TRUE} to change the existing primary key.",
+    class = dm_error_full("key_set_force_false")
   )
 }
 
 abort_first_rm_fks <- function(table, fk_tables) {
-  abort(error_txt_first_rm_fks(table, fk_tables), class = dm_error_full("first_rm_fks"))
-}
-
-error_txt_first_rm_fks <- function(table, fk_tables) {
-  glue(
-    "There are foreign keys pointing from table(s) {commas(tick(fk_tables))} to table {tick(table)}. ",
-    "First remove those, or set `fail_fk = FALSE`."
+  cli::cli_abort(
+    "{cli::qty(length(fk_tables))}There {?is/are} {?a foreign key/foreign keys} pointing from table{?s} {.field {fk_tables}} to table {.field {table}}. First remove those, or set {.code fail_fk = FALSE}.",
+    class = dm_error_full("first_rm_fks")
   )
 }

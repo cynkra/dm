@@ -157,7 +157,7 @@ dm_from_src <- function(src = NULL, table_names = NULL, learn_keys = NULL, ...) 
     return(empty_dm())
   }
 
-  deprecate_soft("0.3.0", "dm::dm_from_src()", "dm::dm_from_con()")
+  deprecate_warn("0.3.0", "dm::dm_from_src()", "dm::dm_from_con()")
   dm_from_con(con = con_from_src_or_con(src), table_names, learn_keys, ...)
 }
 
@@ -176,36 +176,33 @@ quote_ids <- function(x, con, schema = NULL) {
 # Errors ------------------------------------------------------------------
 
 abort_learn_keys <- function(parent) {
-  abort(error_txt_learn_keys(), class = dm_error_full("learn_keys"), parent = parent)
-}
-
-error_txt_learn_keys <- function() {
-  c(
-    "Failed to learn keys from database.",
-    i = "Use `learn_keys = FALSE` to work around, or `dm:::dm_meta()` to debug."
+  cli::cli_abort(
+    c(
+      "Failed to learn keys from database.",
+      i = "Use {.code learn_keys = FALSE} to work around, or {.code dm:::dm_meta()} to debug."
+    ),
+    class = dm_error_full("learn_keys"),
+    parent = parent
   )
 }
 
 abort_tbl_access <- function(bad) {
-  dm_abort(
-    error_txt_tbl_access(bad),
-    "tbl_access"
+  cli::cli_abort(
+    c(
+      "{cli::qty(length(bad))}Table{?s} {.field {bad}} cannot be accessed.",
+      i = "Use {.code tbl(src, ...)} to troubleshoot."
+    ),
+    class = dm_error_full("tbl_access")
   )
 }
 
 warn_tbl_access <- function(bad) {
-  dm_warn(
+  cli::cli_warn(
     c(
-      error_txt_tbl_access(bad),
-      i = "Set the `table_name` argument to avoid this warning."
+      "{cli::qty(length(bad))}Table{?s} {.field {bad}} cannot be accessed.",
+      i = "Use {.code tbl(src, ...)} to troubleshoot.",
+      i = "Set the {.arg table_name} argument to avoid this warning."
     ),
-    "tbl_access"
-  )
-}
-
-error_txt_tbl_access <- function(bad) {
-  c(
-    glue("Table(s) {commas(tick(bad))} cannot be accessed."),
-    i = "Use `tbl(src, ...)` to troubleshoot."
+    class = dm_warning_full("tbl_access")
   )
 }

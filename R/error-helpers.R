@@ -2,14 +2,6 @@
 
 # error class generator ---------------------------------------------------
 
-format_msg_and_bullets <- function(bullets) {
-  if (length(bullets) <= 1) {
-    bullets
-  } else {
-    paste0(bullets[[1]], "\n", format_error_bullets(bullets[-1]))
-  }
-}
-
 dm_error <- function(x) {
   paste0("dm_error_", x)
 }
@@ -19,10 +11,7 @@ dm_error_full <- function(x) {
 }
 
 dm_abort <- function(bullets, class) {
-  abort(
-    format_msg_and_bullets(bullets),
-    class = dm_error_full(class)
-  )
+  cli::cli_abort(bullets, class = dm_error_full(class))
 }
 
 dm_warning <- function(x) {
@@ -34,248 +23,181 @@ dm_warning_full <- function(x) {
 }
 
 dm_warn <- function(bullets, class) {
-  warn(
-    format_msg_and_bullets(bullets),
-    class = dm_warning_full(class)
-  )
+  cli::cli_warn(bullets, class = dm_warning_full(class))
 }
 
 # abort and text for key-helper functions ---------------------------------
 
 abort_not_unique_key <- function(table_name, column_names) {
-  abort(error_txt_not_unique_key(table_name, column_names), class = dm_error_full("not_unique_key"))
-}
-
-error_txt_not_unique_key <- function(table_name, column_names) {
-  glue("({commas(tick(column_names))}) not a unique key of {tick(table_name)}.")
+  cli::cli_abort(
+    "({commas(tick(column_names))}) not a unique key of {.code {table_name}}.",
+    class = dm_error_full("not_unique_key")
+  )
 }
 
 # error: is not subset of -------------------------------------------------
 
 abort_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2) {
-  abort(
-    error_txt_not_subset_of(table_name_1, colname_1, table_name_2, colname_2),
-    class = dm_error_full("not_subset_of")
-  )
-}
-
-error_txt_not_subset_of <- function(table_name_1, colname_1, table_name_2, colname_2) {
-  # taking care of singular/plural of the word "columns" and the corresponding ending of the verb
   plural <- s_if_plural(colname_1)
-  glue(
-    "Column{plural['n']} ({commas(tick(colname_1))}) of table ",
-    "{tick(table_name_1)} contain{plural['v']} values (see examples above) that are ",
-    "not present in column{plural['n']} ",
-    "({commas(tick(colname_2))}) of table {tick(table_name_2)}."
+  cli::cli_abort(
+    "Column{plural['n']} ({commas(tick(colname_1))}) of table {.field {table_name_1}} contain{plural['v']} values (see examples above) that are not present in column{plural['n']} ({commas(tick(colname_2))}) of table {.field {table_name_2}}.",
+    class = dm_error_full("not_subset_of")
   )
 }
 
 # error sets not equal ----------------------------------------------------
 
 abort_sets_not_equal <- function(error_msgs) {
-  abort(error_txt_sets_not_equal(error_msgs), class = dm_error_full("sets_not_equal"))
-}
-
-error_txt_sets_not_equal <- function(error_msgs) {
-  paste0(error_msgs, collapse = "\n  ")
+  cli::cli_abort(error_msgs, class = dm_error_full("sets_not_equal"))
 }
 
 # cardinality check errors ------------------------------------------------
 
 abort_not_bijective <- function(child_table_name, fk_col_name) {
-  abort(
-    error_txt_not_bijective(child_table_name, fk_col_name),
+  plural <- s_if_plural(fk_col_name)
+  cli::cli_abort(
+    "1..1 cardinality (bijectivity) is not given: Column{plural['n']} ({commas(tick(fk_col_name))}) in table {.field {child_table_name}} contain{plural['v']} duplicate values.",
     class = dm_error_full("not_bijective")
   )
 }
 
-error_txt_not_bijective <- function(child_table_name, fk_col_name) {
-  plural <- s_if_plural(fk_col_name)
-  glue(
-    "1..1 cardinality (bijectivity) is not given: Column{plural['n']} ",
-    "({commas(tick(fk_col_name))}) in table ",
-    "{tick(child_table_name)} contain{plural['v']} duplicate values."
-  )
-}
-
 abort_not_injective <- function(child_table_name, fk_col_name) {
-  abort(
-    error_txt_not_injective(child_table_name, fk_col_name),
-    class = dm_error_full("not_injective")
-  )
-}
-
-error_txt_not_injective <- function(child_table_name, fk_col_name) {
   plural <- s_if_plural(fk_col_name)
-  glue(
-    "0..1 cardinality (injectivity from child table to parent table) is not given: ",
-    "Column{plural['n']} ({commas(tick(fk_col_name))})",
-    " in table {tick(child_table_name)} contain{plural['v']} duplicate values."
+  cli::cli_abort(
+    "0..1 cardinality (injectivity from child table to parent table) is not given: Column{plural['n']} ({commas(tick(fk_col_name))}) in table {.field {child_table_name}} contain{plural['v']} duplicate values.",
+    class = dm_error_full("not_injective")
   )
 }
 
 # errors in fk handling --------------------------------------------------
 
 abort_ref_tbl_has_no_pk <- function(ref_table_name) {
-  abort(error_txt_ref_tbl_has_no_pk(ref_table_name), class = dm_error_full("ref_tbl_has_no_pk"))
-}
-
-error_txt_ref_tbl_has_no_pk <- function(ref_table_name) {
-  glue(
-    "ref_table {tick(ref_table_name)} needs a primary key first. ",
-    "Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key."
+  cli::cli_abort(
+    "ref_table {.field {ref_table_name}} needs a primary key first. Use {.fn dm_enum_pk_candidates} to find appropriate columns and {.fn dm_add_pk} to define a primary key.",
+    class = dm_error_full("ref_tbl_has_no_pk")
   )
 }
 
 # error helpers for draw_dm -----------------------------------------------
 
 abort_last_col_missing <- function() {
-  abort(error_txt_last_col_missing(), class = dm_error_full("last_col_missing"))
-}
-
-error_txt_last_col_missing <- function() {
-  "The last color can't be missing."
+  cli::cli_abort("The last color can't be missing.", class = dm_error_full("last_col_missing"))
 }
 
 # errors in graph-functions -----------------------------------------------
 
 abort_no_cycles <- function(g) {
   shortest_cycle <-
-    igraph::girth(g) %>%
+    graph_girth(g) %>%
     pluck("circle") %>%
     names()
   # add the first element after the last element, so it's more clear that it's a cycle
   shortest_cycle <- paste(c(shortest_cycle, shortest_cycle[1]), collapse = " -> ")
   # FIXME: extract, also identify parallel edges as circles
-  abort(error_txt_no_cycles(shortest_cycle), class = dm_error_full("no_cycles"))
-}
-
-error_txt_no_cycles <- function(shortest_cycle) {
-  c(
-    "Cycles in the relationship graph not yet supported.",
-    i = glue::glue("Shortest cycle: {shortest_cycle}")
+  cli::cli_abort(
+    c(
+      "Cycles in the relationship graph not yet supported.",
+      i = "Shortest cycle: {shortest_cycle}"
+    ),
+    class = dm_error_full("no_cycles")
   )
 }
-
 
 # error in dm_flatten_to_tbl() ----------------------------------------------
 
 abort_tables_not_reachable_from_start <- function() {
-  abort(
-    error_txt_tables_not_reachable_from_start(),
+  cli::cli_abort(
+    "All selected tables must be reachable from {.arg .start}.",
     class = dm_error_full("tables_not_reachable_from_start")
   )
 }
 
-error_txt_tables_not_reachable_from_start <- function() {
-  glue("All selected tables must be reachable from `.start`.")
-}
-
-
 # errors in table surgery -------------------------------------------------
 
 abort_dupl_new_id_col_name <- function(table_name) {
-  abort(error_txt_dupl_new_id_col_name(table_name), class = dm_error_full("dupl_new_id_col_name"))
-}
-
-error_txt_dupl_new_id_col_name <- function(table_name) {
-  glue("`new_id_column` can't have an identical name as one of the columns of {tick(table_name)}.")
+  cli::cli_abort(
+    "{.arg new_id_column} can't have an identical name as one of the columns of {.field {table_name}}.",
+    class = dm_error_full("dupl_new_id_col_name")
+  )
 }
 
 abort_no_overwrite <- function() {
   fun_name <- as_string(sys.call(-1)[[1]])
-  abort(error_txt_no_overwrite(fun_name), class = dm_error_full("no_overwrite"))
-}
-
-error_txt_no_overwrite <- function(fun_name) {
-  glue("`{fun_name}()` does not support the `overwrite` argument.")
+  cli::cli_abort(
+    "{.fn {fun_name}} does not support the {.arg overwrite} argument.",
+    class = dm_error_full("no_overwrite")
+  )
 }
 
 abort_update_not_supported <- function() {
-  abort(error_txt_update_not_supported(), class = dm_error_full("update_not_supported"))
-}
-
-error_txt_update_not_supported <- function() {
-  "Updating `dm` objects not supported."
+  cli::cli_abort(
+    "Updating {.cls dm} objects not supported.",
+    class = dm_error_full("update_not_supported")
+  )
 }
 
 # errors when filters are set but they shouldn't be ------------------------------
 
 abort_only_possible_wo_filters <- function(fun_name) {
-  abort(
-    error_txt_only_possible_wo_filters(fun_name),
+  cli::cli_abort(
+    "You can't call {.fn {fun_name}} on a {.cls dm} with filter conditions. Consider using {.fn dm_apply_filters} first.",
     class = dm_error_full("only_possible_wo_filters")
-  )
-}
-
-error_txt_only_possible_wo_filters <- function(fun_name) {
-  glue(
-    "You can't call `{fun_name}()` on a `dm` with filter conditions. Consider using `dm_apply_filters()` first."
   )
 }
 
 # no foreign key relation -------------------------------------------------
 
 abort_tables_not_neighbors <- function(t1_name, t2_name) {
-  abort(
-    error_txt_tables_not_neighbors(t1_name, t2_name),
+  cli::cli_abort(
+    "Tables {.field {t1_name}} and {.field {t2_name}} are not directly linked by a foreign key relation.",
     class = dm_error_full("tables_not_neighbors")
   )
-}
-
-error_txt_tables_not_neighbors <- function(t1_name, t2_name) {
-  glue("Tables `{t1_name}` and `{t2_name}` are not directly linked by a foreign key relation.")
 }
 
 # `dm_flatten_to_tbl()` and `dm_join_to_tbl()` only supported for parents
 
 abort_only_parents <- function() {
-  abort(error_txt_only_parents(), class = dm_error_full("only_parents"))
-}
-
-error_txt_only_parents <- function() {
-  paste0(
-    "When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `.start` ",
-    "have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` ",
-    "use `dm_flatten_to_tbl(.recursive = TRUE)` as an alternative."
+  cli::cli_abort(
+    "When using {.fn dm_join_to_tbl} or {.fn dm_flatten_to_tbl} all join partners of table {.arg .start} have to be its direct neighbors. For 'flattening' with {.fn left_join}, {.fn inner_join} or {.fn full_join} use {.code dm_flatten_to_tbl(.recursive = TRUE)} as an alternative.",
+    class = dm_error_full("only_parents")
   )
 }
 
 # not all tables have the same src ----------------------------------------
 
 abort_not_same_src <- function(dm_bind = FALSE) {
-  abort(error_txt_not_same_src(dm_bind), class = dm_error_full("not_same_src"))
-}
-
-error_txt_not_same_src <- function(dm_bind = FALSE) {
   if (!dm_bind) {
-    "Not all tables in the object share the same `src`."
+    cli::cli_abort(
+      "Not all tables in the object share the same {.arg src}.",
+      class = dm_error_full("not_same_src")
+    )
   } else {
-    "All `dm` objects need to share the same `src`."
+    cli::cli_abort(
+      "All {.cls dm} objects need to share the same {.arg src}.",
+      class = dm_error_full("not_same_src")
+    )
   }
 }
 
 # Something other than tables are put in a `dm` ------------------
 
 abort_what_a_weird_object <- function(class) {
-  abort(error_txt_what_a_weird_object(class), class = dm_error_full("what_a_weird_object"))
-}
-
-error_txt_what_a_weird_object <- function(class) {
-  glue("Don't know how to determine table source for object of class {commas(tick(class))}.")
+  cli::cli_abort(
+    "Don't know how to determine table source for object of class {.cls {class}}.",
+    class = dm_error_full("what_a_weird_object")
+  )
 }
 
 abort_squash_limited <- function() {
-  abort(error_txt_squash_limited(), class = dm_error_full("squash_limited"))
-}
-
-error_txt_squash_limited <- function() {
-  "`dm_flatten_to_tbl(.recursive = TRUE)` only supports join methods `left_join`, `inner_join`, `full_join`."
+  cli::cli_abort(
+    "{.code dm_flatten_to_tbl(.recursive = TRUE)} only supports joins using {.fn left_join}, {.fn inner_join}, or {.fn full_join}.",
+    class = dm_error_full("squash_limited")
+  )
 }
 
 abort_apply_filters_first <- function(join_name) {
-  abort(
-    error_txt_apply_filters_first(join_name),
+  cli::cli_abort(
+    "{.fn dm_..._to_tbl} with join using {.fn {join_name}} generally wouldn't produce the correct result when filters are set. Please consider calling {.fn dm_apply_filters} first.",
     class = dm_error_txt_apply_filters_first(join_name)
   )
 }
@@ -284,82 +206,61 @@ dm_error_txt_apply_filters_first <- function(join_name) {
   dm_error(c(paste0("apply_filters_first_", join_name), "apply_filters_first"))
 }
 
-error_txt_apply_filters_first <- function(join_name) {
-  glue(
-    "`dm_..._to_tbl()` with join method `{join_name}` generally wouldn't ",
-    "produce the correct result when filters are set. ",
-    "Please consider calling `dm_apply_filters()` first."
-  )
-}
-
 abort_no_flatten_with_nest_join <- function() {
-  abort(error_txt_no_flatten_with_nest_join(), class = dm_error_full("no_flatten_with_nest_join"))
-}
-
-error_txt_no_flatten_with_nest_join <- function() {
-  paste0(
-    "`dm_..._to_tbl()` can't be called with `join = nest_join`, ",
-    "see the help pages for these functions. Consider `join = left_join`."
+  cli::cli_abort(
+    "{.fn dm_..._to_tbl} can't be called with {.code join = nest_join}, see the help pages for these functions. Consider {.code join = left_join}.",
+    class = dm_error_full("no_flatten_with_nest_join")
   )
 }
 
 
 # object is not a `dm` (but should be one) --------------------------------
 abort_is_not_dm <- function(obj_class) {
-  abort(error_txt_is_not_dm(obj_class), class = dm_error_full("is_not_dm"))
-}
-
-error_txt_is_not_dm <- function(obj_class) {
-  glue("Required class `dm` but instead is {format_classes(obj_class)}.")
+  cli::cli_abort(
+    "Required class {.cls dm} but instead is {.cls {obj_class}}.",
+    class = dm_error_full("is_not_dm")
+  )
 }
 
 
 # local `dm` has no con ---------------------------------------------------
 abort_con_only_for_dbi <- function() {
-  abort(error_txt_con_only_for_dbi(), class = dm_error_full("con_only_for_dbi"))
-}
-
-error_txt_con_only_for_dbi <- function() {
-  "A local `dm` doesn't have a DB connection."
+  cli::cli_abort(
+    "A local {.cls dm} doesn't have a DB connection.",
+    class = dm_error_full("con_only_for_dbi")
+  )
 }
 
 # when zoomed and it shouldn't be ------------------------------
 
 abort_only_possible_wo_zoom <- function(fun_name) {
-  abort(error_txt_only_possible_wo_zoom(fun_name), class = dm_error_full("only_possible_wo_zoom"))
-}
-
-error_txt_only_possible_wo_zoom <- function(fun_name) {
-  glue(
-    "You can't call `{fun_name}()` on a `dm_zoomed`. Consider using one of `dm_update_zoomed()`, ",
-    "`dm_insert_zoomed()` or `dm_discard_zoomed()` first."
+  cli::cli_abort(
+    "You can't call {.fn {fun_name}} on a {.cls dm_zoomed}. Consider using one of {.fn dm_update_zoomed}, {.fn dm_insert_zoomed} or {.fn dm_discard_zoomed} first.",
+    class = dm_error_full("only_possible_wo_zoom")
   )
 }
 
 # when not zoomed and it should be ------------------------------
 
 abort_only_possible_w_zoom <- function(fun_name) {
-  abort(error_txt_only_possible_w_zoom(fun_name), class = dm_error_full("only_possible_w_zoom"))
-}
-
-error_txt_only_possible_w_zoom <- function(fun_name) {
-  glue("You can't call `{fun_name}()` on an unzoomed `dm`. Consider using `dm_zoom_to()` first.")
+  cli::cli_abort(
+    "You can't call {.fn {fun_name}} on an unzoomed {.cls dm}. Consider using {.fn dm_zoom_to} first.",
+    class = dm_error_full("only_possible_w_zoom")
+  )
 }
 
 # errors for `copy_to.dm()` ----------------------------------------------
 
 abort_only_data_frames_supported <- function() {
-  abort(
-    "`copy_to.dm()` only supports class `data.frame` for argument `df`",
+  cli::cli_abort(
+    "{.fn copy_to.dm} only supports class {.cls data.frame} for argument {.arg df}",
     class = dm_error_full("only_data_frames_supported")
   )
 }
 
 abort_one_name_for_copy_to <- function(name) {
-  abort(
-    glue(
-      "Argument `name` in `copy_to.dm()` needs to have length 1, but has length {length(name)} ({commas(tick(name))})"
-    ),
+  cli::cli_abort(
+    "Argument {.arg name} in {.fn copy_to.dm} needs to have length 1, but has length {length(name)} ({.code {name}})",
     class = dm_error_full("one_name_for_copy_to")
   )
 }
@@ -367,42 +268,28 @@ abort_one_name_for_copy_to <- function(name) {
 # new table name needs to be unique ---------------------------------------
 
 abort_need_unique_names <- function(duplicate_names) {
-  abort(
-    error_txt_need_unique_names(unique(duplicate_names)),
+  dupl <- unique(duplicate_names)
+  cli::cli_abort(
+    "{cli::qty(length(dupl))}Each new table needs to have a unique name. Duplicate new name{?s}: {.field {dupl}}.",
     class = dm_error_full("need_unique_names")
-  )
-}
-
-error_txt_need_unique_names <- function(duplicate_names) {
-  glue(
-    "Each new table needs to have a unique name. Duplicate new name(s): ",
-    "{commas(tick(duplicate_names))}."
   )
 }
 
 # lost track of by-column (FK-relation) -----------------------------------
 
 abort_fk_not_tracked <- function(x_orig_name, y_name) {
-  abort(error_txt_fk_not_tracked(x_orig_name, y_name), class = dm_error_full("fk_not_tracked"))
-}
-
-error_txt_fk_not_tracked <- function(x_orig_name, y_name) {
-  glue(
-    "The foreign key that existed between the originally zoomed table {tick(x_orig_name)} ",
-    "and {tick(y_name)} got lost in transformations. Please explicitly provide the `by` argument."
+  cli::cli_abort(
+    "The foreign key that existed between the originally zoomed table {.field {x_orig_name}} and {.field {y_name}} got lost in transformations. Please explicitly provide the {.arg by} argument.",
+    class = dm_error_full("fk_not_tracked")
   )
 }
 
 # lost track of PK-column(s) -----------------------------------
 
 abort_pk_not_tracked <- function(orig_table, orig_pk) {
-  abort(error_txt_pk_not_tracked(orig_table, orig_pk), class = dm_error_full("pk_not_tracked"))
-}
-
-error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
-  glue(
-    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {tick(orig_table)} got lost ",
-    "in transformations. Therefore it is not possible to use `nest.dm_zoomed()`."
+  cli::cli_abort(
+    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {.field {orig_table}} got lost in transformations. Therefore it is not possible to use {.fn nest.dm_zoomed}.",
+    class = dm_error_full("pk_not_tracked")
   )
 }
 
@@ -410,115 +297,67 @@ error_txt_pk_not_tracked <- function(orig_table, orig_pk) {
 # only for local src ------------------------------------------------------
 
 abort_only_for_local_src <- function(src_dm) {
-  abort(
-    error_txt_only_for_local_src(format_classes(class(src_dm))),
+  cli::cli_abort(
+    "{.fn nest_join.dm_zoomed} works only for a local {.arg src}, not on a database with {.arg src}-class: {.cls {class(src_dm)}}.",
     class = dm_error_full("only_for_local_src")
-  )
-}
-
-error_txt_only_for_local_src <- function(src_class) {
-  glue(
-    "`nest_join.dm_zoomed()` works only for a local `src`, not on a database with `src`-class: {src_class}."
   )
 }
 
 # Errors for `pull_tbl.dm()` -----------------------------
 
 abort_no_table_provided <- function() {
-  abort(error_txt_no_table_provided(), class = dm_error_full("no_table_provided"))
-}
-
-error_txt_no_table_provided <- function() {
-  "Argument `table` for `pull_tbl.dm()` missing."
+  cli::cli_abort(
+    "Argument {.arg table} for {.fn pull_tbl.dm} missing.",
+    class = dm_error_full("no_table_provided")
+  )
 }
 
 abort_table_not_zoomed <- function(table_name, zoomed_tables) {
-  abort(
-    error_txt_table_not_zoomed(table_name, zoomed_tables),
+  cli::cli_abort(
+    "In {.fn pull_tbl.dm_zoomed}: Table {.code {table_name}} not zoomed, zoomed tables: {.code {zoomed_tables}}.",
     class = dm_error_full("table_not_zoomed")
   )
 }
 
-error_txt_table_not_zoomed <- function(table_name, zoomed_tables) {
-  glue(
-    "In `pull_tbl.dm_zoomed`: Table {tick(table_name)} not zoomed, ",
-    "zoomed tables: {commas(tick(zoomed_tables))}."
-  )
-}
-
 abort_not_pulling_multiple_zoomed <- function() {
-  abort(
-    error_txt_not_pulling_multiple_zoomed(),
+  cli::cli_abort(
+    "If more than one zoomed table is available, you need to specify argument {.arg table} in {.fn pull_tbl.dm_zoomed}.",
     class = dm_error_full("not_pulling_multiple_zoomed")
   )
 }
 
-error_txt_not_pulling_multiple_zoomed <- function() {
-  "If more than 1 zoomed table is available you need to specify argument `table` in `pull_tbl.dm_zoomed()`."
-}
-
 abort_cols_not_avail <- function(wrong_col) {
-  abort(error_txt_cols_not_avail(wrong_col), class = dm_error_full("cols_not_avail"))
-}
-
-error_txt_cols_not_avail <- function(wrong_col) {
-  glue(
-    "The color(s) {commas(tick(wrong_col))} are not ",
-    "available. Call `dm_get_available_colors()` for possible color names or use hex color codes."
+  cli::cli_abort(
+    "{cli::qty(length(wrong_col))}The color{?s} {.val {wrong_col}} {?is/are} not available. Call {.fn dm_get_available_colors} for possible color names or use hex color codes.",
+    class = dm_error_full("cols_not_avail")
   )
 }
 
 abort_only_named_args <- function(fun_name, name_meaning) {
-  abort(error_txt_only_named_args(fun_name, name_meaning), class = dm_error_full("only_named_args"))
-}
-
-error_txt_only_named_args <- function(fun_name, name_meaning) {
-  glue(
-    "All `...` arguments to function {tick(paste0(fun_name, '()'))} must be named. ",
-    "The names represent {name_meaning}."
+  cli::cli_abort(
+    "All {.arg ...} arguments to function {.fn {fun_name}} must be named. The names represent {name_meaning}.",
+    class = dm_error_full("only_named_args")
   )
 }
 
 abort_wrong_syntax_set_cols <- function() {
-  abort(error_txt_wrong_syntax_set_cols(), class = dm_error_full("wrong_syntax_set_cols"))
-}
-
-error_txt_wrong_syntax_set_cols <- function() {
-  "You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples."
+  cli::cli_abort(
+    "You seem to be using outdated syntax for {.fn dm_set_colors}, type {.code ?dm_set_colors()} for examples.",
+    class = dm_error_full("wrong_syntax_set_cols")
+  )
 }
 
 abort_parameter_not_correct_class <- function(parameter, correct_class, class) {
-  abort(
-    error_txt_parameter_not_correct_class(
-      parameter,
-      correct_class,
-      class
-    ),
+  cli::cli_abort(
+    "Parameter {.arg {parameter}} needs to be of class {.cls {correct_class}} but is of class {.cls {class}}.",
     class = dm_error_full("parameter_not_correct_class")
   )
 }
 
-error_txt_parameter_not_correct_class <- function(parameter, correct_class, class) {
-  glue(
-    "Parameter {tick(parameter)} needs to be of class {tick(correct_class)} but is of class {format_classes(class)}."
-  )
-}
-
 abort_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
-  abort(
-    error_txt_parameter_not_correct_length(
-      parameter,
-      correct_length,
-      parameter_value
-    ),
+  cli::cli_abort(
+    "Argument {.arg {parameter}} needs to be of length {.val {correct_length}} but is of length {.val {length(parameter_value)}} ({.val {parameter_value}}).",
     class = dm_error_full("parameter_not_correct_length")
-  )
-}
-
-error_txt_parameter_not_correct_length <- function(parameter, correct_length, parameter_value) {
-  glue(
-    "Parameter {tick(parameter)} needs to be of length {tick(correct_length)} but is ",
-    "of length {as.character(length(parameter_value))} ({commas(tick(parameter_value))})."
   )
 }
 
@@ -531,13 +370,11 @@ warn_if_arg_not <- function(
 ) {
   if (!identical(arg, correct)) {
     only_on_string <- glue::glue_collapse(only_on, sep = ", ", last = " and ")
+    msg <- cli::format_inline(
+      "Argument {.arg {arg_name}} ignored: currently only supported for {only_on_string}."
+    )
     dm_warn(
-      glue::glue(
-        "Argument {tick(arg_name)} ignored: currently only supported for {only_on_string}.",
-        if (!is.null(additional_msg)) {
-          paste0("\n", additional_msg)
-        }
-      ),
+      c(msg, if (!is.null(additional_msg) && nzchar(additional_msg)) c(i = additional_msg)),
       class = "arg_not"
     )
   }
@@ -547,36 +384,35 @@ warn_if_arg_not <- function(
 # Errors for schema handling functions ------------------------------------
 
 abort_no_schemas_supported <- function(dbms = NULL, con = NULL) {
-  abort(
-    error_txt_no_schemas_supported(dbms, con),
-    class = dm_error_full("no_schemas_supported")
-  )
-}
-
-error_txt_no_schemas_supported <- function(dbms, con) {
   if (!is.null(dbms)) {
-    glue::glue("The concept of schemas is not supported for DBMS {tick(dbms)}.")
+    cli::cli_abort(
+      "The concept of schemas is not supported for DBMS {.code {dbms}}.",
+      class = dm_error_full("no_schemas_supported")
+    )
   } else if (!is.null(con)) {
-    glue::glue(
-      "Currently schemas are not supported for a connection ",
-      "of class {tick(class(con))}."
+    cli::cli_abort(
+      "Currently schemas are not supported for a connection of class {.cls {class(con)}}.",
+      class = dm_error_full("no_schemas_supported")
     )
   } else {
     # if local src, `con = NULL`
-    "Schemas are not available locally."
+    cli::cli_abort(
+      "Schemas are not available locally.",
+      class = dm_error_full("no_schemas_supported")
+    )
   }
 }
 
 abort_temporary_not_in_schema <- function() {
-  abort(
-    "If argument `temporary = TRUE`, argument `schema` has to be `NULL`.",
+  cli::cli_abort(
+    "If argument {.arg temporary} is {.val {TRUE}}, argument {.arg schema} has to be {.val {I('NULL')}}.",
     class = dm_error_full("temporary_not_in_schema")
   )
 }
 
 abort_one_of_schema_table_names <- function() {
-  abort(
-    "Only one of the arguments `schema` and `table_names` can be different from `NULL`.",
+  cli::cli_abort(
+    "Only one of the arguments {.arg schema} and {.arg table_names} can be different from {.val {I('NULL')}}.",
     class = dm_error_full("one_of_schema_table_names")
   )
 }

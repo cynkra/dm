@@ -43,7 +43,7 @@ dm_examine_cardinalities <- function(
   check_dots_empty()
 
   if (!is_missing(dm)) {
-    deprecate_soft("1.0.0", "dm_examine_cardinalities(dm = )", "dm_examine_cardinalities(.dm = )")
+    deprecate_warn("1.0.0", "dm_examine_cardinalities(dm = )", "dm_examine_cardinalities(.dm = )")
   }
 
   if (is_missing(.dm)) {
@@ -54,7 +54,7 @@ dm_examine_cardinalities <- function(
     if (is.na(progress)) {
       progress <- .progress
     }
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       "dm_examine_cardinalities(progress = )",
       "dm_examine_cardinalities(.progress = )"

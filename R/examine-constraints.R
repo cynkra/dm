@@ -11,6 +11,9 @@
 #' @param .progress Whether to display a progress bar, if `NA` (the default)
 #'   hide in non-interactive mode, show in interactive mode. Requires the
 #'   'progress' package.
+#' @param .max_value Maximum number of distinct problematic values to report
+#'   in the `problem` column, defaults to `6`.
+#'   Set to `Inf` to report all values.
 #' @param dm,progress `r lifecycle::badge("deprecated")`
 #'
 #' @return A tibble with the following columns:
@@ -36,24 +39,30 @@ dm_examine_constraints <- function(
   .dm,
   ...,
   .progress = NA,
+  .max_value = 6L,
   dm = deprecated(),
   progress = deprecated()
 ) {
   check_dots_empty()
 
   if (!is_missing(dm)) {
-    deprecate_soft("1.0.0", "dm_examine_constraints(dm = )", "dm_examine_constraints(.dm = )")
+    deprecate_warn("1.0.0", "dm_examine_constraints(dm = )", "dm_examine_constraints(.dm = )")
   }
 
   if (is_missing(.dm)) {
-    return(dm_examine_constraints(dm, .progress = .progress, progress = progress))
+    return(dm_examine_constraints(
+      dm,
+      .progress = .progress,
+      .max_value = .max_value,
+      progress = progress
+    ))
   }
 
   if (!is_missing(progress)) {
     if (is.na(progress)) {
       progress <- .progress
     }
-    deprecate_soft(
+    deprecate_warn(
       "1.0.0",
       "dm_examine_constraints(progress = )",
       "dm_examine_constraints(.progress = )"
@@ -62,15 +71,34 @@ dm_examine_constraints <- function(
 
   check_not_zoomed(.dm)
   .dm %>%
-    dm_examine_constraints_impl(progress = .progress, top_level_fun = "dm_examine_constraints") %>%
+    dm_examine_constraints_impl(
+      progress = .progress,
+      top_level_fun = "dm_examine_constraints",
+      max_value = .max_value
+    ) %>%
     rename(columns = column) %>%
     mutate(columns = new_keys(columns)) %>%
     new_dm_examine_constraints()
 }
 
-dm_examine_constraints_impl <- function(dm, progress = NA, top_level_fun = NULL) {
-  pk_results <- check_pk_constraints(dm, progress, top_level_fun = top_level_fun)
-  fk_results <- check_fk_constraints(dm, progress, top_level_fun = top_level_fun)
+dm_examine_constraints_impl <- function(
+  dm,
+  progress = NA,
+  top_level_fun = NULL,
+  max_value = MAX_COMMAS
+) {
+  pk_results <- check_pk_constraints(
+    dm,
+    progress,
+    top_level_fun = top_level_fun,
+    max_value = max_value
+  )
+  fk_results <- check_fk_constraints(
+    dm,
+    progress,
+    top_level_fun = top_level_fun,
+    max_value = max_value
+  )
   bind_rows(
     pk_results,
     fk_results
@@ -136,7 +164,7 @@ kind_to_long <- function(kind) {
 }
 
 #' @autoglobal
-check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
+check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL, max_value = MAX_COMMAS) {
   pks <- bind_rows(
     list(
       PK = dm_get_all_pks_impl(dm),
@@ -171,7 +199,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
     ticker(
       ~ {
         tbl <- tbl_impl(dm, .x)
-        enum_pk_candidates_impl(tbl, list(.y))
+        enum_pk_candidates_impl(tbl, list(.y), max_value = max_value)
       }
     )
   )
@@ -194,7 +222,7 @@ check_pk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
 }
 
 #' @autoglobal
-check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
+check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL, max_value = MAX_COMMAS) {
   fks <- dm_get_all_fks_impl(dm)
   pts <- map(fks$parent_table, tbl_impl, dm = dm)
   cts <- map(fks$child_table, tbl_impl, dm = dm)
@@ -218,7 +246,7 @@ check_fk_constraints <- function(dm, progress = NA, top_level_fun = NULL) {
 
   fks_tibble %>%
     mutate(
-      problem = pmap_chr(fks_tibble, ticker(check_fk)),
+      problem = pmap_chr(fks_tibble, ticker(check_fk), max_value = max_value),
       is_key = (problem == ""),
       kind = "FK"
     ) %>%

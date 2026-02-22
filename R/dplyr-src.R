@@ -15,7 +15,7 @@
 #' @export
 #' @keywords internal
 dm_get_src <- function(x) {
-  deprecate_soft(
+  deprecate_warn(
     "0.2.0",
     "dm::dm_get_src()",
     details = "Use `dm_get_con(dm)` for databases, or `class(dm[[1]])` to get the class of a table."
@@ -34,7 +34,7 @@ dm_get_src <- function(x) {
 #' @rdname dplyr_src
 #' @keywords internal
 tbl.dm <- function(src, from, ...) {
-  deprecate_soft(
+  deprecate_warn(
     "0.2.0",
     "dm::tbl.dm()",
     details = "Use `dm[[table_name]]` instead to access a specific table."
@@ -53,7 +53,7 @@ tbl.dm <- function(src, from, ...) {
 #' @keywords internal
 #' @export
 src_tbls.dm <- function(x, ...) {
-  deprecate_soft("0.2.0", "dm::src_tbls.dm()", details = "Use `names(dm_get_tables(dm))` instead.")
+  deprecate_warn("0.2.0", "dm::src_tbls.dm()", details = "Use `names(dm_get_tables(dm))` instead.")
 
   check_not_zoomed(x)
 
@@ -83,7 +83,7 @@ copy_to.dm <- function(
   quiet = FALSE,
   ...
 ) {
-  deprecate_soft(
+  deprecate_warn(
     "0.2.0",
     "dm::copy_to.dm()",
     details = "Use `copy_to(dm_get_con(dm), ...)` and `dm()`."
