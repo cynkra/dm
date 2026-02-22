@@ -1,8 +1,27 @@
-# Wrappers for igraph functions used internally.
-# Graphs are stored as objects of class c("dm_igraph", "dm_graph") wrapping
-# an igraph object.  igraph is assumed to always be available.
+# Graph abstraction layer.
+# When igraph is installed, graph_* functions use igraph for best performance.
+# When igraph is not installed, all graph_* functions are overwritten at load
+# time with pure R fallbacks from R/igraph-fallback.R.
+# All functions accept and return "dm_graph" objects (or the "dm_igraph" subclass).
 
-# Wrap an igraph object in the unified dm_graph class hierarchy.
+rlang::on_load({
+  if (!rlang::is_installed("igraph")) {
+    graph_from_data_frame <<- graph_from_data_frame_fallback
+    graph_vertices <<- graph_vertices_fallback
+    graph_edges <<- graph_edges_fallback
+    graph_dfs <<- graph_dfs_fallback
+    graph_topo_sort <<- graph_topo_sort_fallback
+    graph_distances <<- graph_distances_fallback
+    graph_induced_subgraph <<- graph_induced_subgraph_fallback
+    graph_shortest_paths <<- graph_shortest_paths_fallback
+    graph_delete_vertices <<- graph_delete_vertices_fallback
+    graph_neighbors <<- graph_neighbors_fallback
+    graph_vcount <<- graph_vcount_fallback
+    graph_girth <<- graph_girth_fallback
+  }
+})
+
+# dm_igraph: wraps an igraph object; used when igraph is installed.
 new_dm_igraph <- function(ig) {
   structure(
     list(igraph = ig),
@@ -11,15 +30,9 @@ new_dm_igraph <- function(ig) {
 }
 
 print.dm_graph <- function(x, ...) {
-  ig <- x$igraph
-  directed <- igraph::is_directed(ig)
-  vnames <- names(igraph::V(ig))
-  from <- as.integer(igraph::tail_of(ig, igraph::E(ig)))
-  to <- as.integer(igraph::head_of(ig, igraph::E(ig)))
-
-  n_v <- length(vnames)
-  n_e <- length(from)
-  directed_str <- if (directed) "directed" else "undirected"
+  n_v <- length(x$vnames)
+  n_e <- length(x$from)
+  directed_str <- if (isTRUE(x$directed)) "directed" else "undirected"
   cat(
     sprintf(
       "<dm_graph> %s, %d %s, %d %s\n",
@@ -31,13 +44,25 @@ print.dm_graph <- function(x, ...) {
     )
   )
   if (n_v > 0L) {
-    cat("Vertices:", paste(vnames, collapse = ", "), "\n")
+    cat("Vertices:", paste(x$vnames, collapse = ", "), "\n")
   }
   if (n_e > 0L) {
-    edge_strs <- paste(vnames[from], vnames[to], sep = "|")
+    edge_strs <- paste(x$vnames[x$from], x$vnames[x$to], sep = "|")
     cat("Edges:", paste(edge_strs, collapse = ", "), "\n")
   }
   invisible(x)
+}
+
+# Forward to print.dm_graph by creating a plain dm_graph from igraph data.
+print.dm_igraph <- function(x, ...) {
+  ig <- x$igraph
+  fallback <- new_dm_graph(
+    directed = igraph::is_directed(ig),
+    vnames = names(igraph::V(ig)),
+    from = as.integer(igraph::tail_of(ig, igraph::E(ig))),
+    to = as.integer(igraph::head_of(ig, igraph::E(ig)))
+  )
+  print.dm_graph(fallback, ...)
 }
 
 # graph_from_data_frame -------------------------------------------------------
@@ -48,68 +73,77 @@ graph_from_data_frame <- function(d, directed, vertices = NULL) {
 }
 
 # V: vertex accessor -----------------------------------------------------------
+# Returns a named integer vector: values are 1-based indices, names are vertex names.
 
 graph_vertices <- function(g) {
   igraph::V(g$igraph)
 }
 
 # E: edge accessor -------------------------------------------------------------
+# Returns an integer vector with a "vnames" attribute (e.g. "from|to").
 
 graph_edges <- function(g) {
   igraph::E(g$igraph)
 }
 
 # dfs -------------------------------------------------------------------------
+# Returns a list with $order (named integer), $dist (named numeric), $parent (named integer).
 
 graph_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
   igraph::dfs(g$igraph, root, unreachable = unreachable, parent = parent, dist = dist)
 }
 
 # topo_sort -------------------------------------------------------------------
+# Returns a named integer vector (vertex indices with vertex names as names).
 
 graph_topo_sort <- function(g, mode = "out") {
   igraph::topo_sort(g$igraph, mode = mode)
 }
 
 # distances -------------------------------------------------------------------
+# Returns a matrix: rows = sources, columns = all vertices.
 
 graph_distances <- function(g, v = NULL) {
   igraph::distances(g$igraph, v)
 }
 
 # induced_subgraph ------------------------------------------------------------
+# Returns a new dm_igraph containing only the specified vertices.
 
 graph_induced_subgraph <- function(g, vids) {
-  sub <- igraph::induced_subgraph(g$igraph, vids)
-  new_dm_igraph(sub)
+  new_dm_igraph(igraph::induced_subgraph(g$igraph, vids))
 }
 
 # shortest_paths --------------------------------------------------------------
+# Returns a list with $predecessors.
 
 graph_shortest_paths <- function(g, from, to, predecessors = FALSE) {
   igraph::shortest_paths(g$igraph, from, to, predecessors = predecessors)
 }
 
 # delete_vertices -------------------------------------------------------------
+# Returns a new dm_igraph with the specified vertices removed.
 
 graph_delete_vertices <- function(g, v) {
-  sub <- igraph::delete_vertices(g$igraph, v)
-  new_dm_igraph(sub)
+  new_dm_igraph(igraph::delete_vertices(g$igraph, v))
 }
 
 # neighbors -------------------------------------------------------------------
+# Returns the neighbors of vertex v.
 
 graph_neighbors <- function(g, v, mode = "all") {
   igraph::neighbors(g$igraph, v, mode = mode)
 }
 
 # vcount ----------------------------------------------------------------------
+# Returns the number of vertices in the graph.
 
 graph_vcount <- function(g) {
   igraph::vcount(g$igraph)
 }
 
 # girth -----------------------------------------------------------------------
+# Returns a list with $circle: vertices forming the shortest cycle.
 
 graph_girth <- function(g) {
   igraph::girth(g$igraph)

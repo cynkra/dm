@@ -27,7 +27,7 @@ test_that("output", {
     abort_update_not_supported()
     abort_only_possible_wo_filters("find_wisdom")
     abort_tables_not_neighbors("subjects", "king")
-    abort_only_parents()
+    abort_only_parents("dm_flatten", "table", "recursive")
     abort_not_same_src()
     abort_what_a_weird_object("monster")
     abort_not_same_src()
