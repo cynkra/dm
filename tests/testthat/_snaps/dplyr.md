@@ -142,15 +142,15 @@
     Output
       $pks
       # A tibble: 7 x 3
-        table   pk_col autoincrement
-        <chr>   <keys> <lgl>        
-      1 tf_1    a      TRUE         
-      2 tf_2    c      FALSE        
-      3 tf_3    f, f1  FALSE        
-      4 tf_4    h      FALSE        
-      5 tf_5    k      FALSE        
-      6 tf_6    o      FALSE        
-      7 new_tbl c      FALSE        
+        table   pk_col   autoincrement
+        <chr>   <keys>   <lgl>        
+      1 tf_1    a        TRUE         
+      2 tf_2    c        FALSE        
+      3 tf_3    f, f1    FALSE        
+      4 tf_4    h        FALSE        
+      5 tf_5    k        FALSE        
+      6 tf_6    o        FALSE        
+      7 new_tbl c, e, e1 FALSE        
       
       $fks
       # A tibble: 6 x 5
@@ -168,15 +168,16 @@
         "new_tbl") %>% get_all_keys()
     Output
       $pks
-      # A tibble: 6 x 3
-        table pk_col autoincrement
-        <chr> <keys> <lgl>        
-      1 tf_1  a      TRUE         
-      2 tf_2  c      FALSE        
-      3 tf_3  f, f1  FALSE        
-      4 tf_4  h      FALSE        
-      5 tf_5  k      FALSE        
-      6 tf_6  o      FALSE        
+      # A tibble: 7 x 3
+        table   pk_col autoincrement
+        <chr>   <keys> <lgl>        
+      1 tf_1    a      TRUE         
+      2 tf_2    c      FALSE        
+      3 tf_3    f, f1  FALSE        
+      4 tf_4    h      FALSE        
+      5 tf_5    k      FALSE        
+      6 tf_6    o      FALSE        
+      7 new_tbl g      FALSE        
       
       $fks
       # A tibble: 5 x 5
@@ -428,7 +429,7 @@
       -- Metadata --------------------------------------------------------------------
       Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       Columns: 41
-      Primary keys: 3
+      Primary keys: 4
       Foreign keys: 3
     Code
       grouped_zoomed_comp_dm_2 %>% summarize(count = n()) %>% dm_update_zoomed()

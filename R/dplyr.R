@@ -435,6 +435,10 @@ summarise.dm_zoomed <- function(.data, ..., .by = NULL, .groups = NULL) {
   # #663: user responsibility: if group columns are manipulated, they are still tracked
   groups <- set_names(map_chr(groups(tbl), as_string))
   summarized_tbl <- summarize(tbl, ..., .by = {{ .by }}, .groups = .groups)
+
+  # Set group vars as new PK
+  attr(summarized_tbl, "new_pk") <- unname(groups)
+
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
 }
@@ -536,6 +540,9 @@ count.dm_zoomed <- function(
     out <- dplyr_reconstruct(out, tbl)
   }
 
+  # Set counted columns as new PK
+  attr(out, "new_pk") <- unname(groups)
+
   new_tracked_cols_zoom <- new_tracked_cols(x, groups)
   replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
 }
@@ -552,9 +559,22 @@ count.dm_keyed_tbl <- function(
 ) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
+
+  if (!missing(...)) {
+    grouped <- group_by(tbl, ..., .add = TRUE, .drop = .drop)
+  } else {
+    grouped <- tbl
+  }
+
+  new_pk <- group_vars(grouped)
+  if (length(new_pk) == 0) {
+    new_pk <- NULL
+  }
+
   counted_tbl <- count(tbl, ..., wt = {{ wt }}, sort = sort, name = name, .drop = .drop)
   new_keyed_tbl(
     counted_tbl,
+    pk = new_pk,
     uuid = keys_info$uuid
   )
 }
@@ -577,6 +597,9 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
     out <- dplyr_reconstruct(out, tbl)
   }
 
+  # Set group vars as new PK
+  attr(out, "new_pk") <- unname(groups)
+
   new_tracked_cols_zoom <- new_tracked_cols(x, groups)
   replace_zoomed_tbl(x, out, new_tracked_cols_zoom)
 }
@@ -586,9 +609,16 @@ tally.dm_zoomed <- function(x, wt = NULL, sort = FALSE, name = NULL) {
 tally.dm_keyed_tbl <- function(x, wt = NULL, sort = FALSE, name = NULL) {
   keys_info <- keyed_get_info(x)
   tbl <- unclass_keyed_tbl(x)
+
+  new_pk <- group_vars(x)
+  if (length(new_pk) == 0) {
+    new_pk <- NULL
+  }
+
   tallied_tbl <- tally(tbl, wt = {{ wt }}, sort = sort, name = name)
   new_keyed_tbl(
     tallied_tbl,
+    pk = new_pk,
     uuid = keys_info$uuid
   )
 }
