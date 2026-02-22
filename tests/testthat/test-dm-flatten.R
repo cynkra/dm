@@ -237,3 +237,155 @@ test_that("`dm_flatten()` errors on zoomed dm", {
     class = "only_possible_wo_zoom"
   )
 })
+
+# --- Helper function tests ---
+
+test_that("`dm_flatten_impl()` joins single parent without recursion", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:3, pid = 1:3, val = letters[1:3]),
+    parent = tibble::tibble(id = 1:3, info = LETTERS[1:3])
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  out <- dm_flatten_impl(dm_test, "child", "parent", dfs_order = NULL)
+
+  expect_s3_class(out$dm, "dm")
+  expect_equal(names(dm_get_tables(out$dm)), "child")
+  expect_true("info" %in% colnames(pull_tbl(out$dm, child)))
+  expect_equal(out$all_renames, list())
+})
+
+test_that("`dm_flatten_impl()` recurses with dfs_order", {
+  dm_deep <- dm_for_flatten_deep()
+
+  g <- create_graph_from_dm(dm_deep, directed = TRUE)
+  g_sub <- graph_induced_subgraph(g, c("A", "B", "C"))
+  dfs <- graph_dfs(g_sub, "A", unreachable = FALSE, dist = TRUE)
+  dfs_order <- names(dfs$order) %>% purrr::discard(is.na)
+
+  out <- dm_flatten_impl(dm_deep, "A", c("B", "C"), dfs_order)
+
+  expect_equal(names(dm_get_tables(out$dm)), "A")
+  a_tbl <- pull_tbl(out$dm, A)
+  expect_true("val_b" %in% colnames(a_tbl))
+  expect_true("val_c" %in% colnames(a_tbl))
+})
+
+test_that("`dm_flatten_impl()` returns empty renames when no conflicts", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:2, pid = 1:2),
+    parent = tibble::tibble(id = 1:2, extra = c("a", "b"))
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  out <- dm_flatten_impl(dm_test, "child", "parent", dfs_order = NULL)
+  expect_equal(out$all_renames, list())
+  expect_equal(out$col_renames, list(parent = character(0)))
+})
+
+test_that("`dm_flatten_join()` disambiguates conflicting columns", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:2, pid = 1:2, val = c("a", "b")),
+    parent = tibble::tibble(id = 1:2, val = c("X", "Y"))
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  out <- dm_flatten_join(dm_test, "child", "parent")
+
+  child_tbl <- pull_tbl(out$dm, child)
+  expect_true("val" %in% colnames(child_tbl))
+  expect_true("val.parent" %in% colnames(child_tbl))
+
+  expect_length(out$all_renames, 1)
+  expect_equal(out$all_renames[[1]]$table, "parent")
+  expect_equal(out$all_renames[[1]]$renames, c(val = "val.parent"))
+})
+
+test_that("`dm_flatten_join()` returns col_renames for each parent", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:2, pid = 1:2, val = c("a", "b")),
+    parent = tibble::tibble(id = 1:2, val = c("X", "Y"))
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  out <- dm_flatten_join(dm_test, "child", "parent")
+  expect_true("parent" %in% names(out$col_renames))
+  expect_equal(out$col_renames[["parent"]], c(val = "val.parent"))
+})
+
+test_that("`dm_flatten_join()` removes parent tables", {
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:2, pid = 1:2),
+    parent = tibble::tibble(id = 1:2, extra = c("a", "b")),
+    other = tibble::tibble(id = 1:2)
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_fk(child, pid, parent)
+
+  out <- dm_flatten_join(dm_test, "child", "parent")
+  expect_equal(sort(names(dm_get_tables(out$dm))), c("child", "other"))
+})
+
+test_that("`dm_flatten_join()` with empty parents returns unchanged dm", {
+  dm_test <- dm(child = tibble::tibble(id = 1:2))
+  out <- dm_flatten_join(dm_test, "child", character(0))
+  expect_equal(names(dm_get_tables(out$dm)), "child")
+  expect_equal(out$all_renames, list())
+  expect_equal(out$col_renames, list())
+})
+
+test_that("`dm_flatten_explain_renames()` produces message for renames", {
+  renames <- list(
+    list(table = "dim_1", renames = c(val = "val.dim_1"))
+  )
+  expect_message(dm_flatten_explain_renames(renames), "Renaming")
+})
+
+test_that("`dm_flatten_explain_renames()` is silent when no renames", {
+  expect_silent(dm_flatten_explain_renames(list()))
+})
+
+test_that("`dm_flatten_transfer_fks()` re-points FKs to start table", {
+  dm_deep <- dm_for_flatten_deep()
+  all_fks <- dm_get_all_fks_impl(dm_deep, ignore_on_delete = TRUE)
+
+  # Simulate: join B into A, remove B
+  out <- dm_flatten_join(dm_deep, "A", "B")
+
+  # Transfer B's FK to C so it now points from A to C
+  result <- dm_flatten_transfer_fks(out$dm, "A", "B", out$col_renames, all_fks)
+
+  fks <- dm_get_all_fks(result)
+  expect_true(any(fks$child_table == "A" & fks$parent_table == "C"))
+})
+
+test_that("`dm_flatten_transfer_fks()` handles renamed FK columns", {
+  # Create dm where parent's FK column conflicts with child's column
+  dm_test <- dm(
+    child = tibble::tibble(id = 1:2, pid = 1:2, ref = c("x", "y")),
+    parent = tibble::tibble(id = 1:2, ref = 1:2),
+    grandparent = tibble::tibble(id = 1:2, info = c("a", "b"))
+  ) %>%
+    dm_add_pk(parent, id) %>%
+    dm_add_pk(grandparent, id) %>%
+    dm_add_fk(child, pid, parent) %>%
+    dm_add_fk(parent, ref, grandparent)
+
+  all_fks <- dm_get_all_fks_impl(dm_test, ignore_on_delete = TRUE)
+  out <- dm_flatten_join(dm_test, "child", "parent")
+
+  # ref was renamed to ref.parent
+  expect_equal(out$col_renames[["parent"]], c(ref = "ref.parent"))
+
+  result <- dm_flatten_transfer_fks(out$dm, "child", "parent", out$col_renames, all_fks)
+  fks <- dm_get_all_fks(result)
+
+  # FK should now be from child.ref.parent to grandparent.id
+  fk_row <- fks[fks$child_table == "child" & fks$parent_table == "grandparent", ]
+  expect_equal(nrow(fk_row), 1)
+  expect_equal(fk_row$child_fk_cols[[1]], "ref.parent")
+})

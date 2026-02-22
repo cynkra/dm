@@ -140,7 +140,7 @@ dm_flatten <- function(
     dfs_order <- NULL
   }
 
-  out <- dm_flatten_impl(dm, start, list_of_pts, direct_parents, dfs_order)
+  out <- dm_flatten_impl(dm, start, list_of_pts, dfs_order)
 
   # Handle allow_deep: transfer FKs from absorbed parents to start
   if (allow_deep) {
@@ -153,18 +153,70 @@ dm_flatten <- function(
   out$dm
 }
 
+#' Flatten a start table by joining its direct parents
+#'
+#' Workhorse that performs joining of parent tables into a start table.
+#' In recursive mode (`dfs_order` not `NULL`), first recursively flattens each
+#' direct parent's own ancestors via `reduce()`, then unconditionally joins
+#' the resulting direct parents into the start table.
+#'
+#' @param dm A `dm` object.
+#' @param start Name of the table to flatten into.
+#' @param list_of_pts Character vector of parent table names to absorb.
+#' @param dfs_order Character vector giving DFS traversal order from the main
+#'   function, or `NULL` for non-recursive mode.
+#'
+#' @return A list with components:
+#'   - `dm`: the updated `dm` with parents joined into `start` and removed.
+#'   - `all_renames`: list of rename entries from column disambiguation.
+#'   - `col_renames`: named list mapping parent names to their column renames.
+#'
+#' @noRd
 #' @autoglobal
-dm_flatten_impl <- function(dm, start, list_of_pts, direct_parents, dfs_order) {
+dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order) {
+  all_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
+
+  # Find direct parents of start
+  direct_parents <- all_fks %>%
+    filter(child_table == start) %>%
+    pull(parent_table) %>%
+    unique()
+
   all_renames <- list()
 
+  # --- Recursive part: pre-flatten each direct parent's ancestors ---
   if (!is.null(dfs_order)) {
-    # Up-front reduction: recursively flatten each direct parent's ancestors
-    out <- dm_flatten_reduce_parents(dm, start, list_of_pts, direct_parents, dfs_order)
-    dm <- out$dm
-    all_renames <- out$all_renames
+    parents_to_process <- intersect(direct_parents, list_of_pts)
+    parents_to_process <- intersect(dfs_order, parents_to_process)
+
+    acc <- reduce(
+      parents_to_process,
+      function(acc, pt) {
+        dm <- acc$dm
+        current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
+        pt_direct_parents <- current_fks %>%
+          filter(child_table == pt) %>%
+          pull(parent_table) %>%
+          unique()
+        pt_parents_in_list <- intersect(pt_direct_parents, list_of_pts)
+        pt_parents_in_list <- intersect(pt_parents_in_list, src_tbls_impl(dm))
+
+        if (length(pt_parents_in_list) > 0) {
+          # Recurse: flatten pt's ancestors into pt
+          out <- dm_flatten_impl(dm, pt, pt_parents_in_list, dfs_order)
+          list(dm = out$dm, all_renames = c(acc$all_renames, out$all_renames))
+        } else {
+          acc
+        }
+      },
+      .init = list(dm = dm, all_renames = list())
+    )
+
+    dm <- acc$dm
+    all_renames <- acc$all_renames
   }
 
-  # Determine which direct parents to join into start
+  # --- Non-recursive part: join direct parents into start ---
   current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
   parents_to_join <- current_fks %>%
     filter(child_table == start) %>%
@@ -178,35 +230,25 @@ dm_flatten_impl <- function(dm, start, list_of_pts, direct_parents, dfs_order) {
   out
 }
 
-#' @autoglobal
-dm_flatten_reduce_parents <- function(dm, start, list_of_pts, direct_parents, dfs_order) {
-  parents_to_process <- intersect(direct_parents, list_of_pts)
-  parents_to_process <- intersect(dfs_order, parents_to_process)
-
-  # For each direct parent, recursively flatten its ancestors first
-  reduce(
-    parents_to_process,
-    function(acc, pt) {
-      dm <- acc$dm
-      current_fks <- dm_get_all_fks_impl(dm, ignore_on_delete = TRUE)
-      pt_direct_parents <- current_fks %>%
-        filter(child_table == pt) %>%
-        pull(parent_table) %>%
-        unique()
-      pt_parents_in_list <- intersect(pt_direct_parents, list_of_pts)
-      pt_parents_in_list <- intersect(pt_parents_in_list, src_tbls_impl(dm))
-
-      if (length(pt_parents_in_list) > 0) {
-        out <- dm_flatten_impl(dm, pt, pt_parents_in_list, pt_direct_parents, dfs_order)
-        list(dm = out$dm, all_renames = c(acc$all_renames, out$all_renames))
-      } else {
-        acc
-      }
-    },
-    .init = list(dm = dm, all_renames = list())
-  )
-}
-
+#' Join parent tables into a start table and remove them
+#'
+#' Performs sequential `left_join()` operations to merge each parent table into
+#' the start table.
+#' Conflicting column names are disambiguated by appending
+#' `.parent_name` as a suffix.
+#' The parent tables are removed from the dm after joining.
+#'
+#' @param dm A `dm` object.
+#' @param start Name of the table to join parents into.
+#' @param parents Character vector of parent table names to join.
+#'
+#' @return A list with components:
+#'   - `dm`: the updated `dm` with parents joined and removed.
+#'   - `all_renames`: list of rename entries recording disambiguated columns.
+#'   - `col_renames`: named list mapping each parent to its column renames
+#'     (used by `dm_flatten_transfer_fks()`).
+#'
+#' @noRd
 #' @autoglobal
 dm_flatten_join <- function(dm, start, parents) {
   if (is_empty(parents)) {
@@ -218,12 +260,10 @@ dm_flatten_join <- function(dm, start, parents) {
   start_tbl <- tbl_impl(dm, start)
   current_cols <- colnames(start_tbl)
 
-  # Track renames per parent for allow_deep FK transfer
   col_renames <- list()
   all_renames <- list()
 
   for (pt in parents) {
-    # Get FK between start and parent
     fk_info <- all_fks %>%
       filter(child_table == start, parent_table == pt)
     if (nrow(fk_info) == 0) {
@@ -240,14 +280,9 @@ dm_flatten_join <- function(dm, start, parents) {
     parent_tbl <- tbl_impl(dm, pt)
     parent_cols <- colnames(parent_tbl)
 
-    # Columns from parent that will appear in the result
-    # (all parent columns EXCEPT the key columns used in the join)
     parent_incoming_cols <- setdiff(parent_cols, parent_key_cols)
-
-    # Find conflicts with current columns
     conflicting <- intersect(current_cols, parent_incoming_cols)
 
-    # Rename conflicting columns in parent table
     renames <- character(0)
     if (length(conflicting) > 0) {
       new_names <- paste0(conflicting, ".", pt)
@@ -258,21 +293,16 @@ dm_flatten_join <- function(dm, start, parents) {
     }
     col_renames[[pt]] <- renames
 
-    # Perform the join
     start_tbl <- left_join(start_tbl, parent_tbl, by = by)
-
-    # Update current columns for next iteration
     current_cols <- colnames(start_tbl)
   }
 
-  # Build result dm
   def <- dm_get_def(dm)
   start_idx <- which(def$table == start)
   def$data[[start_idx]] <- start_tbl
 
   dm_result <- dm_from_def(def)
 
-  # Remove parent tables
   remaining <- setdiff(def$table, parents)
   remaining <- set_names(remaining)
 
@@ -283,6 +313,19 @@ dm_flatten_join <- function(dm, start, parents) {
   )
 }
 
+#' Report column renames to the user
+#'
+#' Formats and prints a message describing renamed columns,
+#' using the same style as `dm_flatten_to_tbl()`.
+#'
+#' @param all_renames List of rename entries, each with `table` and `renames`
+#'   components.
+#'   `renames` is a named character vector mapping old names to new names.
+#'
+#' @return Called for its side effect (message).
+#'   Returns `invisible()`.
+#'
+#' @noRd
 dm_flatten_explain_renames <- function(all_renames) {
   if (is_empty(all_renames)) {
     return(invisible())
@@ -309,18 +352,35 @@ dm_flatten_explain_renames <- function(all_renames) {
   )
 }
 
+#' Transfer foreign keys from absorbed parents to the flattened table
+#'
+#' When `allow_deep = TRUE`, parent tables that reference grandparent tables
+#' are absorbed into the start table.
+#' This function re-points those FK
+#' relationships so that the start table now references the grandparent
+#' directly, accounting for column renames and dropped join keys.
+#'
+#' @param dm A `dm` object (after parents have been joined and removed).
+#' @param start Name of the flattened table.
+#' @param parents Character vector of parent table names that were absorbed.
+#' @param col_renames Named list mapping each parent to its column renames
+#'   (from `dm_flatten_join()`).
+#' @param all_fks Data frame of all FK relationships from the original dm
+#'   (before absorption).
+#'
+#' @return An updated `dm` with transferred FK relationships.
+#'
+#' @noRd
 #' @autoglobal
 dm_flatten_transfer_fks <- function(dm, start, parents, col_renames, all_fks) {
   def <- dm_get_def(dm)
 
   for (pt in parents) {
-    # Find FKs where pt is the child (pt references other tables as parent)
     pt_child_fks <- all_fks %>%
       filter(child_table == pt)
 
     for (i in seq_len(nrow(pt_child_fks))) {
       gp <- pt_child_fks$parent_table[i]
-      # Skip if grandparent is also being absorbed or is the start table
       if (gp %in% parents || gp == start) {
         next
       }
@@ -328,7 +388,6 @@ dm_flatten_transfer_fks <- function(dm, start, parents, col_renames, all_fks) {
       child_cols <- pt_child_fks$child_fk_cols[[i]]
       parent_cols <- pt_child_fks$parent_key_cols[[i]]
 
-      # Apply renames: if any FK columns were renamed during disambiguation
       renames <- col_renames[[pt]]
       if (length(renames) > 0) {
         for (k in seq_along(child_cols)) {
@@ -338,8 +397,6 @@ dm_flatten_transfer_fks <- function(dm, start, parents, col_renames, all_fks) {
         }
       }
 
-      # Handle the case where a FK column is the same as the join key
-      # (it was dropped during the join, so use start's FK column instead)
       fk_to_parent <- all_fks %>%
         filter(child_table == start, parent_table == pt)
       if (nrow(fk_to_parent) > 0) {
@@ -353,7 +410,6 @@ dm_flatten_transfer_fks <- function(dm, start, parents, col_renames, all_fks) {
         }
       }
 
-      # Add FK from start to grandparent
       gp_idx <- which(def$table == gp)
       def$fks[[gp_idx]] <- vec_rbind(
         def$fks[[gp_idx]],
