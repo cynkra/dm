@@ -315,3 +315,107 @@ test_that("pull_tbl() on dm with table not in dm - abort_table_not_in_dm", {
     pull_tbl(d, nonexistent)
   })
 })
+
+test_that("pull_tbl() on zoomed dm with wrong table - abort_table_not_zoomed", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    pull_tbl(d, b)
+  })
+})
+
+test_that("dm_flatten_to_tbl() with unrelated tables - abort_tables_not_reachable_from_start", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1), c = tibble(x = 1)) %>%
+    dm_add_pk(b, x) %>%
+    dm_add_fk(a, x, ref_table = b)
+  expect_snapshot(error = TRUE, {
+    dm_flatten_to_tbl(d, a, c)
+  })
+})
+
+test_that("dm_flatten_to_tbl() with grandparent - abort_only_parents", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1), c = tibble(x = 1)) %>%
+    dm_add_pk(b, x) %>%
+    dm_add_pk(c, x) %>%
+    dm_add_fk(a, x, ref_table = b) %>%
+    dm_add_fk(b, x, ref_table = c)
+  expect_snapshot(error = TRUE, {
+    dm_flatten_to_tbl(d, a, b, c)
+  })
+})
+
+test_that("dm_flatten_to_tbl() with cycle - abort_no_cycles", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  expect_snapshot(error = TRUE, {
+    dm_flatten_to_tbl(dm_for_filter_w_cycle(), tf_5, .recursive = TRUE)
+  })
+})
+
+test_that("dm_select_tbl() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_select_tbl(d, a)
+  })
+})
+
+test_that("dm_add_pk() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_add_pk(d, b, x)
+  })
+})
+
+test_that("dm_add_fk() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_add_fk(d, a, x, ref_table = b)
+  })
+})
+
+test_that("dm_get_con() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_get_con(d)
+  })
+})
+
+test_that("dm_insert_zoomed() on unzoomed dm - abort_only_possible_w_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1))
+  expect_snapshot(error = TRUE, {
+    dm_insert_zoomed(d)
+  })
+})
+
+test_that("dm_draw() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_draw(d)
+  })
+})
+
+test_that("dm_paste() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_paste(d)
+  })
+})

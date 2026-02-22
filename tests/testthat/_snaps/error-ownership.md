@@ -276,3 +276,92 @@
       Error in `abort_table_not_in_dm()`:
       ! Table nonexistent not in <dm> object. Available table names: a.
 
+# pull_tbl() on zoomed dm with wrong table - abort_table_not_zoomed
+
+    Code
+      pull_tbl(d, b)
+    Condition
+      Error in `abort_table_not_zoomed()`:
+      ! In `pull_tbl.dm_zoomed()`: Table `b` not zoomed, zoomed tables: `a`.
+
+# dm_flatten_to_tbl() with unrelated tables - abort_tables_not_reachable_from_start
+
+    Code
+      dm_flatten_to_tbl(d, a, c)
+    Condition
+      Error in `abort_tables_not_reachable_from_start()`:
+      ! All selected tables must be reachable from `.start`.
+
+# dm_flatten_to_tbl() with grandparent - abort_only_parents
+
+    Code
+      dm_flatten_to_tbl(d, a, b, c)
+    Condition
+      Error in `abort_only_parents()`:
+      ! When using `dm_join_to_tbl()` or `dm_flatten_to_tbl()` all join partners of table `.start` have to be its direct neighbors. For 'flattening' with `left_join()`, `inner_join()` or `full_join()` use `dm_flatten_to_tbl(.recursive = TRUE)` as an alternative.
+
+# dm_flatten_to_tbl() with cycle - abort_no_cycles
+
+    Code
+      dm_flatten_to_tbl(dm_for_filter_w_cycle(), tf_5, .recursive = TRUE)
+    Condition
+      Error in `abort_no_cycles()`:
+      ! Cycles in the relationship graph not yet supported.
+      i Shortest cycle: tf_5 -> tf_6 -> tf_7 -> tf_2 -> tf_3 -> tf_4 -> tf_5
+
+# dm_select_tbl() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_select_tbl(d, a)
+    Condition
+      Error in `abort_only_possible_wo_zoom()`:
+      ! You can't call `dm_select_tbl()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_add_pk() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_add_pk(d, b, x)
+    Condition
+      Error in `abort_only_possible_wo_zoom()`:
+      ! You can't call `dm_add_pk()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_add_fk() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_add_fk(d, a, x, ref_table = b)
+    Condition
+      Error in `abort_only_possible_wo_zoom()`:
+      ! You can't call `dm_add_fk()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_get_con() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_get_con(d)
+    Condition
+      Error in `abort_only_possible_wo_zoom()`:
+      ! You can't call `dm_get_con()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_insert_zoomed() on unzoomed dm - abort_only_possible_w_zoom
+
+    Code
+      dm_insert_zoomed(d)
+    Condition
+      Error in `abort_only_possible_w_zoom()`:
+      ! You can't call `dm_insert_zoomed()` on an unzoomed <dm>. Consider using `dm_zoom_to()` first.
+
+# dm_draw() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_draw(d)
+    Condition
+      Error in `abort_only_possible_wo_zoom()`:
+      ! You can't call `dm_draw()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_paste() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_paste(d)
+    Condition
+      Error in `abort_only_possible_wo_zoom()`:
+      ! You can't call `dm_paste_impl()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
