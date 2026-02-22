@@ -61,3 +61,27 @@ test_that("output", {
     abort_one_of_schema_table_names()
   })
 })
+
+test_that("singular and plural", {
+  expect_snapshot(error = TRUE, {
+    # abort_not_subset_of: compound keys (plural)
+    abort_not_subset_of("t1", c("a", "b"), "t2", c("c", "d"))
+    # abort_not_bijective: compound keys (plural)
+    abort_not_bijective("child_tbl", c("col_a", "col_b"))
+    # abort_not_injective: compound keys (plural)
+    abort_not_injective("child_tbl", c("col_a", "col_b"))
+    # abort_need_unique_names: plural
+    abort_need_unique_names(c("clone_a", "clone_b"))
+    # abort_first_rm_fks: singular
+    abort_first_rm_fks("parent", "child_1")
+    # abort_tbl_access: plural
+    abort_tbl_access(c("table_a", "table_b"))
+    # abort_cols_not_avail: singular
+    abort_cols_not_avail("pink5")
+  })
+  expect_snapshot({
+    # warn_tbl_access: singular and plural
+    warn_tbl_access("table_a")
+    warn_tbl_access(c("table_a", "table_b"))
+  })
+})
