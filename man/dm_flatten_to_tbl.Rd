@@ -72,4 +72,8 @@ dm_financial() \%>\%
   dm_flatten_to_tbl(.start = cards, .recursive = TRUE)
 \dontshow{\}) # examplesIf}
 }
+\seealso{
+Other flattening functions: 
+\code{\link{dm_flatten}()}
+}
 \concept{flattening functions}
