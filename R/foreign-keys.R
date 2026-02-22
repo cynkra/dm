@@ -191,7 +191,7 @@ dm_has_fk <- function(dm, table, ref_table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
 
-  deprecate_soft("0.2.1", "dm::dm_has_fk()", "dm::dm_get_all_fks()")
+  deprecate_warn("0.2.1", "dm::dm_has_fk()", "dm::dm_get_all_fks()")
 
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
@@ -208,7 +208,7 @@ dm_get_fk <- function(dm, table, ref_table, ...) {
   check_dots_empty()
   check_not_zoomed(dm)
 
-  deprecate_soft("0.2.1", "dm::dm_get_fk()", "dm::dm_get_all_fks()")
+  deprecate_warn("0.2.1", "dm::dm_get_fk()", "dm::dm_get_all_fks()")
 
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})

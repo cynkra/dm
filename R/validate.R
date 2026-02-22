@@ -113,7 +113,7 @@ dm_validate <- function(x) {
 #' @rdname deprecated
 #' @keywords internal
 validate_dm <- function(x) {
-  deprecate_soft("0.3.0", "dm::validate_dm()", "dm::dm_validate()")
+  deprecate_warn("0.3.0", "dm::validate_dm()", "dm::dm_validate()")
   dm_validate(x)
 }
 
