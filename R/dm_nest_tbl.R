@@ -175,7 +175,9 @@ check_table_can_be_packed <- function(table_name, children_names, fks) {
     cli::cli_abort(c(
       "{.val {table_name}} can't be packed because it is not a terminal parent table.",
       if (length(parents) > 0) paste0("parents : ", toString(paste0("`", parents, "`"))),
-      if (length(children_names) > 0) paste0("children: ", toString(paste0("`", children_names, "`")))
+      if (length(children_names) > 0) {
+        paste0("children: ", toString(paste0("`", children_names, "`")))
+      }
     ))
   }
   invisible(NULL)
