@@ -32,3 +32,10 @@ test_that("`json_pack()` works remotely", {
     remote %>% json_pack(a = starts_with("a")) %>% collect() %>% unjson_nested()
   )
 })
+
+test_that("`json_unpack()` fails without cols argument", {
+  df <- tibble::tibble(x = '{"a":1}')
+  expect_snapshot(error = TRUE, {
+    json_unpack(df)
+  })
+})

@@ -197,6 +197,19 @@ test_that("dm_rows_truncate()", {
 })
 
 
+test_that("dm_rows_update() requires primary keys", {
+  skip_if_remote_src()
+  local_options(lifecycle_verbosity = "quiet")
+
+  x <- dm(a = tibble::tibble(id = 1L, val = "x"))
+  y <- dm(a = tibble::tibble(id = 1L, val = "y"))
+
+  expect_snapshot(error = TRUE, {
+    dm_rows_update(x, y, in_place = FALSE)
+  })
+})
+
+
 # tests for compound keys -------------------------------------------------
 
 test_that("output for compound keys", {

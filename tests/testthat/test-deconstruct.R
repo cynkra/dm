@@ -183,6 +183,50 @@ test_that("keyed_by()", {
   })
 })
 
+test_that("keyed_by() failure modes", {
+  withr::local_seed(20220715)
+
+  # No foreign key information
+  dm_no_fk <-
+    dm(x = tibble(a = 1), y = tibble(b = 1))
+
+  x_no_fk <- keyed_tbl_impl(dm_no_fk, "x")
+  y_no_fk <- keyed_tbl_impl(dm_no_fk, "y")
+
+  expect_snapshot(error = TRUE, {
+    keyed_by(x_no_fk, y_no_fk)
+  })
+
+  # Foreign keys in both directions
+  dm_both_fk <-
+    dm(x = tibble(a = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y) %>%
+    dm_add_fk(y, b, x)
+
+  x_both_fk <- keyed_tbl_impl(dm_both_fk, "x")
+  y_both_fk <- keyed_tbl_impl(dm_both_fk, "y")
+
+  expect_snapshot(error = TRUE, {
+    keyed_by(x_both_fk, y_both_fk)
+  })
+
+  # Multiple foreign keys in same direction
+  dm_multi_fk <-
+    dm(x = tibble(a = 1, a2 = 1), y = tibble(b = 1)) %>%
+    dm_add_pk(y, b) %>%
+    dm_add_fk(x, a, y) %>%
+    dm_add_fk(x, a2, y)
+
+  x_multi_fk <- keyed_tbl_impl(dm_multi_fk, "x")
+  y_multi_fk <- keyed_tbl_impl(dm_multi_fk, "y")
+
+  expect_snapshot(error = TRUE, {
+    keyed_by(x_multi_fk, y_multi_fk)
+  })
+})
+
 test_that("joins without child PK", {
   withr::local_seed(20220715)
 

@@ -119,3 +119,20 @@ test_that("`node_type_from_graph()` works", {
     node_type_from_graph(graph, drop = "tf_4")
   })
 })
+
+test_that("`dm_wrap_tbl()` fails for cyclic dm", {
+  skip_if_remote_src()
+
+  # Create a cyclic dm: a -> b -> a
+  a <- tibble::tibble(id = 1L, b_id = 1L)
+  b <- tibble::tibble(id = 1L, a_id = 1L)
+  cyclic_dm <- dm(a, b) %>%
+    dm_add_pk(a, id) %>%
+    dm_add_pk(b, id) %>%
+    dm_add_fk(a, b_id, b) %>%
+    dm_add_fk(b, a_id, a)
+
+  expect_snapshot(error = TRUE, {
+    dm_wrap_tbl(cyclic_dm, a)
+  })
+})

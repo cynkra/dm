@@ -48,7 +48,7 @@
 
 # `pack_join()` works with remote table
 
-    `x` and `y` must share the same src, set `copy` = TRUE (may be slow)
+    `x` and `y` must share the same src, set `copy = TRUE` (may be slow).
 
 ---
 

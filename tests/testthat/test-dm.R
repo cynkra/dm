@@ -244,6 +244,12 @@ test_that("can create dm with as_dm()", {
   expect_equivalent_dm(as_dm(dm_get_tables(dm_test_obj())), dm_test_obj())
 })
 
+test_that("as_dm() rejects non-list objects", {
+  expect_snapshot(error = TRUE, {
+    as_dm(1)
+  })
+})
+
 test_that("creation of empty `dm` works", {
   expect_true(
     is_empty(dm())
@@ -366,6 +372,14 @@ test_that("`pull_tbl()`-methods work", {
     pull_tbl(dm_for_filter(), tf_5, keyed = TRUE),
     dm_get_tables(dm_for_filter(), keyed = TRUE)[["tf_5"]]
   )
+})
+
+test_that("`pull_tbl()` keyed=TRUE fails for zoomed dm", {
+  expect_snapshot(error = TRUE, {
+    dm_for_filter() %>%
+      dm_zoom_to(tf_1) %>%
+      pull_tbl(keyed = TRUE)
+  })
 })
 
 test_that("`pull_tbl()`-methods work for (0)", {
