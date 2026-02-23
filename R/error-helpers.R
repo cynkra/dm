@@ -175,9 +175,8 @@ abort_dupl_new_id_col_name <- function(table_name) {
 }
 
 abort_no_overwrite <- function() {
-  fun_name <- as_string(sys.call(-1)[[1]])
   cli::cli_abort(
-    "{.fn {fun_name}} does not support the {.arg overwrite} argument.",
+    "The {.arg overwrite} argument is not supported.",
     class = dm_error_full("no_overwrite"),
     call = dm_error_call()
   )
@@ -195,7 +194,7 @@ abort_update_not_supported <- function() {
 
 abort_only_possible_wo_filters <- function(fun_name) {
   cli::cli_abort(
-    "You can't call {.fn {fun_name}} on a {.cls dm} with filter conditions. Consider using {.fn dm_apply_filters} first.",
+    "Not supported on a {.cls dm} with filter conditions. Consider using {.fn dm_apply_filters} first.",
     class = dm_error_full("only_possible_wo_filters"),
     call = dm_error_call()
   )
@@ -215,7 +214,7 @@ abort_tables_not_neighbors <- function(t1_name, t2_name) {
 
 abort_only_parents <- function(func, table_arg, recursive_arg) {
   cli::cli_abort(
-    "When using {.fn {func}}, all join partners of table {.arg {table_arg}} must be its direct neighbors. Use {.code {recursive_arg} = TRUE} for recursive flattening.",
+    "All join partners of table {.arg {table_arg}} must be its direct neighbors. Use {.code {recursive_arg} = TRUE} for recursive flattening.",
     class = dm_error_full("only_parents"),
     call = dm_error_call()
   )
@@ -251,7 +250,7 @@ abort_what_a_weird_object <- function(class) {
 
 abort_squash_limited <- function(func = "dm_flatten_to_tbl", recursive_arg = ".recursive") {
   cli::cli_abort(
-    "{.code {func}({recursive_arg} = TRUE)} only supports joins using {.fn left_join}, {.fn inner_join}, or {.fn full_join}.",
+    "Recursive flattening only supports {.fn left_join}, {.fn inner_join}, or {.fn full_join}.",
     class = dm_error_full("squash_limited"),
     call = dm_error_call()
   )
@@ -271,7 +270,7 @@ dm_error_txt_apply_filters_first <- function(join_name) {
 
 abort_no_flatten_with_nest_join <- function(func = "dm_..._to_tbl") {
   cli::cli_abort(
-    "{.fn {func}} can't be called with {.code join = nest_join}, see the help pages for these functions. Consider {.code join = left_join}.",
+    "{.code join = nest_join} is not supported. Consider {.code join = left_join}.",
     class = dm_error_full("no_flatten_with_nest_join"),
     call = dm_error_call()
   )
@@ -301,7 +300,7 @@ abort_con_only_for_dbi <- function() {
 
 abort_only_possible_wo_zoom <- function(fun_name) {
   cli::cli_abort(
-    "You can't call {.fn {fun_name}} on a {.cls dm_zoomed}. Consider using one of {.fn dm_update_zoomed}, {.fn dm_insert_zoomed} or {.fn dm_discard_zoomed} first.",
+    "Not supported on a {.cls dm_zoomed}. Consider using one of {.fn dm_update_zoomed}, {.fn dm_insert_zoomed} or {.fn dm_discard_zoomed} first.",
     class = dm_error_full("only_possible_wo_zoom"),
     call = dm_error_call()
   )
@@ -311,7 +310,7 @@ abort_only_possible_wo_zoom <- function(fun_name) {
 
 abort_only_possible_w_zoom <- function(fun_name) {
   cli::cli_abort(
-    "You can't call {.fn {fun_name}} on an unzoomed {.cls dm}. Consider using {.fn dm_zoom_to} first.",
+    "Not supported on an unzoomed {.cls dm}. Consider using {.fn dm_zoom_to} first.",
     class = dm_error_full("only_possible_w_zoom"),
     call = dm_error_call()
   )
@@ -321,7 +320,7 @@ abort_only_possible_w_zoom <- function(fun_name) {
 
 abort_only_data_frames_supported <- function() {
   cli::cli_abort(
-    "{.fn copy_to.dm} only supports class {.cls data.frame} for argument {.arg df}",
+    "Only class {.cls data.frame} is supported for argument {.arg df}.",
     class = dm_error_full("only_data_frames_supported"),
     call = dm_error_call()
   )
@@ -329,7 +328,7 @@ abort_only_data_frames_supported <- function() {
 
 abort_one_name_for_copy_to <- function(name) {
   cli::cli_abort(
-    "Argument {.arg name} in {.fn copy_to.dm} needs to have length 1, but has length {length(name)} ({.code {name}})",
+    "Argument {.arg name} must have length 1, not length {length(name)}.",
     class = dm_error_full("one_name_for_copy_to"),
     call = dm_error_call()
   )
@@ -360,7 +359,7 @@ abort_fk_not_tracked <- function(x_orig_name, y_name) {
 
 abort_pk_not_tracked <- function(orig_table, orig_pk) {
   cli::cli_abort(
-    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {.field {orig_table}} got lost in transformations. Therefore it is not possible to use {.fn nest.dm_zoomed}.",
+    "The primary key column(s) {commas(tick(orig_pk))} of the originally zoomed table {.field {orig_table}} got lost in transformations.",
     class = dm_error_full("pk_not_tracked"),
     call = dm_error_call()
   )
@@ -371,7 +370,7 @@ abort_pk_not_tracked <- function(orig_table, orig_pk) {
 
 abort_only_for_local_src <- function(src_dm) {
   cli::cli_abort(
-    "{.fn nest_join.dm_zoomed} works only for a local {.arg src}, not on a database with {.arg src}-class: {.cls {class(src_dm)}}.",
+    "Only supported for a local {.arg src}, not on a database with {.arg src}-class: {.cls {class(src_dm)}}.",
     class = dm_error_full("only_for_local_src"),
     call = dm_error_call()
   )
@@ -381,7 +380,7 @@ abort_only_for_local_src <- function(src_dm) {
 
 abort_no_table_provided <- function() {
   cli::cli_abort(
-    "Argument {.arg table} for {.fn pull_tbl.dm} missing.",
+    "Argument {.arg table} is missing.",
     class = dm_error_full("no_table_provided"),
     call = dm_error_call()
   )
@@ -389,7 +388,7 @@ abort_no_table_provided <- function() {
 
 abort_table_not_zoomed <- function(table_name, zoomed_tables) {
   cli::cli_abort(
-    "In {.fn pull_tbl.dm_zoomed}: Table {.code {table_name}} not zoomed, zoomed tables: {.code {zoomed_tables}}.",
+    "Table {.code {table_name}} not zoomed, zoomed tables: {.code {zoomed_tables}}.",
     class = dm_error_full("table_not_zoomed"),
     call = dm_error_call()
   )
@@ -397,7 +396,7 @@ abort_table_not_zoomed <- function(table_name, zoomed_tables) {
 
 abort_not_pulling_multiple_zoomed <- function() {
   cli::cli_abort(
-    "If more than one zoomed table is available, you need to specify argument {.arg table} in {.fn pull_tbl.dm_zoomed}.",
+    "If more than one zoomed table is available, you need to specify argument {.arg table}.",
     class = dm_error_full("not_pulling_multiple_zoomed"),
     call = dm_error_call()
   )
@@ -413,7 +412,7 @@ abort_cols_not_avail <- function(wrong_col) {
 
 abort_only_named_args <- function(fun_name, name_meaning) {
   cli::cli_abort(
-    "All {.arg ...} arguments to function {.fn {fun_name}} must be named. The names represent {name_meaning}.",
+    "All {.arg ...} arguments must be named. The names represent {name_meaning}.",
     class = dm_error_full("only_named_args"),
     call = dm_error_call()
   )
@@ -421,7 +420,7 @@ abort_only_named_args <- function(fun_name, name_meaning) {
 
 abort_wrong_syntax_set_cols <- function() {
   cli::cli_abort(
-    "You seem to be using outdated syntax for {.fn dm_set_colors}, type {.code ?dm_set_colors()} for examples.",
+    "You seem to be using outdated syntax for setting colors, type {.code ?dm_set_colors()} for examples.",
     class = dm_error_full("wrong_syntax_set_cols"),
     call = dm_error_call()
   )

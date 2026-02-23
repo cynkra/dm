@@ -108,7 +108,7 @@
       dm_set_colors(d, a)
     Condition
       Error in `dm_set_colors()`:
-      ! All `...` arguments to function `dm_set_colors()` must be named. The names represent the colors.
+      ! All `...` arguments must be named. The names represent the colors.
 
 # dm_set_colors() - abort_wrong_syntax_set_cols
 
@@ -116,7 +116,7 @@
       dm_set_colors(d, a = "blue")
     Condition
       Error in `dm_set_colors()`:
-      ! You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples.
+      ! You seem to be using outdated syntax for setting colors, type `?dm_set_colors()` for examples.
 
 # dm_set_colors() - abort_cols_not_avail
 
@@ -172,7 +172,7 @@
       dm_zoom_to(d, b)
     Condition
       Error in `dm_zoom_to()`:
-      ! You can't call `dm_zoom_to()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 # dm_update_zoomed() on unzoomed dm - abort_only_possible_w_zoom
 
@@ -180,7 +180,7 @@
       dm_update_zoomed(d)
     Condition
       Error in `dm_update_zoomed()`:
-      ! You can't call `dm_update_zoomed()` on an unzoomed <dm>. Consider using `dm_zoom_to()` first.
+      ! Not supported on an unzoomed <dm>. Consider using `dm_zoom_to()` first.
 
 # dm_flatten_to_tbl() with recursive and unsupported join - abort_squash_limited
 
@@ -188,7 +188,7 @@
       dm_flatten_to_tbl(d, a, .recursive = TRUE, .join = right_join)
     Condition
       Error in `dm_flatten_to_tbl()`:
-      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports joins using `left_join()`, `inner_join()`, or `full_join()`.
+      ! Recursive flattening only supports `left_join()`, `inner_join()`, or `full_join()`.
 
 # dm_flatten_to_tbl() with nest_join - abort_no_flatten_with_nest_join
 
@@ -196,7 +196,7 @@
       dm_flatten_to_tbl(d, a, .join = nest_join)
     Condition
       Error in `dm_flatten_to_tbl()`:
-      ! `dm_..._to_tbl()` can't be called with `join = nest_join`, see the help pages for these functions. Consider `join = left_join`.
+      ! `join = nest_join` is not supported. Consider `join = left_join`.
 
 # dm_rename_tbl() - abort_need_unique_names
 
@@ -241,8 +241,8 @@
       dm_draw(d, backend_opts = list(unsupported_option = TRUE))
     Condition
       Error in `dm_draw()`:
-      ! Unsupported `backend_opts` for backend "DiagrammeR": `unsupported_option`.
-      i Supported options are: `graph_attrs`, `node_attrs`, `edge_attrs`, `focus`, `graph_name`, `column_arrow`, and `font_size`.
+      ! Unsupported `backend_opts` for backend "DiagrammeR": "unsupported_option".
+      i Supported options are: "graph_attrs", "node_attrs", "edge_attrs", "focus", "graph_name", "column_arrow", and "font_size".
 
 # copy_to.dm() - abort_only_data_frames_supported
 
@@ -250,7 +250,7 @@
       copy_to(d, 42, name = "b")
     Condition
       Error in `copy_to()`:
-      ! `copy_to.dm()` only supports class <data.frame> for argument `df`
+      ! Only class <data.frame> is supported for argument `df`.
 
 # copy_to.dm() - abort_no_overwrite
 
@@ -258,7 +258,7 @@
       copy_to(d, tibble(y = 1), name = "b", overwrite = TRUE)
     Condition
       Error in `copy_to()`:
-      ! `copy_to.dm()` does not support the `overwrite` argument.
+      ! The `overwrite` argument is not supported.
 
 # copy_to.dm() - abort_one_name_for_copy_to
 
@@ -266,7 +266,7 @@
       copy_to(d, tibble(y = 1), name = c("b", "c"))
     Condition
       Error in `copy_to()`:
-      ! Argument `name` in `copy_to.dm()` needs to have length 1, but has length 2 (`b` and `c`)
+      ! Argument `name` must have length 1, not length 2.
 
 # pull_tbl() on dm with table not in dm - abort_table_not_in_dm
 
@@ -282,7 +282,7 @@
       pull_tbl(d, b)
     Condition
       Error in `pull_tbl()`:
-      ! In `pull_tbl.dm_zoomed()`: Table `b` not zoomed, zoomed tables: `a`.
+      ! Table `b` not zoomed, zoomed tables: `a`.
 
 # dm_flatten_to_tbl() with unrelated tables - abort_tables_not_reachable_from_start
 
@@ -298,7 +298,7 @@
       dm_flatten_to_tbl(d, a, b, c)
     Condition
       Error in `dm_flatten_to_tbl()`:
-      ! When using `dm_join_to_tbl()`, all join partners of table `.start` must be its direct neighbors. Use `.recursive = TRUE` for recursive flattening.
+      ! All join partners of table `.start` must be its direct neighbors. Use `.recursive = TRUE` for recursive flattening.
 
 # dm_flatten_to_tbl() with cycle - abort_no_cycles
 
@@ -315,7 +315,7 @@
       dm_select_tbl(d, a)
     Condition
       Error in `dm_select_tbl()`:
-      ! You can't call `dm_select_tbl()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 # dm_add_pk() on zoomed dm - abort_only_possible_wo_zoom
 
@@ -323,7 +323,7 @@
       dm_add_pk(d, b, x)
     Condition
       Error in `dm_add_pk()`:
-      ! You can't call `dm_add_pk()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 # dm_add_fk() on zoomed dm - abort_only_possible_wo_zoom
 
@@ -331,7 +331,7 @@
       dm_add_fk(d, a, x, ref_table = b)
     Condition
       Error in `dm_add_fk()`:
-      ! You can't call `dm_add_fk()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 # dm_get_con() on zoomed dm - abort_only_possible_wo_zoom
 
@@ -339,7 +339,7 @@
       dm_get_con(d)
     Condition
       Error in `dm_get_con()`:
-      ! You can't call `dm_get_con()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 # dm_insert_zoomed() on unzoomed dm - abort_only_possible_w_zoom
 
@@ -347,7 +347,7 @@
       dm_insert_zoomed(d)
     Condition
       Error in `dm_insert_zoomed()`:
-      ! You can't call `dm_insert_zoomed()` on an unzoomed <dm>. Consider using `dm_zoom_to()` first.
+      ! Not supported on an unzoomed <dm>. Consider using `dm_zoom_to()` first.
 
 # dm_draw() on zoomed dm - abort_only_possible_wo_zoom
 
@@ -355,7 +355,7 @@
       dm_draw(d)
     Condition
       Error in `dm_draw()`:
-      ! You can't call `dm_draw()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
 
 # dm_paste() on zoomed dm - abort_only_possible_wo_zoom
 
@@ -363,5 +363,199 @@
       dm_paste(d)
     Condition
       Error in `dm_paste()`:
-      ! You can't call `dm_paste_impl()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_flatten() - abort_tables_not_neighbors
+
+    Code
+      dm_flatten(d, a, parent_tables = c)
+    Condition
+      Error in `dm_flatten()`:
+      ! All selected tables must be reachable from `table`.
+
+# pull_tbl() - abort_no_table_provided
+
+    Code
+      pull_tbl(d, )
+    Condition
+      Error in `pull_tbl()`:
+      ! Argument `table` is missing.
+
+# dm_flatten_to_tbl() - abort_no_flatten_with_nest_join (via dm_join_to_tbl)
+
+    Code
+      dm_join_to_tbl(d, a, b, join = nest_join)
+    Condition
+      Error in `dm_join_to_tbl()`:
+      ! `join = nest_join` is not supported. Consider `join = left_join`.
+
+# dm_examine_constraints() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_examine_constraints(d)
+    Condition
+      Error in `dm_examine_constraints()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_disambiguate_cols() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_disambiguate_cols(d)
+    Condition
+      Error in `dm_disambiguate_cols()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_rm_pk() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_rm_pk(d, a)
+    Condition
+      Error in `dm_rm_pk()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_rm_fk() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_rm_fk(d, a, x, ref_table = b)
+    Condition
+      Error in `dm_rm_fk()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_add_uk() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_add_uk(d, a, x)
+    Condition
+      Error in `dm_add_uk()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_rm_uk() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_rm_uk(d, a)
+    Condition
+      Error in `dm_rm_uk()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_has_pk() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_has_pk(d, a)
+    Condition
+      Error in `dm_has_pk()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_get_pk() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_get_pk(d, a)
+    Condition
+      Error in `dm_get_pk()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_get_all_pks() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_get_all_pks(d)
+    Condition
+      Error in `dm_get_all_pks()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_get_all_fks() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_get_all_fks(d)
+    Condition
+      Error in `dm_get_all_fks()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_get_all_uks() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_get_all_uks(d)
+    Condition
+      Error in `dm_get_all_uks()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_enum_pk_candidates() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_enum_pk_candidates(d, a)
+    Condition
+      Error in `dm_enum_pk_candidates()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_enum_fk_candidates() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_enum_fk_candidates(d, a, b)
+    Condition
+      Error in `dm_enum_fk_candidates()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_rename() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_rename(d, a, y = x)
+    Condition
+      Error in `dm_rename()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_select() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_select(d, a, x)
+    Condition
+      Error in `dm_select()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_set_table_description() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_set_table_description(d, a = "test")
+    Condition
+      Error in `dm_set_table_description()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# dm_get_tables() on zoomed dm - abort_only_possible_wo_zoom
+
+    Code
+      dm_get_tables(d)
+    Condition
+      Error in `dm_get_tables()`:
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+
+# check_cardinality_0_n() - abort_not_subset_of
+
+    Code
+      check_cardinality_0_n(parent, child, by_position = TRUE)
+    Output
+      # A tibble: 1 x 1
+            x
+        <dbl>
+      1     3
+    Condition
+      Error in `check_cardinality_0_n()`:
+      ! Column (`x`) of table child contains values (see examples above) that are not present in column (`x`) of table parent.
+
+# check_cardinality_1_n() - abort_not_unique_key and not_subset_of
+
+    Code
+      check_cardinality_1_n(parent, child, by_position = TRUE)
+    Condition
+      Error in `check_cardinality_1_n()`:
+      ! (`x`) not a unique key of `parent`.
+
+# check_subset() - abort_not_subset_of
+
+    Code
+      check_subset(child, parent, by_position = TRUE)
+    Output
+      # A tibble: 1 x 1
+            x
+        <dbl>
+      1     3
+    Condition
+      Error in `check_subset()`:
+      ! Column (`x`) of table child contains values (see examples above) that are not present in column (`x`) of table parent.
 

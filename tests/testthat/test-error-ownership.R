@@ -419,3 +419,235 @@ test_that("dm_paste() on zoomed dm - abort_only_possible_wo_zoom", {
     dm_paste(d)
   })
 })
+
+# --- Additional error conditions ---
+
+test_that("dm_flatten() - abort_tables_not_neighbors", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1), c = tibble(x = 1)) %>%
+    dm_add_pk(b, x) %>%
+    dm_add_fk(a, x, ref_table = b)
+  expect_snapshot(error = TRUE, {
+    dm_flatten(d, a, parent_tables = c)
+  })
+})
+
+test_that("pull_tbl() - abort_no_table_provided", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1))
+  expect_snapshot(error = TRUE, {
+    pull_tbl(d, )
+  })
+})
+
+test_that("dm_flatten_to_tbl() - abort_no_flatten_with_nest_join (via dm_join_to_tbl)", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+    dm_add_pk(b, x) %>%
+    dm_add_fk(a, x, ref_table = b)
+  expect_snapshot(error = TRUE, {
+    dm_join_to_tbl(d, a, b, join = nest_join)
+  })
+})
+
+test_that("dm_examine_constraints() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_examine_constraints(d)
+  })
+})
+
+test_that("dm_disambiguate_cols() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_disambiguate_cols(d)
+  })
+})
+
+test_that("dm_rm_pk() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>%
+    dm_add_pk(a, x) %>%
+    dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_rm_pk(d, a)
+  })
+})
+
+test_that("dm_rm_fk() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+    dm_add_pk(b, x) %>%
+    dm_add_fk(a, x, ref_table = b) %>%
+    dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_rm_fk(d, a, x, ref_table = b)
+  })
+})
+
+test_that("dm_add_uk() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_add_uk(d, a, x)
+  })
+})
+
+test_that("dm_rm_uk() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>%
+    dm_add_uk(a, x) %>%
+    dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_rm_uk(d, a)
+  })
+})
+
+test_that("dm_has_pk() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_has_pk(d, a)
+  })
+})
+
+test_that("dm_get_pk() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_get_pk(d, a)
+  })
+})
+
+test_that("dm_get_all_pks() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_get_all_pks(d)
+  })
+})
+
+test_that("dm_get_all_fks() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_get_all_fks(d)
+  })
+})
+
+test_that("dm_get_all_uks() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_get_all_uks(d)
+  })
+})
+
+test_that("dm_enum_pk_candidates() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_enum_pk_candidates(d, a)
+  })
+})
+
+test_that("dm_enum_fk_candidates() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1), b = tibble(x = 1)) %>%
+    dm_add_pk(b, x) %>%
+    dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_enum_fk_candidates(d, a, b)
+  })
+})
+
+test_that("dm_rename() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_rename(d, a, y = x)
+  })
+})
+
+test_that("dm_select() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_select(d, a, x)
+  })
+})
+
+test_that("dm_discard_zoomed() on unzoomed dm returns silently", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1))
+  expect_identical(dm_discard_zoomed(d), d)
+})
+
+test_that("dm_set_table_description() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_set_table_description(d, a = "test")
+  })
+})
+
+test_that("dm_get_tables() on zoomed dm - abort_only_possible_wo_zoom", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  d <- dm(a = tibble(x = 1)) %>% dm_zoom_to(a)
+  expect_snapshot(error = TRUE, {
+    dm_get_tables(d)
+  })
+})
+
+test_that("check_cardinality_0_n() - abort_not_subset_of", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  parent <- tibble(x = 1:2)
+  child <- tibble(x = c(1, 3))
+  expect_snapshot(error = TRUE, {
+    check_cardinality_0_n(parent, child, by_position = TRUE)
+  })
+})
+
+test_that("check_cardinality_1_n() - abort_not_unique_key and not_subset_of", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  parent <- tibble(x = c(1, 1))
+  child <- tibble(x = c(1, 2))
+  expect_snapshot(error = TRUE, {
+    check_cardinality_1_n(parent, child, by_position = TRUE)
+  })
+})
+
+test_that("check_subset() - abort_not_subset_of", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  parent <- tibble(x = 1:2)
+  child <- tibble(x = c(1, 3))
+  expect_snapshot(error = TRUE, {
+    check_subset(child, parent, by_position = TRUE)
+  })
+})

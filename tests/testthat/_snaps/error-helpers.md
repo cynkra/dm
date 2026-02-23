@@ -82,7 +82,7 @@
       abort_no_overwrite()
     Condition
       Error in `abort_no_overwrite()`:
-      ! `eval()` does not support the `overwrite` argument.
+      ! The `overwrite` argument is not supported.
     Code
       abort_pk_not_defined()
     Condition
@@ -107,7 +107,7 @@
       abort_only_possible_wo_filters("find_wisdom")
     Condition
       Error in `abort_only_possible_wo_filters()`:
-      ! You can't call `find_wisdom()` on a <dm> with filter conditions. Consider using `dm_apply_filters()` first.
+      ! Not supported on a <dm> with filter conditions. Consider using `dm_apply_filters()` first.
     Code
       abort_tables_not_neighbors("subjects", "king")
     Condition
@@ -117,7 +117,7 @@
       abort_only_parents("dm_flatten", "table", "recursive")
     Condition
       Error in `abort_only_parents()`:
-      ! When using `dm_flatten()`, all join partners of table `table` must be its direct neighbors. Use `recursive = TRUE` for recursive flattening.
+      ! All join partners of table `table` must be its direct neighbors. Use `recursive = TRUE` for recursive flattening.
     Code
       abort_not_same_src()
     Condition
@@ -137,7 +137,7 @@
       abort_squash_limited()
     Condition
       Error in `abort_squash_limited()`:
-      ! `dm_flatten_to_tbl(.recursive = TRUE)` only supports joins using `left_join()`, `inner_join()`, or `full_join()`.
+      ! Recursive flattening only supports `left_join()`, `inner_join()`, or `full_join()`.
     Code
       abort_apply_filters_first("join_tightly")
     Condition
@@ -147,7 +147,7 @@
       abort_no_flatten_with_nest_join()
     Condition
       Error in `abort_no_flatten_with_nest_join()`:
-      ! `dm_..._to_tbl()` can't be called with `join = nest_join`, see the help pages for these functions. Consider `join = left_join`.
+      ! `join = nest_join` is not supported. Consider `join = left_join`.
     Code
       abort_is_not_dm("blob")
     Condition
@@ -162,12 +162,12 @@
       abort_only_possible_wo_zoom("dm_zoom_to")
     Condition
       Error in `abort_only_possible_wo_zoom()`:
-      ! You can't call `dm_zoom_to()` on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
+      ! Not supported on a <dm_zoomed>. Consider using one of `dm_update_zoomed()`, `dm_insert_zoomed()` or `dm_discard_zoomed()` first.
     Code
       abort_only_possible_w_zoom("dm_update_zoomed")
     Condition
       Error in `abort_only_possible_w_zoom()`:
-      ! You can't call `dm_update_zoomed()` on an unzoomed <dm>. Consider using `dm_zoom_to()` first.
+      ! Not supported on an unzoomed <dm>. Consider using `dm_zoom_to()` first.
     Code
       abort_learn_keys(error_cnd(message = "some reason"))
     Condition
@@ -201,17 +201,17 @@
       abort_no_table_provided()
     Condition
       Error in `abort_no_table_provided()`:
-      ! Argument `table` for `pull_tbl.dm()` missing.
+      ! Argument `table` is missing.
     Code
       abort_table_not_zoomed("blur", c("focus_1", "focus_2"))
     Condition
       Error in `abort_table_not_zoomed()`:
-      ! In `pull_tbl.dm_zoomed()`: Table `blur` not zoomed, zoomed tables: `focus_1` and `focus_2`.
+      ! Table `blur` not zoomed, zoomed tables: `focus_1` and `focus_2`.
     Code
       abort_not_pulling_multiple_zoomed()
     Condition
       Error in `abort_not_pulling_multiple_zoomed()`:
-      ! If more than one zoomed table is available, you need to specify argument `table` in `pull_tbl.dm_zoomed()`.
+      ! If more than one zoomed table is available, you need to specify argument `table`.
     Code
       abort_cols_not_avail(c("pink5", "elephant"))
     Condition
@@ -221,22 +221,22 @@
       abort_only_named_args("give_names", "frobnicability")
     Condition
       Error in `abort_only_named_args()`:
-      ! All `...` arguments to function `give_names()` must be named. The names represent frobnicability.
+      ! All `...` arguments must be named. The names represent frobnicability.
     Code
       abort_wrong_syntax_set_cols()
     Condition
       Error in `abort_wrong_syntax_set_cols()`:
-      ! You seem to be using outdated syntax for `dm_set_colors()`, type `?dm_set_colors()` for examples.
+      ! You seem to be using outdated syntax for setting colors, type `?dm_set_colors()` for examples.
     Code
       abort_pk_not_tracked("house", "house_number")
     Condition
       Error in `abort_pk_not_tracked()`:
-      ! The primary key column(s) `house_number` of the originally zoomed table house got lost in transformations. Therefore it is not possible to use `nest.dm_zoomed()`.
+      ! The primary key column(s) `house_number` of the originally zoomed table house got lost in transformations.
     Code
       abort_only_for_local_src(mtcars)
     Condition
       Error in `abort_only_for_local_src()`:
-      ! `nest_join.dm_zoomed()` works only for a local `src`, not on a database with `src`-class: <data.frame>.
+      ! Only supported for a local `src`, not on a database with `src`-class: <data.frame>.
     Code
       abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
     Condition
