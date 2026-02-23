@@ -22,6 +22,7 @@ boilerplate <- new_dm_def()
 #' try(dm_validate(bad_dm))
 #' @autoglobal
 dm_validate <- function(x) {
+  dm_local_error_call()
   check_dm(x)
 
   if (!identical(names(unclass(x)), "def")) {
@@ -205,6 +206,7 @@ check_no_nulls_col <- function(x, where) {
 abort_dm_invalid <- function(why) {
   cli::cli_abort(
     "This {.cls dm} is invalid, reason: {why}",
-    class = dm_error_full("dm_invalid")
+    class = dm_error_full("dm_invalid"),
+    call = dm_error_call()
   )
 }

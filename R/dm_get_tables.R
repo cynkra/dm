@@ -32,6 +32,7 @@
 #'   new_dm()
 dm_get_tables <- function(x, ..., keyed = FALSE) {
   check_dots_empty()
+  dm_local_error_call()
 
   check_not_zoomed(x)
   if (isTRUE(keyed)) {

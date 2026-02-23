@@ -46,6 +46,7 @@
 #' decomposed_table$parent_table
 #' @export
 decompose_table <- function(.data, new_id_column, ...) {
+  dm_local_error_call()
   table_name <- deparse(substitute(.data))
   avail_cols <- colnames(.data)
   id_col_q <- ensym(new_id_column)

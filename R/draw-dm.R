@@ -87,6 +87,7 @@ dm_draw <- function(
   graph_name = lifecycle::deprecated(),
   font_size = lifecycle::deprecated()
 ) {
+  dm_local_error_call()
   check_not_zoomed(dm)
   check_dots_empty()
 
@@ -179,10 +180,11 @@ dm_draw <- function(
   if (length(unsupported) > 0) {
     cli::cli_abort(
       c(
-        "Unsupported {.arg backend_opts} for backend {.val {backend}}: {.code {unsupported}}.",
-        i = "Supported options are: {.code {supported_backend_opts}}."
+        "Unsupported {.arg backend_opts} for backend {.val {backend}}: {.field {unsupported}}.",
+        i = "Supported options are: {.field {supported_backend_opts}}."
       ),
-      class = dm_error_full("unsupported_backend_opts")
+      class = dm_error_full("unsupported_backend_opts"),
+      call = dm_error_call()
     )
   }
 
@@ -352,6 +354,7 @@ dm_get_all_column_types <- function(x) {
 #'   dm_draw()
 #' @autoglobal
 dm_set_colors <- function(dm, ...) {
+  dm_local_error_call()
   quos <- enquos(...)
   if (any(names(quos) == "")) {
     abort_only_named_args("dm_set_colors", "the colors")

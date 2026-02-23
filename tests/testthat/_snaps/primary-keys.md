@@ -223,7 +223,7 @@
     Code
       dm(x = tibble(a = c(1, 1))) %>% dm_add_pk(x, a, check = TRUE)
     Condition
-      Error in `abort_not_unique_key()`:
+      Error in `check_key()`:
       ! (`a`) not a unique key of `x`.
 
 # dm_get_all_pks() with table arg
@@ -258,11 +258,6 @@
         <chr>    <keys>  <lgl>        
       1 airlines carrier FALSE        
       2 airports faa     FALSE        
-
-# dm_get_all_pks() with table arg fails nicely
-
-    Can't subset tables that don't exist.
-    x Table `timetable` doesn't exist.
 
 # dm_get_all_pks() with compound keys
 

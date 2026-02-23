@@ -481,6 +481,7 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
 
 #' @export
 `$<-.dm` <- function(x, name, value) {
+  dm_local_error_call()
   abort_update_not_supported()
 }
 
@@ -504,6 +505,7 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
 
 #' @export
 `[[<-.dm` <- function(x, name, value) {
+  dm_local_error_call()
   abort_update_not_supported()
 }
 
@@ -525,6 +527,7 @@ format.dm_zoomed_df <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) 
 
 #' @export
 `[<-.dm` <- function(x, name, value) {
+  dm_local_error_call()
   abort_update_not_supported()
 }
 
@@ -542,6 +545,7 @@ names.dm_zoomed <- function(x) {
 
 #' @export
 `names<-.dm` <- function(x, value) {
+  dm_local_error_call()
   abort_update_not_supported()
 }
 
@@ -558,6 +562,7 @@ length.dm_zoomed <- function(x) {
 
 #' @export
 `length<-.dm` <- function(x, value) {
+  dm_local_error_call()
   abort_update_not_supported()
 }
 
@@ -824,6 +829,7 @@ pull_tbl <- function(dm, table, ..., keyed = FALSE) {
 #' @export
 pull_tbl.dm <- function(dm, table, ..., keyed = FALSE) {
   check_dots_empty()
+  dm_local_error_call()
 
   # for both dm and dm_zoomed
   # FIXME: shall we issue a special error in case someone tries sth. like: `pull_tbl(dm_for_filter, c(t4, t3))`?
@@ -841,6 +847,7 @@ pull_tbl.dm_zoomed <- function(dm, table, ..., keyed = FALSE) {
   }
 
   check_dots_empty()
+  dm_local_error_call()
 
   table_name <- as_string(enexpr(table))
   zoomed <- dm_get_zoom(dm)

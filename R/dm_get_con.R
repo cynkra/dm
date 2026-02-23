@@ -19,6 +19,7 @@
 #' dm_financial() %>%
 #'   dm_get_con()
 dm_get_con <- function(dm) {
+  dm_local_error_call()
   check_not_zoomed(dm)
   src <- dm_get_src_impl(dm)
   if (!inherits(src, "src_dbi")) {

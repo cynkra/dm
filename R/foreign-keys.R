@@ -80,6 +80,7 @@ dm_add_fk <- function(
   on_delete = c("no_action", "cascade")
 ) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
   table_name <- dm_tbl_name(dm, {{ table }})
   ref_table_name <- dm_tbl_name(dm, {{ ref_table }})
@@ -189,6 +190,7 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) 
 #' @keywords internal
 dm_has_fk <- function(dm, table, ref_table, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
 
   deprecate_warn("0.2.1", "dm::dm_has_fk()", "dm::dm_get_all_fks()")
@@ -206,6 +208,7 @@ dm_has_fk_impl <- function(dm, table_name, ref_table_name) {
 #' @export
 dm_get_fk <- function(dm, table, ref_table, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
 
   deprecate_warn("0.2.1", "dm::dm_get_fk()", "dm::dm_get_all_fks()")
@@ -261,6 +264,7 @@ dm_get_fk2_impl <- function(dm, table_name, ref_table_name) {
 #' @export
 dm_get_all_fks <- function(dm, parent_table = NULL, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
   table_expr <- enexpr(parent_table) %||% src_tbls_impl(dm, quiet = TRUE)
   table_names <- eval_select_table(table_expr, set_names(src_tbls_impl(dm, quiet = TRUE)))
@@ -334,6 +338,7 @@ dm_get_all_fks_def_impl <- function(
 #'   dm_draw()
 dm_rm_fk <- function(dm, table = NULL, columns = NULL, ref_table = NULL, ref_columns = NULL, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
 
   table_name <- dm_tbl_name_null(dm, {{ table }})
@@ -552,6 +557,7 @@ dm_rm_fk_impl <- function(
 #' @export
 dm_enum_fk_candidates <- function(dm, table, ref_table, ...) {
   check_dots_empty()
+  dm_local_error_call()
   check_not_zoomed(dm)
   # FIXME: with "direct" filter maybe no check necessary: but do we want to check
   # for tables retrieved with `tbl()` or with `dm_get_tables()[[table_name]]`
@@ -700,10 +706,15 @@ fk_table_to_def_fks <- function(
 abort_fk_exists <- function(child_table_name, colnames, parent_table_name) {
   cli::cli_abort(
     "({commas(tick(colnames))}) is already a foreign key of table {.field {child_table_name}} into table {.field {parent_table_name}}.",
-    class = dm_error_full("fk_exists")
+    class = dm_error_full("fk_exists"),
+    call = dm_error_call()
   )
 }
 
 abort_is_not_fkc <- function() {
-  cli::cli_abort("No foreign keys to remove.", class = dm_error_full("is_not_fkc"))
+  cli::cli_abort(
+    "No foreign keys to remove.",
+    class = dm_error_full("is_not_fkc"),
+    call = dm_error_call()
+  )
 }

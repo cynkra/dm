@@ -89,8 +89,8 @@
       dm_draw(dm_nycflights13(), backend_opts = list(columnArrows = TRUE))
     Condition
       Error in `dm_draw()`:
-      ! Unsupported `backend_opts` for backend "DiagrammeR": `columnArrows`.
-      i Supported options are: `graph_attrs`, `node_attrs`, `edge_attrs`, `focus`, `graph_name`, `column_arrow`, and `font_size`.
+      ! Unsupported `backend_opts` for backend "DiagrammeR": columnArrows.
+      i Supported options are: graph_attrs, node_attrs, edge_attrs, focus, graph_name, column_arrow, and font_size.
 
 ---
 
@@ -98,8 +98,8 @@
       dm_draw(dm_nycflights13(), backend_opts = list(foo = 1, bar = 2))
     Condition
       Error in `dm_draw()`:
-      ! Unsupported `backend_opts` for backend "DiagrammeR": `foo` and `bar`.
-      i Supported options are: `graph_attrs`, `node_attrs`, `edge_attrs`, `focus`, `graph_name`, `column_arrow`, and `font_size`.
+      ! Unsupported `backend_opts` for backend "DiagrammeR": foo and bar.
+      i Supported options are: graph_attrs, node_attrs, edge_attrs, focus, graph_name, column_arrow, and font_size.
 
 # column_arrow backend option works
 

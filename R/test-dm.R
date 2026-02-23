@@ -100,13 +100,15 @@ check_param_length <- function(
 abort_table_missing <- function(arg_name) {
   cli::cli_abort(
     "Must pass {.arg {arg_name}} argument.",
-    class = dm_error_full("table_missing")
+    class = dm_error_full("table_missing"),
+    call = dm_error_call()
   )
 }
 
 abort_table_not_in_dm <- function(table_name, dm_tables) {
   cli::cli_abort(
     "Table {.field {table_name}} not in {.cls dm} object. Available table names: {.field {dm_tables}}.",
-    class = dm_error_full("table_not_in_dm")
+    class = dm_error_full("table_not_in_dm"),
+    call = dm_error_call()
   )
 }

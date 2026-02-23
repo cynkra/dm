@@ -40,6 +40,7 @@
 #' dm_nycflights13() %>%
 #'   dm_paste(options = "select")
 dm_paste <- function(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL) {
+  dm_local_error_call()
   check_dots_empty(action = warn)
 
   options <- check_paste_options(options, select, caller_env())
@@ -349,6 +350,7 @@ abort_unknown_option <- function(options, all_options) {
   bad_options <- setdiff(options, all_options)
   cli::cli_abort(
     "{qty(length(bad_options))}Option{?s} unknown: {.val {bad_options}}. Must be one of {.val {all_options}}.",
-    class = dm_error_full("unknown_option")
+    class = dm_error_full("unknown_option"),
+    call = dm_error_call()
   )
 }
