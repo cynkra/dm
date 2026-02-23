@@ -131,6 +131,7 @@ dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' @rdname rows-dm
 #' @export
 dm_rows_append <- function(x, y, ..., in_place = NULL, progress = NA) {
+  dm_local_error_call()
   check_dots_empty()
 
   dm_rows(x, y, "append", top_down = TRUE, in_place, require_keys = FALSE, progress = progress)
@@ -144,6 +145,7 @@ dm_rows_append <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' @rdname rows-dm
 #' @export
 dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
+  dm_local_error_call()
   check_dots_empty()
 
   dm_rows(x, y, "update", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
@@ -158,6 +160,7 @@ dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' @rdname rows-dm
 #' @export
 dm_rows_patch <- function(x, y, ..., in_place = NULL, progress = NA) {
+  dm_local_error_call()
   check_dots_empty()
 
   dm_rows(x, y, "patch", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
@@ -171,6 +174,7 @@ dm_rows_patch <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' @rdname rows-dm
 #' @export
 dm_rows_upsert <- function(x, y, ..., in_place = NULL, progress = NA) {
+  dm_local_error_call()
   check_dots_empty()
 
   dm_rows(x, y, "upsert", top_down = TRUE, in_place, require_keys = TRUE, progress = progress)
@@ -185,6 +189,7 @@ dm_rows_upsert <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' @rdname rows-dm
 #' @export
 dm_rows_delete <- function(x, y, ..., in_place = NULL, progress = NA) {
+  dm_local_error_call()
   check_dots_empty()
 
   dm_rows(x, y, "delete", top_down = FALSE, in_place, require_keys = TRUE, progress = progress)

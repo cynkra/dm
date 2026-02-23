@@ -257,6 +257,7 @@ check_card_api <- function(
   call = caller_env(),
   target = list
 ) {
+  dm_local_error_call(call)
   if (dots_n(...) >= 2) {
     name <- as.character(frame_call(call)[[1]] %||% "check_card_api")
     deprecate_warn(
