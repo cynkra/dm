@@ -241,8 +241,8 @@
       dm_draw(d, backend_opts = list(unsupported_option = TRUE))
     Condition
       Error in `dm_draw()`:
-      ! Unsupported `backend_opts` for backend "DiagrammeR": "unsupported_option".
-      i Supported options are: "graph_attrs", "node_attrs", "edge_attrs", "focus", "graph_name", "column_arrow", and "font_size".
+      ! Unsupported `backend_opts` for backend "DiagrammeR": unsupported_option.
+      i Supported options are: graph_attrs, node_attrs, edge_attrs, focus, graph_name, column_arrow, and font_size.
 
 # copy_to.dm() - abort_only_data_frames_supported
 
