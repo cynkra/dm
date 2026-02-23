@@ -274,8 +274,7 @@ check_card_api <- function(
       {{ y }},
       ...,
       by_position = TRUE,
-      target = target,
-      call = call
+      target = target
     )
   } else {
     check_dots_empty(call = call)
@@ -285,8 +284,7 @@ check_card_api <- function(
       {{ y }},
       {{ y_select }},
       by_position = by_position %||% FALSE,
-      target = target,
-      call = call
+      target = target
     )
   }
 }
@@ -298,8 +296,7 @@ check_card_api_impl <- function(
   fk_column,
   ...,
   by_position,
-  target,
-  call = caller_env()
+  target
 ) {
   ptq <- enquo(parent_table)
   ctq <- enquo(child_table)
@@ -320,7 +317,7 @@ check_card_api_impl <- function(
     if (anyNA(y_idx)) {
       cli::cli_abort(
         "{.code by_position = FALSE} or {.code by_position = NULL} require column names in {.arg x} to match those in {.arg y}.",
-        call = call
+        call = dm_error_call()
       )
     }
 

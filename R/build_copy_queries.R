@@ -36,7 +36,7 @@ build_copy_queries <- function(
             .x,
             "no_action" = "",
             "cascade" = " ON DELETE CASCADE",
-            cli::cli_abort('{.code on_delete = "{.x}"} is not supported.')
+            cli::cli_abort('{.code on_delete = {.val {.x}}} is not supported.')
           )
         }
       )

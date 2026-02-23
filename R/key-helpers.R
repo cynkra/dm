@@ -286,8 +286,7 @@ check_api <- function(
       {{ y }},
       ...,
       by_position = TRUE,
-      target = target,
-      call = call
+      target = target
     )
   } else {
     check_dots_empty(call = call)
@@ -297,13 +296,12 @@ check_api <- function(
       {{ y }},
       {{ y_select }},
       by_position = by_position %||% FALSE,
-      target = target,
-      call = call
+      target = target
     )
   }
 }
 
-check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target, call = caller_env()) {
+check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
   t1q <- enquo(t1)
   t2q <- enquo(t2)
 
@@ -323,7 +321,7 @@ check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target, call = call
     if (anyNA(y_idx)) {
       cli::cli_abort(
         "{.code by_position = FALSE} or {.code by_position = NULL} require column names in {.arg x} to match those in {.arg y}.",
-        call = call
+        call = dm_error_call()
       )
     }
 

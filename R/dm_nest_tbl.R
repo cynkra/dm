@@ -25,6 +25,8 @@
 #'
 #' nested_dm$airlines
 dm_nest_tbl <- function(dm, child_table, into = NULL) {
+  dm_local_error_call()
+
   # process args
   into <- enquo(into)
   # FIXME: Rename table_name to child_tables_name
@@ -52,18 +54,24 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
 
   # make sure we have a terminal child
   if (length(children) || !length(parent_name) || length(parent_name) > 1) {
-    cli::cli_abort(c(
-      "{.val {table_name}} can't be nested because it is not a terminal child table.",
-      if (length(parent_name)) paste0("parents: ", toString(paste0("`", parent_name, "`"))),
-      if (length(children)) paste0("children: ", toString(paste0("`", children, "`")))
-    ))
+    cli::cli_abort(
+      c(
+        "{.val {table_name}} can't be nested because it is not a terminal child table.",
+        if (length(parent_name)) "parents: {.val {parent_name}}",
+        if (length(children)) "children: {.val {children}}"
+      ),
+      call = dm_error_call()
+    )
   }
 
   # check consistency of `into` if relevant
   if (!quo_is_null(into)) {
     into <- dm_tbl_name(dm, !!into)
     if (into != parent_name) {
-      cli::cli_abort("{.val {table_name}} can only be packed into {.val {child_name}}.")
+      cli::cli_abort(
+        "{.val {table_name}} can only be packed into {.val {child_name}}.",
+        call = dm_error_call()
+      )
     }
   }
 
@@ -117,6 +125,8 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
 #'
 #' dm_packed$flights$planes
 dm_pack_tbl <- function(dm, parent_table, into = NULL) {
+  dm_local_error_call()
+
   # process args
   into <- enquo(into)
   table_name <- dm_tbl_name(dm, {{ parent_table }})
@@ -125,7 +135,7 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   fk <- filter(fks, parent_table == !!table_name)
   children_names <- pull(fk, child_table)
 
-  check_table_can_be_packed(table_name, children_names, fks, call = current_env())
+  check_table_can_be_packed(table_name, children_names, fks)
   child_name <- children_names # we checked we had only one
 
   pks <- dm_get_all_pks(dm)
@@ -138,7 +148,10 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   if (!quo_is_null(into)) {
     into <- dm_tbl_name(dm, !!into)
     if (into != child_name) {
-      cli::cli_abort("{.val {table_name}} can only be packed into {.val {child_name}}.")
+      cli::cli_abort(
+        "{.val {table_name}} can only be packed into {.val {child_name}}.",
+        call = dm_error_call()
+      )
     }
   }
 
@@ -161,7 +174,7 @@ dm_pack_tbl <- function(dm, parent_table, into = NULL) {
   dm_from_def(def)
 }
 
-check_table_can_be_packed <- function(table_name, children_names, fks, call = caller_env()) {
+check_table_can_be_packed <- function(table_name, children_names, fks) {
   # make sure we have a terminal parent
   parents <-
     fks %>%
@@ -175,12 +188,10 @@ check_table_can_be_packed <- function(table_name, children_names, fks, call = ca
     cli::cli_abort(
       c(
         "{.val {table_name}} can't be packed because it is not a terminal parent table.",
-        if (length(parents) > 0) paste0("parents : ", toString(paste0("`", parents, "`"))),
-        if (length(children_names) > 0) {
-          paste0("children: ", toString(paste0("`", children_names, "`")))
-        }
+        if (length(parents) > 0) "parents : {.val {parents}}",
+        if (length(children_names) > 0) "children: {.val {children_names}}"
       ),
-      call = call
+      call = dm_error_call()
     )
   }
   invisible(NULL)

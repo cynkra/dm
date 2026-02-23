@@ -200,16 +200,7 @@ dm_rows <- function(x, y, operation_name, top_down, in_place, require_keys, prog
     in_place <- FALSE
   }
 
-  dm_rows_run(
-    x,
-    y,
-    operation_name,
-    top_down,
-    in_place,
-    require_keys,
-    progress = progress,
-    call = caller_env()
-  )
+  dm_rows_run(x, y, operation_name, top_down, in_place, require_keys, progress = progress)
 }
 
 dm_rows_check <- function(x, y) {
@@ -375,8 +366,7 @@ dm_rows_run <- function(
   top_down,
   in_place,
   require_keys,
-  progress = NA,
-  call = caller_env()
+  progress = NA
 ) {
   # topologically sort tables
   graph <- create_graph_from_dm(x, directed = TRUE)
@@ -392,7 +382,7 @@ dm_rows_run <- function(
     if (!(all(tables %in% all_pks$table))) {
       cli::cli_abort(
         "{.fun dm_rows_{rows_op_name}} requires the {.cls dm} object to have primary keys for all target tables.",
-        call = call
+        call = dm_error_call()
       )
     }
     keys <- all_pks$pk_col[match(tables, all_pks$table)]
@@ -563,7 +553,7 @@ rows_append_ai_local <- function(x, y, autoinc_col) {
 
 abort_columns_missing <- function(...) {
   # FIXME
-  cli::cli_abort("abort_columns_missing()")
+  cli::cli_abort("Column mismatch between target and source tables.", call = dm_error_call())
 }
 
 error_txt_columns_missing <- function(...) {
@@ -572,7 +562,7 @@ error_txt_columns_missing <- function(...) {
 
 abort_tables_missing <- function(...) {
   # FIXME
-  cli::cli_abort("abort_tables_missing()")
+  cli::cli_abort("Source tables are missing from target dm.", call = dm_error_call())
 }
 
 error_txt_tables_missing <- function(...) {

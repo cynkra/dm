@@ -305,21 +305,21 @@ keyed_build_join_spec <- function(x, y, by = NULL, suffix = NULL) {
   )
 }
 
-keyed_by <- function(x, y, call = caller_env()) {
+keyed_by <- function(x, y) {
   fks_df <- fks_df_from_keys_info(list(x = x, y = y))
 
   if (nrow(fks_df) == 0) {
-    cli::cli_abort("Can't infer {.arg by}: foreign key information lost?", call = call)
+    cli::cli_abort("Can't infer {.arg by}: foreign key information lost?", call = dm_error_call())
   }
 
   stopifnot(map_int(fks_df$fks, NROW) > 0)
 
   if (nrow(fks_df) > 1) {
-    cli::cli_abort("Can't infer {.arg by}: foreign key available in both directions.", call = call)
+    cli::cli_abort("Can't infer {.arg by}: foreign key available in both directions.", call = dm_error_call())
   }
 
   if (nrow(fks_df$fks[[1]]) > 1) {
-    cli::cli_abort("Can't infer {.arg by}: multiple foreign keys available.", call = call)
+    cli::cli_abort("Can't infer {.arg by}: multiple foreign keys available.", call = dm_error_call())
   }
 
   fk <- fks_df$fks[[1]][1, ]
