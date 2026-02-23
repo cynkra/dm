@@ -38,7 +38,7 @@ thrown and the reason for it is explained.
 data <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 # this is failing:
 try(check_key(data, a, b))
-#> Error in abort_not_unique_key(x_label, orig_names) : 
+#> Error in check_key(data, a, b) : 
 #>   (`a`, `b`) not a unique key of `data`.
 
 # this is passing:

@@ -29,7 +29,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2026-02-22</h4>
+            <h4 data-toc-skip class="date">2026-02-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-low-level.Rmd</code></div>
@@ -122,7 +122,7 @@ you have tables:</p>
 function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:66:5:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_key()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`a`) not a unique key of `data_1`.</span></span></code></pre></div>
 <p>Mind the error message when a test is not passed.</p>
 <p>For <code>data_2</code>, column <code>a</code> is a key:</p>
@@ -151,7 +151,7 @@ key to some other table. What about the inverse relation?</p>
 <span><span class="co">#&gt;       a</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:240:3:</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_subset()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table <span style="color: #00BB00;">data_2</span> contains values (see examples above)</span></span>
 <span><span class="co">#&gt;   that are not present in column (`a`) of table <span style="color: #00BB00;">data_1</span>.</span></span></code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not
@@ -183,7 +183,7 @@ values of <code>c_1</code> in <code>t_1</code> are the same as those of
 <span><span class="co">#&gt;       a</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:191:5:</span></span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_set_equality()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table <span style="color: #00BB00;">data_2</span> contains values (see examples above)</span></span>
 <span><span class="co">#&gt;   that are not present in column (`a`) of table <span style="color: #00BB00;">data_1</span>.</span></span></code></pre>
 <p>Introducing one more table enables us to show how it looks when the
@@ -278,7 +278,7 @@ be used:</p>
 <span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:66:5:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_cardinality_0_n()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`c`) not a unique key of `d2`.</span></span>
 <span></span>
 <span><span class="co"># This passes, multiple values in d2$c are allowed:</span></span>
@@ -297,7 +297,7 @@ be used:</p>
 <span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_bijective()` at dm/R/check-cardinalities.R:158:3:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_cardinality_1_1()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 1..1 cardinality (bijectivity) is not given: Column (`c`) in</span></span>
 <span><span class="co">#&gt;   table <span style="color: #00BB00;">d2</span> contains duplicate values.</span></span>
 <span></span>

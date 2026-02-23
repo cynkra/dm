@@ -52,7 +52,7 @@ try(check_subset(data_2, data_1))
 #> 1     1     4     7
 #> 2     2     5     8
 #> 3     3     6     9
-#> Error in abort_not_subset_of(x_label, colnames(x), y_label, colnames(y)) : 
+#> Error in check_subset(data_2, data_1) : 
 #>   Columns (`a`, `b`, `c`) of table data_2 contain values (see examples
 #> above) that are not present in columns (`a`, `b`, `c`) of table data_1.
 ```

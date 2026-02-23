@@ -56,7 +56,7 @@ try(check_set_equality(data_1, data_2, x_select = a, y_select = a))
 #>       a
 #>   <dbl>
 #> 1     3
-#> Error in abort_sets_not_equal(map_chr(catchers, conditionMessage)) : 
+#> Error in check_set_equality(data_1, data_2, x_select = a, y_select = a) : 
 #>   Column (`a`) of table data_2 contains values (see examples above) that
 #> are not present in column (`a`) of table data_1.
 
@@ -77,7 +77,7 @@ try(check_set_equality(data_2, data_3))
 #> 1     2     4     7
 #> 2     1     5     8
 #> 3     2     6     9
-#> Error in abort_sets_not_equal(map_chr(catchers, conditionMessage)) : 
+#> Error in check_set_equality(data_2, data_3) : 
 #>   Columns (`a`, `b`, `c`) of table data_2 contain values (see examples
 #> above) that are not present in columns (`a`, `b`, `c`) of table data_3.
 #> Columns (`a`, `b`, `c`) of table data_3 contain values (see examples above)

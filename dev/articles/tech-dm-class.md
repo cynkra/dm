@@ -114,7 +114,7 @@ flights_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/Rtmpnxkoxe/nycflights13.sqlite]
+#> src:  sqlite 3.51.2 [/tmp/Rtmpch4hGV/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -178,7 +178,7 @@ flights_dm[["airports"]]
 
 ``` fansi
 #> # Source:   table<`main`.`airports`> [?? x 8]
-#> # Database: sqlite 3.51.2 [/tmp/Rtmpnxkoxe/nycflights13.sqlite]
+#> # Database: sqlite 3.51.2 [/tmp/Rtmpch4hGV/nycflights13.sqlite]
 #>    faa   name                            lat    lon   alt    tz dst   tzone
 #>    <chr> <chr>                         <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
 #>  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…
@@ -221,7 +221,7 @@ flights_dm_with_key
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/Rtmpnxkoxe/nycflights13.sqlite]
+#> src:  sqlite 3.51.2 [/tmp/Rtmpch4hGV/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -308,7 +308,7 @@ try(
 ```
 
 ``` fansi
-#> Error in abort_not_unique_key(x_label, orig_names) : 
+#> Error in check_key(airports, tzone) : 
 #>   (`tzone`) not a unique key of `airports`.
 ```
 
@@ -341,7 +341,7 @@ flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/Rtmpnxkoxe/nycflights13.sqlite]
+#> src:  sqlite 3.51.2 [/tmp/Rtmpch4hGV/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -358,7 +358,7 @@ try(
 ```
 
 ``` fansi
-#> Error in abort_ref_tbl_has_no_pk(ref_table_name) : 
+#> Error in dm_add_fk(., flights, origin, airports) : 
 #>   ref_table airports needs a primary key first. Use
 #> `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to
 #> define a primary key.
@@ -382,7 +382,7 @@ try(
 ```
 
 ``` fansi
-#> Error in abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name) : 
+#> Error in dm_add_fk(., flights, dest, airports, check = TRUE) : 
 #>   Column (`dest`) of table flights contains values (see examples
 #> above) that are not present in column (`faa`) of table airports.
 ```
@@ -424,7 +424,8 @@ try(
 ```
 
 ``` fansi
-#> Error in abort_is_not_fkc() : No foreign keys to remove.
+#> Error in dm_rm_fk(., table = flights, column = dest, ref_table = airports) : 
+#>   No foreign keys to remove.
 ```
 
 ``` r

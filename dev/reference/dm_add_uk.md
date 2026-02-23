@@ -106,6 +106,6 @@ try(
   nycflights_dm %>%
     dm_add_uk(planes, manufacturer, check = TRUE)
 )
-#> Error in abort_not_unique_key(x_label, orig_names) : 
+#> Error in check_key(planes, manufacturer) : 
 #>   (`manufacturer`) not a unique key of `planes`.
 ```

@@ -34,7 +34,7 @@ function:
 
 ``` r
 check_key(data_1, a)
-#> Error in `abort_not_unique_key()` at dm/R/key-helpers.R:66:5:
+#> Error in `check_key()`:
 #> ! (`a`) not a unique key of `data_1`.
 ```
 
@@ -79,7 +79,7 @@ check_subset(data_2, a, data_1, a)
 #> 1     3
 ```
 
-    #> Error in `abort_not_subset_of()` at dm/R/key-helpers.R:240:3:
+    #> Error in `check_subset()`:
     #> ! Column (`a`) of table data_2 contains values (see examples above)
     #>   that are not present in column (`a`) of table data_1.
 
@@ -121,7 +121,7 @@ check_set_equality(data_1, a, data_2, a)
 #> 1     3
 ```
 
-    #> Error in `abort_sets_not_equal()` at dm/R/key-helpers.R:191:5:
+    #> Error in `check_set_equality()`:
     #> ! Column (`a`) of table data_2 contains values (see examples above)
     #>   that are not present in column (`a`) of table data_1.
 
@@ -221,7 +221,7 @@ check_cardinality_0_n(d2, c, d1, a)
 #> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
-#> Error in `abort_not_unique_key()` at dm/R/key-helpers.R:66:5:
+#> Error in `check_cardinality_0_n()`:
 #> ! (`c`) not a unique key of `d2`.
 
 # This passes, multiple values in d2$c are allowed:
@@ -240,7 +240,7 @@ check_cardinality_1_1(d1, a, d2, c)
 #> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
-#> Error in `abort_not_bijective()` at dm/R/check-cardinalities.R:158:3:
+#> Error in `check_cardinality_1_1()`:
 #> ! 1..1 cardinality (bijectivity) is not given: Column (`c`) in
 #>   table d2 contains duplicate values.
 

@@ -155,7 +155,7 @@ d2 <- tibble::tibble(a = c(1:4, 4L))
 d3 <- tibble::tibble(c = c(1:5, 5L), d = 0)
 # This does not pass, `a` is not unique key of d2:
 try(check_cardinality_0_n(d2, d1))
-#> Error in abort_not_unique_key(x_label, orig_names) : 
+#> Error in check_cardinality_0_n(d2, d1) : 
 #>   (`a`) not a unique key of `d2`.
 
 # Columns are matched by name by default:
@@ -168,11 +168,11 @@ check_cardinality_0_n(d1, d2)
 
 # This does not pass, injectivity is violated:
 try(check_cardinality_1_1(d1, d3, y_select = c(a = c)))
-#> Error in abort_not_bijective(y_label, colnames(y)) : 
+#> Error in check_cardinality_1_1(d1, d3, y_select = c(a = c)) : 
 #>   1..1 cardinality (bijectivity) is not given: Column (`a`) in table d3
 #> contains duplicate values.
 try(check_cardinality_0_1(d1, d3, x_select = c(c = a)))
-#> Error in abort_not_injective(y_label, colnames(y)) : 
+#> Error in check_cardinality_0_1(d1, d3, x_select = c(c = a)) : 
 #>   0..1 cardinality (injectivity from child table to parent table) is not
 #> given: Column (`c`) in table d3 contains duplicate values.
 
