@@ -1,5 +1,22 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9017
+
+## Features
+
+- Introduce `dm_flatten(dm, table, ..., parent_tables = NULL, recursive = FALSE, allow_deep = FALSE, join = left_join)` (#2393, #2394).
+
+- Make igraph dependency optional (#2146, #2364).
+
+## Chore
+
+- Implement zoom v2 with internal `dm_zoom2_to()`, `dm_update_zoom2ed()`, `dm_insert_zoom2ed()`, `dm_discard_zoom2ed()` (#2398, #2399).
+
+## Documentation
+
+- Use cli for errors and warnings (#2396, #2397).
+
+
 # dm 1.0.12.9016
 
 ## Bug fixes
