@@ -40,6 +40,55 @@
   rlang::run_on_load()
 }
 
+.onAttach <- function(libname, pkgname) {
+  if (is.null(getOption("dm.use_igraph")) && !rlang::is_installed("igraph")) {
+    packageStartupMessage(cli::format_message(c(
+      "!" = "Package {.pkg igraph} is not installed. {.pkg dm} will use a pure R fallback.",
+      "i" = "Install {.pkg igraph} for better performance: {.run install.packages(\"igraph\")}",
+      "i" = "Set {.code options(dm.use_igraph = FALSE)} to suppress this message."
+    )))
+  }
+
+  attached <- search()
+  missing_pkgs <- setdiff(c("dplyr", "tidyr"), sub("^package:", "", grep("^package:", attached, value = TRUE)))
+  if (length(missing_pkgs) > 0) {
+    pkgs_fmt <- paste0("{.pkg ", missing_pkgs, "}")
+    packageStartupMessage(cli::format_message(c(
+      "!" = paste(
+        "For best results, load",
+        paste(pkgs_fmt, collapse = " and "),
+        "before {.pkg dm}."
+      )
+    )))
+  }
+}
+
+setup_graph_functions <- function(ns) {
+  use_igraph <- getOption("dm.use_igraph")
+
+  if (isTRUE(use_igraph)) {
+    rlang::check_installed("igraph", reason = "because `options(dm.use_igraph = TRUE)` is set.")
+  } else if (isFALSE(use_igraph) || !rlang::is_installed("igraph")) {
+    graph_funs <- c(
+      "graph_from_data_frame",
+      "graph_vertices",
+      "graph_edges",
+      "graph_dfs",
+      "graph_topo_sort",
+      "graph_distances",
+      "graph_induced_subgraph",
+      "graph_shortest_paths",
+      "graph_delete_vertices",
+      "graph_neighbors",
+      "graph_vcount",
+      "graph_girth"
+    )
+    for (fun in graph_funs) {
+      assign(fun, get(paste0(fun, "_fallback"), envir = ns), envir = ns)
+    }
+  }
+}
+
 rigg <- function(fun) {
   name <- deparse(substitute(fun))
 
