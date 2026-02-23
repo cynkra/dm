@@ -180,8 +180,8 @@ dm_draw <- function(
   if (length(unsupported) > 0) {
     cli::cli_abort(
       c(
-        "Unsupported {.arg backend_opts} for backend {.val {backend}}: {.val {unsupported}}.",
-        i = "Supported options are: {.val {supported_backend_opts}}."
+        "Unsupported {.arg backend_opts} for backend {.val {backend}}: {.field {unsupported}}.",
+        i = "Supported options are: {.field {supported_backend_opts}}."
       ),
       class = dm_error_full("unsupported_backend_opts"),
       call = dm_error_call()
