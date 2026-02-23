@@ -845,7 +845,10 @@ pull_tbl.dm_zoomed <- function(dm, table, ..., keyed = FALSE) {
   dm_local_error_call()
 
   if (isTRUE(keyed)) {
-    cli::cli_abort("{.code keyed = TRUE} not supported for zoomed dm objects.", call = dm_error_call())
+    cli::cli_abort(
+      "{.code keyed = TRUE} not supported for zoomed dm objects.",
+      call = dm_error_call()
+    )
   }
 
   check_dots_empty()

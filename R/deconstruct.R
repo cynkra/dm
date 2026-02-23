@@ -315,11 +315,17 @@ keyed_by <- function(x, y) {
   stopifnot(map_int(fks_df$fks, NROW) > 0)
 
   if (nrow(fks_df) > 1) {
-    cli::cli_abort("Can't infer {.arg by}: foreign key available in both directions.", call = dm_error_call())
+    cli::cli_abort(
+      "Can't infer {.arg by}: foreign key available in both directions.",
+      call = dm_error_call()
+    )
   }
 
   if (nrow(fks_df$fks[[1]]) > 1) {
-    cli::cli_abort("Can't infer {.arg by}: multiple foreign keys available.", call = dm_error_call())
+    cli::cli_abort(
+      "Can't infer {.arg by}: multiple foreign keys available.",
+      call = dm_error_call()
+    )
   }
 
   fk <- fks_df$fks[[1]][1, ]

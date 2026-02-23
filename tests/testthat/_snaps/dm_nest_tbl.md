@@ -14,7 +14,7 @@
     Condition
       Error in `dm_nest_tbl()`:
       ! "tf_2" can't be nested because it is not a terminal child table.
-      parents: "tf_1", "tf_3"
+      parents: "tf_1" and "tf_3"
 
 ---
 
@@ -23,7 +23,7 @@
     Condition
       Error in `dm_nest_tbl()`:
       ! "tf_3" can't be nested because it is not a terminal child table.
-      children: "tf_2", "tf_4"
+      children: "tf_2" and "tf_4"
 
 ---
 
@@ -82,7 +82,7 @@
     Condition
       Error in `dm_pack_tbl()`:
       ! "tf_2" can't be packed because it is not a terminal parent table.
-      parents : "tf_1", "tf_3"
+      parents : "tf_1" and "tf_3"
 
 ---
 
@@ -91,7 +91,7 @@
     Condition
       Error in `dm_pack_tbl()`:
       ! "tf_3" can't be packed because it is not a terminal parent table.
-      children: "tf_2", "tf_4"
+      children: "tf_2" and "tf_4"
 
 ---
 
