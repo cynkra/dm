@@ -2,22 +2,15 @@
 
 # dm 1.0.99.9900
 
-## Breaking changes
+## Features
 
-- `copy_dm_to()` now uses `dm_sql()` internally and creates key constraints on the
-  database (@krlmlr, #1887, #2022).
-  Unique keys and autoincrement primary keys (#1725) are set up automatically.
-  Data models with cyclic foreign-key references are now supported on all databases
-  that allow `ALTER TABLE` to add constraints (all except DuckDB and SQLite, #664).
+- Aligned with dplyr 1.2.0, all new verbs and arguments are supported.
 
   ``` r
-  con <- DBI::dbConnect(duckdb::duckdb())
-  dm_financial() |>
-    copy_dm_to(con, ., temporary = FALSE, set_key_constraints = TRUE)
-  DBI::dbDisconnect(con)
+  dm_nycflights13() |>
+    dm_zoom_to(flights) |>
+    summarize(.by = origin, mean(dep_delay, na.rm = TRUE))
   ```
-
-## Features
 
 - New `dm_flatten()` joins parent tables into a target table in-place and removes
   the now-integrated parents from the dm (#2393, #2394).
@@ -38,7 +31,7 @@
 
   ``` r
   dm_nycflights13() |>
-    dm_draw(backend_opts = list(graph_attrs = "rankdir=TB", column_arrow = FALSE))
+    dm_draw(backend_opts = list(column_arrow = FALSE))
   ```
 
 - `dm_examine_constraints()` gains a `.max_value` argument controlling how many
@@ -62,6 +55,7 @@
 - igraph is now an optional dependency (#2146, #2364), reducing the mandatory
   install footprint.
   Functions that require igraph will prompt you to install it when needed.
+  Set `options(dm.use_igraph = FALSE)` to turn off the startup message.
 
 - Keys are now learned automatically from SQLite databases (@gadenbuie, #352).
 
@@ -73,10 +67,27 @@
 - All user-facing messages now use `cli::cli_inform()` with native formatting
   (#2374).
 
-## Bug fixes
+## Breaking changes
 
-- Fixed key tracking for `summarise(.by = ...)` in zoomed, zoom2ed, and keyed
-  dm (#2409, #2410).
+- A startup message now recommends running `library(dplyr)` before `library(dm)`.
+  In a future version, the dm package will no longer reexport all dplyr functions.
+  The new pattern ensures that scripts written today will work after that change.
+  Set `options(dm.suppress_dplyr_startup_message = TRUE)` to turn off the startup message.
+
+- `copy_dm_to()` now uses `dm_sql()` internally and creates key constraints on the
+  database (@krlmlr, #1887, #2022).
+  Unique keys and autoincrement primary keys (#1725) are set up automatically.
+  Data models with cyclic foreign-key references are now supported on all databases
+  that allow `ALTER TABLE` to add constraints (all except DuckDB and SQLite, #664).
+
+  ``` r
+  con <- DBI::dbConnect(duckdb::duckdb())
+  dm_financial() |>
+    copy_dm_to(con, ., temporary = FALSE, set_key_constraints = TRUE)
+  DBI::dbDisconnect(con)
+  ```
+
+## Bug fixes
 
 - `dm_from_con(learn_keys = TRUE, .names = )` now correctly applies the specified
   table naming pattern (@owenjonesuob, #2213, #2214).
@@ -91,8 +102,7 @@
 
 - Corrected the deprecation warning message for `dm_squash_to_tbl()` (#1364, #2302).
 
-- Fixed `dm_paste()` incorrectly splitting long pipelines by implementing
-  operation chunking (#2301).
+- `dm_paste()` limits its pipelines to up to 100 steps, splitting longer pipelines as needed (#2301).
 
 
 # dm 1.0.12
