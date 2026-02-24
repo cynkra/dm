@@ -114,7 +114,7 @@ flights_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/RtmpTnZzD1/nycflights13.sqlite]
+#> src:  sqlite 3.51.2 [/tmp/RtmphbuGwh/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -178,7 +178,7 @@ flights_dm[["airports"]]
 
 ``` fansi
 #> # Source:   table<`main`.`airports`> [?? x 8]
-#> # Database: sqlite 3.51.2 [/tmp/RtmpTnZzD1/nycflights13.sqlite]
+#> # Database: sqlite 3.51.2 [/tmp/RtmphbuGwh/nycflights13.sqlite]
 #>    faa   name                            lat    lon   alt    tz dst   tzone
 #>    <chr> <chr>                         <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
 #>  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…
@@ -221,7 +221,7 @@ flights_dm_with_key
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/RtmpTnZzD1/nycflights13.sqlite]
+#> src:  sqlite 3.51.2 [/tmp/RtmphbuGwh/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -341,7 +341,7 @@ flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/RtmpTnZzD1/nycflights13.sqlite]
+#> src:  sqlite 3.51.2 [/tmp/RtmphbuGwh/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
