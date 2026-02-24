@@ -55,6 +55,30 @@ test_src_maria <- function(root = FALSE) {
   dbplyr::src_dbi(con, auto_disconnect = TRUE)
 }
 
+test_src_arrow <- function() {
+  testthat::skip_if_not_installed("arrow")
+  NULL
+}
+
+test_src_dtplyr <- function() {
+  testthat::skip_if_not_installed("dtplyr")
+  testthat::skip_if_not_installed("data.table")
+  NULL
+}
+
+test_src_duckplyr_stingy <- function() {
+  testthat::skip_if_not_installed("duckplyr")
+  duckplyr::methods_overwrite()
+  NULL
+}
+
+test_src_duckplyr_lavish <- function() {
+  testthat::skip_if_not_installed("duckplyr")
+  duckplyr::methods_overwrite()
+  options(duckplyr.force = TRUE)
+  NULL
+}
+
 test_src_mssql <- function(database = TRUE) {
   # Check for SQL Server-specific host first, then fall back to general docker host
   mssql_host <- Sys.getenv("DM_TEST_MSSQL_HOST")

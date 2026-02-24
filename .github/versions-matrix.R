@@ -7,7 +7,11 @@ data.frame(
     "test-maria",
     "test-mysql-maria",
     "test-duckdb",
-    "test-sqlite"
+    "test-sqlite",
+    "test-arrow",
+    "test-dtplyr",
+    "test-duckplyr_stingy",
+    "test-duckplyr_lavish"
   ),
   covr = "true",
   desc = c(
@@ -16,6 +20,10 @@ data.frame(
     "MariaDB with covr",
     "MySQL with covr",
     "DuckDB with covr",
-    "SQLite with covr"
+    "SQLite with covr",
+    "Arrow with covr",
+    "dtplyr with covr",
+    "duckplyr stingy with covr",
+    "duckplyr lavish with covr"
   )
 )

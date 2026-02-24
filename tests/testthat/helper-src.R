@@ -40,7 +40,7 @@ copy_to_my_test_src <- function(rhs, lhs) {
 
   src <- my_test_src()
   if (is.null(src)) {
-    rhs
+    wrap_to_test_backend(rhs)
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
     # (except for bad_dm)
@@ -55,6 +55,32 @@ copy_to_my_test_src <- function(rhs, lhs) {
   }
 }
 
+wrap_to_test_backend <- function(x) {
+  if (my_test_src_name == "df") {
+    return(x)
+  }
+
+  if (is_dm(x)) {
+    def <- dm_get_def(x)
+    def$data <- map(def$data, wrap_tbl_to_test_backend)
+    dm_from_def(def)
+  } else if (inherits(x, "list")) {
+    map(x, wrap_tbl_to_test_backend)
+  } else {
+    wrap_tbl_to_test_backend(x)
+  }
+}
+
+wrap_tbl_to_test_backend <- function(x) {
+  switch(my_test_src_name,
+    arrow = arrow::as_arrow_table(x),
+    dtplyr = dtplyr::lazy_dt(x),
+    duckplyr_stingy = duckplyr::as_duckplyr_df(x),
+    duckplyr_lavish = duckplyr::as_duckplyr_df(x),
+    x
+  )
+}
+
 my_test_src_name <- {
   src <- Sys.getenv("DM_TEST_SRC")
   # Allow set but empty DM_TEST_SRC environment variable
@@ -67,7 +93,7 @@ my_test_src_name <- {
 }
 
 is_db_test_src <- function() {
-  my_test_src_name != "df"
+  !(my_test_src_name %in% c("df", "arrow", "dtplyr", "duckplyr_stingy", "duckplyr_lavish"))
 }
 
 my_test_src_fun %<--%
