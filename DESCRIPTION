@@ -74,6 +74,7 @@ Suggests:
     DiagrammeRsvg,
     digest,
     duckdb (>= 0.4.0),
+    duckplyr,
     fansi,
     forcats,
     htmltools,
