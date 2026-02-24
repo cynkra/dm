@@ -41,32 +41,31 @@
 }
 
 .onAttach <- function(libname, pkgname) {
-  if (is.null(getOption("dm.use_igraph")) && !rlang::is_installed("igraph")) {
-    packageStartupMessage(cli::format_message(c(
-      "!" = "Package {.pkg igraph} is not installed. {.pkg dm} will use a pure R fallback.",
-      "i" = "Install {.pkg igraph} for better performance: {.run install.packages(\"igraph\")}",
-      "i" = "Set {.code options(dm.use_igraph = FALSE)} to suppress this message."
-    )))
-  }
-
-  attached <- search()
-  missing_pkgs <- setdiff(c("dplyr", "tidyr"), sub("^package:", "", grep("^package:", attached, value = TRUE)))
-  if (length(missing_pkgs) > 0) {
-    pkgs_fmt <- paste0("{.pkg ", missing_pkgs, "}")
-    packageStartupMessage(cli::format_message(c(
-      "!" = paste(
-        "For best results, load",
-        paste(pkgs_fmt, collapse = " and "),
-        "before {.pkg dm}."
-      )
-    )))
+  if (!isTRUE(getOption("dm.suppress_dplyr_startup_message"))) {
+    attached <- search()
+    missing_pkgs <- setdiff("dplyr", sub("^package:", "", grep("^package:", attached, value = TRUE)))
+    if (length(missing_pkgs) > 0) {
+      packageStartupMessage(cli::format_message(c(
+        "!" = paste0(
+          "In a coming version, {.pkg dm} will no longer reexport {.pkg dplyr} functions. ",
+          'For best results, run {.code library("dplyr")} before {.code library("dm")}.'
+        ),
+        "i" = "To suppress this message unconditionally, set {.code options(dm.suppress_dplyr_startup_message = TRUE)}."
+      )))
+    }
   }
 }
 
 setup_graph_functions <- function(ns) {
   use_igraph <- getOption("dm.use_igraph")
 
-  if (isTRUE(use_igraph)) {
+  if (is.null(use_igraph) && !rlang::is_installed("igraph")) {
+    packageStartupMessage(cli::format_message(c(
+      "!" = "Package {.pkg igraph} is not installed. {.pkg dm} will use a pure R fallback.",
+      "i" = "Install {.pkg igraph} for better performance: {.run install.packages(\"igraph\")}",
+      "i" = "Set {.code options(dm.use_igraph = FALSE)} to suppress this message."
+    )))
+  } else if (isTRUE(use_igraph)) {
     rlang::check_installed("igraph", reason = "because `options(dm.use_igraph = TRUE)` is set.")
   } else if (isFALSE(use_igraph) || !rlang::is_installed("igraph")) {
     graph_from_data_frame <<- graph_from_data_frame_fallback
@@ -97,7 +96,7 @@ check_version_on_load <- function(package, version, reason) {
     if (utils::packageVersion(package) < version) {
       message <- c(
         paste0("You need {.pkg {package} >= {version}} ", reason),
-        `i` = 'Install with {.pkg `install.packages("{package}")`}'
+        `i` = 'Install with {.code install.packages("{package}")}'
       )
 
       cli::cli_inform(message)
