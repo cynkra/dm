@@ -160,8 +160,9 @@ try(check_cardinality_0_n(d2, d1))
 
 # Columns are matched by name by default:
 try(check_cardinality_0_n(d1, d3))
-#> Error in check_card_api_impl({ : 
-#>   `by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.
+#> Error in check_cardinality_0_n(d1, d3) : 
+#>   `by_position = FALSE` or `by_position = NULL` require column names in
+#> `x` to match those in `y`.
 
 # This passes, multiple values in d3$c are allowed:
 check_cardinality_0_n(d1, d2)

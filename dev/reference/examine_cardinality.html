@@ -228,8 +228,9 @@ the result will contain the information which prerequisite was violated.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Columns are matched by name by default:</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_0_n</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in check_card_api_impl({ : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in check_cardinality_0_n(d1, d3) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `by_position = FALSE` or `by_position = NULL` require column names in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `x` to match those in `y`.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># This passes, multiple values in d3$c are allowed:</span></span></span>
 <span class="r-in"><span><span class="fu">check_cardinality_0_n</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d2</span><span class="op">)</span></span></span>
