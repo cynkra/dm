@@ -309,17 +309,23 @@ keyed_by <- function(x, y) {
   fks_df <- fks_df_from_keys_info(list(x = x, y = y))
 
   if (nrow(fks_df) == 0) {
-    abort("Can't infer `by`: foreign key information lost?")
+    cli::cli_abort("Can't infer {.arg by}: foreign key information lost?", call = dm_error_call())
   }
 
   stopifnot(map_int(fks_df$fks, NROW) > 0)
 
   if (nrow(fks_df) > 1) {
-    abort("Can't infer `by`: foreign key available in both directions")
+    cli::cli_abort(
+      "Can't infer {.arg by}: foreign key available in both directions.",
+      call = dm_error_call()
+    )
   }
 
   if (nrow(fks_df$fks[[1]]) > 1) {
-    abort("Can't infer `by`: multiple foreign keys available")
+    cli::cli_abort(
+      "Can't infer {.arg by}: multiple foreign keys available.",
+      call = dm_error_call()
+    )
   }
 
   fk <- fks_df$fks[[1]][1, ]

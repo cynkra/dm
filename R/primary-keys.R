@@ -74,12 +74,10 @@ dm_add_pk <- function(
   col_name <- names(eval_select_indices(col_expr, colnames(table)))
 
   if (autoincrement && length(col_name) > 1L) {
-    abort(
-      c(
-        "Composite primary keys cannot be autoincremented.",
-        "Provide only a single column name to `columns`."
-      )
-    )
+    cli::cli_abort(c(
+      "Composite primary keys cannot be autoincremented.",
+      "i" = "Provide only a single column name to {.arg columns}."
+    ))
   }
 
   if (check) {

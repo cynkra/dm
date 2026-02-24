@@ -487,7 +487,7 @@ ddl_get_fk_defs <- function(fks, con, table_names) {
             .x,
             "no_action" = "",
             "cascade" = " ON DELETE CASCADE",
-            abort(glue('`on_delete = "{.x}"` not supported'))
+            cli::cli_abort('{.code on_delete = {.val {.x}}} is not supported.')
           )
         }
       )

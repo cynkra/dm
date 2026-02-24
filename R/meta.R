@@ -14,7 +14,7 @@ dm_meta <- function(con, catalog = NA, schema = NULL, simple = FALSE, error_call
   if (is_mssql(con)) {
     if (is.null(catalog)) {
       # FIXME: Classed error message?
-      abort("SQL server only supports learning from one database.")
+      cli::cli_abort("SQL server only supports learning from one database.")
     }
 
     if (!is.na(catalog)) {

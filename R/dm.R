@@ -63,15 +63,15 @@ dm <- function(
 
   for (i in which(is_dm)) {
     if (names[[i]] != "") {
-      abort(c(
-        "All dm objects passed to `dm()` must be unnamed.",
+      cli::cli_abort(c(
+        "All dm objects passed to {.fun dm} must be unnamed.",
         i = paste0("Argument ", i, " has name ", tick(names[[i]]), ".")
       ))
     }
 
     if (is_zoomed(dots[[i]])) {
-      abort(c(
-        "All dm objects passed to `dm()` must be unzoomed.",
+      cli::cli_abort(c(
+        "All dm objects passed to {.fun dm} must be unzoomed.",
         i = paste0("Argument ", i, " is a zoomed dm.")
       ))
     }
@@ -313,7 +313,7 @@ as_dm.default <- function(x, ...) {
   check_dots_empty()
 
   if (!is.list(x) || is.object(x)) {
-    abort(paste0("Can't coerce <", class(x)[[1]], "> to <dm>."))
+    cli::cli_abort("Can't coerce {.cls {class(x)[[1]]}} to {.cls dm}.")
   }
 
   # Automatic name repair
@@ -699,7 +699,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #'   class()
 compute.dm <- function(x, ..., temporary = TRUE) {
   if (!isTRUE(temporary)) {
-    abort("`compute.dm()` does not support `temporary = FALSE`.")
+    cli::cli_abort("{.fun compute.dm} does not support {.code temporary = FALSE}.")
   }
 
   # for both dm and dm_zoomed
@@ -842,12 +842,16 @@ pull_tbl.dm <- function(dm, table, ..., keyed = FALSE) {
 
 #' @export
 pull_tbl.dm_zoomed <- function(dm, table, ..., keyed = FALSE) {
+  dm_local_error_call()
+
   if (isTRUE(keyed)) {
-    abort("`keyed = TRUE` not supported for zoomed dm objects.")
+    cli::cli_abort(
+      "{.code keyed = TRUE} not supported for zoomed dm objects.",
+      call = dm_error_call()
+    )
   }
 
   check_dots_empty()
-  dm_local_error_call()
 
   table_name <- as_string(enexpr(table))
   zoomed <- dm_get_zoom(dm)

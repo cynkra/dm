@@ -19,6 +19,6 @@ check_tbl_in_dm <- function(
 
 check_at_least_one_col <- function(cols, call = current_call()) {
   if (length(cols) < 1) {
-    abort("Hey, you should select at least one column!", call = call)
+    cli::cli_abort("At least one column must be selected.", call = call)
   }
 }

@@ -39,7 +39,7 @@ to_packed_json <- function(x) {
 json_pack.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   dots <- quos(...)
   if ("" %in% names2(dots)) {
-    abort("All elements of `...` must be named.")
+    cli::cli_abort("All elements of {.arg ...} must be named.")
   }
 
   col_nms <- colnames(.data)
@@ -93,7 +93,7 @@ remove_prefix_and_sep <- function(x, prefix, sep) {
 `json_pack.tbl_Microsoft SQL Server` <- function(.data, ..., .names_sep = NULL) {
   dots <- quos(...)
   if ("" %in% names2(dots)) {
-    abort("All elements of `...` must be named.")
+    cli::cli_abort("All elements of {.arg ...} must be named.")
   }
   con <- dbplyr::remote_con(.data)
   in_query <- dbplyr::sql_render(.data)

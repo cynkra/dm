@@ -12,3 +12,19 @@
       2     2 "[{\"y\":4,\"z\":3},{\"y\":5,\"z\":2}]"                  
       3     3 "[{\"y\":6,\"z\":1}]"                                    
 
+# `json_nest()` fails with unnamed elements
+
+    Code
+      json_nest(df, c(y, z))
+    Condition
+      Error in `json_nest()`:
+      ! All elements of `...` must be named.
+
+# `json_unnest()` fails without cols argument
+
+    Code
+      json_unnest(df)
+    Condition
+      Error in `json_unnest()`:
+      ! The `cols` argument must be provided.
+

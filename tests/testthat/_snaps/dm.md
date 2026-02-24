@@ -333,6 +333,14 @@
         dm::dm_add_fk(fact...6, dim_3_key, dim_3...9) %>%
         dm::dm_add_fk(fact...6, dim_4_key, dim_4...10)
 
+# as_dm() rejects non-list objects
+
+    Code
+      as_dm(1)
+    Condition
+      Error in `as_dm()`:
+      ! Can't coerce <numeric> to <dm>.
+
 # 'compute.dm()' fails with `temporary = FALSE` (#2059)
 
     Code
@@ -340,6 +348,14 @@
     Condition
       Error in `compute()`:
       ! `compute.dm()` does not support `temporary = FALSE`.
+
+# `pull_tbl()` keyed=TRUE fails for zoomed dm
+
+    Code
+      dm_for_filter() %>% dm_zoom_to(tf_1) %>% pull_tbl(keyed = TRUE)
+    Condition
+      Error in `pull_tbl()`:
+      ! `keyed = TRUE` not supported for zoomed dm objects.
 
 # output
 

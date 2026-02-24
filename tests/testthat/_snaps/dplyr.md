@@ -585,3 +585,58 @@
     Output
       [1] 144
 
+# .by key tracking works with zoomed summarise()
+
+    Code
+      dm_zoom_to(dm_for_filter(), tf_2) %>% summarize(d_mean = mean(d), .by = c(c, e,
+        e1)) %>% dm_insert_zoomed("new_tbl") %>% get_all_keys()
+    Output
+      $pks
+      # A tibble: 7 x 3
+        table   pk_col autoincrement
+        <chr>   <keys> <lgl>        
+      1 tf_1    a      TRUE         
+      2 tf_2    c      FALSE        
+      3 tf_3    f, f1  FALSE        
+      4 tf_4    h      FALSE        
+      5 tf_5    k      FALSE        
+      6 tf_6    o      FALSE        
+      7 new_tbl c      FALSE        
+      
+      $fks
+      # A tibble: 6 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 new_tbl     e, e1         tf_3         f, f1           no_action
+      5 tf_5        l             tf_4         h               cascade  
+      6 tf_5        m             tf_6         n               no_action
+      
+    Code
+      dm_zoom_to(dm_for_filter(), tf_3) %>% summarize(g_list = list(g), .by = g) %>%
+        dm_insert_zoomed("new_tbl") %>% get_all_keys()
+    Output
+      $pks
+      # A tibble: 6 x 3
+        table pk_col autoincrement
+        <chr> <keys> <lgl>        
+      1 tf_1  a      TRUE         
+      2 tf_2  c      FALSE        
+      3 tf_3  f, f1  FALSE        
+      4 tf_4  h      FALSE        
+      5 tf_5  k      FALSE        
+      6 tf_6  o      FALSE        
+      
+      $fks
+      # A tibble: 5 x 5
+        child_table child_fk_cols parent_table parent_key_cols on_delete
+        <chr>       <keys>        <chr>        <keys>          <chr>    
+      1 tf_2        d             tf_1         a               no_action
+      2 tf_2        e, e1         tf_3         f, f1           no_action
+      3 tf_4        j, j1         tf_3         f, f1           no_action
+      4 tf_5        l             tf_4         h               cascade  
+      5 tf_5        m             tf_6         n               no_action
+      
+

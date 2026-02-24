@@ -287,7 +287,7 @@
     Condition
       Error in `dm_add_pk()`:
       ! Composite primary keys cannot be autoincremented.
-      * Provide only a single column name to `columns`.
+      i Provide only a single column name to `columns`.
 
 # set autoincrement PK
 

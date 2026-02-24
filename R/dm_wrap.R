@@ -40,6 +40,8 @@
 #' dm_nycflights13() %>%
 #'   dm_wrap_tbl(root = airlines)
 dm_wrap_tbl <- function(dm, root, strict = TRUE, progress = NA) {
+  dm_local_error_call()
+
   wrap_plan <- dm_wrap_tbl_plan(dm, {{ root }})
 
   ticker <- new_ticker(
@@ -60,7 +62,10 @@ dm_wrap_tbl <- function(dm, root, strict = TRUE, progress = NA) {
   if (length(wrapped_dm) > 1) {
     if (strict) {
       # FIXME: Detect earlier
-      abort("The `dm` is not cycle free and can't be wrapped into a single tibble.")
+      cli::cli_abort(
+        "The {.cls dm} is not cycle free and can't be wrapped into a single tibble.",
+        call = dm_error_call()
+      )
     }
   }
 

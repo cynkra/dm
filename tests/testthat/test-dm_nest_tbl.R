@@ -2,13 +2,21 @@ test_that("`dm_nest_tbl()` failure modes", {
   skip_if_remote_src()
 
   # is terminal parent
-  expect_error(dm_nest_tbl(dm_for_filter(), tf_1), "not a terminal child table")
+  expect_snapshot(error = TRUE, {
+    dm_nest_tbl(dm_for_filter(), tf_1)
+  })
   # has several parents
-  expect_error(dm_nest_tbl(dm_for_filter(), tf_2), "not a terminal child table")
+  expect_snapshot(error = TRUE, {
+    dm_nest_tbl(dm_for_filter(), tf_2)
+  })
   # has several children
-  expect_error(dm_nest_tbl(dm_for_filter(), tf_3), "not a terminal child table")
+  expect_snapshot(error = TRUE, {
+    dm_nest_tbl(dm_for_filter(), tf_3)
+  })
   # has both parent and child
-  expect_error(dm_nest_tbl(dm_for_filter(), tf_4), "not a terminal child table")
+  expect_snapshot(error = TRUE, {
+    dm_nest_tbl(dm_for_filter(), tf_4)
+  })
 })
 
 test_that("`dm_pack_tbl()`, `dm_unpack_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()` work", {
@@ -41,9 +49,15 @@ test_that("`dm_pack_tbl()`, `dm_unpack_tbl()`, `dm_nest_tbl()`, `dm_unnest_tbl()
 
 test_that("`dm_pack_tbl()` failure modes", {
   # has several parents
-  expect_error(dm_pack_tbl(dm_for_filter(), tf_2), "not a terminal parent table")
+  expect_snapshot(error = TRUE, {
+    dm_pack_tbl(dm_for_filter(), tf_2)
+  })
   # has several children
-  expect_error(dm_pack_tbl(dm_for_filter(), tf_3), "not a terminal parent table")
+  expect_snapshot(error = TRUE, {
+    dm_pack_tbl(dm_for_filter(), tf_3)
+  })
   # has both parent and child
-  expect_error(dm_pack_tbl(dm_for_filter(), tf_4), "not a terminal parent table")
+  expect_snapshot(error = TRUE, {
+    dm_pack_tbl(dm_for_filter(), tf_4)
+  })
 })

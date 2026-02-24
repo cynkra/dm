@@ -14,12 +14,9 @@ unnest_col <- function(x, col, ptype) {
   if (length(col_data) > 0) {
     col_data <- unlist(col_data, recursive = FALSE, use.names = FALSE)
     if (!identical(col_data[0], ptype)) {
-      abort(paste0(
-        "Internal: unnest_col() ptype mismatch, must be ",
-        class(ptype)[[1]],
-        ", not ",
-        class(col_data[0])[[1]]
-      ))
+      cli::cli_abort(
+        "Internal: {.fun unnest_col} ptype mismatch, must be {.cls {class(ptype)[[1]]}}, not {.cls {class(col_data[0])[[1]]}}."
+      )
     }
   } else {
     col_data <- ptype
@@ -46,13 +43,7 @@ unnest_df <- function(x, col, ptype) {
   if (length(col_data) > 0) {
     col_data <- vec_rbind(!!!col_data)
     if (!identical(col_data[0, ], ptype)) {
-      abort(paste0(
-        "Internal: unnest_df() ptype mismatch."
-        # "Internal: unnest_df() ptype mismatch, must be ",
-        # commas(map(ptype, class), Inf),
-        # ", not ",
-        # commas(map(col_data, class), Inf)
-      ))
+      cli::cli_abort("Internal: {.fun unnest_df} ptype mismatch.")
     }
   } else {
     col_data <- ptype

@@ -99,3 +99,11 @@
                    tf_6 
       "terminal parent" 
 
+# `dm_wrap_tbl()` fails for cyclic dm
+
+    Code
+      dm_wrap_tbl(cyclic_dm, a)
+    Condition
+      Error in `dm_wrap_tbl()`:
+      ! The <dm> is not cycle free and can't be wrapped into a single tibble.
+

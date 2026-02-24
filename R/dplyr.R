@@ -431,10 +431,16 @@ summarise.dm <- function(.data, ..., .by = NULL, .groups = NULL) {
 #' @export
 summarise.dm_zoomed <- function(.data, ..., .by = NULL, .groups = NULL) {
   tbl <- tbl_zoomed(.data)
-  # groups are "selected"; key tracking will continue for them
-  # #663: user responsibility: if group columns are manipulated, they are still tracked
-  groups <- set_names(map_chr(groups(tbl), as_string))
-  summarized_tbl <- summarize(tbl, ..., .by = {{ .by }}, .groups = .groups)
+  by <- enquo(.by)
+  if (!quo_is_null(by)) {
+    by_loc <- tidyselect::eval_select(by, data = tbl)
+    groups <- set_names(names(by_loc))
+  } else {
+    # groups are "selected"; key tracking will continue for them
+    # #663: user responsibility: if group columns are manipulated, they are still tracked
+    groups <- set_names(map_chr(groups(tbl), as_string))
+  }
+  summarized_tbl <- summarize(tbl, ..., .by = !!by, .groups = .groups)
   new_tracked_cols_zoom <- new_tracked_cols(.data, groups)
   replace_zoomed_tbl(.data, summarized_tbl, new_tracked_cols_zoom)
 }
@@ -446,12 +452,18 @@ summarise.dm_keyed_tbl <- function(.data, ..., .by = NULL, .groups = NULL) {
   keys_info <- keyed_get_info(.data)
   tbl <- unclass_keyed_tbl(.data)
 
-  new_pk <- group_vars(.data)
+  by <- enquo(.by)
+  if (!quo_is_null(by)) {
+    by_loc <- tidyselect::eval_select(by, data = tbl)
+    new_pk <- names(by_loc)
+  } else {
+    new_pk <- group_vars(.data)
+  }
   if (length(new_pk) == 0) {
     new_pk <- NULL
   }
 
-  summarised_tbl <- summarise(tbl, ..., .by = {{ .by }}, .groups = .groups)
+  summarised_tbl <- summarise(tbl, ..., .by = !!by, .groups = .groups)
 
   # FIXME: Add original FKs for the remaining columns
   # (subsets of the grouped columns), use new UUID

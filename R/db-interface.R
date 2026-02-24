@@ -299,7 +299,7 @@ db_append_table <- function(
           # Can't use dbAppendTable(): https://github.com/r-dbi/odbc/issues/480
           sql <- DBI::sqlAppendTable(con, remote_table_id, values, row.names = FALSE)
           if (length(autoinc) > 1L) {
-            abort("more than one autoincrement key in one table")
+            cli::cli_abort("More than one autoincrement key in one table.")
           }
           if (!is_empty(autoinc) && autoinc) {
             sql <- DBI::SQL(paste0(

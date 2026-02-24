@@ -319,8 +319,9 @@ check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
   if (!isTRUE(by_position)) {
     y_idx <- match(colnames(t1), colnames(t2))
     if (anyNA(y_idx)) {
-      abort(
-        "`by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`."
+      cli::cli_abort(
+        "{.code by_position = FALSE} or {.code by_position = NULL} require column names in {.arg x} to match those in {.arg y}.",
+        call = dm_error_call()
       )
     }
 

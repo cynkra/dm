@@ -27,7 +27,7 @@ json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
   # `{tidyr}` only warns but since we don't need backward compatibility we're
   #   better off failing
   if (is_null(dot_nms) || "" %in% dot_nms) {
-    abort("All elements of `...` must be named.")
+    cli::cli_abort("All elements of {.arg ...} must be named.")
   }
   tidyr::nest(.data, ..., .names_sep = .names_sep) %>%
     mutate(across(all_of(dot_nms), ~ map_chr(., jsonlite::toJSON, digits = NA)))
@@ -37,7 +37,7 @@ json_nest.data.frame <- function(.data, ..., .names_sep = NULL) {
 json_nest.tbl_lazy <- function(.data, ..., .names_sep = NULL) {
   dots <- quos(...)
   if ("" %in% names2(dots)) {
-    abort("All elements of `...` must be named.")
+    cli::cli_abort("All elements of {.arg ...} must be named.")
   }
 
   col_nms <- colnames(.data)
@@ -93,7 +93,7 @@ sql_json_nest.PqConnection <- function(con, cols, names_sep, packed_col, id_cols
 `json_nest.tbl_Microsoft SQL Server` <- function(.data, ..., .names_sep = NULL) {
   dots <- quos(...)
   if ("" %in% names2(dots)) {
-    abort("All elements of `...` must be named.")
+    cli::cli_abort("All elements of {.arg ...} must be named.")
   }
   con <- dbplyr::remote_con(.data)
   in_query <- dbplyr::sql_render(.data)
