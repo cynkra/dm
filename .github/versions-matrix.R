@@ -7,6 +7,7 @@ data.frame(
     "test-maria",
     "test-mysql-maria",
     "test-duckdb",
+    "test-duckplyr",
     "test-sqlite"
   ),
   covr = "true",
@@ -16,6 +17,7 @@ data.frame(
     "MariaDB with covr",
     "MySQL with covr",
     "DuckDB with covr",
+    "duckplyr with covr",
     "SQLite with covr"
   )
 )
