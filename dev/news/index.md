@@ -1,15 +1,6 @@
 # Changelog
 
-## dm 1.0.99.9900
-
-### claude
-
-- Fix config.
-
-### fledge
-
-- CRAN release v1.0.12
-  ([\#2295](https://github.com/cynkra/dm/issues/2295)).
+## dm 1.0.12.9019
 
 ### Bug fixes
 
@@ -45,16 +36,6 @@
   presence of FKs to non-PKs
   ([\#1270](https://github.com/cynkra/dm/issues/1270),
   [\#2367](https://github.com/cynkra/dm/issues/2367)).
-
-- [`check_key()`](https://dm.cynkra.com/dev/reference/check_key.md)
-  returns input data frame when key is valid
-  ([\#2221](https://github.com/cynkra/dm/issues/2221),
-  [\#2303](https://github.com/cynkra/dm/issues/2303)).
-
-- Correct deprecation warning message for
-  [`dm_squash_to_tbl()`](https://dm.cynkra.com/dev/reference/deprecated.md)
-  ([\#1364](https://github.com/cynkra/dm/issues/1364),
-  [\#2302](https://github.com/cynkra/dm/issues/2302)).
 
 ### Features
 
@@ -132,6 +113,9 @@
 - Wrap all igraph functions
   ([\#2382](https://github.com/cynkra/dm/issues/2382)).
 
+- Wrap all igraph functions
+  ([\#2382](https://github.com/cynkra/dm/issues/2382)).
+
 - Require R \>= 4.0.
 
 - Don’t refer to removed `dplyr::src_dbi()`
@@ -140,35 +124,6 @@
 
 - Better traceback location for selection errors
   ([\#2351](https://github.com/cynkra/dm/issues/2351)).
-
-- Format with air with line length 100
-  ([\#2335](https://github.com/cynkra/dm/issues/2335)).
-
-- Adapt to igraph \>= 2.2.0
-  ([\#2289](https://github.com/cynkra/dm/issues/2289)).
-
-- Auto-update from GitHub Actions
-  ([\#2321](https://github.com/cynkra/dm/issues/2321)).
-
-- Use summary reporter.
-
-- Support SQL Server, needs image update.
-
-- Fully support MariaDB.
-
-- Support new `DM_TEST_*_HOST` env vars.
-
-- Add MariaDB, do not connect yet.
-
-- Add Postgres to devcontainer.
-
-- Claude settings.
-
-- Claude and Copilot settings.
-
-- Add devcontainer.
-
-- Add Claude Code GitHub Workflow.
 
 ### Continuous integration
 
@@ -194,22 +149,11 @@
 
 - Fix dev pkgdown.
 
-- Use reviewdog for external PRs
-  ([\#2323](https://github.com/cynkra/dm/issues/2323)).
-
-- Cleanup and fix macOS
-  ([\#2317](https://github.com/cynkra/dm/issues/2317)).
-
-- Format with air, check detritus, better handling of `extra-packages`
-  ([\#2308](https://github.com/cynkra/dm/issues/2308)).
-
 ### Documentation
 
 - Use cli for errors and warnings
   ([\#2396](https://github.com/cynkra/dm/issues/2396),
   [\#2397](https://github.com/cynkra/dm/issues/2397)).
-
-- Agent docs and updated instructions.
 
 ### Refactoring
 
@@ -218,11 +162,292 @@
   ([\#2403](https://github.com/cynkra/dm/issues/2403),
   [\#2404](https://github.com/cynkra/dm/issues/2404)).
 
+## dm 1.0.12.9018
+
+### Features
+
+- Implement `dm_local_error_call()`/`dm_error_call()` for error
+  ownership tracking
+  ([\#2401](https://github.com/cynkra/dm/issues/2401),
+  [\#2402](https://github.com/cynkra/dm/issues/2402)).
+
+## dm 1.0.12.9017
+
+### Features
+
+- Introduce
+  `dm_flatten(dm, table, ..., parent_tables = NULL, recursive = FALSE, allow_deep = FALSE, join = left_join)`
+  ([\#2393](https://github.com/cynkra/dm/issues/2393),
+  [\#2394](https://github.com/cynkra/dm/issues/2394)).
+
+- Make igraph dependency optional
+  ([\#2146](https://github.com/cynkra/dm/issues/2146),
+  [\#2364](https://github.com/cynkra/dm/issues/2364)).
+
+### Chore
+
+- Implement zoom v2 with internal `dm_zoom2_to()`,
+  `dm_update_zoom2ed()`, `dm_insert_zoom2ed()`, `dm_discard_zoom2ed()`
+  ([\#2398](https://github.com/cynkra/dm/issues/2398),
+  [\#2399](https://github.com/cynkra/dm/issues/2399)).
+
+### Documentation
+
+- Use cli for errors and warnings
+  ([\#2396](https://github.com/cynkra/dm/issues/2396),
+  [\#2397](https://github.com/cynkra/dm/issues/2397)).
+
+## dm 1.0.12.9016
+
+### Bug fixes
+
+- `dm_from_con(learn_keys = TRUE, .names = )` applies the specified
+  table naming pattern
+  ([@owenjonesuob](https://github.com/owenjonesuob),
+  [\#2213](https://github.com/cynkra/dm/issues/2213),
+  [\#2214](https://github.com/cynkra/dm/issues/2214)).
+
+- [`dm_from_con()`](https://dm.cynkra.com/dev/reference/dm_from_con.md)
+  no longer learns tables from all schemas by default for Postgres,
+  MSSQL, and MariaDB; instead, `"public"`, `"dbo"` and the current
+  database, respectively, are used
+  ([@mgirlich](https://github.com/mgirlich),
+  [\#1440](https://github.com/cynkra/dm/issues/1440),
+  [\#1448](https://github.com/cynkra/dm/issues/1448)).
+
+- Ensure compatibility with upcoming update of the pixarfilms package
+  ([@erictleung](https://github.com/erictleung),
+  erictleung/pixarfilms#39,
+  [\#2256](https://github.com/cynkra/dm/issues/2256)).
+
+- Fix [`dm_paste()`](https://dm.cynkra.com/dev/reference/dm_paste.md)
+  pipe length issue by implementing operation chunking
+  ([\#2301](https://github.com/cynkra/dm/issues/2301)).
+
+### Features
+
+- Add `.max_value` parameter to
+  [`dm_examine_constraints()`](https://dm.cynkra.com/dev/reference/dm_examine_constraints.md)
+  ([\#2200](https://github.com/cynkra/dm/issues/2200),
+  [\#2387](https://github.com/cynkra/dm/issues/2387)).
+
+- Introduce `dm_draw(backend_opts = list())`, soft-deprecate
+  backend-specific arguments
+  ([\#2381](https://github.com/cynkra/dm/issues/2381)).
+
+- Learn keys from SQLite databases
+  ([@gadenbuie](https://github.com/gadenbuie),
+  [\#352](https://github.com/cynkra/dm/issues/352)).
+
+- Use
+  [`cli::cli_inform()`](https://cli.r-lib.org/reference/cli_abort.html)
+  with native formatting
+  ([\#2374](https://github.com/cynkra/dm/issues/2374)).
+
+- Follow all updates from dplyr 1.2.0
+  ([\#2361](https://github.com/cynkra/dm/issues/2361),
+  [\#2362](https://github.com/cynkra/dm/issues/2362)).
+
+- Vendor pixarfilms data and add `version` argument to
+  [`dm_pixarfilms()`](https://dm.cynkra.com/dev/reference/dm_pixarfilms.md)
+  ([\#2368](https://github.com/cynkra/dm/issues/2368),
+  [\#2369](https://github.com/cynkra/dm/issues/2369)).
+
+### Chore
+
+- Comment.
+
+- Adapt to dplyr 1.2.0.
+
+- Restore recent soft-deprecation.
+
+- Bump deprecation level
+  ([\#2395](https://github.com/cynkra/dm/issues/2395)).
+
+- Wrap all igraph functions
+  ([\#2390](https://github.com/cynkra/dm/issues/2390)).
+
+- Tweak [`dm_draw()`](https://dm.cynkra.com/dev/reference/dm_draw.md):
+  rename `column_arrow` backend opt and validate `backend_opts`
+  ([\#2383](https://github.com/cynkra/dm/issues/2383),
+  [\#2384](https://github.com/cynkra/dm/issues/2384)).
+
+- Wrap all igraph functions
+  ([\#2382](https://github.com/cynkra/dm/issues/2382)).
+
+- Wrap all igraph functions
+  ([\#2382](https://github.com/cynkra/dm/issues/2382)).
+
+- Require R \>= 4.0.
+
+### Continuous integration
+
+- Remove Docker image build, centralized now.
+
+## dm 1.0.12.9015
+
+### Bug fixes
+
+- Fix bogus message for
+  [`dm_rm_fk()`](https://dm.cynkra.com/dev/reference/dm_rm_fk.md) in
+  presence of FKs to non-PKs
+  ([\#1270](https://github.com/cynkra/dm/issues/1270),
+  [\#2367](https://github.com/cynkra/dm/issues/2367)).
+
+### Chore
+
+- Don’t refer to removed `dplyr::src_dbi()`
+  ([@DavisVaughan](https://github.com/DavisVaughan),
+  [\#2356](https://github.com/cynkra/dm/issues/2356)).
+
+### Continuous integration
+
+- Use robust way to show payload.
+
+## dm 1.0.12.9014
+
+### Continuous integration
+
+- Tweaks ([\#2354](https://github.com/cynkra/dm/issues/2354)).
+
+## dm 1.0.12.9013
+
+### Continuous integration
+
+- Install odbc from GitHub remote to avoid failures on older versions of
+  R.
+
+## dm 1.0.12.9012
+
+### Chore
+
+- Better traceback location for selection errors
+  ([\#2351](https://github.com/cynkra/dm/issues/2351)).
+
+## dm 1.0.12.9011
+
+### Continuous integration
+
+- Install binaries from r-universe for dev workflow
+  ([\#2348](https://github.com/cynkra/dm/issues/2348)).
+
+## dm 1.0.12.9010
+
+### Continuous integration
+
+- Fix reviewdog and add commenting workflow
+  ([\#2345](https://github.com/cynkra/dm/issues/2345)).
+
+## dm 1.0.12.9009
+
+### Continuous integration
+
+- Use workflows for fledge
+  ([\#2343](https://github.com/cynkra/dm/issues/2343)).
+
+## dm 1.0.12.9008
+
+### Continuous integration
+
+- Sync ([\#2341](https://github.com/cynkra/dm/issues/2341)).
+
+## dm 1.0.12.9007
+
+### Chore
+
+- Format with air with line length 100
+  ([\#2335](https://github.com/cynkra/dm/issues/2335)).
+
+### Continuous integration
+
+- Fix dev pkgdown.
+
+### Documentation
+
+- Agent docs and updated instructions.
+
+### claude
+
+- Fix config.
+
+## dm 1.0.12.9006
+
+### Chore
+
+- Adapt to igraph \>= 2.2.0
+  ([\#2289](https://github.com/cynkra/dm/issues/2289)).
+
+## dm 1.0.12.9005
+
+### Continuous integration
+
+- Use reviewdog for external PRs
+  ([\#2323](https://github.com/cynkra/dm/issues/2323)).
+
+## dm 1.0.12.9004
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#2321](https://github.com/cynkra/dm/issues/2321)).
+
+## dm 1.0.12.9003
+
+### Continuous integration
+
+- Cleanup and fix macOS
+  ([\#2317](https://github.com/cynkra/dm/issues/2317)).
+
+## dm 1.0.12.9002
+
 ### Testing
 
 - Add tests for
   [`check_key()`](https://dm.cynkra.com/dev/reference/check_key.md)
   ([\#2298](https://github.com/cynkra/dm/issues/2298)).
+
+## dm 1.0.12.9001
+
+### Bug fixes
+
+- [`check_key()`](https://dm.cynkra.com/dev/reference/check_key.md)
+  returns input data frame when key is valid
+  ([\#2221](https://github.com/cynkra/dm/issues/2221),
+  [\#2303](https://github.com/cynkra/dm/issues/2303)).
+
+- Correct deprecation warning message for
+  [`dm_squash_to_tbl()`](https://dm.cynkra.com/dev/reference/deprecated.md)
+  ([\#1364](https://github.com/cynkra/dm/issues/1364),
+  [\#2302](https://github.com/cynkra/dm/issues/2302)).
+
+### Chore
+
+- Use summary reporter.
+
+- Support SQL Server, needs image update.
+
+- Fully support MariaDB.
+
+- Support new `DM_TEST_*_HOST` env vars.
+
+- Add MariaDB, do not connect yet.
+
+- Add Postgres to devcontainer.
+
+- Claude settings.
+
+- Claude and Copilot settings.
+
+- Add devcontainer.
+
+- Add Claude Code GitHub Workflow.
+
+### Continuous integration
+
+- Format with air, check detritus, better handling of `extra-packages`
+  ([\#2308](https://github.com/cynkra/dm/issues/2308)).
+
+### Testing
 
 - Add snapshot test for
   [`dm_squash_to_tbl()`](https://dm.cynkra.com/dev/reference/deprecated.md)
@@ -244,6 +469,13 @@
   ([@krlmlr](https://github.com/krlmlr),
   [@41898282](https://github.com/41898282)+github-actions\[bot\],
   [\#1887](https://github.com/cynkra/dm/issues/1887)).
+
+## dm 1.0.12.9000
+
+### fledge
+
+- CRAN release v1.0.12
+  ([\#2295](https://github.com/cynkra/dm/issues/2295)).
 
 ## dm 1.0.12
 
