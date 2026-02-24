@@ -5,20 +5,7 @@
 # All functions accept and return "dm_graph" objects (or the "dm_igraph" subclass).
 
 rlang::on_load({
-  if (!rlang::is_installed("igraph")) {
-    graph_from_data_frame <<- graph_from_data_frame_fallback
-    graph_vertices <<- graph_vertices_fallback
-    graph_edges <<- graph_edges_fallback
-    graph_dfs <<- graph_dfs_fallback
-    graph_topo_sort <<- graph_topo_sort_fallback
-    graph_distances <<- graph_distances_fallback
-    graph_induced_subgraph <<- graph_induced_subgraph_fallback
-    graph_shortest_paths <<- graph_shortest_paths_fallback
-    graph_delete_vertices <<- graph_delete_vertices_fallback
-    graph_neighbors <<- graph_neighbors_fallback
-    graph_vcount <<- graph_vcount_fallback
-    graph_girth <<- graph_girth_fallback
-  }
+  setup_graph_functions(getNamespace("dm"))
 })
 
 # dm_igraph: wraps an igraph object; used when igraph is installed.

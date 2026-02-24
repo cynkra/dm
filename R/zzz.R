@@ -40,6 +40,52 @@
   rlang::run_on_load()
 }
 
+.onAttach <- function(libname, pkgname) {
+  if (!isTRUE(getOption("dm.suppress_dplyr_startup_message"))) {
+    attached <- search()
+    missing_pkgs <- setdiff(
+      "dplyr",
+      sub("^package:", "", grep("^package:", attached, value = TRUE))
+    )
+    if (length(missing_pkgs) > 0) {
+      packageStartupMessage(cli::format_message(c(
+        "!" = paste0(
+          "In a coming version, {.pkg dm} will no longer reexport {.pkg dplyr} functions. ",
+          'For best results, run {.code library("dplyr")} before {.code library("dm")}.'
+        ),
+        "i" = "To suppress this message unconditionally, set {.code options(dm.suppress_dplyr_startup_message = TRUE)}."
+      )))
+    }
+  }
+}
+
+setup_graph_functions <- function(ns) {
+  use_igraph <- getOption("dm.use_igraph")
+
+  if (is.null(use_igraph) && !rlang::is_installed("igraph")) {
+    packageStartupMessage(cli::format_message(c(
+      "!" = "Package {.pkg igraph} is not installed. {.pkg dm} will use a pure R fallback.",
+      "i" = "Install {.pkg igraph} for better performance: {.run install.packages(\"igraph\")}",
+      "i" = "Set {.code options(dm.use_igraph = FALSE)} to suppress this message."
+    )))
+  } else if (isTRUE(use_igraph)) {
+    rlang::check_installed("igraph", reason = "because `options(dm.use_igraph = TRUE)` is set.")
+  } else if (isFALSE(use_igraph) || !rlang::is_installed("igraph")) {
+    graph_from_data_frame <<- graph_from_data_frame_fallback
+    graph_vertices <<- graph_vertices_fallback
+    graph_edges <<- graph_edges_fallback
+    graph_dfs <<- graph_dfs_fallback
+    graph_topo_sort <<- graph_topo_sort_fallback
+    graph_distances <<- graph_distances_fallback
+    graph_induced_subgraph <<- graph_induced_subgraph_fallback
+    graph_shortest_paths <<- graph_shortest_paths_fallback
+    graph_delete_vertices <<- graph_delete_vertices_fallback
+    graph_neighbors <<- graph_neighbors_fallback
+    graph_vcount <<- graph_vcount_fallback
+    graph_girth <<- graph_girth_fallback
+  }
+}
+
 rigg <- function(fun) {
   name <- deparse(substitute(fun))
 
@@ -53,7 +99,7 @@ check_version_on_load <- function(package, version, reason) {
     if (utils::packageVersion(package) < version) {
       message <- c(
         paste0("You need {.pkg {package} >= {version}} ", reason),
-        `i` = 'Install with {.pkg `install.packages("{package}")`}'
+        `i` = 'Install with {.code install.packages("{package}")}'
       )
 
       cli::cli_inform(message)
