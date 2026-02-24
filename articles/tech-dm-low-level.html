@@ -28,7 +28,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,9 +85,9 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Model verification - keys, constraints and normalization</h1>
             
-            <h4 data-toc-skip class="date">2025-07-02</h4>
+            <h4 data-toc-skip class="date">2026-02-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/cran-1.1.0/vignettes/tech-dm-low-level.Rmd" class="external-link"><code>vignettes/tech-dm-low-level.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-low-level.Rmd</code></div>
     </div>
 
@@ -121,7 +121,7 @@ you have tables:</p>
 function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:64:5:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_key()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`a`) not a unique key of `data_1`.</span></span></code></pre></div>
 <p>Mind the error message when a test is not passed.</p>
 <p>For <code>data_2</code>, column <code>a</code> is a key:</p>
@@ -131,7 +131,17 @@ function:</p>
 also present in another column of another table, the
 <code><a href="../reference/check_subset.html">check_subset()</a></code> function can be used:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_subset.html">check_subset</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `c1` argument of `check_subset()` is deprecated as of dm 1.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `x_select` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and</span></span>
+<span><span class="co">#&gt;   `t2`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using `by_position = TRUE` for compatibility.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">dm</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/cynkra/dm/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <p>This function is important for determining if a column is a foreign
 key to some other table. What about the inverse relation?</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -140,8 +150,9 @@ key to some other table. What about the inverse relation?</p>
 <span><span class="co">#&gt;       a</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_subset_of()` at dm/R/key-helpers.R:240:3:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_subset()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table <span style="color: #00BB00;">data_2</span> contains values (see examples above)</span></span>
+<span><span class="co">#&gt;   that are not present in column (`a`) of table <span style="color: #00BB00;">data_1</span>.</span></span></code></pre>
 <p>It should be kept in mind that <code><a href="../reference/check_subset.html">check_subset()</a></code> does not
 test if column <code>c2</code> is a unique key of table <code>t2</code>.
 In order to find out if a (child) table <code>t1</code> contains a
@@ -156,13 +167,24 @@ values of <code>c_1</code> in <code>t_1</code> are the same as those of
 <code>c_2</code> in <code>t_2</code>, {dm} provides the function
 <code><a href="../reference/check_set_equality.html">check_set_equality()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_set_equality.html">check_set_equality</a></span><span class="op">(</span><span class="va">data_1</span>, <span class="va">a</span>, <span class="va">data_2</span>, <span class="va">a</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `c1` argument of `check_set_equality()` is deprecated as of dm 1.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `x_select` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and</span></span>
+<span><span class="co">#&gt;   `t2`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using `by_position = TRUE` for compatibility.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">dm</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/cynkra/dm/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
 <span><span class="co">#&gt;       a</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1     3</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_sets_not_equal()` at dm/R/key-helpers.R:190:5:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table `data_2` contains values (see examples above) that are not present in column (`a`) of table `data_1`.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_set_equality()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Column (`a`) of table <span style="color: #00BB00;">data_2</span> contains values (see examples above)</span></span>
+<span><span class="co">#&gt;   that are not present in column (`a`) of table <span style="color: #00BB00;">data_1</span>.</span></span></code></pre>
 <p>Introducing one more table enables us to show how it looks when the
 test is passed:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -244,7 +266,18 @@ be used:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This does not pass, `c` is not unique key of d2:</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_n</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">c</span>, <span class="va">d1</span>, <span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_unique_key()` at dm/R/key-helpers.R:64:5:</span></span></span>
+<span><span class="co">#&gt; Warning: The `pk_column` argument of `check_cardinality_0_n()` is deprecated as of</span></span>
+<span><span class="co">#&gt; dm 1.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `x_select` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Use `y_select` instead of `fk_column`, and `x` and `y` instead of</span></span>
+<span><span class="co">#&gt;   `parent_table` and `child_table`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Using `by_position = TRUE` for compatibility.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">dm</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/cynkra/dm/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_cardinality_0_n()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> (`c`) not a unique key of `d2`.</span></span>
 <span></span>
 <span><span class="co"># This passes, multiple values in d2$c are allowed:</span></span>
@@ -252,15 +285,49 @@ be used:</p>
 <span></span>
 <span><span class="co"># This does not pass, injectivity is violated:</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_1_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `abort_not_bijective()` at dm/R/check-cardinalities.R:155:3:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 1..1 cardinality (bijectivity) is not given: Column (`c`) in table `d2` contains duplicate values.</span></span>
+<span><span class="co">#&gt; Warning: The `pk_column` argument of `check_cardinality_1_1()` is deprecated as of</span></span>
+<span><span class="co">#&gt; dm 1.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `x_select` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Use `y_select` instead of `fk_column`, and `x` and `y` instead of</span></span>
+<span><span class="co">#&gt;   `parent_table` and `child_table`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Using `by_position = TRUE` for compatibility.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">dm</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/cynkra/dm/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `check_cardinality_1_1()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 1..1 cardinality (bijectivity) is not given: Column (`c`) in</span></span>
+<span><span class="co">#&gt;   table <span style="color: #00BB00;">d2</span> contains duplicate values.</span></span>
 <span></span>
 <span><span class="co"># This passes:</span></span>
-<span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d3</span>, <span class="va">c</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/examine_cardinality.html">check_cardinality_0_1</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d3</span>, <span class="va">c</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `pk_column` argument of `check_cardinality_0_1()` is deprecated as of</span></span>
+<span><span class="co">#&gt; dm 1.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `x_select` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Use `y_select` instead of `fk_column`, and `x` and `y` instead of</span></span>
+<span><span class="co">#&gt;   `parent_table` and `child_table`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Using `by_position = TRUE` for compatibility.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">dm</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/cynkra/dm/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <p><code><a href="../reference/examine_cardinality.html">examine_cardinality()</a></code> returns the type of relation,
 e.g.:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d3</span>, <span class="va">c</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `pk_column` argument of `examine_cardinality()` is deprecated as of dm</span></span>
+<span><span class="co">#&gt; 1.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `x_select` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Use `y_select` instead of `fk_column`, and `x` and `y` instead of</span></span>
+<span><span class="co">#&gt;   `parent_table` and `child_table`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Using `by_position = TRUE` for compatibility.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">dm</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/cynkra/dm/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span><span class="co">#&gt; [1] "injective mapping (child: 0 or 1 -&gt; parent: 1)"</span></span>
 <span><span class="fu"><a href="../reference/examine_cardinality.html">examine_cardinality</a></span><span class="op">(</span><span class="va">d1</span>, <span class="va">a</span>, <span class="va">d2</span>, <span class="va">c</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "surjective mapping (child: 1 to n -&gt; parent: 1)"</span></span>

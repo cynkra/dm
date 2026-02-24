@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,8 +58,7 @@
 
       <div class="section-desc"><p>Construct a <code>dm</code> object from data frames, see also <code><a href="../articles/howto-dm-df.html">vignette("howto-dm-df")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -70,7 +69,8 @@
 
         </dt>
         <dd>Data model class</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_validate.html">dm_validate()</a></code>
 
@@ -81,8 +81,7 @@
 
       <div class="section-desc"><p>Construct a <code>dm</code> object from a database, see also <code><a href="../articles/howto-dm-db.html">vignette("howto-dm-db")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -93,7 +92,8 @@
 
         </dt>
         <dd>Load a dm from a remote data source</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_get_con.html">dm_get_con()</a></code>
 
@@ -104,8 +104,7 @@
 
       <div class="section-desc"><p>Operate on the tables and columns stored in a <code>dm</code> object.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -116,37 +115,43 @@
 
         </dt>
         <dd>Select and rename tables</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_get_tables.html">dm_get_tables()</a></code>
 
         </dt>
         <dd>Get tables</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="pull_tbl.html">pull_tbl()</a></code>
 
         </dt>
         <dd>Retrieve a table</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_mutate_tbl.html">dm_mutate_tbl()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Update tables in a <code>dm</code></dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_nrow.html">dm_nrow()</a></code>
 
         </dt>
         <dd>Number of rows</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_select.html">dm_select()</a></code>
 
         </dt>
         <dd>Select columns</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_rename.html">dm_rename()</a></code>
 
@@ -157,8 +162,7 @@
 
       <div class="section-desc"><p>Primary keys uniquely identify rows in a table. A table can have at most one primary key. See also <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -169,19 +173,22 @@
 
         </dt>
         <dd>Add a primary key</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_get_all_pks.html">dm_get_all_pks()</a></code>
 
         </dt>
         <dd>Get all primary keys of a <code>dm</code> object</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_has_pk.html">dm_has_pk()</a></code>
 
         </dt>
         <dd>Check for primary key</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_rm_pk.html">dm_rm_pk()</a></code>
 
@@ -192,8 +199,7 @@
 
       <div class="section-desc"><p>Unique keys are similar to primary keys. Each table can have at most one record for each combination of values in a unique key. A table can have more than one unique key.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -204,13 +210,15 @@
 
         </dt>
         <dd>Add a unique key</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_get_all_uks.html">dm_get_all_uks()</a></code>
 
         </dt>
         <dd>Get all unique keys of a <code>dm</code> object</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_rm_uk.html">dm_rm_uk()</a></code>
 
@@ -221,8 +229,7 @@
 
       <div class="section-desc"><p>Foreign keys establish links between tables by pointing to a primary or unique key in another table. See also <code><a href="../articles/howto-dm-theory.html">vignette("howto-dm-theory")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -233,13 +240,15 @@
 
         </dt>
         <dd>Add foreign keys</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_get_all_fks.html">dm_get_all_fks()</a></code>
 
         </dt>
         <dd>Get foreign key constraints</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_rm_fk.html">dm_rm_fk()</a></code>
 
@@ -250,8 +259,7 @@
 
       <div class="section-desc"><p>Show a <code>dm</code> object, see also <code><a href="../articles/tech-dm-draw.html">vignette("tech-dm-draw")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -262,19 +270,22 @@
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Shiny app for defining dm objects</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_draw.html">dm_draw()</a></code>
 
         </dt>
         <dd>Draw a diagram of the data model</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_set_colors.html">dm_set_colors()</a></code> <code><a href="dm_set_colors.html">dm_get_colors()</a></code> <code><a href="dm_set_colors.html">dm_get_available_colors()</a></code>
 
         </dt>
         <dd>Color in database diagrams</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_set_table_description.html">dm_set_table_description()</a></code> <code><a href="dm_set_table_description.html">dm_get_table_description()</a></code> <code><a href="dm_set_table_description.html">dm_reset_table_description()</a></code>
 
@@ -285,8 +296,7 @@
 
       <div class="section-desc"><p>Rip a <code>dm</code> object apart and put it together, see also <code><a href="../articles/tech-dm-keyed.html">vignette("tech-dm-keyed")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -302,19 +312,26 @@
 
       <div class="section-desc"><p>Combine multiple related tables, see also <code><a href="../articles/tech-dm-join.html">vignette("tech-dm-join")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
 
       <dl><dt>
 
+          <code><a href="dm_flatten.html">dm_flatten()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Flatten a table in a <code>dm</code> by joining its parent tables</dd>
+
+        <dt>
+
           <code><a href="dm_flatten_to_tbl.html">dm_flatten_to_tbl()</a></code>
 
         </dt>
         <dd>Flatten a part of a <code>dm</code> into a wide table</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_disambiguate_cols.html">dm_disambiguate_cols()</a></code>
 
@@ -325,8 +342,7 @@
 
       <div class="section-desc"><p>Filter across multiple tables, see also <code><a href="../articles/tech-dm-filter.html">vignette("tech-dm-filter")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -342,8 +358,7 @@
 
       <div class="section-desc"><p>Focus on a single table, see also <code><a href="../articles/tech-dm-zoom.html">vignette("tech-dm-zoom")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -354,31 +369,36 @@
 
         </dt>
         <dd>Mark table for manipulation</dd>
-      </dl><dl><dt>
 
-          <code><a href="dplyr_join.html">left_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">left_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">nest_join(<i>&lt;dm_zoomed&gt;</i>)</a></code>
+        <dt>
+
+          <code><a href="dplyr_join.html">left_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">left_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">inner_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">full_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">right_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">semi_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">anti_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_join.html">nest_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">cross_join(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_join.html">cross_join(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code>
 
         </dt>
         <dd><span class="pkg">dplyr</span> join methods for zoomed dm objects</dd>
-      </dl><dl><dt>
 
-          <code><a href="dplyr_table_manipulation.html">filter(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">relocate(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">count(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">tally(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">pull(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">compute(<i>&lt;dm_zoomed&gt;</i>)</a></code>
+        <dt>
+
+          <code><a href="dplyr_table_manipulation.html">filter(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">filter(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">filter_out(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">filter_out(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">mutate(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">transmute(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">select(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">relocate(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">relocate(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">rename(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">distinct(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">arrange(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">slice(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">group_by(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">ungroup(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">summarise(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">reframe(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">reframe(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">count(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">count(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">tally(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">tally(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">pull(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="dplyr_table_manipulation.html">compute(<i>&lt;dm_zoomed&gt;</i>)</a></code>
 
         </dt>
         <dd><span class="pkg">dplyr</span> table manipulation methods for zoomed dm objects</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="glimpse.dm.html">glimpse(<i>&lt;dm&gt;</i>)</a></code> <code><a href="glimpse.dm.html">glimpse(<i>&lt;dm_zoomed&gt;</i>)</a></code>
 
         </dt>
         <dd>Get a glimpse of your <code>dm</code> object</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="tidyr_table_manipulation.html">unite(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">unite(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="tidyr_table_manipulation.html">separate(<i>&lt;dm_keyed_tbl&gt;</i>)</a></code>
 
         </dt>
         <dd><span class="pkg">tidyr</span> table manipulation methods for zoomed dm objects</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="utils_table_manipulation.html">head(<i>&lt;dm_zoomed&gt;</i>)</a></code> <code><a href="utils_table_manipulation.html">tail(<i>&lt;dm_zoomed&gt;</i>)</a></code>
 
@@ -389,8 +409,7 @@
 
       <div class="section-desc"><p>Turn a <code>dm</code> object into a single table and back.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -401,31 +420,36 @@
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Wrap dm into a single tibble dm</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Unwrap a single table dm</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_nest_tbl.html">dm_nest_tbl()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Nest a table inside its dm</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_pack_tbl.html">dm_pack_tbl()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>dm_pack_tbl()</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_unnest_tbl.html">dm_unnest_tbl()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Unnest columns from a wrapped table</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_unpack_tbl.html">dm_unpack_tbl()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
@@ -436,8 +460,7 @@
 
       <div class="section-desc"><p>New verbs that power wrapping.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -448,37 +471,43 @@
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Pack Join</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="json_nest.html">json_nest()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>JSON nest</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="json_nest_join.html">json_nest_join()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>JSON nest join</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="json_pack.html">json_pack()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>JSON pack</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="json_pack_join.html">json_pack_join()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>JSON pack join</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="json_unnest.html">json_unnest()</a></code>
 
         </dt>
         <dd>Unnest a JSON column</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="json_unpack.html">json_unpack()</a></code>
 
@@ -489,8 +518,7 @@
 
       <div class="section-desc"><p>Get data from and to the database, see also <code><a href="../articles/howto-dm-copy.html">vignette("howto-dm-copy")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -501,13 +529,15 @@
 
         </dt>
         <dd>Materialize</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="copy_dm_to.html">copy_dm_to()</a></code>
 
         </dt>
         <dd>Copy data model to data source</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_sql.html">dm_sql()</a></code> <code><a href="dm_sql.html">dm_ddl_pre()</a></code> <code><a href="dm_sql.html">dm_dml_load()</a></code> <code><a href="dm_sql.html">dm_ddl_post()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
@@ -518,8 +548,7 @@
 
       <div class="section-desc"><p>Manipulate individual rows on the database, see also <code><a href="../articles/howto-dm-rows.html">vignette("howto-dm-rows")</a></code>.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -535,8 +564,7 @@
 
       <div class="section-desc"><p>Check fulfillment and nature of relationships between tables.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -547,43 +575,50 @@
 
         </dt>
         <dd>Validate your data model</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_enum_pk_candidates.html">enum_pk_candidates()</a></code> <code><a href="dm_enum_pk_candidates.html">dm_enum_pk_candidates()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Primary key candidate</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code> <code><a href="dm_enum_fk_candidates.html">enum_fk_candidates()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Foreign key candidates</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_examine_cardinalities.html">dm_examine_cardinalities()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Learn about your data model</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="examine_cardinality.html">check_cardinality_0_n()</a></code> <code><a href="examine_cardinality.html">check_cardinality_1_n()</a></code> <code><a href="examine_cardinality.html">check_cardinality_1_1()</a></code> <code><a href="examine_cardinality.html">check_cardinality_0_1()</a></code> <code><a href="examine_cardinality.html">examine_cardinality()</a></code>
 
         </dt>
         <dd>Check table relations</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="check_key.html">check_key()</a></code>
 
         </dt>
         <dd>Check if column(s) can be used as keys</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="check_set_equality.html">check_set_equality()</a></code>
 
         </dt>
         <dd>Check column values for set equality</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="check_subset.html">check_subset()</a></code>
 
@@ -594,8 +629,7 @@
 
       <div class="section-desc"><p>Normalize and denormalize tables.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -606,7 +640,8 @@
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Decompose a table into two linked tables</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="reunite_parent_child.html">reunite_parent_child()</a></code> <code><a href="reunite_parent_child.html">reunite_parent_child_from_list()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
@@ -617,8 +652,7 @@
 
       <div class="section-desc"><p>New verbs that power access to database schemas.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -629,19 +663,22 @@
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Create a schema on a database</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="db_schema_drop.html">db_schema_drop()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Remove a schema from a database</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="db_schema_exists.html">db_schema_exists()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Check for existence of a schema on a database</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="db_schema_list.html">db_schema_list()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
@@ -652,8 +689,7 @@
 
       <div class="section-desc"><p>Ready to use and play with.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -664,13 +700,15 @@
 
         </dt>
         <dd>Creates a dm object for the <span class="pkg">nycflights13</span> data</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_financial.html">dm_financial()</a></code> <code><a href="dm_financial.html">dm_financial_sqlite()</a></code>
 
         </dt>
         <dd>Creates a dm object for the Financial data</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_pixarfilms.html">dm_pixarfilms()</a></code>
 
@@ -681,8 +719,7 @@
 
       <div class="section-desc"><p>Recreate a <code>dm</code> object.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -693,7 +730,8 @@
 
         </dt>
         <dd>Create R code for a dm object</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dm_ptype.html">dm_ptype()</a></code>
 

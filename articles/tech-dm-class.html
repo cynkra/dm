@@ -28,7 +28,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,9 +85,9 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Class dm and basic operations</h1>
             
-            <h4 data-toc-skip class="date">2025-07-02</h4>
+            <h4 data-toc-skip class="date">2026-02-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/cran-1.1.0/vignettes/tech-dm-class.Rmd" class="external-link"><code>vignettes/tech-dm-class.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-class.Rmd</code></div>
     </div>
 
@@ -193,10 +193,10 @@ object into a <code>dm</code> using <code><a href="../reference/dm_from_con.html
 <span><span class="va">flights_dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_from_con.html">dm_from_con</a></span><span class="op">(</span><span class="va">sqlite_con</span><span class="op">)</span></span>
 <span><span class="va">flights_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.50.1 [/tmp/Rtmpy7g1cu/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.51.2 [/tmp/RtmpUxcvb6/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
-<span><span class="co">#&gt; Columns: 62</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
 <span><span class="co">#&gt; Primary keys: 0</span></span>
 <span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
 <p>The function <code>dm_from_con(con, table_names = NULL)</code>
@@ -241,8 +241,8 @@ the <code>src</code> object with <code><a href="../reference/dm_get_con.html">dm
 <p>In order to pull a specific table from a <code>dm</code>, use:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm</span><span class="op">[[</span><span class="st">"airports"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`airports`&gt; [?? x 8]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.50.1 [/tmp/Rtmpy7g1cu/nycflights13.sqlite]</span></span>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`main`.`airports`&gt; [?? x 8]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.51.2 [/tmp/RtmpUxcvb6/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt;    faa   name                            lat    lon   alt    tz dst   tzone</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
 <span><span class="co">#&gt;  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…</span></span>
@@ -280,10 +280,10 @@ i.e. <code>flights_dm</code> from above.</p>
 <span><span class="va">flights_dm_with_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">faa</span><span class="op">)</span></span>
 <span><span class="va">flights_dm_with_key</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.50.1 [/tmp/Rtmpy7g1cu/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.51.2 [/tmp/RtmpUxcvb6/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
-<span><span class="co">#&gt; Columns: 62</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
 <span><span class="co">#&gt; Primary keys: 1</span></span>
 <span><span class="co">#&gt; Foreign keys: 0</span></span></code></pre>
 <p>The <code>dm</code> now has a primary key:</p>
@@ -336,9 +336,9 @@ checking all constraints in a <code>dm</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/dm_add_pk.html">dm_add_pk</a></span><span class="op">(</span><span class="va">flights_dm</span>, <span class="va">airports</span>, <span class="va">tzone</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in abort_not_unique_key(x_label, orig_names) : </span></span>
-<span><span class="co">#&gt;   (`tzone`) not a unique key of `airports`.</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; Error in check_key(airports, tzone) : </span></span>
+<span><span class="co">#&gt;   (`tzone`) not a unique key of `airports`.</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="foreign-keys">Foreign keys<a class="anchor" aria-label="anchor" href="#foreign-keys"></a>
@@ -362,19 +362,21 @@ the indicated column of the child table point to it.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights_dm_with_key</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.50.1 [/tmp/Rtmpy7g1cu/nycflights13.sqlite]</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.51.2 [/tmp/RtmpUxcvb6/nycflights13.sqlite]</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `sqlite_stat1`, … (7 total)</span></span>
-<span><span class="co">#&gt; Columns: 62</span></span>
+<span><span class="co">#&gt; Tables: `airlines`, `airports`, `flights`, `planes`, `weather`</span></span>
+<span><span class="co">#&gt; Columns: 53</span></span>
 <span><span class="co">#&gt; Primary keys: 1</span></span>
 <span><span class="co">#&gt; Foreign keys: 1</span></span></code></pre>
 <p>This will throw an error:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
 <span>  <span class="va">flights_dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in abort_ref_tbl_has_no_pk(ref_table_name) : </span></span>
-<span><span class="co">#&gt;   ref_table `airports` needs a primary key first. Use `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to define a primary key.</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; Error in dm_add_fk(., flights, origin, airports) : </span></span>
+<span><span class="co">#&gt;   ref_table airports needs a primary key first. Use</span></span>
+<span><span class="co">#&gt; `dm_enum_pk_candidates()` to find appropriate columns and `dm_add_pk()` to</span></span>
+<span><span class="co">#&gt; define a primary key.</span></span></code></pre>
 <p>Let’s create a <code>dm</code> object with a foreign key relation to
 work with later on:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -385,9 +387,10 @@ work with later on:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
 <span>  <span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/dm_add_fk.html">dm_add_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">dest</span>, <span class="va">airports</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in abort_not_subset_of(table_name, col_name, ref_table_name, ref_col_name) : </span></span>
-<span><span class="co">#&gt;   Column (`dest`) of table `flights` contains values (see examples above) that are not present in column (`faa`) of table `airports`.</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; Error in dm_add_fk(., flights, dest, airports, check = TRUE) : </span></span>
+<span><span class="co">#&gt;   Column (`dest`) of table flights contains values (see examples</span></span>
+<span><span class="co">#&gt; above) that are not present in column (`faa`) of table airports.</span></span></code></pre>
 <p>Checks are opt-in and executed only if <code>check = TRUE</code>. You
 can still add a foreign key with the default <code>check = FALSE</code>.
 See also <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> for checking all
@@ -412,16 +415,18 @@ with a message):</p>
 <span>  <span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">flights</span>, column <span class="op">=</span> <span class="va">dest</span>, ref_table <span class="op">=</span> <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in abort_is_not_fkc() : No foreign keys to remove.</span></span>
-<span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; Error in dm_rm_fk(., table = flights, column = dest, ref_table = airports) : </span></span>
+<span><span class="co">#&gt;   No foreign keys to remove.</span></span></code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">origin</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_get_all_fks.html">dm_get_all_fks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airports</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 0 × 5</span></span>
 <span><span class="co">#&gt; # ℹ 5 variables: child_table &lt;chr&gt;, child_fk_cols &lt;keys&gt;,</span></span>
 <span><span class="co">#&gt; #   parent_table &lt;chr&gt;, parent_key_cols &lt;keys&gt;, on_delete &lt;chr&gt;</span></span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">flights_dm_with_fk</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_rm_fk.html">dm_rm_fk</a></span><span class="op">(</span><span class="va">flights</span>, columns <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -439,7 +444,7 @@ do not usually need to provide the referenced column name of
 of <code>dm</code> objects”</a>) is
 <code><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates()</a></code>. Use it to get an overview over
 foreign key candidates that point from one table to another:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_enum_fk_candidates.html">dm_enum_fk_candidates</a></span><span class="op">(</span><span class="va">flights_dm_with_key</span>, <span class="va">weather</span>, <span class="va">airports</span><span class="op">)</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A tibble: 15 × 3</span></span>
 <span><span class="co">#&gt;    columns    candidate why                                                </span></span>

@@ -1,8 +1,9 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://dm.cynkra.com/404.html</loc></url>
-<url><loc>https://dm.cynkra.com/CLAUDE.html</loc></url>
+<url><loc>https://dm.cynkra.com/AGENTS.html</loc></url>
 <url><loc>https://dm.cynkra.com/CODE_OF_CONDUCT.html</loc></url>
 <url><loc>https://dm.cynkra.com/CONTRIBUTING.html</loc></url>
+<url><loc>https://dm.cynkra.com/DEVCONTAINER.html</loc></url>
 <url><loc>https://dm.cynkra.com/LICENSE-text.html</loc></url>
 <url><loc>https://dm.cynkra.com/LICENSE.html</loc></url>
 <url><loc>https://dm.cynkra.com/TODO.html</loc></url>
@@ -29,6 +30,7 @@
 <url><loc>https://dm.cynkra.com/articles/wip/dm-shiny-dynafilter.html</loc></url>
 <url><loc>https://dm.cynkra.com/articles/wip/dm-tips-and-tricks.html</loc></url>
 <url><loc>https://dm.cynkra.com/authors.html</loc></url>
+<url><loc>https://dm.cynkra.com/copilot-instructions.html</loc></url>
 <url><loc>https://dm.cynkra.com/index.html</loc></url>
 <url><loc>https://dm.cynkra.com/news/index.html</loc></url>
 <url><loc>https://dm.cynkra.com/reference/check_key.html</loc></url>
@@ -55,6 +57,7 @@
 <url><loc>https://dm.cynkra.com/reference/dm_examine_constraints.html</loc></url>
 <url><loc>https://dm.cynkra.com/reference/dm_filter.html</loc></url>
 <url><loc>https://dm.cynkra.com/reference/dm_financial.html</loc></url>
+<url><loc>https://dm.cynkra.com/reference/dm_flatten.html</loc></url>
 <url><loc>https://dm.cynkra.com/reference/dm_flatten_to_tbl.html</loc></url>
 <url><loc>https://dm.cynkra.com/reference/dm_from_con.html</loc></url>
 <url><loc>https://dm.cynkra.com/reference/dm_from_src.html</loc></url>

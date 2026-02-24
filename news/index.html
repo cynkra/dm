@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,11 +51,79 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/cynkra/dm/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/cynkra/dm/blob/cran-1.1.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.12" id="dm-1012">dm 1.0.12<a class="anchor" aria-label="anchor" href="#dm-1012"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.1.0" id="dm-110">dm 1.1.0<a class="anchor" aria-label="anchor" href="#dm-110"></a></h2>
+<div class="section level3">
+<h3 id="features-1-1-0">Features<a class="anchor" aria-label="anchor" href="#features-1-1-0"></a></h3>
+<ul><li>
+<p>Aligned with dplyr 1.2.0, all new verbs and arguments are supported.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/dm_zoom_to.html">dm_zoom_to</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>.by <span class="op">=</span> <span class="va">origin</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</li>
+<li>
+<p>New <code><a href="../reference/dm_flatten.html">dm_flatten()</a></code> joins parent tables into a target table in-place and removes the now-integrated parents from the dm (<a href="https://github.com/cynkra/dm/issues/2393" class="external-link">#2393</a>, <a href="https://github.com/cynkra/dm/issues/2394" class="external-link">#2394</a>). Useful for denormalizing a star schema before reporting or further analysis. Supports <code>recursive</code>, <code>allow_deep</code>, and any dplyr join type.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="op">-</span><span class="va">weather</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/dm_flatten.html">dm_flatten</a></span><span class="op">(</span><span class="va">flights</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</li>
+<li>
+<p><code><a href="../reference/dm_draw.html">dm_draw()</a></code> gains a <code>backend_opts</code> argument that collects all backend-specific options in a single named list (<a href="https://github.com/cynkra/dm/issues/2381" class="external-link">#2381</a>). The individual top-level arguments (<code>graph_attrs</code>, <code>node_attrs</code>, <code>edge_attrs</code>, <code>focus</code>, <code>graph_name</code>, <code>font_size</code>, <code>columnArrows</code>) are soft-deprecated in favour of passing their equivalents in <code>backend_opts</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/dm_draw.html">dm_draw</a></span><span class="op">(</span>backend_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>column_arrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</li>
+<li>
+<p><code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> gains a <code>.max_value</code> argument controlling how many distinct problematic values are reported in the <code>problem</code> column (<a href="https://github.com/cynkra/dm/issues/2200" class="external-link">#2200</a>, <a href="https://github.com/cynkra/dm/issues/2387" class="external-link">#2387</a>). The default is <code>6</code>; use <code>.max_value = Inf</code> to report all violations.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dm_nycflights13.html">dm_nycflights13</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/dm_examine_constraints.html">dm_examine_constraints</a></span><span class="op">(</span>.max_value <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div>
+</li>
+<li>
+<p><code><a href="../reference/check_key.html">check_key()</a></code> now returns its input data frame when the key is valid (<a href="https://github.com/cynkra/dm/issues/2221" class="external-link">#2221</a>, <a href="https://github.com/cynkra/dm/issues/2303" class="external-link">#2303</a>), making it usable in pipelines.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/check_key.html">check_key</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">value</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+</li>
+<li><p>igraph is now an optional dependency (<a href="https://github.com/cynkra/dm/issues/2146" class="external-link">#2146</a>, <a href="https://github.com/cynkra/dm/issues/2364" class="external-link">#2364</a>), reducing the mandatory install footprint. Functions that require igraph will prompt you to install it when needed. Set <code>options(dm.use_igraph = FALSE)</code> to turn off the startup message.</p></li>
+<li><p>Keys are now learned automatically from SQLite databases (<a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>, <a href="https://github.com/cynkra/dm/issues/352" class="external-link">#352</a>).</p></li>
+<li><p>Improved duckplyr compatibility.</p></li>
+<li><p><code><a href="../reference/dm_pixarfilms.html">dm_pixarfilms()</a></code> now bundles the pixarfilms data directly and gains a <code>version</code> argument (<a href="https://github.com/cynkra/dm/issues/2368" class="external-link">#2368</a>, <a href="https://github.com/cynkra/dm/issues/2369" class="external-link">#2369</a>).</p></li>
+<li><p>All user-facing messages now use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_inform()</a></code> with native formatting (<a href="https://github.com/cynkra/dm/issues/2374" class="external-link">#2374</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-1-1-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-1-0"></a></h3>
+<ul><li>
+<p>A startup message now recommends running <code><a href="https://dplyr.tidyverse.org" class="external-link">library(dplyr)</a></code> before <code><a href="https://dm.cynkra.com/">library(dm)</a></code>. In a future version, the dm package will no longer reexport all dplyr functions. The new pattern ensures that scripts written today will work after that change. Set <code>options(dm.suppress_dplyr_startup_message = TRUE)</code> to turn off the startup message.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span> <span class="co"># or library(tidyverse)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dm.cynkra.com/">dm</a></span><span class="op">)</span></span></code></pre></div>
+</li>
+<li>
+<p><code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> now uses <code><a href="../reference/dm_sql.html">dm_sql()</a></code> internally and creates key constraints on the database (<a href="https://github.com/krlmlr" class="external-link">@krlmlr</a>, <a href="https://github.com/cynkra/dm/issues/1887" class="external-link">#1887</a>, <a href="https://github.com/cynkra/dm/issues/2022" class="external-link">#2022</a>). Unique keys and autoincrement primary keys (<a href="https://github.com/cynkra/dm/issues/1725" class="external-link">#1725</a>) are set up automatically. Data models with cyclic foreign-key references are now supported on all databases that allow <code>ALTER TABLE</code> to add constraints (all except DuckDB and SQLite, <a href="https://github.com/cynkra/dm/issues/664" class="external-link">#664</a>).</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/dm_financial.html">dm_financial</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">.</span>, temporary <span class="op">=</span> <span class="cn">FALSE</span>, set_key_constraints <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-1-0"></a></h3>
+<ul><li><p><code>dm_from_con(learn_keys = TRUE, .names = )</code> now correctly applies the specified table naming pattern (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2213" class="external-link">#2213</a>, <a href="https://github.com/cynkra/dm/issues/2214" class="external-link">#2214</a>).</p></li>
+<li><p><code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> no longer learns tables from all schemas by default for Postgres, MSSQL, and MariaDB (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1440" class="external-link">#1440</a>, <a href="https://github.com/cynkra/dm/issues/1448" class="external-link">#1448</a>). The defaults are <code>"public"</code> (Postgres), <code>"dbo"</code> (MSSQL), and the current database (MariaDB), avoiding spurious system tables.</p></li>
+<li><p><code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> no longer issues a spurious message when foreign keys reference non-primary-key columns (<a href="https://github.com/cynkra/dm/issues/1270" class="external-link">#1270</a>, <a href="https://github.com/cynkra/dm/issues/2367" class="external-link">#2367</a>).</p></li>
+<li><p><code><a href="../reference/dm_paste.html">dm_paste()</a></code> limits its pipelines to up to 100 steps, splitting longer pipelines as needed (<a href="https://github.com/cynkra/dm/issues/2301" class="external-link">#2301</a>).</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12" id="dm-1012">dm 1.0.12<a class="anchor" aria-label="anchor" href="#dm-1012"></a></h2><p class="text-muted">CRAN release: 2025-07-02</p>
 <div class="section level3">
 <h3 id="bug-fixes-1-0-12">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-12"></a></h3>
 <ul><li><p>Improve detection of foreign-key relationships in Postgres (<a href="https://github.com/cynkra/dm/issues/1879" class="external-link">#1879</a>, <a href="https://github.com/cynkra/dm/issues/2286" class="external-link">#2286</a>).</p></li>
@@ -798,7 +866,7 @@
 <ul><li>
 <code><a href="https://dplyr.tidyverse.org/reference/rows.html" class="external-link">rows_insert()</a></code> works if column names consist of SQL keywords (<a href="https://github.com/cynkra/dm/issues/409" class="external-link">#409</a>).</li>
 <li>Cycles in other connected components don’t affect filtering in a cycle-free component.</li>
-<li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html" class="external-link">src_sqlite()</a></code> in examples (<a href="https://github.com/cynkra/dm/issues/372" class="external-link">#372</a>).</li>
+<li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/defunct.html" class="external-link">src_sqlite()</a></code> in examples (<a href="https://github.com/cynkra/dm/issues/372" class="external-link">#372</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="internal-0-1-5">Internal<a class="anchor" aria-label="anchor" href="#internal-0-1-5"></a></h3>
@@ -830,7 +898,7 @@
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.3" id="dm-013">dm 0.1.3<a class="anchor" aria-label="anchor" href="#dm-013"></a></h2><p class="text-muted">CRAN release: 2020-05-25</p>
-<ul><li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/src_dbi.html" class="external-link">src_sqlite()</a></code> in vignettes (<a href="https://github.com/cynkra/dm/issues/372" class="external-link">#372</a>).</li>
+<ul><li>Avoid <code><a href="https://dplyr.tidyverse.org/reference/defunct.html" class="external-link">src_sqlite()</a></code> in vignettes (<a href="https://github.com/cynkra/dm/issues/372" class="external-link">#372</a>).</li>
 <li>Rename vignettes (<a href="https://github.com/cynkra/dm/issues/349" class="external-link">#349</a>).</li>
 <li>Rename error class <code>"dm_error_tables_not_neighbours"</code> to <code>"dm_error_tables_not_neighbors"</code>.</li>
 <li>Shortened README and intro article (<a href="https://github.com/cynkra/dm/issues/192" class="external-link">#192</a>, <a href="https://github.com/jawond" class="external-link">@jawond</a>).</li>
@@ -880,7 +948,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="compatibility-0-1-2">Compatibility<a class="anchor" aria-label="anchor" href="#compatibility-0-1-2"></a></h3>
-<ul><li>Remove use of deprecated <code><a href="https://dplyr.tidyverse.org/reference/src_local.html" class="external-link">src_df()</a></code> (<a href="https://github.com/cynkra/dm/issues/336" class="external-link">#336</a>).</li>
+<ul><li>Remove use of deprecated <code><a href="https://dplyr.tidyverse.org/reference/defunct.html" class="external-link">src_df()</a></code> (<a href="https://github.com/cynkra/dm/issues/336" class="external-link">#336</a>).</li>
 <li>Fix compatibility with dplyr 1.0.0 (<a href="https://github.com/cynkra/dm/issues/203" class="external-link">#203</a>).</li>
 </ul></div>
 <div class="section level3">

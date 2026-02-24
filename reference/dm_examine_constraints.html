@@ -13,7 +13,7 @@ to print as a regular tibble."><meta property="og:image" content="https://dm.cyn
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@ to print as a regular tibble."><meta property="og:image" content="https://dm.cyn
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Validate your data model</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/R/examine-constraints.R" class="external-link"><code>R/examine-constraints.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/cran-1.1.0/R/examine-constraints.R" class="external-link"><code>R/examine-constraints.R</code></a></small>
       <div class="d-none name"><code>dm_examine_constraints.Rd</code></div>
     </div>
 
@@ -74,6 +74,7 @@ to print as a regular tibble.</p>
 <span>  <span class="va">.dm</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  .progress <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  .max_value <span class="op">=</span> <span class="fl">6L</span>,</span>
 <span>  dm <span class="op">=</span> <span class="fu"><a href="deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  progress <span class="op">=</span> <span class="fu"><a href="deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -95,6 +96,12 @@ to print as a regular tibble.</p>
 <dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.</p></dd>
+
+
+<dt id="arg--max-value">.max_value<a class="anchor" aria-label="anchor" href="#arg--max-value"></a></dt>
+<dd><p>Maximum number of distinct problematic values to report
+in the <code>problem</code> column, defaults to <code>6</code>.
+Set to <code>Inf</code> to report all values.</p></dd>
 
 
 <dt id="arg-dm-progress">dm, progress<a class="anchor" aria-label="anchor" href="#arg-dm-progress"></a></dt>

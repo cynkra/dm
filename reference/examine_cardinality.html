@@ -29,7 +29,7 @@ to a set of key columns without affecting the return value."><meta property="og:
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@ to a set of key columns without affecting the return value."><meta property="og:
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Check table relations</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/R/check-cardinalities.R" class="external-link"><code>R/check-cardinalities.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/cran-1.1.0/R/check-cardinalities.R" class="external-link"><code>R/check-cardinalities.R</code></a></small>
       <div class="d-none name"><code>examine_cardinality.Rd</code></div>
     </div>
 
@@ -213,7 +213,7 @@ the result will contain the information which prerequisite was violated.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other cardinality functions:
-<code><a href="dm_examine_cardinalities.html">dm_examine_cardinalities</a>()</code></p></div>
+<code><a href="dm_examine_cardinalities.html">dm_examine_cardinalities()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -223,24 +223,27 @@ the result will contain the information which prerequisite was violated.</p>
 <span class="r-in"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5L</span><span class="op">)</span>, d <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># This does not pass, `a` is not unique key of d2:</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_0_n</span><span class="op">(</span><span class="va">d2</span>, <span class="va">d1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_unique_key(x_label, orig_names) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in check_cardinality_0_n(d2, d1) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (`a`) not a unique key of `d2`.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Columns are matched by name by default:</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_0_n</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in check_card_api_impl({ : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `by_position = FALSE` or `by_position = NULL` require column names in `x` to match those in `y`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in check_cardinality_0_n(d1, d3) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `by_position = FALSE` or `by_position = NULL` require column names in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `x` to match those in `y`.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># This passes, multiple values in d3$c are allowed:</span></span></span>
 <span class="r-in"><span><span class="fu">check_cardinality_0_n</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># This does not pass, injectivity is violated:</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_1_1</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d3</span>, y_select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_bijective(y_label, colnames(y)) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1..1 cardinality (bijectivity) is not given: Column (`a`) in table `d3` contains duplicate values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in check_cardinality_1_1(d1, d3, y_select = c(a = c)) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1..1 cardinality (bijectivity) is not given: Column (`a`) in table <span style="color: #00BB00;">d3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> contains duplicate values.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_cardinality_0_1</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d3</span>, x_select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>c <span class="op">=</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in abort_not_injective(y_label, colnames(y)) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0..1 cardinality (injectivity from child table to parent table) is not given: Column (`c`) in table `d3` contains duplicate values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in check_cardinality_0_1(d1, d3, x_select = c(c = a)) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0..1 cardinality (injectivity from child table to parent table) is not</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> given: Column (`c`) in table <span style="color: #00BB00;">d3</span> contains duplicate values.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># What kind of cardinality is it?</span></span></span>
 <span class="r-in"><span><span class="fu">examine_cardinality</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d3</span>, x_select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>c <span class="op">=</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span></span></span>

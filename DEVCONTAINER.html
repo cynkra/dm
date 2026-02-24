@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="index.html">dm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,25 +51,69 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="logo.png" class="logo" alt=""><h1>Claude Development Notes for dm Package</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/CLAUDE.md" class="external-link"><code>CLAUDE.md</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/cran-1.1.0/DEVCONTAINER.md" class="external-link"><code>DEVCONTAINER.md</code></a></small>
     </div>
 
 <div id="claude-development-notes-for-dm-package" class="section level1">
 
 <p>This file contains important notes and best practices for working with the dm package codebase.</p>
 <div class="section level2">
-<h2 id="testing-guidelines">Testing Guidelines<a class="anchor" aria-label="anchor" href="#testing-guidelines"></a></h2>
+<h2 id="development-environment">Development Environment<a class="anchor" aria-label="anchor" href="#development-environment"></a></h2>
 <div class="section level3">
-<h3 id="use-test_local-with-filter-argument-for-specific-test-files">Use test_local() with filter argument for specific test files<a class="anchor" aria-label="anchor" href="#use-test_local-with-filter-argument-for-specific-test-files"></a></h3>
-<p>Always use the <code>filter</code> argument when running specific test files to avoid running all tests:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<h3 id="devcontainer-setup">Devcontainer Setup<a class="anchor" aria-label="anchor" href="#devcontainer-setup"></a></h3>
+<p>This project uses a devcontainer configuration with:</p>
+<ul><li>
+<strong>R Environment</strong>: <code>ghcr.io/cynkra/docker-images/ubuntu24-rig-rrel-dc-dt-dm:latest</code>
+</li>
+<li>
+<strong>PostgreSQL Database</strong>: Latest PostgreSQL with socket connection support</li>
+<li>
+<strong>MariaDB Database</strong>: Latest MariaDB for testing database compatibility</li>
+<li>
+<strong>Docker Compose</strong>: <code>.devcontainer/docker-compose.yml</code> defines the complete environment</li>
+</ul><p><strong>Important</strong>: All R commands and package operations should be executed within the devcontainer. Claude Code is configured to automatically use the devcontainer for all execution.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="coding-guidelines">Coding Guidelines<a class="anchor" aria-label="anchor" href="#coding-guidelines"></a></h2>
+<ul><li>Format the code by running <code>air format .</code> in the devcontainer.</li>
+<li>
+<strong>Important</strong>: Always add tests when fixing bugs to prevent regression. Test both the fix and edge cases.</li>
+<li>Prefer snapshot tests when testing console output.</li>
+</ul></div>
+<div class="section level2">
+<h2 id="testing-guidelines">Testing Guidelines<a class="anchor" aria-label="anchor" href="#testing-guidelines"></a></h2>
+<p>Tests should be executed within the devcontainer using:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Start devcontainer (if not already running)</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> .</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Restart devcontainer after configuration changes</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> . <span class="at">--remove-existing-container</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># Execute R commands in devcontainer</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">'testthat::test_local(reporter = "summary")'</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="use-test_local">Use test_local()<a class="anchor" aria-label="anchor" href="#use-test_local"></a></h3>
+<p>Always use <code>reporter = "summary"</code> when running tests to get a concise output. Always use the <code>filter</code> argument when running specific test files to avoid running all tests:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Run specific test files</span></span>
-<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span>filter <span class="op">=</span> <span class="st">"flatten"</span><span class="op">)</span>     <span class="co"># Runs test-flatten.R</span></span>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span>filter <span class="op">=</span> <span class="st">"flatten"</span>, reporter <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span>     <span class="co"># Example: Runs test-flatten.R</span></span>
 <span></span>
-<span><span class="co"># Run all tests (only when necessary)</span></span>
-<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Run all tests (always before finishing work)</span></span>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span>reporter <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Important</strong>: The <code>filter</code> argument filters by test file names, not individual test names within files.</p>
-<hr><p><em>This file should be updated as new patterns are discovered.</em></p>
+</div>
+<div class="section level3">
+<h3 id="different-backends">Different Backends<a class="anchor" aria-label="anchor" href="#different-backends"></a></h3>
+<p><strong>Important</strong>: Set the <code>DM_TEST_SRC</code> environment variable to test against various backends. Always test all backends. Supported values include:</p>
+<ul><li><code>df</code></li>
+<li><code>postgres</code></li>
+<li>
+<code>maria</code> (MariaDB)</li>
+<li>
+<code>mssql</code> (SQL Server)</li>
+<li><code>duckdb</code></li>
+</ul><hr><p><em>This file should be updated as new patterns are discovered.</em></p>
 </div>
 </div>
 </div>
