@@ -438,17 +438,25 @@ as_dm_zoomed_df <- function(x) {
 }
 
 new_dm_zoomed_df <- function(x, ...) {
-  if (!is.data.frame(x)) {
-    return(structure(x, class = c("dm_zoomed_df", class(x)), ...))
+  if (is.data.frame(x) && !inherits(x, "duckplyr_df")) {
+    # need this in order to avoid star (from rownames, automatic from `structure(...)`)
+    # in print method for local tibbles
+    return(new_tibble(
+      x,
+      class = c("dm_zoomed_df", class(x), c("tbl_df", "tbl", "data.frame")),
+      nrow = nrow(x),
+      ...
+    ))
   }
-  # need this in order to avoid star (from rownames, automatic from `structure(...)`)
-  # in print method for local tibbles
-  new_tibble(
-    x,
-    class = c("dm_zoomed_df", class(x), c("tbl_df", "tbl", "data.frame")),
-    nrow = nrow(x),
-    ...
-  )
+
+  # Careful to not touch duckplyr row names
+  class(x) <- c("dm_zoomed_df", class(x))
+  extra_attrs <- list(...)
+  for (name in names(extra_attrs)) {
+    print(name)
+    attr(x, name) <- extra_attrs[[name]]
+  }
+  x
 }
 
 # this is called from `tibble:::trunc_mat()`, which is called from `tibble::format.tbl()`

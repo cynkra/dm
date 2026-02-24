@@ -1,5 +1,100 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.0.12.9019
+
+## Bug fixes
+
+- Fix key tracking for `summarise(.by = ...)` in zoomed, zoom2ed, and keyed dm (#2409, #2410).
+
+- `dm_from_con(learn_keys = TRUE, .names = )` applies the specified table naming pattern (@owenjonesuob, #2213, #2214).
+
+- `dm_from_con()` no longer learns tables from all schemas by default for Postgres, MSSQL, and MariaDB; instead, `"public"`, `"dbo"` and the current database, respectively, are used (@mgirlich, #1440, #1448).
+
+- Ensure compatibility with upcoming update of the pixarfilms package (@erictleung, erictleung/pixarfilms#39, #2256).
+
+- Fix `dm_paste()` pipe length issue by implementing operation chunking (#2301).
+
+- Fix bogus message for `dm_rm_fk()` in presence of FKs to non-PKs (#1270, #2367).
+
+## Features
+
+- Improve duckplyr compatibility.
+
+- Add startup messages for igraph option and dplyr attachment (#2406, #2407).
+
+- Implement `dm_local_error_call()`/`dm_error_call()` for error ownership tracking (#2401, #2402).
+
+- Introduce `dm_flatten(dm, table, ..., parent_tables = NULL, recursive = FALSE, allow_deep = FALSE, join = left_join)` (#2393, #2394).
+
+- Make igraph dependency optional (#2146, #2364).
+
+- Add `.max_value` parameter to `dm_examine_constraints()` (#2200, #2387).
+
+- Introduce `dm_draw(backend_opts = list())`, soft-deprecate backend-specific arguments (#2381).
+
+- Learn keys from SQLite databases (@gadenbuie, #352).
+
+- Use `cli::cli_inform()` with native formatting (#2374).
+
+- Follow all updates from dplyr 1.2.0 (#2361, #2362).
+
+- Vendor pixarfilms data and add `version` argument to `dm_pixarfilms()` (#2368, #2369).
+
+## Chore
+
+- Implement zoom v2 with internal `dm_zoom2_to()`, `dm_update_zoom2ed()`, `dm_insert_zoom2ed()`, `dm_discard_zoom2ed()` (#2398, #2399).
+
+- Comment.
+
+- Adapt to dplyr 1.2.0.
+
+- Restore recent soft-deprecation.
+
+- Bump deprecation level (#2395).
+
+- Wrap all igraph functions (#2390).
+
+- Tweak `dm_draw()`: rename `column_arrow` backend opt and validate `backend_opts` (#2383, #2384).
+
+- Wrap all igraph functions (#2382).
+
+- Wrap all igraph functions (#2382).
+
+- Require R \>= 4.0.
+
+- Don't refer to removed `dplyr::src_dbi()` (@DavisVaughan, #2356).
+
+- Better traceback location for selection errors (#2351).
+
+## Continuous integration
+
+- Remove Docker image build, centralized now.
+
+- Use robust way to show payload.
+
+- Tweaks (#2354).
+
+- Install odbc from GitHub remote to avoid failures on older versions of R.
+
+- Install binaries from r-universe for dev workflow (#2348).
+
+- Fix reviewdog and add commenting workflow (#2345).
+
+- Use workflows for fledge (#2343).
+
+- Sync (#2341).
+
+- Fix dev pkgdown.
+
+## Documentation
+
+- Use cli for errors and warnings (#2396, #2397).
+
+## Refactoring
+
+- Replace all `abort()` with `cli::cli_abort()` (#2403, #2404).
+
+
 # dm 1.0.12.9018
 
 ## Features
