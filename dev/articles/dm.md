@@ -358,7 +358,7 @@ The {dm} package follows the tidyverse principles:
 
 The {dm} package builds heavily upon the [{datamodelr}
 package](https://github.com/bergant/datamodelr), and upon the
-[tidyverse](https://tidyverse.org/). We’re looking forward to a good
+[tidyverse](https://www.tidyverse.org/). We’re looking forward to a good
 collaboration!
 
 The [{polyply} package](https://github.com/russHyde/polyply) has a
