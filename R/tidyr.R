@@ -28,17 +28,7 @@ unite.dm <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
 unite.dm_zoomed <- function(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE) {
   tbl <- tbl_zoomed(data)
   united_tbl <- unite(tbl, col = !!col, ..., sep = sep, remove = remove, na.rm = na.rm)
-
-  # all columns that are not not removed count as "selected"; names of "selected" are identical to "selected"
-  if (remove) {
-    deselected <- eval_select_both(quo(c(...)), colnames(tbl))
-  } else {
-    deselected <- eval_select_both(quo(c()), colnames(tbl))
-  }
-  selected <- set_names(setdiff(names(col_tracker_zoomed(data)), deselected$names))
-  new_tracked_cols_zoom <- new_tracked_cols(data, selected)
-
-  replace_zoomed_tbl(data, united_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(data, united_tbl)
 }
 
 #' @rdname tidyr_table_manipulation
@@ -47,6 +37,7 @@ unite.dm_keyed_tbl <- function(data, col, ..., sep = "_", remove = TRUE, na.rm =
   keys_info <- keyed_get_info(data)
   tbl <- unclass_keyed_tbl(data)
   out <- unite(tbl, col = {{ col }}, ..., sep = sep, remove = remove, na.rm = na.rm)
+  keys_info <- keyed_drop_missing_key_cols(keys_info, colnames(out))
   new_keyed_tbl_from_keys_info(out, keys_info)
 }
 
@@ -79,10 +70,9 @@ separate.dm_zoomed <- function(
   ...
 ) {
   tbl <- tbl_zoomed(data)
-  col <- tidyselect::vars_pull(names(tbl), !!enquo(col))
   separated_tbl <- separate(
     tbl,
-    col = !!col,
+    col = {{ col }},
     into = into,
     sep = sep,
     remove = remove,
@@ -91,11 +81,7 @@ separate.dm_zoomed <- function(
     fill = fill,
     ...
   )
-  # all columns that are not removed count as "selected"; names of "selected" are identical to "selected"
-  deselected <- if (remove) col else character()
-  selected <- set_names(setdiff(names(col_tracker_zoomed(data)), deselected))
-  new_tracked_cols_zoom <- new_tracked_cols(data, selected)
-  replace_zoomed_tbl(data, separated_tbl, new_tracked_cols_zoom)
+  replace_zoomed_tbl(data, separated_tbl)
 }
 
 #' @rdname tidyr_table_manipulation
@@ -124,5 +110,6 @@ separate.dm_keyed_tbl <- function(
     fill = fill,
     ...
   )
+  keys_info <- keyed_drop_missing_key_cols(keys_info, colnames(out))
   new_keyed_tbl_from_keys_info(out, keys_info)
 }

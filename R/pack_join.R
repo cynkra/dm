@@ -29,7 +29,7 @@ pack_join.dm_zoomed <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE
   check_dots_empty()
 
   y_name <- dm_tbl_name(x, {{ y }})
-  zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
+  zoomed <- dm_get_zoom(x, c("table", "zoom"))
   x_tbl <- zoomed$zoom[[1]]
   y_tbl <- dm_get_tables_impl(x)[[y_name]]
 

@@ -19,12 +19,14 @@ nest_join_dm_zoomed <- function(x, ...) {
     return(dm_zoomed)
   }
 
+  keyed_tbl <- tbl_zoomed(dm_zoomed)
+  keys_info <- keyed_get_info(keyed_tbl)
+
   orig_pk <- dm_get_pk_impl(dm_zoomed, orig_table)
-  keys <- col_tracker_zoomed(dm_zoomed)
-  if (!(orig_pk %in% keys)) {
+  if (is.null(keys_info$pk)) {
     abort_pk_not_tracked(orig_table, orig_pk)
   }
-  new_pk <- names(keys[keys == orig_pk])
+  new_pk <- keys_info$pk
 
   child_tables <-
     get_orig_in_fks(dm_zoomed, orig_table) %>%
@@ -33,7 +35,7 @@ nest_join_dm_zoomed <- function(x, ...) {
     filter(child_table %in% selected) %>%
     # perform joins in the order given in the ellipsis
     arrange(match(child_table, selected))
-  x <- tbl_zoomed(dm_zoomed)
+  x <- keyed_tbl
 
   for (i in seq_len(nrow(child_tables))) {
     x <- nest_join(

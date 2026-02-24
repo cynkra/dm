@@ -50,13 +50,14 @@ test_that("dm_get_zoom() and tbl_zoomed() works", {
       dm_zoom_to(tf_2) %>%
       dm_get_zoom() %>%
       pluck("zoom") %>%
-      pluck(1),
+      pluck(1) %>%
+      unclass_keyed_tbl(),
     tf_2()
   )
 
   # function for getting only the tibble itself works
   expect_equivalent_tbl(
-    dm_for_filter() %>% dm_zoom_to(tf_3) %>% tbl_zoomed(),
+    dm_for_filter() %>% dm_zoom_to(tf_3) %>% tbl_zoomed() %>% unclass_keyed_tbl(),
     tf_3()
   )
 })
@@ -99,7 +100,7 @@ test_that("dm_update_tbl() works", {
   new_dm_for_filter <-
     dm_get_def(dm_for_filter()) %>%
     mutate(
-      zoom = if_else(table == "tf_6", list(tf_7()), list(NULL)),
+      zoom = if_else(table == "tf_6", list(new_keyed_tbl(tf_7())), list(NULL)),
       col_tracker_zoom = if_else(table == "tf_6", list(character()), list(NULL)),
     ) %>%
     dm_from_def(zoomed = TRUE)
@@ -115,11 +116,14 @@ test_that("dm_update_tbl() works", {
 
 # after #271:
 test_that("all cols are tracked in zoomed table", {
+  keyed_tbl <- dm_nycflights_small() %>%
+    dm_zoom_to(flights) %>%
+    tbl_zoomed()
+  keys_info <- keyed_get_info(keyed_tbl)
+  # The keyed table should have the same columns as the original
   expect_identical(
-    dm_nycflights_small() %>%
-      dm_zoom_to(flights) %>%
-      col_tracker_zoomed(),
-    set_names(colnames(dm_nycflights_small()$flights))
+    colnames(keyed_tbl),
+    colnames(dm_nycflights_small()$flights)
   )
 })
 
@@ -155,9 +159,13 @@ test_that("zoom output for compound keys", {
 
 test_that("dm_get_zoom() works to zoom on empty tables", {
   zdm <- dm(x = tibble()) %>% dm_zoom_to(x)
-  expect_identical(
-    dm_get_zoom(zdm),
-    tibble(table = "x", zoom = list(tibble()))
+  zoom_result <- dm_get_zoom(zdm)
+  expect_identical(zoom_result$table, "x")
+  # zoom now stores a keyed table
+  expect_true(is_dm_keyed_tbl(zoom_result$zoom[[1]]))
+  expect_equivalent_tbl(
+    unclass_keyed_tbl(zoom_result$zoom[[1]]),
+    tibble()
   )
 })
 

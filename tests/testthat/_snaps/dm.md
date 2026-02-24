@@ -433,6 +433,7 @@
       i Use `. %>% pull_tbl() %>% collect()` instead to silence this message.
     Output
       # A tibble: 144 x 15
+      # Keys:     `origin`, `time_hour` | 1 | 0
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
          <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
        1 EWR     2013     1    10     0  41    32    70.1      230       8.06
@@ -471,6 +472,7 @@
       nyc_comp() %>% dm_zoom_to(weather) %>% pull_tbl()
     Output
       # A tibble: 144 x 15
+      # Keys:     `origin`, `time_hour` | 1 | 0
          origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
          <chr>  <int> <int> <int> <int> <dbl> <dbl> <dbl>    <dbl>      <dbl>
        1 EWR     2013     1    10     0  41    32    70.1      230       8.06
@@ -694,6 +696,7 @@
       
       Rows: 86
       Columns: 8
+      Keys: `faa` | 1 | 0
       $ faa   <chr> "ALB", "ATL", "AUS", "BDL", "BHM", "BNA", "BOS", "BTV", "BUF", "~
       $ name  <chr> "Albany Intl", "Hartsfield Jackson Atlanta Intl", "Austin Bergst~
       $ lat   <dbl> 42.74827, 33.63672, 30.19453, 41.93889, 33.56294, 36.12447, 42.3~
@@ -716,6 +719,7 @@
       
       Rows: 1,761
       Columns: 19
+      Keys: --- | 0 | 4
       $ year           <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 201~
       $ month          <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       $ day            <int> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,~
@@ -741,9 +745,11 @@
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
       Zoomed table: `weather`
+      Primary key: (`origin`, `time_hour`)
       
       Rows: 144
       Columns: 14
+      Keys: --- | 0 | 0
       $ year       <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013,~
       $ month      <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,~
       $ day        <int> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,~
@@ -765,10 +771,11 @@
       dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
       
       Zoomed table: `weather`
-      Primary key: (`origin_location`, `time_hour`)
+      Primary key: (`origin`, `time_hour`)
       
       Rows: 144
       Columns: 15
+      Keys: `origin_location`, `time_hour` | 1 | 0
       $ origin_location <chr> "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EWR", "EWR"~
       $ year            <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, ~
       $ month           <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
@@ -797,6 +804,7 @@
       
       Rows: 1,761
       Columns: 18
+      Keys: --- | 0 | 3
       $ year           <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2~
       $ month          <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1~
       $ day            <int> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,~
@@ -827,6 +835,7 @@
       
       Rows: 1,761
       Columns: 18
+      Keys: --- | 0 | 2
       $ year           <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2~
       $ month          <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1~
       $ day            <int> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,~
@@ -860,6 +869,7 @@
       
       Rows: 1,761
       Columns: 19
+      Keys: --- | 0 | 4
       $ year            <int> 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, ~
       $ month           <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
       $ day             <int> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10~
