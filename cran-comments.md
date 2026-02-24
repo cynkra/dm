@@ -1,5 +1,7 @@
-dm 1.0.12
+dm 1.0.99.9900
 
 ## Cran Repository Policy
 
-- [x] Reviewed CRP last edited 2024-08-27.
+- [ ] Reviewed CRP last edited 2026-02-20.
+
+See changes at https://github.com/eddelbuettel/crp/compare/master@%7B2024-08-27%7D...master@%7B2026-02-20%7D
