@@ -249,9 +249,7 @@ a new lazy table `total_loans` linked to the `accounts` table.
 my_dm_total <-
   my_dm_keys %>%
   dm_zoom_to(loans) %>%
-  group_by(account_id) %>%
-  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
-  ungroup() %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE), .by = account_id) %>%
   dm_insert_zoomed("total_loans")
 ```
 
@@ -261,10 +259,9 @@ then use {[dplyr](https://dplyr.tidyverse.org/)} functions on the zoomed
 table to generate a new summary table.
 
 `summarize()` returns a temporary table with one row for each group
-created by the preceding `group_by()` function. The columns in the
-temporary table are constrained to the columns passed as arguments to
-the `group_by()` function and the column(s) created by the `summarize()`
-function.
+created by the `.by` argument. The columns in the temporary table are
+constrained to the columns passed as the `.by` argument and the
+column(s) created by the `summarize()` function.
 
 `dm_insert_zoomed("total_loans")` adds the temporary table created by
 `summarize()` to the data model under a new name, `total_loans`. Because

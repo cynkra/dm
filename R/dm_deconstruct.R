@@ -27,9 +27,7 @@
 #' weather <- pull_tbl(dm, "weather", keyed = TRUE)
 #' by_origin <-
 #'   flights %>%
-#'   group_by(origin) %>%
-#'   summarize(mean_arr_delay = mean(arr_delay, na.rm = TRUE)) %>%
-#'   ungroup()
+#'   summarize(mean_arr_delay = mean(arr_delay, na.rm = TRUE), .by = origin)
 #'
 #' by_origin
 #' dm(airlines, airports, flights, planes, weather, by_origin) %>%

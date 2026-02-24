@@ -85,9 +85,7 @@ each account.
 my_dm_total <-
   deployed_dm %>%
   dm_zoom_to(loans) %>%
-  group_by(account_id) %>%
-  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
-  ungroup() %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE), .by = account_id) %>%
   dm_insert_zoomed("total_loans")
 ```
 
@@ -113,9 +111,7 @@ stores the full results in a table on the RDBMS.
 my_dm_total_computed <-
   deployed_dm %>%
   dm_zoom_to(loans) %>%
-  group_by(account_id) %>%
-  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
-  ungroup() %>%
+  summarize(total_amount = sum(amount, na.rm = TRUE), .by = account_id) %>%
   compute() %>%
   dm_insert_zoomed("total_loans")
 
