@@ -209,7 +209,7 @@ to our chosen table. Then we can perform any of the operations we want.
 fin_dm_total <-
   fin_dm_keys %>%
   dm_zoom_to(loans) %>%
-  summarize(total_amount = sum(amount, na.rm = TRUE), .by = account_id) %>%
+  summarize(.by = account_id, total_amount = sum(amount, na.rm = TRUE)) %>%
   dm_insert_zoomed("total_loans")
 
 fin_dm_total$total_loans

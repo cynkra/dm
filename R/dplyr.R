@@ -14,7 +14,7 @@
 #' zoomed <- dm_nycflights13() %>%
 #'   dm_zoom_to(flights) %>%
 #'   arrange(desc(day)) %>%
-#'   summarize(avg_air_time = mean(air_time, na.rm = TRUE), .by = month)
+#'   summarize(.by = month, avg_air_time = mean(air_time, na.rm = TRUE))
 #' zoomed
 #' dm_insert_zoomed(zoomed, new_tbl_name = "avg_air_time_per_month")
 NULL

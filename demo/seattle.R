@@ -779,7 +779,7 @@ flights_base %>%
 
 flights_base %>%
   left_join(planes, by = "tailnum") %>%
-  summarize(mismatch_rate = mean(is.na(type)), .by = carrier) %>%
+  summarize(.by = carrier, mismatch_rate = mean(is.na(type))) %>%
   filter(mismatch_rate > 0) %>%
   ggplot(aes(x = carrier, y = mismatch_rate)) +
   geom_col()

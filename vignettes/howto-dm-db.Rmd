@@ -223,7 +223,7 @@ This is a new dm object, derived from `my_dm_keys`, with a new lazy table `total
 my_dm_total <-
   my_dm_keys %>%
   dm_zoom_to(loans) %>%
-  summarize(total_amount = sum(amount, na.rm = TRUE), .by = account_id) %>%
+  summarize(.by = account_id, total_amount = sum(amount, na.rm = TRUE)) %>%
   dm_insert_zoomed("total_loans")
 ``````
 

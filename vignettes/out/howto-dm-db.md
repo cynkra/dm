@@ -249,7 +249,7 @@ a new lazy table `total_loans` linked to the `accounts` table.
 my_dm_total <-
   my_dm_keys %>%
   dm_zoom_to(loans) %>%
-  summarize(total_amount = sum(amount, na.rm = TRUE), .by = account_id) %>%
+  summarize(.by = account_id, total_amount = sum(amount, na.rm = TRUE)) %>%
   dm_insert_zoomed("total_loans")
 ```
 
