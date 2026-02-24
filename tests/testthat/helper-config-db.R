@@ -62,20 +62,16 @@ test_src_arrow <- function() {
 
 test_src_dtplyr <- function() {
   testthat::skip_if_not_installed("dtplyr")
-  testthat::skip_if_not_installed("data.table")
   NULL
 }
 
 test_src_duckplyr_stingy <- function() {
   testthat::skip_if_not_installed("duckplyr")
-  duckplyr::methods_overwrite()
   NULL
 }
 
 test_src_duckplyr_lavish <- function() {
   testthat::skip_if_not_installed("duckplyr")
-  duckplyr::methods_overwrite()
-  options(duckplyr.force = TRUE)
   NULL
 }
 
