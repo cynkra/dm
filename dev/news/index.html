@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.99.9900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.12.9018</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,38 +51,44 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/cynkra/dm/blob/cran-1.0.99.9900/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/cynkra/dm/blob/cran-stingy/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.99.9900" id="dm-10999900">dm 1.0.99.9900<a class="anchor" aria-label="anchor" href="#dm-10999900"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.12.9018" id="dm-10129018">dm 1.0.12.9018<a class="anchor" aria-label="anchor" href="#dm-10129018"></a></h2>
 <div class="section level3">
-<h3 id="claude-1-0-99-9900">claude<a class="anchor" aria-label="anchor" href="#claude-1-0-99-9900"></a></h3>
-<ul><li>Fix config.</li>
+<h3 id="features-1-0-12-9018">Features<a class="anchor" aria-label="anchor" href="#features-1-0-12-9018"></a></h3>
+<ul><li>Implement <code>dm_local_error_call()</code>/<code>dm_error_call()</code> for error ownership tracking (<a href="https://github.com/cynkra/dm/issues/2401" class="external-link">#2401</a>, <a href="https://github.com/cynkra/dm/issues/2402" class="external-link">#2402</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9017" id="dm-10129017">dm 1.0.12.9017<a class="anchor" aria-label="anchor" href="#dm-10129017"></a></h2>
+<div class="section level3">
+<h3 id="features-1-0-12-9017">Features<a class="anchor" aria-label="anchor" href="#features-1-0-12-9017"></a></h3>
+<ul><li><p>Introduce <code>dm_flatten(dm, table, ..., parent_tables = NULL, recursive = FALSE, allow_deep = FALSE, join = left_join)</code> (<a href="https://github.com/cynkra/dm/issues/2393" class="external-link">#2393</a>, <a href="https://github.com/cynkra/dm/issues/2394" class="external-link">#2394</a>).</p></li>
+<li><p>Make igraph dependency optional (<a href="https://github.com/cynkra/dm/issues/2146" class="external-link">#2146</a>, <a href="https://github.com/cynkra/dm/issues/2364" class="external-link">#2364</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="fledge-1-0-99-9900">fledge<a class="anchor" aria-label="anchor" href="#fledge-1-0-99-9900"></a></h3>
-<ul><li>CRAN release v1.0.12 (<a href="https://github.com/cynkra/dm/issues/2295" class="external-link">#2295</a>).</li>
+<h3 id="chore-1-0-12-9017">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9017"></a></h3>
+<ul><li>Implement zoom v2 with internal <code>dm_zoom2_to()</code>, <code>dm_update_zoom2ed()</code>, <code>dm_insert_zoom2ed()</code>, <code>dm_discard_zoom2ed()</code> (<a href="https://github.com/cynkra/dm/issues/2398" class="external-link">#2398</a>, <a href="https://github.com/cynkra/dm/issues/2399" class="external-link">#2399</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-1-0-99-9900">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-99-9900"></a></h3>
-<ul><li><p>Fix key tracking for <code>summarise(.by = ...)</code> in zoomed, zoom2ed, and keyed dm (<a href="https://github.com/cynkra/dm/issues/2409" class="external-link">#2409</a>, <a href="https://github.com/cynkra/dm/issues/2410" class="external-link">#2410</a>).</p></li>
-<li><p><code>dm_from_con(learn_keys = TRUE, .names = )</code> applies the specified table naming pattern (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2213" class="external-link">#2213</a>, <a href="https://github.com/cynkra/dm/issues/2214" class="external-link">#2214</a>).</p></li>
+<h3 id="documentation-1-0-12-9017">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-12-9017"></a></h3>
+<ul><li>Use cli for errors and warnings (<a href="https://github.com/cynkra/dm/issues/2396" class="external-link">#2396</a>, <a href="https://github.com/cynkra/dm/issues/2397" class="external-link">#2397</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9016" id="dm-10129016">dm 1.0.12.9016<a class="anchor" aria-label="anchor" href="#dm-10129016"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-12-9016">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-12-9016"></a></h3>
+<ul><li><p><code>dm_from_con(learn_keys = TRUE, .names = )</code> applies the specified table naming pattern (<a href="https://github.com/owenjonesuob" class="external-link">@owenjonesuob</a>, <a href="https://github.com/cynkra/dm/issues/2213" class="external-link">#2213</a>, <a href="https://github.com/cynkra/dm/issues/2214" class="external-link">#2214</a>).</p></li>
 <li><p><code><a href="../reference/dm_from_con.html">dm_from_con()</a></code> no longer learns tables from all schemas by default for Postgres, MSSQL, and MariaDB; instead, <code>"public"</code>, <code>"dbo"</code> and the current database, respectively, are used (<a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>, <a href="https://github.com/cynkra/dm/issues/1440" class="external-link">#1440</a>, <a href="https://github.com/cynkra/dm/issues/1448" class="external-link">#1448</a>).</p></li>
 <li><p>Ensure compatibility with upcoming update of the pixarfilms package (<a href="https://github.com/erictleung" class="external-link">@erictleung</a>, erictleung/pixarfilms#39, <a href="https://github.com/cynkra/dm/issues/2256" class="external-link">#2256</a>).</p></li>
 <li><p>Fix <code><a href="../reference/dm_paste.html">dm_paste()</a></code> pipe length issue by implementing operation chunking (<a href="https://github.com/cynkra/dm/issues/2301" class="external-link">#2301</a>).</p></li>
-<li><p>Fix bogus message for <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> in presence of FKs to non-PKs (<a href="https://github.com/cynkra/dm/issues/1270" class="external-link">#1270</a>, <a href="https://github.com/cynkra/dm/issues/2367" class="external-link">#2367</a>).</p></li>
-<li><p><code><a href="../reference/check_key.html">check_key()</a></code> returns input data frame when key is valid (<a href="https://github.com/cynkra/dm/issues/2221" class="external-link">#2221</a>, <a href="https://github.com/cynkra/dm/issues/2303" class="external-link">#2303</a>).</p></li>
-<li><p>Correct deprecation warning message for <code><a href="../reference/deprecated.html">dm_squash_to_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1364" class="external-link">#1364</a>, <a href="https://github.com/cynkra/dm/issues/2302" class="external-link">#2302</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="features-1-0-99-9900">Features<a class="anchor" aria-label="anchor" href="#features-1-0-99-9900"></a></h3>
-<ul><li><p>Improve duckplyr compatibility.</p></li>
-<li><p>Add startup messages for igraph option and dplyr attachment (<a href="https://github.com/cynkra/dm/issues/2406" class="external-link">#2406</a>, <a href="https://github.com/cynkra/dm/issues/2407" class="external-link">#2407</a>).</p></li>
-<li><p>Implement <code>dm_local_error_call()</code>/<code>dm_error_call()</code> for error ownership tracking (<a href="https://github.com/cynkra/dm/issues/2401" class="external-link">#2401</a>, <a href="https://github.com/cynkra/dm/issues/2402" class="external-link">#2402</a>).</p></li>
-<li><p>Introduce <code>dm_flatten(dm, table, ..., parent_tables = NULL, recursive = FALSE, allow_deep = FALSE, join = left_join)</code> (<a href="https://github.com/cynkra/dm/issues/2393" class="external-link">#2393</a>, <a href="https://github.com/cynkra/dm/issues/2394" class="external-link">#2394</a>).</p></li>
-<li><p>Make igraph dependency optional (<a href="https://github.com/cynkra/dm/issues/2146" class="external-link">#2146</a>, <a href="https://github.com/cynkra/dm/issues/2364" class="external-link">#2364</a>).</p></li>
-<li><p>Add <code>.max_value</code> parameter to <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> (<a href="https://github.com/cynkra/dm/issues/2200" class="external-link">#2200</a>, <a href="https://github.com/cynkra/dm/issues/2387" class="external-link">#2387</a>).</p></li>
+<h3 id="features-1-0-12-9016">Features<a class="anchor" aria-label="anchor" href="#features-1-0-12-9016"></a></h3>
+<ul><li><p>Add <code>.max_value</code> parameter to <code><a href="../reference/dm_examine_constraints.html">dm_examine_constraints()</a></code> (<a href="https://github.com/cynkra/dm/issues/2200" class="external-link">#2200</a>, <a href="https://github.com/cynkra/dm/issues/2387" class="external-link">#2387</a>).</p></li>
 <li><p>Introduce <code>dm_draw(backend_opts = list())</code>, soft-deprecate backend-specific arguments (<a href="https://github.com/cynkra/dm/issues/2381" class="external-link">#2381</a>).</p></li>
 <li><p>Learn keys from SQLite databases (<a href="https://github.com/gadenbuie" class="external-link">@gadenbuie</a>, <a href="https://github.com/cynkra/dm/issues/352" class="external-link">#352</a>).</p></li>
 <li><p>Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_inform()</a></code> with native formatting (<a href="https://github.com/cynkra/dm/issues/2374" class="external-link">#2374</a>).</p></li>
@@ -90,22 +96,150 @@
 <li><p>Vendor pixarfilms data and add <code>version</code> argument to <code><a href="../reference/dm_pixarfilms.html">dm_pixarfilms()</a></code> (<a href="https://github.com/cynkra/dm/issues/2368" class="external-link">#2368</a>, <a href="https://github.com/cynkra/dm/issues/2369" class="external-link">#2369</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="chore-1-0-99-9900">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-99-9900"></a></h3>
-<ul><li><p>Implement zoom v2 with internal <code>dm_zoom2_to()</code>, <code>dm_update_zoom2ed()</code>, <code>dm_insert_zoom2ed()</code>, <code>dm_discard_zoom2ed()</code> (<a href="https://github.com/cynkra/dm/issues/2398" class="external-link">#2398</a>, <a href="https://github.com/cynkra/dm/issues/2399" class="external-link">#2399</a>).</p></li>
-<li><p>Comment.</p></li>
+<h3 id="chore-1-0-12-9016">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9016"></a></h3>
+<ul><li><p>Comment.</p></li>
 <li><p>Adapt to dplyr 1.2.0.</p></li>
 <li><p>Restore recent soft-deprecation.</p></li>
 <li><p>Bump deprecation level (<a href="https://github.com/cynkra/dm/issues/2395" class="external-link">#2395</a>).</p></li>
 <li><p>Wrap all igraph functions (<a href="https://github.com/cynkra/dm/issues/2390" class="external-link">#2390</a>).</p></li>
 <li><p>Tweak <code><a href="../reference/dm_draw.html">dm_draw()</a></code>: rename <code>column_arrow</code> backend opt and validate <code>backend_opts</code> (<a href="https://github.com/cynkra/dm/issues/2383" class="external-link">#2383</a>, <a href="https://github.com/cynkra/dm/issues/2384" class="external-link">#2384</a>).</p></li>
 <li><p>Wrap all igraph functions (<a href="https://github.com/cynkra/dm/issues/2382" class="external-link">#2382</a>).</p></li>
+<li><p>Wrap all igraph functions (<a href="https://github.com/cynkra/dm/issues/2382" class="external-link">#2382</a>).</p></li>
 <li><p>Require R &gt;= 4.0.</p></li>
-<li><p>Don’t refer to removed <code>dplyr::src_dbi()</code> (<a href="https://github.com/DavisVaughan" class="external-link">@DavisVaughan</a>, <a href="https://github.com/cynkra/dm/issues/2356" class="external-link">#2356</a>).</p></li>
-<li><p>Better traceback location for selection errors (<a href="https://github.com/cynkra/dm/issues/2351" class="external-link">#2351</a>).</p></li>
-<li><p>Format with air with line length 100 (<a href="https://github.com/cynkra/dm/issues/2335" class="external-link">#2335</a>).</p></li>
-<li><p>Adapt to igraph &gt;= 2.2.0 (<a href="https://github.com/cynkra/dm/issues/2289" class="external-link">#2289</a>).</p></li>
-<li><p>Auto-update from GitHub Actions (<a href="https://github.com/cynkra/dm/issues/2321" class="external-link">#2321</a>).</p></li>
-<li><p>Use summary reporter.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9016">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9016"></a></h3>
+<ul><li>Remove Docker image build, centralized now.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9015" id="dm-10129015">dm 1.0.12.9015<a class="anchor" aria-label="anchor" href="#dm-10129015"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-12-9015">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-12-9015"></a></h3>
+<ul><li>Fix bogus message for <code><a href="../reference/dm_rm_fk.html">dm_rm_fk()</a></code> in presence of FKs to non-PKs (<a href="https://github.com/cynkra/dm/issues/1270" class="external-link">#1270</a>, <a href="https://github.com/cynkra/dm/issues/2367" class="external-link">#2367</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-12-9015">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9015"></a></h3>
+<ul><li>Don’t refer to removed <code>dplyr::src_dbi()</code> (<a href="https://github.com/DavisVaughan" class="external-link">@DavisVaughan</a>, <a href="https://github.com/cynkra/dm/issues/2356" class="external-link">#2356</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9015">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9015"></a></h3>
+<ul><li>Use robust way to show payload.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9014" id="dm-10129014">dm 1.0.12.9014<a class="anchor" aria-label="anchor" href="#dm-10129014"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9014">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9014"></a></h3>
+<ul><li>Tweaks (<a href="https://github.com/cynkra/dm/issues/2354" class="external-link">#2354</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9013" id="dm-10129013">dm 1.0.12.9013<a class="anchor" aria-label="anchor" href="#dm-10129013"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9013">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9013"></a></h3>
+<ul><li>Install odbc from GitHub remote to avoid failures on older versions of R.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9012" id="dm-10129012">dm 1.0.12.9012<a class="anchor" aria-label="anchor" href="#dm-10129012"></a></h2>
+<div class="section level3">
+<h3 id="chore-1-0-12-9012">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9012"></a></h3>
+<ul><li>Better traceback location for selection errors (<a href="https://github.com/cynkra/dm/issues/2351" class="external-link">#2351</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9011" id="dm-10129011">dm 1.0.12.9011<a class="anchor" aria-label="anchor" href="#dm-10129011"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9011">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9011"></a></h3>
+<ul><li>Install binaries from r-universe for dev workflow (<a href="https://github.com/cynkra/dm/issues/2348" class="external-link">#2348</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9010" id="dm-10129010">dm 1.0.12.9010<a class="anchor" aria-label="anchor" href="#dm-10129010"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9010">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9010"></a></h3>
+<ul><li>Fix reviewdog and add commenting workflow (<a href="https://github.com/cynkra/dm/issues/2345" class="external-link">#2345</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9009" id="dm-10129009">dm 1.0.12.9009<a class="anchor" aria-label="anchor" href="#dm-10129009"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9009">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9009"></a></h3>
+<ul><li>Use workflows for fledge (<a href="https://github.com/cynkra/dm/issues/2343" class="external-link">#2343</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9008" id="dm-10129008">dm 1.0.12.9008<a class="anchor" aria-label="anchor" href="#dm-10129008"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9008">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9008"></a></h3>
+<ul><li>Sync (<a href="https://github.com/cynkra/dm/issues/2341" class="external-link">#2341</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9007" id="dm-10129007">dm 1.0.12.9007<a class="anchor" aria-label="anchor" href="#dm-10129007"></a></h2>
+<div class="section level3">
+<h3 id="chore-1-0-12-9007">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9007"></a></h3>
+<ul><li>Format with air with line length 100 (<a href="https://github.com/cynkra/dm/issues/2335" class="external-link">#2335</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9007">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9007"></a></h3>
+<ul><li>Fix dev pkgdown.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-12-9007">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-12-9007"></a></h3>
+<ul><li>Agent docs and updated instructions.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="claude-1-0-12-9007">claude<a class="anchor" aria-label="anchor" href="#claude-1-0-12-9007"></a></h3>
+<ul><li>Fix config.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9006" id="dm-10129006">dm 1.0.12.9006<a class="anchor" aria-label="anchor" href="#dm-10129006"></a></h2>
+<div class="section level3">
+<h3 id="chore-1-0-12-9006">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9006"></a></h3>
+<ul><li>Adapt to igraph &gt;= 2.2.0 (<a href="https://github.com/cynkra/dm/issues/2289" class="external-link">#2289</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9005" id="dm-10129005">dm 1.0.12.9005<a class="anchor" aria-label="anchor" href="#dm-10129005"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9005">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9005"></a></h3>
+<ul><li>Use reviewdog for external PRs (<a href="https://github.com/cynkra/dm/issues/2323" class="external-link">#2323</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9004" id="dm-10129004">dm 1.0.12.9004<a class="anchor" aria-label="anchor" href="#dm-10129004"></a></h2>
+<div class="section level3">
+<h3 id="chore-1-0-12-9004">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9004"></a></h3>
+<ul><li>Auto-update from GitHub Actions (<a href="https://github.com/cynkra/dm/issues/2321" class="external-link">#2321</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9003" id="dm-10129003">dm 1.0.12.9003<a class="anchor" aria-label="anchor" href="#dm-10129003"></a></h2>
+<div class="section level3">
+<h3 id="continuous-integration-1-0-12-9003">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9003"></a></h3>
+<ul><li>Cleanup and fix macOS (<a href="https://github.com/cynkra/dm/issues/2317" class="external-link">#2317</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9002" id="dm-10129002">dm 1.0.12.9002<a class="anchor" aria-label="anchor" href="#dm-10129002"></a></h2>
+<div class="section level3">
+<h3 id="testing-1-0-12-9002">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-12-9002"></a></h3>
+<ul><li>Add tests for <code><a href="../reference/check_key.html">check_key()</a></code> (<a href="https://github.com/cynkra/dm/issues/2298" class="external-link">#2298</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9001" id="dm-10129001">dm 1.0.12.9001<a class="anchor" aria-label="anchor" href="#dm-10129001"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-12-9001">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-12-9001"></a></h3>
+<ul><li><p><code><a href="../reference/check_key.html">check_key()</a></code> returns input data frame when key is valid (<a href="https://github.com/cynkra/dm/issues/2221" class="external-link">#2221</a>, <a href="https://github.com/cynkra/dm/issues/2303" class="external-link">#2303</a>).</p></li>
+<li><p>Correct deprecation warning message for <code><a href="../reference/deprecated.html">dm_squash_to_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1364" class="external-link">#1364</a>, <a href="https://github.com/cynkra/dm/issues/2302" class="external-link">#2302</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-0-12-9001">Chore<a class="anchor" aria-label="anchor" href="#chore-1-0-12-9001"></a></h3>
+<ul><li><p>Use summary reporter.</p></li>
 <li><p>Support SQL Server, needs image update.</p></li>
 <li><p>Fully support MariaDB.</p></li>
 <li><p>Support new <code>DM_TEST_*_HOST</code> env vars.</p></li>
@@ -117,37 +251,23 @@
 <li><p>Add Claude Code GitHub Workflow.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="continuous-integration-1-0-99-9900">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-99-9900"></a></h3>
-<ul><li><p>Remove Docker image build, centralized now.</p></li>
-<li><p>Use robust way to show payload.</p></li>
-<li><p>Tweaks (<a href="https://github.com/cynkra/dm/issues/2354" class="external-link">#2354</a>).</p></li>
-<li><p>Install odbc from GitHub remote to avoid failures on older versions of R.</p></li>
-<li><p>Install binaries from r-universe for dev workflow (<a href="https://github.com/cynkra/dm/issues/2348" class="external-link">#2348</a>).</p></li>
-<li><p>Fix reviewdog and add commenting workflow (<a href="https://github.com/cynkra/dm/issues/2345" class="external-link">#2345</a>).</p></li>
-<li><p>Use workflows for fledge (<a href="https://github.com/cynkra/dm/issues/2343" class="external-link">#2343</a>).</p></li>
-<li><p>Sync (<a href="https://github.com/cynkra/dm/issues/2341" class="external-link">#2341</a>).</p></li>
-<li><p>Fix dev pkgdown.</p></li>
-<li><p>Use reviewdog for external PRs (<a href="https://github.com/cynkra/dm/issues/2323" class="external-link">#2323</a>).</p></li>
-<li><p>Cleanup and fix macOS (<a href="https://github.com/cynkra/dm/issues/2317" class="external-link">#2317</a>).</p></li>
-<li><p>Format with air, check detritus, better handling of <code>extra-packages</code> (<a href="https://github.com/cynkra/dm/issues/2308" class="external-link">#2308</a>).</p></li>
+<h3 id="continuous-integration-1-0-12-9001">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-1-0-12-9001"></a></h3>
+<ul><li>Format with air, check detritus, better handling of <code>extra-packages</code> (<a href="https://github.com/cynkra/dm/issues/2308" class="external-link">#2308</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-1-0-99-9900">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-99-9900"></a></h3>
-<ul><li><p>Use cli for errors and warnings (<a href="https://github.com/cynkra/dm/issues/2396" class="external-link">#2396</a>, <a href="https://github.com/cynkra/dm/issues/2397" class="external-link">#2397</a>).</p></li>
-<li><p>Agent docs and updated instructions.</p></li>
+<h3 id="testing-1-0-12-9001">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-12-9001"></a></h3>
+<ul><li>Add snapshot test for <code><a href="../reference/deprecated.html">dm_squash_to_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1364" class="external-link">#1364</a>, <a href="https://github.com/cynkra/dm/issues/2299" class="external-link">#2299</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="refactoring-1-0-99-9900">Refactoring<a class="anchor" aria-label="anchor" href="#refactoring-1-0-99-9900"></a></h3>
-<ul><li>Replace all <code>abort()</code> with <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> (<a href="https://github.com/cynkra/dm/issues/2403" class="external-link">#2403</a>, <a href="https://github.com/cynkra/dm/issues/2404" class="external-link">#2404</a>).</li>
-</ul></div>
-<div class="section level3">
-<h3 id="testing-1-0-99-9900">Testing<a class="anchor" aria-label="anchor" href="#testing-1-0-99-9900"></a></h3>
-<ul><li><p>Add tests for <code><a href="../reference/check_key.html">check_key()</a></code> (<a href="https://github.com/cynkra/dm/issues/2298" class="external-link">#2298</a>).</p></li>
-<li><p>Add snapshot test for <code><a href="../reference/deprecated.html">dm_squash_to_tbl()</a></code> (<a href="https://github.com/cynkra/dm/issues/1364" class="external-link">#1364</a>, <a href="https://github.com/cynkra/dm/issues/2299" class="external-link">#2299</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="uncategorized-1-0-99-9900">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-99-9900"></a></h3>
+<h3 id="uncategorized-1-0-12-9001">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-0-12-9001"></a></h3>
 <ul><li>Feat!: <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code> uses <code><a href="../reference/dm_sql.html">dm_sql()</a></code>. Unique keys and autoincrement primary keys (<a href="https://github.com/cynkra/dm/issues/1725" class="external-link">#1725</a>) are created on the database. Data models with cyclic references are supported on databases that allow adding constraints in <code>ALTER TABLE</code> statements (at this time, all except DuckDB and SQLite, <a href="https://github.com/cynkra/dm/issues/664" class="external-link">#664</a>) (<a href="https://github.com/cynkra/dm/issues/2022" class="external-link">#2022</a>) (<a href="https://github.com/krlmlr" class="external-link">@krlmlr</a>, <a href="https://github.com/41898282" class="external-link">@41898282</a>+github-actions[bot], <a href="https://github.com/cynkra/dm/issues/1887" class="external-link">#1887</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.12.9000" id="dm-10129000">dm 1.0.12.9000<a class="anchor" aria-label="anchor" href="#dm-10129000"></a></h2>
+<div class="section level3">
+<h3 id="fledge-1-0-12-9000">fledge<a class="anchor" aria-label="anchor" href="#fledge-1-0-12-9000"></a></h3>
+<ul><li>CRAN release v1.0.12 (<a href="https://github.com/cynkra/dm/issues/2295" class="external-link">#2295</a>).</li>
 </ul></div>
 </div>
     <div class="section level2">
