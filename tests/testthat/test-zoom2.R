@@ -292,6 +292,40 @@ test_that("zoom2 summarise() insert", {
   })
 })
 
+test_that("zoom2 summarise() on child table with .by", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      summarise(n = n(), .by = parent_id) %>%
+      dm_update_zoom2ed() %>%
+      dm_paste(options = "all")
+  })
+})
+
+test_that("zoom2 summarise() insert with .by", {
+  skip_if_remote_src()
+  expect_snapshot({
+    dm(
+      parent = tibble(id = 1:3, name = c("a", "b", "c")),
+      child = tibble(child_id = 1:4, parent_id = c(1L, 1L, 2L, 3L), val = letters[1:4])
+    ) %>%
+      dm_add_pk(parent, id) %>%
+      dm_add_pk(child, child_id) %>%
+      dm_add_fk(child, parent_id, parent) %>%
+      dm_zoom2_to(child) %>%
+      summarise(n = n(), .by = parent_id) %>%
+      dm_insert_zoom2ed("child_summary") %>%
+      dm_paste(options = "all")
+  })
+})
+
 test_that("zoom2 reframe() on parent table", {
   skip_if_remote_src()
   expect_snapshot({

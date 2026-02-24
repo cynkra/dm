@@ -1192,6 +1192,22 @@ test_that(".by works with zoomed summarise()", {
   )
 })
 
+test_that(".by key tracking works with zoomed summarise()", {
+  expect_snapshot({
+    # .by should track keys like group_by does
+    dm_zoom_to(dm_for_filter(), tf_2) %>%
+      summarize(d_mean = mean(d), .by = c(c, e, e1)) %>%
+      dm_insert_zoomed("new_tbl") %>%
+      get_all_keys()
+
+    # .by with non-key col means no keys remain
+    dm_zoom_to(dm_for_filter(), tf_3) %>%
+      summarize(g_list = list(g), .by = g) %>%
+      dm_insert_zoomed("new_tbl") %>%
+      get_all_keys()
+  })
+})
+
 test_that(".by works with keyed summarise()", {
   skip_if_remote_src()
 
