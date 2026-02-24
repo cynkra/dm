@@ -69,23 +69,18 @@ setup_graph_functions <- function(ns) {
   if (isTRUE(use_igraph)) {
     rlang::check_installed("igraph", reason = "because `options(dm.use_igraph = TRUE)` is set.")
   } else if (isFALSE(use_igraph) || !rlang::is_installed("igraph")) {
-    graph_funs <- c(
-      "graph_from_data_frame",
-      "graph_vertices",
-      "graph_edges",
-      "graph_dfs",
-      "graph_topo_sort",
-      "graph_distances",
-      "graph_induced_subgraph",
-      "graph_shortest_paths",
-      "graph_delete_vertices",
-      "graph_neighbors",
-      "graph_vcount",
-      "graph_girth"
-    )
-    for (fun in graph_funs) {
-      assign(fun, get(paste0(fun, "_fallback"), envir = ns), envir = ns)
-    }
+    graph_from_data_frame <<- graph_from_data_frame_fallback
+    graph_vertices <<- graph_vertices_fallback
+    graph_edges <<- graph_edges_fallback
+    graph_dfs <<- graph_dfs_fallback
+    graph_topo_sort <<- graph_topo_sort_fallback
+    graph_distances <<- graph_distances_fallback
+    graph_induced_subgraph <<- graph_induced_subgraph_fallback
+    graph_shortest_paths <<- graph_shortest_paths_fallback
+    graph_delete_vertices <<- graph_delete_vertices_fallback
+    graph_neighbors <<- graph_neighbors_fallback
+    graph_vcount <<- graph_vcount_fallback
+    graph_girth <<- graph_girth_fallback
   }
 }
 
