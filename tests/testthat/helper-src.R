@@ -72,7 +72,8 @@ wrap_to_test_backend <- function(x) {
 }
 
 wrap_tbl_to_test_backend <- function(x) {
-  switch(my_test_src_name,
+  switch(
+    my_test_src_name,
     arrow = arrow::as_arrow_table(x),
     dtplyr = dtplyr::lazy_dt(x),
     duckplyr_stingy = duckplyr::as_duckdb_tibble(x, prudence = "stingy"),
