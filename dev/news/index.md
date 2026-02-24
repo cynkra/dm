@@ -1,5 +1,14 @@
 # Changelog
 
+## dm 1.0.12.9018
+
+### Features
+
+- Implement `dm_local_error_call()`/`dm_error_call()` for error
+  ownership tracking
+  ([\#2401](https://github.com/cynkra/dm/issues/2401),
+  [\#2402](https://github.com/cynkra/dm/issues/2402)).
+
 ## dm 1.0.12.9017
 
 ### Features
