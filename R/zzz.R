@@ -68,7 +68,9 @@ setup_graph_functions <- function(ns) {
       "i" = "Install {.pkg igraph} for better performance: {.run install.packages(\"igraph\")}",
       "i" = "Set {.code options(dm.use_igraph = FALSE)} to suppress this message."
     )))
-  } else if (isTRUE(use_igraph)) {
+  }
+
+  if (isTRUE(use_igraph)) {
     rlang::check_installed("igraph", reason = "because `options(dm.use_igraph = TRUE)` is set.")
   } else if (isFALSE(use_igraph) || !rlang::is_installed("igraph")) {
     graph_from_data_frame <<- graph_from_data_frame_fallback
