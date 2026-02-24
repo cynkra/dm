@@ -43,7 +43,10 @@
 .onAttach <- function(libname, pkgname) {
   if (!isTRUE(getOption("dm.suppress_dplyr_startup_message"))) {
     attached <- search()
-    missing_pkgs <- setdiff("dplyr", sub("^package:", "", grep("^package:", attached, value = TRUE)))
+    missing_pkgs <- setdiff(
+      "dplyr",
+      sub("^package:", "", grep("^package:", attached, value = TRUE))
+    )
     if (length(missing_pkgs) > 0) {
       packageStartupMessage(cli::format_message(c(
         "!" = paste0(
