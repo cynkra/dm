@@ -214,7 +214,7 @@ The {dm} package follows the tidyverse principles:
 - most functions used on `dm` objects are pipeable (i.e., return new `dm` or table objects)
 - tidy evaluation is used (unquoted function arguments are supported)
 
-The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://www.tidyverse.org/).
+The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://tidyverse.org/).
 We're looking forward to a good collaboration!
 
 The [{polyply} package](https://github.com/russHyde/polyply) has a similar intent with a slightly different interface.
