@@ -91,14 +91,54 @@ Other flattening functions:
 ## Examples
 
 ``` r
-if (FALSE) { # dm:::dm_has_financial()
-
 dm_financial() %>%
   dm_select_tbl(-loans) %>%
   dm_flatten_to_tbl(.start = cards)
+#> Renaming ambiguous columns: %>%
+#>   dm_rename(cards, type.cards = type) %>%
+#>   dm_rename(disps, type.disps = type)
+#> # Source:   SQL [?? x 7]
+#> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#>       id disp_id type.cards issued     client_id account_id type.disps
+#>    <int>   <int> <chr>      <date>         <int>      <int> <chr>     
+#>  1     1       9 gold       1998-10-16         9          7 OWNER     
+#>  2     2      19 classic    1998-03-13        19         14 OWNER     
+#>  3     3      41 gold       1995-09-03        41         33 OWNER     
+#>  4     4      42 classic    1998-11-26        42         34 OWNER     
+#>  5     5      51 junior     1995-04-24        51         43 OWNER     
+#>  6     7      56 classic    1998-06-11        56         48 OWNER     
+#>  7     8      60 junior     1998-05-20        60         51 OWNER     
+#>  8     9      76 classic    1997-10-25        76         65 OWNER     
+#>  9    10      77 classic    1996-12-07        77         66 OWNER     
+#> 10    11      79 gold       1997-10-25        79         68 OWNER     
+#> # ℹ more rows
 
 dm_financial() %>%
   dm_select_tbl(-loans) %>%
   dm_flatten_to_tbl(.start = cards, .recursive = TRUE)
-}
+#> Renaming ambiguous columns: %>%
+#>   dm_rename(cards, type.cards = type) %>%
+#>   dm_rename(disps, type.disps = type) %>%
+#>   dm_rename(clients, district_id.clients = district_id) %>%
+#>   dm_rename(accounts, district_id.accounts = district_id)
+#> # Source:   SQL [?? x 28]
+#> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#>       id disp_id type.cards issued     client_id account_id type.disps
+#>    <int>   <int> <chr>      <date>         <int>      <int> <chr>     
+#>  1     1       9 gold       1998-10-16         9          7 OWNER     
+#>  2     2      19 classic    1998-03-13        19         14 OWNER     
+#>  3     3      41 gold       1995-09-03        41         33 OWNER     
+#>  4     4      42 classic    1998-11-26        42         34 OWNER     
+#>  5     5      51 junior     1995-04-24        51         43 OWNER     
+#>  6     7      56 classic    1998-06-11        56         48 OWNER     
+#>  7     8      60 junior     1998-05-20        60         51 OWNER     
+#>  8     9      76 classic    1997-10-25        76         65 OWNER     
+#>  9    10      77 classic    1996-12-07        77         66 OWNER     
+#> 10    11      79 gold       1997-10-25        79         68 OWNER     
+#> # ℹ more rows
+#> # ℹ 21 more variables: birth_number <chr>, district_id.clients <int>,
+#> #   tkey_id <int>, district_id.accounts <int>, frequency <chr>, date <date>,
+#> #   A2 <chr>, A3 <chr>, A4 <int>, A5 <int>, A6 <int>, A7 <int>, A8 <int>,
+#> #   A9 <int>, A10 <dbl>, A11 <int>, A12 <dbl>, A13 <dbl>, A14 <int>, A15 <int>,
+#> #   A16 <int>
 ```

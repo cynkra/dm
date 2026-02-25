@@ -40,12 +40,6 @@ my_db <- dbConnect(
 )
 ```
 
-    #> Error in `dm:::financial_db_con()`:
-    #> ! Can't connect to relational.fel.cvut.cz or databases.pacha.dev:
-    #>   Failed to connect: Can't connect to MySQL server on
-    #>   'relational.fel.cvut.cz:3306' (101) Failed to connect: Can't connect to
-    #>   MySQL server on 'databases.pacha.dev:3306' (110)
-
 Creating a dm object takes a single call to
 [`dm_from_con()`](https://dm.cynkra.com/reference/dm_from_con.md) with
 the DBI connection object as its argument.
@@ -54,11 +48,26 @@ the DBI connection object as its argument.
 library(dm)
 
 my_dm <- dm_from_con(my_db)
-#> Error:
-#> ! object 'my_db' not found
+```
+
+``` fansi
+#> Keys queried successfully.
+#> ℹ Use `learn_keys = TRUE` to enforce querying keys and to mute this
+#>   message.
+```
+
+``` r
 my_dm
-#> Error:
-#> ! object 'my_dm' not found
+```
+
+``` fansi
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `accounts`, `cards`, `clients`, `disps`, `districts`, … (9 total)
+#> Columns: 57
+#> Primary keys: 9
+#> Foreign keys: 8
 ```
 
 The components of the `my_dm` object are lazy tables powered by
@@ -81,25 +90,25 @@ this case `my_db`.
 
 ``` r
 dbListTables(my_db)
-#> Error in `h()`:
-#> ! error in evaluating the argument 'conn' in selecting a method for function 'dbListTables': object 'my_db' not found
+#> [1] "trans"     "districts" "clients"   "orders"    "cards"     "disps"    
+#> [7] "tkeys"     "accounts"  "loans"
 
 library(dbplyr)
 loans <- tbl(my_db, "loans")
-#> Error:
-#> ! object 'my_db' not found
 accounts <- tbl(my_db, "accounts")
-#> Error:
-#> ! object 'my_db' not found
 
 my_manual_dm <- dm(loans, accounts)
-#> Error in `map()` at dm/R/dm.R:60:3:
-#> ℹ In index: 1.
-#> Caused by error:
-#> ! object 'loans' not found
 my_manual_dm
-#> Error:
-#> ! object 'my_manual_dm' not found
+```
+
+``` fansi
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`
+#> Columns: 11
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
 
 ## Defining Primary and Foreign Keys
@@ -123,11 +132,17 @@ primary and foreign keys ourselves. For this, we use
 library(dm)
 
 fin_dm <- dm_from_con(my_db, learn_keys = FALSE)
-#> Error:
-#> ! object 'my_db' not found
 fin_dm
-#> Error:
-#> ! object 'fin_dm' not found
+```
+
+``` fansi
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `trans`, `districts`, `clients`, `orders`, `cards`, … (9 total)
+#> Columns: 57
+#> Primary keys: 0
+#> Foreign keys: 0
 ```
 
 The [model
@@ -160,14 +175,12 @@ my_dm_keys <-
   dm_add_pk(loans, id) %>%
   dm_add_fk(loans, account_id, accounts) %>%
   dm_set_colors(green = loans, orange = accounts)
-#> Error:
-#> ! object 'my_manual_dm' not found
 
 my_dm_keys %>%
   dm_draw()
-#> Error:
-#> ! object 'my_dm_keys' not found
 ```
+
+![](data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTY1cHQiIGhlaWdodD0iNzBwdCIgdmlld2JveD0iMC4wMCAwLjAwIDE2NS4wMCA3MC4wMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9ImdyYXBoMCIgY2xhc3M9ImdyYXBoIiB0cmFuc2Zvcm09InNjYWxlKDEgMSkgcm90YXRlKDApIHRyYW5zbGF0ZSg0IDY2KSI+PHRpdGxlPiUwPC90aXRsZT4KPGcgaWQ9ImFfZ3JhcGgwIj48YSB4bGluazp0aXRsZT0iRGF0YSBNb2RlbCI+Cjxwb2x5Z29uIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iLTQsNCAtNCwtNjYgMTYxLC02NiAxNjEsNCAtNCw0Ij48L3BvbHlnb24+PC9hPgo8L2c+PCEtLSBhY2NvdW50cyAtLT48ZyBpZD0iYWNjb3VudHMiIGNsYXNzPSJub2RlIj48dGl0bGU+YWNjb3VudHM8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSIjZmZhNTAwIiBzdHJva2U9InRyYW5zcGFyZW50IiBwb2ludHM9IjEwNCwtMjEgMTA0LC00MSAxNTYsLTQxIDE1NiwtMjEgMTA0LC0yMSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTA1LjUxMDUiIHk9Ii0yNi40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiMwMDAwMDAiPmFjY291bnRzPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNmZmVkY2MiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMTA0LC0xIDEwNCwtMjEgMTU2LC0yMSAxNTYsLTEgMTA0LC0xIj48L3BvbHlnb24+PHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMDYiIHk9Ii03LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgdGV4dC1kZWNvcmF0aW9uPSJ1bmRlcmxpbmUiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPmlkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2FhNmUwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuNjY2NjY3IiBwb2ludHM9IjEwMywwIDEwMywtNDIgMTU3LC00MiAxNTcsMCAxMDMsMCI+PC9wb2x5Z29uPjwvZz48IS0tIGxvYW5zIC0tPjxnIGlkPSJsb2FucyIgY2xhc3M9Im5vZGUiPjx0aXRsZT5sb2FuczwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9IiMwMGZmMDAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC00MSAxLjUsLTYxIDY2LjUsLTYxIDY2LjUsLTQxIDEuNSwtNDEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjE5LjIyNTEiIHk9Ii00Ni40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiNmZmZmZmYiPmxvYW5zPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNjY2ZmY2MiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC0yMSAxLjUsLTQxIDY2LjUsLTQxIDY2LjUsLTIxIDEuNSwtMjEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjMuNSIgeT0iLTI3LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgdGV4dC1kZWNvcmF0aW9uPSJ1bmRlcmxpbmUiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPmlkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNjY2ZmY2MiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC0xIDEuNSwtMjEgNjYuNSwtMjEgNjYuNSwtMSAxLjUsLTEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjMuMjg3NSIgeT0iLTYuNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjE0LjAwIiBmaWxsPSIjNDQ0NDQ0Ij5hY2NvdW50X2lkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwYWEwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuNjY2NjY3IiBwb2ludHM9IjAsMCAwLC02MiA2NywtNjIgNjcsMCAwLDAiPjwvcG9seWdvbj48L2c+PCEtLSBsb2FucyYjNDU7Jmd0O2FjY291bnRzIC0tPjxnIGlkPSJsb2Fuc18xIiBjbGFzcz0iZWRnZSI+PHRpdGxlPmxvYW5zOmFjY291bnRfaWQtJmd0O2FjY291bnRzOmlkPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTU1NTU1IiBkPSJNNjYuNSwtMTFDNzkuMTMwMiwtMTEgODQuNTgxOSwtMTEgOTMuNzM1LC0xMSIgLz48cG9seWdvbiBmaWxsPSIjNTU1NTU1IiBzdHJva2U9IiM1NTU1NTUiIHBvaW50cz0iOTQsLTE0LjUwMDEgMTA0LC0xMSA5NCwtNy41MDAxIDk0LC0xNC41MDAxIj48L3BvbHlnb24+PC9nPjwvZz48L3N2Zz4=)
 
 Once you have instantiated a dm object, you can continue to add tables
 to it. For tables from the original source for the dm, use
@@ -175,15 +188,19 @@ to it. For tables from the original source for the dm, use
 
 ``` r
 trans <- tbl(my_db, "trans")
-#> Error:
-#> ! object 'my_db' not found
 
 my_dm_keys %>%
   dm(trans)
-#> Error in `map()` at dm/R/dm.R:60:3:
-#> ℹ In index: 1.
-#> Caused by error:
-#> ! object 'my_dm_keys' not found
+```
+
+``` fansi
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`, `trans`
+#> Columns: 21
+#> Primary keys: 2
+#> Foreign keys: 1
 ```
 
 ## Serializing a dm object
@@ -194,9 +211,14 @@ workspace in R or in Posit Workbench, or when using knitr chunks:
 
 ``` r
 unserialize(serialize(my_dm_keys, NULL))
-#> Error:
-#> ! object 'my_dm_keys' not found
 ```
+
+``` fansi
+#> ── Table source ───────────────────────────────────────────────────────────
+```
+
+    #> Error:
+    #> ! Invalid connection
 
 The connection is tightly coupled with the tables in the dm object and
 cannot be replaced. A practical solution is to define, for each dm
@@ -225,11 +247,7 @@ my_dm_fun <- function(my_db = my_db_fun()) {
 }
 ```
 
-    #> Error in `dm:::financial_db_con()`:
-    #> ! Can't connect to relational.fel.cvut.cz or databases.pacha.dev:
-    #>   Failed to connect: Can't connect to MySQL server on
-    #>   'relational.fel.cvut.cz:3306' (101) Failed to connect: Can't connect to
-    #>   MySQL server on 'databases.pacha.dev:3306' (110)
+![](data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTY1cHQiIGhlaWdodD0iNzBwdCIgdmlld2JveD0iMC4wMCAwLjAwIDE2NS4wMCA3MC4wMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9ImdyYXBoMCIgY2xhc3M9ImdyYXBoIiB0cmFuc2Zvcm09InNjYWxlKDEgMSkgcm90YXRlKDApIHRyYW5zbGF0ZSg0IDY2KSI+PHRpdGxlPiUwPC90aXRsZT4KPGcgaWQ9ImFfZ3JhcGgwIj48YSB4bGluazp0aXRsZT0iRGF0YSBNb2RlbCI+Cjxwb2x5Z29uIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iLTQsNCAtNCwtNjYgMTYxLC02NiAxNjEsNCAtNCw0Ij48L3BvbHlnb24+PC9hPgo8L2c+PCEtLSBhY2NvdW50cyAtLT48ZyBpZD0iYWNjb3VudHMiIGNsYXNzPSJub2RlIj48dGl0bGU+YWNjb3VudHM8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSIjZmZhNTAwIiBzdHJva2U9InRyYW5zcGFyZW50IiBwb2ludHM9IjEwNCwtMjEgMTA0LC00MSAxNTYsLTQxIDE1NiwtMjEgMTA0LC0yMSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTA1LjUxMDUiIHk9Ii0yNi40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiMwMDAwMDAiPmFjY291bnRzPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNmZmVkY2MiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMTA0LC0xIDEwNCwtMjEgMTU2LC0yMSAxNTYsLTEgMTA0LC0xIj48L3BvbHlnb24+PHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMDYiIHk9Ii03LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgdGV4dC1kZWNvcmF0aW9uPSJ1bmRlcmxpbmUiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPmlkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2FhNmUwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuNjY2NjY3IiBwb2ludHM9IjEwMywwIDEwMywtNDIgMTU3LC00MiAxNTcsMCAxMDMsMCI+PC9wb2x5Z29uPjwvZz48IS0tIGxvYW5zIC0tPjxnIGlkPSJsb2FucyIgY2xhc3M9Im5vZGUiPjx0aXRsZT5sb2FuczwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9IiMwMGZmMDAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC00MSAxLjUsLTYxIDY2LjUsLTYxIDY2LjUsLTQxIDEuNSwtNDEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjE5LjIyNTEiIHk9Ii00Ni40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiNmZmZmZmYiPmxvYW5zPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNjY2ZmY2MiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC0yMSAxLjUsLTQxIDY2LjUsLTQxIDY2LjUsLTIxIDEuNSwtMjEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjMuNSIgeT0iLTI3LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgdGV4dC1kZWNvcmF0aW9uPSJ1bmRlcmxpbmUiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPmlkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNjY2ZmY2MiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC0xIDEuNSwtMjEgNjYuNSwtMjEgNjYuNSwtMSAxLjUsLTEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjMuMjg3NSIgeT0iLTYuNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjE0LjAwIiBmaWxsPSIjNDQ0NDQ0Ij5hY2NvdW50X2lkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwYWEwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuNjY2NjY3IiBwb2ludHM9IjAsMCAwLC02MiA2NywtNjIgNjcsMCAwLDAiPjwvcG9seWdvbj48L2c+PCEtLSBsb2FucyYjNDU7Jmd0O2FjY291bnRzIC0tPjxnIGlkPSJsb2Fuc18xIiBjbGFzcz0iZWRnZSI+PHRpdGxlPmxvYW5zOmFjY291bnRfaWQtJmd0O2FjY291bnRzOmlkPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTU1NTU1IiBkPSJNNjYuNSwtMTFDNzkuMTMwMiwtMTEgODQuNTgxOSwtMTEgOTMuNzM1LC0xMSIgLz48cG9seWdvbiBmaWxsPSIjNTU1NTU1IiBzdHJva2U9IiM1NTU1NTUiIHBvaW50cz0iOTQsLTE0LjUwMDEgMTA0LC0xMSA5NCwtNy41MDAxIDk0LC0xNC41MDAxIj48L3BvbHlnb24+PC9nPjwvZz48L3N2Zz4=)
 
 To avoid reconnecting and/or recreating every time you need a dm object,
 you can use
@@ -243,20 +261,35 @@ it are transient unless stored in a new variable.
 
 ``` r
 my_dm_keys
-#> Error:
-#> ! object 'my_dm_keys' not found
+```
+
+``` fansi
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`
+#> Columns: 11
+#> Primary keys: 2
+#> Foreign keys: 1
+```
+
+``` r
 
 my_dm_trans <-
   my_dm_keys %>%
   dm(trans)
-#> Error in `map()` at dm/R/dm.R:60:3:
-#> ℹ In index: 1.
-#> Caused by error:
-#> ! object 'my_dm_keys' not found
 
 my_dm_trans
-#> Error:
-#> ! object 'my_dm_trans' not found
+```
+
+``` fansi
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`, `trans`
+#> Columns: 21
+#> Primary keys: 2
+#> Foreign keys: 1
 ```
 
 And, like {dbplyr}, results are never written to a database unless
@@ -265,14 +298,52 @@ explicitly requested.
 ``` r
 my_dm_keys %>%
   dm_flatten_to_tbl(loans)
-#> Error:
-#> ! object 'my_dm_keys' not found
+#> Renaming ambiguous columns: %>%
+#>   dm_rename(loans, date.loans = date) %>%
+#>   dm_rename(accounts, date.accounts = date)
+```
+
+``` fansi
+#> # Source:   SQL [?? x 10]
+#> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#>       id account_id date.loans amount duration payments status district_id
+#>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr>        <int>
+#>  1  4959          2 1994-01-05  80952       24     3373 A                1
+#>  2  4961         19 1996-04-29  30276       12     2523 B               21
+#>  3  4962         25 1997-12-08  30276       12     2523 A               68
+#>  4  4967         37 1998-10-14 318480       60     5308 D               20
+#>  5  4968         38 1998-04-19 110736       48     2307 C               19
+#>  6  4973         67 1996-05-02 165960       24     6915 A               16
+#>  7  4986         97 1997-08-10 102876       12     8573 A               74
+#>  8  4988        103 1997-12-06 265320       36     7370 D               44
+#>  9  4989        105 1998-12-05 352704       48     7348 C               21
+#> 10  4990        110 1997-09-08 162576       36     4516 C               36
+#> # ℹ more rows
+#> # ℹ 2 more variables: frequency <chr>, date.accounts <date>
+```
+
+``` r
 
 my_dm_keys %>%
   dm_flatten_to_tbl(loans) %>%
   sql_render()
-#> Error:
-#> ! object 'my_dm_keys' not found
+#> Renaming ambiguous columns: %>%
+#>   dm_rename(loans, date.loans = date) %>%
+#>   dm_rename(accounts, date.accounts = date)
+#> <SQL> SELECT
+#>   `loans`.`id` AS `id`,
+#>   `account_id`,
+#>   `loans`.`date` AS `date.loans`,
+#>   `amount`,
+#>   `duration`,
+#>   `payments`,
+#>   `status`,
+#>   `district_id`,
+#>   `frequency`,
+#>   `accounts`.`date` AS `date.accounts`
+#> FROM `loans`
+#> LEFT JOIN `accounts`
+#>   ON (`loans`.`account_id` = `accounts`.`id`)
 ```
 
 ## Performing operations on tables by “zooming”
@@ -297,8 +368,6 @@ my_dm_total <-
   dm_zoom_to(loans) %>%
   summarize(.by = account_id, total_amount = sum(amount, na.rm = TRUE)) %>%
   dm_insert_zoomed("total_loans")
-#> Error:
-#> ! object 'my_dm_keys' not found
 ```
 
 Context is set to the table “loans” using `dm_zoom_to(loans)`. You can
@@ -325,17 +394,33 @@ automatically linked to the `accounts` table.
 my_dm_total %>%
   dm_set_colors(violet = total_loans) %>%
   dm_draw()
-#> Error:
-#> ! object 'my_dm_total' not found
 ```
+
+![](data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTY1cHQiIGhlaWdodD0iMTMwcHQiIHZpZXdib3g9IjAuMDAgMC4wMCAxNjUuMDAgMTMwLjAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMSAxKSByb3RhdGUoMCkgdHJhbnNsYXRlKDQgMTI2KSI+PHRpdGxlPiUwPC90aXRsZT4KPGcgaWQ9ImFfZ3JhcGgwIj48YSB4bGluazp0aXRsZT0iRGF0YSBNb2RlbCI+Cjxwb2x5Z29uIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iLTQsNCAtNCwtMTI2IDE2MSwtMTI2IDE2MSw0IC00LDQiPjwvcG9seWdvbj48L2E+CjwvZz48IS0tIGFjY291bnRzIC0tPjxnIGlkPSJhY2NvdW50cyIgY2xhc3M9Im5vZGUiPjx0aXRsZT5hY2NvdW50czwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9IiNmZmE1MDAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMTA0LC01MSAxMDQsLTcxIDE1NiwtNzEgMTU2LC01MSAxMDQsLTUxIj48L3BvbHlnb24+PHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMDUuNTEwNSIgeT0iLTU2LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCIgZmlsbD0iIzAwMDAwMCI+YWNjb3VudHM8L3RleHQ+PHBvbHlnb24gZmlsbD0iI2ZmZWRjYyIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgcG9pbnRzPSIxMDQsLTMxIDEwNCwtNTEgMTU2LC01MSAxNTYsLTMxIDEwNCwtMzEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjEwNiIgeT0iLTM3LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgdGV4dC1kZWNvcmF0aW9uPSJ1bmRlcmxpbmUiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPmlkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2FhNmUwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuNjY2NjY3IiBwb2ludHM9IjEwMywtMzAgMTAzLC03MiAxNTcsLTcyIDE1NywtMzAgMTAzLC0zMCI+PC9wb2x5Z29uPjwvZz48IS0tIGxvYW5zIC0tPjxnIGlkPSJsb2FucyIgY2xhc3M9Im5vZGUiPjx0aXRsZT5sb2FuczwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9IiMwMGZmMDAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC0xMDEgMS41LC0xMjEgNjYuNSwtMTIxIDY2LjUsLTEwMSAxLjUsLTEwMSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTkuMjI1MSIgeT0iLTEwNi40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiNmZmZmZmYiPmxvYW5zPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNjY2ZmY2MiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC04MSAxLjUsLTEwMSA2Ni41LC0xMDEgNjYuNSwtODEgMS41LC04MSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMy41IiB5PSItODcuNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiB0ZXh0LWRlY29yYXRpb249InVuZGVybGluZSIgZm9udC1zaXplPSIxNC4wMCIgZmlsbD0iIzQ0NDQ0NCI+aWQ8L3RleHQ+PHBvbHlnb24gZmlsbD0iI2NjZmZjYyIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgcG9pbnRzPSIxLjUsLTYxIDEuNSwtODEgNjYuNSwtODEgNjYuNSwtNjEgMS41LC02MSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMy4yODc1IiB5PSItNjYuNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjE0LjAwIiBmaWxsPSIjNDQ0NDQ0Ij5hY2NvdW50X2lkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwYWEwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuNjY2NjY3IiBwb2ludHM9IjAsLTYwIDAsLTEyMiA2NywtMTIyIDY3LC02MCAwLC02MCI+PC9wb2x5Z29uPjwvZz48IS0tIGxvYW5zJiM0NTsmZ3Q7YWNjb3VudHMgLS0+PGcgaWQ9ImxvYW5zXzEiIGNsYXNzPSJlZGdlIj48dGl0bGU+bG9hbnM6YWNjb3VudF9pZC0mZ3Q7YWNjb3VudHM6aWQ8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiM1NTU1NTUiIGQ9Ik02Ni41LC03MUM4My42NzUsLTcxIDgzLjY3MDUsLTUxLjU3NDMgOTQuMTM0OCwtNDMuOTg2MiIgLz48cG9seWdvbiBmaWxsPSIjNTU1NTU1IiBzdHJva2U9IiM1NTU1NTUiIHBvaW50cz0iOTUuNDQyOSwtNDcuMjQ3MSAxMDQsLTQxIDkzLjQxNDgsLTQwLjU0NzQgOTUuNDQyOSwtNDcuMjQ3MSI+PC9wb2x5Z29uPjwvZz48IS0tIHRvdGFsX2xvYW5zIC0tPjxnIGlkPSJ0b3RhbF9sb2FucyIgY2xhc3M9Im5vZGUiPjx0aXRsZT50b3RhbF9sb2FuczwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9IiNlZTgyZWUiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMS41LC0yMSAxLjUsLTQxIDY2LjUsLTQxIDY2LjUsLTIxIDEuNSwtMjEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjMuMjgxOSIgeT0iLTI2LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCIgZmlsbD0iIzAwMDAwMCI+dG90YWxfbG9hbnM8L3RleHQ+PHBvbHlnb24gZmlsbD0iI2ZiZTZmYiIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgcG9pbnRzPSIxLjUsLTEgMS41LC0yMSA2Ni41LC0yMSA2Ni41LC0xIDEuNSwtMSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMy4yODc1IiB5PSItNi40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPmFjY291bnRfaWQ8L3RleHQ+PHBvbHlnb24gZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOWU1NjllIiBzdHJva2Utb3BhY2l0eT0iMC42NjY2NjciIHBvaW50cz0iMCwwIDAsLTQyIDY3LC00MiA2NywwIDAsMCI+PC9wb2x5Z29uPjwvZz48IS0tIHRvdGFsX2xvYW5zJiM0NTsmZ3Q7YWNjb3VudHMgLS0+PGcgaWQ9InRvdGFsX2xvYW5zXzEiIGNsYXNzPSJlZGdlIj48dGl0bGU+dG90YWxfbG9hbnM6YWNjb3VudF9pZC0mZ3Q7YWNjb3VudHM6aWQ8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiM1NTU1NTUiIGQ9Ik02Ni41LC0xMUM4My42NzUsLTExIDgzLjY3MDUsLTMwLjQyNTcgOTQuMTM0OCwtMzguMDEzOCIgLz48cG9seWdvbiBmaWxsPSIjNTU1NTU1IiBzdHJva2U9IiM1NTU1NTUiIHBvaW50cz0iOTMuNDE0OCwtNDEuNDUyNiAxMDQsLTQxIDk1LjQ0MjksLTM0Ljc1MjkgOTMuNDE0OCwtNDEuNDUyNiI+PC9wb2x5Z29uPjwvZz48L2c+PC9zdmc+)
 
 The resulting table `total_loans` can be accessed like any other table
 in the dm object.
 
 ``` r
 my_dm_total$total_loans
-#> Error:
-#> ! object 'my_dm_total' not found
+```
+
+``` fansi
+#> # Source:   SQL [?? x 2]
+#> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # ℹ more rows
 ```
 
 It is a *lazy table* powered by the
@@ -346,8 +431,9 @@ data is requested.
 ``` r
 my_dm_total$total_loans %>%
   sql_render()
-#> Error:
-#> ! object 'my_dm_total' not found
+#> <SQL> SELECT `account_id`, SUM(`amount`) AS `total_amount`
+#> FROM `loans`
+#> GROUP BY `account_id`
 ```
 
 Use [`compute()`](https://dplyr.tidyverse.org/reference/compute.html) on
@@ -372,12 +458,25 @@ stored as local tibbles.
 my_dm_local <-
   my_dm_total %>%
   collect()
-#> Error:
-#> ! object 'my_dm_total' not found
 
 my_dm_local$total_loans
-#> Error:
-#> ! object 'my_dm_local' not found
+```
+
+``` fansi
+#> # A tibble: 682 × 2
+#>    account_id total_amount
+#>         <int>        <dbl>
+#>  1          2        80952
+#>  2         19        30276
+#>  3         25        30276
+#>  4         37       318480
+#>  5         38       110736
+#>  6         67       165960
+#>  7         97       102876
+#>  8        103       265320
+#>  9        105       352704
+#> 10        110       162576
+#> # ℹ 672 more rows
 ```
 
 Use this method with caution. If you are not sure of the size of the
@@ -388,8 +487,8 @@ for the row count of your data model’s tables.
 ``` r
 my_dm_total %>%
   dm_nrow()
-#> Error:
-#> ! object 'my_dm_total' not found
+#>       loans    accounts total_loans 
+#>         682        4500         682
 ```
 
 ## Persisting results
@@ -407,15 +506,30 @@ designed to work with any RDBMS supported by {DBI}.
 destination_db <- DBI::dbConnect(RSQLite::SQLite())
 
 deployed_dm <- copy_dm_to(destination_db, my_dm_local)
-#> Error:
-#> ! object 'my_dm_local' not found
 
 deployed_dm
-#> Error:
-#> ! object 'deployed_dm' not found
+```
+
+``` fansi
+#> ── Table source ───────────────────────────────────────────────────────────
+#> src:  sqlite 3.51.2 []
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`, `total_loans`
+#> Columns: 13
+#> Primary keys: 2
+#> Foreign keys: 2
+```
+
+``` r
 my_dm_local
-#> Error:
-#> ! object 'my_dm_local' not found
+```
+
+``` fansi
+#> ── Metadata ───────────────────────────────────────────────────────────────
+#> Tables: `loans`, `accounts`, `total_loans`
+#> Columns: 13
+#> Primary keys: 2
+#> Foreign keys: 2
 ```
 
 In the output, you can observe that the `src` for `deployed_dm` is the
@@ -430,8 +544,6 @@ When done, do not forget to disconnect:
 ``` r
 DBI::dbDisconnect(destination_db)
 DBI::dbDisconnect(my_db)
-#> Error in `h()`:
-#> ! error in evaluating the argument 'conn' in selecting a method for function 'dbDisconnect': object 'my_db' not found
 ```
 
 ## Conclusion

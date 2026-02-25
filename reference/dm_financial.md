@@ -25,8 +25,25 @@ A `dm` object.
 ## Examples
 
 ``` r
-if (FALSE) { # dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")
 dm_financial() %>%
   dm_draw()
-}
+%0
+
+
+accounts
+accountsiddistrict_iddistricts
+districtsidaccounts:district_id->districts:id
+cards
+cardsiddisp_iddisps
+dispsidclient_idaccount_idcards:disp_id->disps:id
+clients
+clientsiddisps:account_id->accounts:id
+disps:client_id->clients:id
+loans
+loansidaccount_idloans:account_id->accounts:id
+orders
+ordersidaccount_idorders:account_id->accounts:id
+tkeys
+tkeystrans
+transidaccount_idtrans:account_id->accounts:id
 ```

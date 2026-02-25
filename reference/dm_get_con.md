@@ -31,8 +31,8 @@ the package's functionality relies on efficient joins.
 ## Examples
 
 ``` r
-if (FALSE) { # dm:::dm_has_financial()
 dm_financial() %>%
   dm_get_con()
-}
+#> <MariaDBConnection>
+#>   Connection: guest@relational.fel.cvut.cz<Financial_ijs>[795252] via TCP/IP
 ```

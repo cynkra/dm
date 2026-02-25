@@ -2,6 +2,8 @@
 
 ## dm 1.1.0
 
+CRAN release: 2026-02-25
+
 ### Features
 
 - Aligned with dplyr 1.2.0, all new verbs and arguments are supported.
