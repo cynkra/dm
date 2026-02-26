@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.0.9000
+
+## Chore
+
+- Re-add remote while we're waiting for a maintainer update.
+
+- Auto-update from GitHub Actions (#2421).
+
+## fledge
+
+- CRAN release v1.1.0 (#2420).
+
+
 # dm 1.1.0
 
 ## Features
