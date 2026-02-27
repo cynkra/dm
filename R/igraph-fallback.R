@@ -20,6 +20,14 @@ graph_from_data_frame_fallback <- function(d, directed, vertices = NULL) {
   vidx <- set_names(seq_along(vnames), vnames)
   from <- unname(vidx[as.character(d[[1]])])
   to <- unname(vidx[as.character(d[[2]])])
+  # For undirected graphs, normalize so the lower-indexed vertex is always
+  # "from" and the higher-indexed is "to", matching igraph's behavior.
+  if (!directed) {
+    swap <- from > to
+    tmp <- from[swap]
+    from[swap] <- to[swap]
+    to[swap] <- tmp
+  }
   new_dm_graph(directed = directed, vnames = vnames, from = from, to = to)
 }
 
@@ -233,57 +241,108 @@ graph_girth_fallback <- function(g) {
     return(list(girth = Inf, circle = set_names(integer(0), character(0))))
   }
 
-  # Build adjacency list (directed)
+  # Build adjacency list (always undirected, matching igraph::girth which
+  # treats directed graphs as undirected)
   adj <- vector("list", n)
   for (i in seq_along(g$from)) {
     adj[[g$from[[i]]]] <- c(adj[[g$from[[i]]]], g$to[[i]])
-    if (!g$directed) {
-      adj[[g$to[[i]]]] <- c(adj[[g$to[[i]]]], g$from[[i]])
-    }
+    adj[[g$to[[i]]]] <- c(adj[[g$to[[i]]]], g$from[[i]])
   }
 
-  # DFS-based cycle detection
-  color <- rep(0L, n) # 0=unvisited, 1=in-progress, 2=done
-  pred <- rep(NA_integer_, n)
-  cycle <- NULL
+  # BFS-based girth algorithm (matches igraph's igraph_girth implementation)
+  mincirc <- .Machine$integer.max
+  minvertex <- 1L
+  t1 <- 0L
+  t2 <- 0L
+  stoplevel <- n + 1L
+  triangle <- FALSE
 
-  dfs_visit <- function(v) {
-    if (!is.null(cycle)) {
-      return()
-    }
-    color[[v]] <<- 1L
-    for (u in adj[[v]]) {
-      if (!is.null(cycle)) {
-        return()
-      }
-      if (color[[u]] == 1L) {
-        # Found a back edge v→u: reconstruct cycle
-        path <- v
-        curr <- v
-        while (curr != u) {
-          curr <- pred[[curr]]
-          path <- c(path, curr)
+  for (node in seq_len(n)) {
+    if (triangle) break
+
+    level <- integer(n)
+    level[[node]] <- 1L
+    queue <- node
+
+    while (length(queue) > 0L) {
+      actnode <- queue[[1L]]
+      queue <- queue[-1L]
+      actlevel <- level[[actnode]]
+
+      if (actlevel >= stoplevel) break
+
+      neis <- adj[[actnode]]
+      if (is.null(neis)) next
+
+      for (nei in neis) {
+        neilevel <- level[[nei]]
+        if (neilevel != 0L) {
+          if (neilevel == actlevel - 1L) {
+            # Parent edge, skip
+          } else {
+            # Found cycle
+            stoplevel <- neilevel
+            if (actlevel < mincirc) {
+              mincirc <- actlevel + neilevel - 1L
+              minvertex <- node
+              t1 <- actnode
+              t2 <- nei
+              if (neilevel == 2L) {
+                triangle <- TRUE
+              }
+            }
+            if (neilevel == actlevel) break
+          }
+        } else {
+          queue <- c(queue, nei)
+          level[[nei]] <- actlevel + 1L
         }
-        cycle <<- rev(path)
-        return()
-      } else if (color[[u]] == 0L) {
-        pred[[u]] <<- v
-        dfs_visit(u)
       }
     }
-    color[[v]] <<- 2L
   }
 
-  for (v in seq_len(n)) {
-    if (color[[v]] == 0L) {
-      dfs_visit(v)
+  if (mincirc >= .Machine$integer.max) {
+    return(list(girth = Inf, circle = set_names(integer(0), character(0))))
+  }
+
+  # Reconstruct cycle via BFS from minvertex
+  circle <- integer(mincirc)
+  parent <- integer(n)
+  parent[[minvertex]] <- minvertex
+  queue <- minvertex
+
+  while (parent[[t1]] == 0L || parent[[t2]] == 0L) {
+    actnode <- queue[[1L]]
+    queue <- queue[-1L]
+    neis <- adj[[actnode]]
+    if (!is.null(neis)) {
+      for (nei in neis) {
+        if (parent[[nei]] == 0L) {
+          parent[[nei]] <- actnode
+          queue <- c(queue, nei)
+        }
+      }
     }
-    if (!is.null(cycle)) break
   }
 
-  if (is.null(cycle)) {
-    list(girth = Inf, circle = set_names(integer(0), character(0)))
-  } else {
-    list(girth = length(cycle), circle = set_names(cycle, g$vnames[cycle]))
+  # Trace path from t1 to minvertex
+  idx <- 1L
+  curr <- t1
+  while (curr != minvertex) {
+    circle[[idx]] <- curr
+    idx <- idx + 1L
+    curr <- parent[[curr]]
   }
+  circle[[idx]] <- minvertex
+
+  # Trace path from t2 to minvertex (fill from the end)
+  idx <- mincirc
+  curr <- t2
+  while (curr != minvertex) {
+    circle[[idx]] <- curr
+    idx <- idx - 1L
+    curr <- parent[[curr]]
+  }
+
+  list(girth = mincirc, circle = set_names(circle, g$vnames[circle]))
 }
