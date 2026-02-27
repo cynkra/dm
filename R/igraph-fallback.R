@@ -283,6 +283,7 @@ graph_girth_fallback <- function(g) {
             # Found cycle
             stoplevel <- neilevel
             if (actlevel < mincirc) {
+              # Cycle length: levels are 1-based, so path lengths are (actlevel-1) + (neilevel-1) + 1
               mincirc <- actlevel + neilevel - 1L
               minvertex <- node
               t1 <- actnode
