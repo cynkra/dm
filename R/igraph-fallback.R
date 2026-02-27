@@ -258,7 +258,9 @@ graph_girth_fallback <- function(g) {
   triangle <- FALSE
 
   for (node in seq_len(n)) {
-    if (triangle) break
+    if (triangle) {
+      break
+    }
 
     level <- integer(n)
     level[[node]] <- 1L
@@ -269,10 +271,14 @@ graph_girth_fallback <- function(g) {
       queue <- queue[-1L]
       actlevel <- level[[actnode]]
 
-      if (actlevel >= stoplevel) break
+      if (actlevel >= stoplevel) {
+        break
+      }
 
       neis <- adj[[actnode]]
-      if (is.null(neis)) next
+      if (is.null(neis)) {
+        next
+      }
 
       for (nei in neis) {
         neilevel <- level[[nei]]
