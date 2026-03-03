@@ -1,30 +1,32 @@
 # Changelog
 
-## dm 1.0.99.9900
+## dm 1.1.0.9000
 
-### Breaking changes
+### Chore
 
-- [`copy_dm_to()`](https://dm.cynkra.com/dev/reference/copy_dm_to.md)
-  now uses [`dm_sql()`](https://dm.cynkra.com/dev/reference/dm_sql.md)
-  internally and creates key constraints on the database
-  ([@krlmlr](https://github.com/krlmlr),
-  [\#1887](https://github.com/cynkra/dm/issues/1887),
-  [\#2022](https://github.com/cynkra/dm/issues/2022)). Unique keys and
-  autoincrement primary keys
-  ([\#1725](https://github.com/cynkra/dm/issues/1725)) are set up
-  automatically. Data models with cyclic foreign-key references are now
-  supported on all databases that allow `ALTER TABLE` to add constraints
-  (all except DuckDB and SQLite,
-  [\#664](https://github.com/cynkra/dm/issues/664)).
+- Re-add remote while we’re waiting for a maintainer update.
 
-  ``` r
-  con <- DBI::dbConnect(duckdb::duckdb())
-  dm_financial() |>
-    copy_dm_to(con, ., temporary = FALSE, set_key_constraints = TRUE)
-  DBI::dbDisconnect(con)
-  ```
+- Auto-update from GitHub Actions
+  ([\#2421](https://github.com/cynkra/dm/issues/2421)).
+
+### fledge
+
+- CRAN release v1.1.0
+  ([\#2420](https://github.com/cynkra/dm/issues/2420)).
+
+## dm 1.1.0
+
+CRAN release: 2026-02-25
 
 ### Features
+
+- Aligned with dplyr 1.2.0, all new verbs and arguments are supported.
+
+  ``` r
+  dm_nycflights13() |>
+    dm_zoom_to(flights) |>
+    summarize(.by = origin, mean(dep_delay, na.rm = TRUE))
+  ```
 
 - New
   [`dm_flatten()`](https://dm.cynkra.com/dev/reference/dm_flatten.md)
@@ -52,7 +54,7 @@
 
   ``` r
   dm_nycflights13() |>
-    dm_draw(backend_opts = list(graph_attrs = "rankdir=TB", column_arrow = FALSE))
+    dm_draw(backend_opts = list(column_arrow = FALSE))
   ```
 
 - [`dm_examine_constraints()`](https://dm.cynkra.com/dev/reference/dm_examine_constraints.md)
@@ -83,7 +85,8 @@
   ([\#2146](https://github.com/cynkra/dm/issues/2146),
   [\#2364](https://github.com/cynkra/dm/issues/2364)), reducing the
   mandatory install footprint. Functions that require igraph will prompt
-  you to install it when needed.
+  you to install it when needed. Set `options(dm.use_igraph = FALSE)` to
+  turn off the startup message.
 
 - Keys are now learned automatically from SQLite databases
   ([@gadenbuie](https://github.com/gadenbuie),
@@ -101,11 +104,42 @@
   with native formatting
   ([\#2374](https://github.com/cynkra/dm/issues/2374)).
 
-### Bug fixes
+### Breaking changes
 
-- Fixed key tracking for `summarise(.by = ...)` in zoomed, zoom2ed, and
-  keyed dm ([\#2409](https://github.com/cynkra/dm/issues/2409),
-  [\#2410](https://github.com/cynkra/dm/issues/2410)).
+- A startup message now recommends running
+  [`library(dplyr)`](https://dplyr.tidyverse.org) before
+  [`library(dm)`](https://dm.cynkra.com/). In a future version, the dm
+  package will no longer reexport all dplyr functions. The new pattern
+  ensures that scripts written today will work after that change. Set
+  `options(dm.suppress_dplyr_startup_message = TRUE)` to turn off the
+  startup message.
+
+  ``` r
+  library(dplyr) # or library(tidyverse)
+  library(dm)
+  ```
+
+- [`copy_dm_to()`](https://dm.cynkra.com/dev/reference/copy_dm_to.md)
+  now uses [`dm_sql()`](https://dm.cynkra.com/dev/reference/dm_sql.md)
+  internally and creates key constraints on the database
+  ([@krlmlr](https://github.com/krlmlr),
+  [\#1887](https://github.com/cynkra/dm/issues/1887),
+  [\#2022](https://github.com/cynkra/dm/issues/2022)). Unique keys and
+  autoincrement primary keys
+  ([\#1725](https://github.com/cynkra/dm/issues/1725)) are set up
+  automatically. Data models with cyclic foreign-key references are now
+  supported on all databases that allow `ALTER TABLE` to add constraints
+  (all except DuckDB and SQLite,
+  [\#664](https://github.com/cynkra/dm/issues/664)).
+
+  ``` r
+  con <- DBI::dbConnect(duckdb::duckdb())
+  dm_financial() |>
+    copy_dm_to(con, ., temporary = FALSE, set_key_constraints = TRUE)
+  DBI::dbDisconnect(con)
+  ```
+
+### Bug fixes
 
 - `dm_from_con(learn_keys = TRUE, .names = )` now correctly applies the
   specified table naming pattern
@@ -121,20 +155,15 @@
   `"public"` (Postgres), `"dbo"` (MSSQL), and the current database
   (MariaDB), avoiding spurious system tables.
 
-- Fixed a spurious message from
-  [`dm_rm_fk()`](https://dm.cynkra.com/dev/reference/dm_rm_fk.md) when
-  foreign keys reference non-primary-key columns
+- [`dm_rm_fk()`](https://dm.cynkra.com/dev/reference/dm_rm_fk.md) no
+  longer issues a spurious message when foreign keys reference
+  non-primary-key columns
   ([\#1270](https://github.com/cynkra/dm/issues/1270),
   [\#2367](https://github.com/cynkra/dm/issues/2367)).
 
-- Corrected the deprecation warning message for
-  [`dm_squash_to_tbl()`](https://dm.cynkra.com/dev/reference/deprecated.md)
-  ([\#1364](https://github.com/cynkra/dm/issues/1364),
-  [\#2302](https://github.com/cynkra/dm/issues/2302)).
-
-- Fixed [`dm_paste()`](https://dm.cynkra.com/dev/reference/dm_paste.md)
-  incorrectly splitting long pipelines by implementing operation
-  chunking ([\#2301](https://github.com/cynkra/dm/issues/2301)).
+- [`dm_paste()`](https://dm.cynkra.com/dev/reference/dm_paste.md) limits
+  its pipelines to up to 100 steps, splitting longer pipelines as needed
+  ([\#2301](https://github.com/cynkra/dm/issues/2301)).
 
 ## dm 1.0.12
 

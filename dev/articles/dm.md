@@ -261,9 +261,7 @@ dplyr operations we want.
 fin_dm_total <-
   fin_dm_keys %>%
   dm_zoom_to(loans) %>%
-  group_by(account_id) %>%
-  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
-  ungroup() %>%
+  summarize(.by = account_id, total_amount = sum(amount, na.rm = TRUE)) %>%
   dm_insert_zoomed("total_loans")
 
 fin_dm_total$total_loans

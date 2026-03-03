@@ -46,17 +46,15 @@ planes <- pull_tbl(dm, "planes", keyed = TRUE)
 weather <- pull_tbl(dm, "weather", keyed = TRUE)
 by_origin <-
   flights %>%
-  group_by(origin) %>%
-  summarize(mean_arr_delay = mean(arr_delay, na.rm = TRUE)) %>%
-  ungroup()
+  summarize(.by = origin, mean_arr_delay = mean(arr_delay, na.rm = TRUE))
 
 by_origin
 #> # A tibble: 3 × 2
 #> # Keys:     `origin` | 0 | 0
 #>   origin mean_arr_delay
 #>   <chr>           <dbl>
-#> 1 EWR             3.43 
-#> 2 JFK            -4.36 
+#> 1 JFK            -4.36 
+#> 2 EWR             3.43 
 #> 3 LGA             0.523
 dm(airlines, airports, flights, planes, weather, by_origin) %>%
   dm_draw()

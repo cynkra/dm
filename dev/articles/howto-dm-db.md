@@ -366,9 +366,7 @@ to a new object, `my_dm_total`. This is a new dm object, derived from
 my_dm_total <-
   my_dm_keys %>%
   dm_zoom_to(loans) %>%
-  group_by(account_id) %>%
-  summarize(total_amount = sum(amount, na.rm = TRUE)) %>%
-  ungroup() %>%
+  summarize(.by = account_id, total_amount = sum(amount, na.rm = TRUE)) %>%
   dm_insert_zoomed("total_loans")
 ```
 
@@ -380,12 +378,9 @@ zoomed table to generate a new summary table.
 
 [`summarize()`](https://dplyr.tidyverse.org/reference/summarise.html)
 returns a temporary table with one row for each group created by the
-preceding
-[`group_by()`](https://dplyr.tidyverse.org/reference/group_by.html)
-function. The columns in the temporary table are constrained to the
-columns passed as arguments to the
-[`group_by()`](https://dplyr.tidyverse.org/reference/group_by.html)
-function and the column(s) created by the
+`.by` argument. The columns in the temporary table are constrained to
+the columns passed as the `.by` argument and the column(s) created by
+the
 [`summarize()`](https://dplyr.tidyverse.org/reference/summarise.html)
 function.
 

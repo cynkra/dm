@@ -313,9 +313,8 @@ compute(x, ...)
 ``` r
 zoomed <- dm_nycflights13() %>%
   dm_zoom_to(flights) %>%
-  group_by(month) %>%
   arrange(desc(day)) %>%
-  summarize(avg_air_time = mean(air_time, na.rm = TRUE))
+  summarize(.by = month, avg_air_time = mean(air_time, na.rm = TRUE))
 zoomed
 #> # Zoomed table: flights
 #> # A tibble:     2 × 2
