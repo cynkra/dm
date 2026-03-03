@@ -453,7 +453,6 @@ new_dm_zoomed_df <- function(x, ...) {
   class(x) <- c("dm_zoomed_df", class(x))
   extra_attrs <- list(...)
   for (name in names(extra_attrs)) {
-    print(name)
     attr(x, name) <- extra_attrs[[name]]
   }
   x
