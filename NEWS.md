@@ -1,6 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.1.0.9001
+# dm 1.1.1
+
+## fledge
+
+- CRAN release v1.1.0 (#2420).
 
 ## Bug fixes
 
@@ -8,22 +12,15 @@
 
 - Remove spurious debugging output.
 
-## Testing
-
-- Snapshot updates for rcc-smoke (@1741643+krlmlr).
-
-
-# dm 1.1.0.9000
-
 ## Chore
 
 - Re-add remote while we're waiting for a maintainer update.
 
 - Auto-update from GitHub Actions (#2421).
 
-## fledge
+## Testing
 
-- CRAN release v1.1.0 (#2420).
+- Snapshot updates for rcc-smoke (@1741643+krlmlr).
 
 
 # dm 1.1.0
