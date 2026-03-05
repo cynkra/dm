@@ -115,8 +115,6 @@ Config/Needs/website:
     whisker,
     xml2
 Config/Needs/check: anthonynorth/roxyglobals
-Remotes: r-dbi/odbc
-RemotesInfo: https://github.com/cran/odbc/commit/c12831e0e1a9ac22bf6d0d4f898a581e55cf2a60
 VignetteBuilder: 
     knitr
 Config/autostyle/scope: line_breaks
