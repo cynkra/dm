@@ -49,7 +49,7 @@ and \code{x} is returned, invisibly.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 These functions provide a framework for updating data in existing tables.
-Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created
+Unlike \code{\link[dplyr:compute]{dplyr::compute()}}, \code{\link[dplyr:copy_to]{dplyr::copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created
 on the database.
 All operations expect that both existing and new data are presented
 in two compatible \link{dm} objects on the same data source.
@@ -63,27 +63,27 @@ may lead to irreversible changes to the underlying database.
 Therefore, in-place operation must be requested explicitly with \code{in_place = TRUE}.
 By default, an informative message is given.
 
-\code{dm_rows_insert()} adds new records via \code{\link[=rows_insert]{rows_insert()}} with \code{conflict = "ignore"}.
+\code{dm_rows_insert()} adds new records via \code{\link[dplyr:rows]{dplyr::rows_insert()}} with \code{conflict = "ignore"}.
 Duplicate records will be silently discarded.
 This operation requires primary keys on all tables, use \code{dm_rows_append()}
 to insert unconditionally.
 
-\code{dm_rows_append()} adds new records via \code{\link[=rows_append]{rows_append()}}.
+\code{dm_rows_append()} adds new records via \code{\link[dplyr:rows]{dplyr::rows_append()}}.
 The primary keys must differ from existing records.
 This must be ensured by the caller and might be checked by the underlying database.
 Use \code{in_place = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.
 
-\code{dm_rows_update()} updates existing records via \code{\link[=rows_update]{rows_update()}}.
+\code{dm_rows_update()} updates existing records via \code{\link[dplyr:rows]{dplyr::rows_update()}}.
 Primary keys must match for all records to be updated.
 
 \code{dm_rows_patch()} updates missing values in existing records
-via \code{\link[=rows_patch]{rows_patch()}}.
+via \code{\link[dplyr:rows]{dplyr::rows_patch()}}.
 Primary keys must match for all records to be patched.
 
 \code{dm_rows_upsert()} updates existing records and adds new records,
-based on the primary key, via \code{\link[=rows_upsert]{rows_upsert()}}.
+based on the primary key, via \code{\link[dplyr:rows]{dplyr::rows_upsert()}}.
 
-\code{dm_rows_delete()} removes matching records via \code{\link[=rows_delete]{rows_delete()}},
+\code{dm_rows_delete()} removes matching records via \code{\link[dplyr:rows]{dplyr::rows_delete()}},
 based on the primary key.
 The order in which the tables are processed is reversed.
 }
