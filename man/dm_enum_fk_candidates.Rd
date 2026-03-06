@@ -71,7 +71,7 @@ dm_nycflights13() \%>\%
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other foreign key functions: 
+Other foreign key functions:
 \code{\link{dm_add_fk}()},
 \code{\link{dm_get_all_fks}()},
 \code{\link{dm_rm_fk}()}

@@ -73,7 +73,7 @@ dm_financial() \%>\%
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other flattening functions: 
+Other flattening functions:
 \code{\link{dm_flatten}()}
 }
 \concept{flattening functions}

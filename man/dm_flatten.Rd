@@ -72,7 +72,7 @@ dm_nycflights13() \%>\%
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other flattening functions: 
+Other flattening functions:
 \code{\link{dm_flatten_to_tbl}()}
 }
 \concept{flattening functions}

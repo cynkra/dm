@@ -40,7 +40,7 @@ database on the connected MSSQL-server; default: database addressed by \code{con
 }
 }
 \seealso{
-Other schema handling functions: 
+Other schema handling functions:
 \code{\link{db_schema_create}()},
 \code{\link{db_schema_exists}()},
 \code{\link{db_schema_list}()}
