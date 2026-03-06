@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.1.9000
+
+## fledge
+
+- CRAN release v1.1.1 (#2428).
+
+
 # dm 1.1.1
 
 ## Bug fixes
