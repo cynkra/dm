@@ -157,7 +157,7 @@ examine_cardinality(d1, d3, x_select = c(c = a))
 examine_cardinality(d1, d2)
 }
 \seealso{
-Other cardinality functions: 
+Other cardinality functions:
 \code{\link{dm_examine_cardinalities}()}
 }
 \concept{cardinality functions}

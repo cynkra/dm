@@ -54,7 +54,7 @@ reunite_parent_child(ct, pt, new_id)
 reunite_parent_child_from_list(decomposed_table, new_id)
 }
 \seealso{
-Other table surgery functions: 
+Other table surgery functions:
 \code{\link{decompose_table}()}
 }
 \concept{table surgery functions}

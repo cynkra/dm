@@ -34,7 +34,7 @@ dm_nycflights13() \%>\%
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other primary key functions: 
+Other primary key functions:
 \code{\link{dm_add_pk}()},
 \code{\link{dm_add_uk}()},
 \code{\link{dm_get_all_uks}()},
