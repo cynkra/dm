@@ -77,6 +77,7 @@ Suggests:
     duckplyr,
     fansi,
     forcats,
+    g6R,
     htmltools,
     htmlwidgets,
     igraph (>= 2.2.0),
