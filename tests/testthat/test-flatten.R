@@ -1,5 +1,5 @@
 test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
-  skip_if_src_not(c("df", "duckdb"))
+  skip_if_src_not(c("df", "duckplyr", "duckdb"))
 
   local_options(
     pillar.min_title_chars = NULL,
