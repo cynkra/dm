@@ -268,6 +268,24 @@ test_that("`dm_flatten_to_tbl(.recursive = TRUE)` does the right things", {
   )
 })
 
+test_that("`dm_flatten_to_tbl(.recursive = TRUE)` works when column is both PK and FK", {
+  mydm <- dm(
+    x = tibble(a = 1, b = 2),
+    y = tibble(c = 2, d = 3),
+    z = tibble(e = 2, f = 4)
+  ) %>%
+    dm_add_pk(x, a) %>%
+    dm_add_pk(y, c) %>%
+    dm_add_pk(z, e) %>%
+    dm_add_fk(x, b, y) %>%
+    dm_add_fk(y, c, z)
+
+  expect_equivalent_tbl(
+    dm_flatten_to_tbl(mydm, x, .recursive = TRUE),
+    tibble(a = 1, b = 2, d = 3, f = 4)
+  )
+})
+
 test_that("prepare_dm_for_flatten() works", {
   # with rename
   out <- expect_message_obj(prepare_dm_for_flatten(
