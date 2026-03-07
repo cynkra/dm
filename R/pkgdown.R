@@ -12,8 +12,9 @@ register_pkgdown_methods <- function() {
     return()
   }
 
-  # FIXME Should we use Config/Needs/website in DESCRIPTION instead?
-  check_suggested(c("DiagrammeR", "DiagrammeRsvg"), "register_pkgdown_methods")
+  if (!is_installed(c("DiagrammeR", "DiagrammeRsvg"))) {
+    return()
+  }
 
   # For dev pkgdown
   s3_register("downlit::replay_html", "dm_draw", replay_html_dm_draw)
