@@ -23,7 +23,7 @@ If the argument is empty, all tables that can be reached will be included.
 
 \item{.recursive}{Logical, defaults to \code{FALSE}. Should not only parent tables be joined to \code{.start}, but also their ancestors?}
 
-\item{.join}{The type of join to be performed, see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.}
+\item{.join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
 }
 \value{
 A single table that results from consecutively joining all affected tables to the \code{.start} table.

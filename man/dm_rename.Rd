@@ -23,7 +23,7 @@ column names represent column positions.
 They also support unquoting and splicing.
 See \code{vignette("programming", package = "dplyr")} for an introduction to those concepts.
 
-See select helpers for more details, and the examples about \link[tidyselect:language]{tidyselect helpers}, such as \code{starts_with()}, \code{everything()}, etc.}
+See select helpers for more details, and the examples about \link[tidyselect:select_helpers]{tidyselect helpers}, such as \code{starts_with()}, \code{everything()}, etc.}
 }
 \value{
 An updated \code{dm} with the columns of \code{table} renamed.

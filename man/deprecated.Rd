@@ -243,7 +243,7 @@ If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 
 \item{table_2}{The second table of the join.}
 
-\item{join}{The type of join to be performed, see \code{\link[dplyr:mutate-joins]{dplyr::join()}}.}
+\item{join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
 
 \item{x}{An object.}
 
@@ -281,6 +281,6 @@ is offered by \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}} with \code{.
 
 \code{rows_truncate()} is deprecated as of dm 1.0.0, because it's a DDL operation
 and requires different permissions than the
-\code{\link[dplyr:rows]{dplyr::rows_*()}} functions.
+\code{\link[dplyr:rows_insert]{dplyr::rows_*()}} functions.
 }
 \keyword{internal}
