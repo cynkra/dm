@@ -180,13 +180,13 @@
 
 \item{by}{If left \code{NULL} (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now \code{x})
 and the other table (\code{y}).
-If you provide a value (for the syntax see \code{\link[dplyr:mutate-joins]{dplyr::join}}), you can also join tables that are not connected in the \code{dm}.}
+If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}), you can also join tables that are not connected in the \code{dm}.}
 
 \item{copy}{Disabled, since all tables in a \code{dm} are by definition on the same \code{src}.}
 
 \item{suffix}{Disabled, since columns are disambiguated automatically if necessary, changing the column names to \code{table_name.column_name}.}
 
-\item{...}{see \code{\link[dplyr:mutate-joins]{dplyr::join}}}
+\item{...}{see \code{\link[dplyr:join]{dplyr::join}}}
 
 \item{keep}{Should the join keys from both \code{x} and \code{y} be preserved in the
 output?
