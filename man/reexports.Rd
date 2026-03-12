@@ -42,10 +42,10 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{anti_join}}, \code{\link[dplyr]{arrange}}, \code{\link[dplyr]{collect}}, \code{\link[dplyr]{compute}}, \code{\link[dplyr]{copy_to}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr]{full_join}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr]{inner_join}}, \code{\link[dplyr]{left_join}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{rename}}, \code{\link[dplyr]{right_join}}, \code{\link[dplyr]{rows_append}}, \code{\link[dplyr]{rows_delete}}, \code{\link[dplyr]{rows_insert}}, \code{\link[dplyr]{rows_patch}}, \code{\link[dplyr]{rows_update}}, \code{\link[dplyr]{rows_upsert}}, \code{\link[dplyr]{select}}, \code{\link[dplyr]{semi_join}}, \code{\link[dplyr]{src_tbls}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr]{summarize}}, \code{\link[dplyr]{tbl}}, \code{\link[dplyr]{transmute}}, \code{\link[dplyr]{ungroup}}}
+  \item{dplyr}{\code{\link[dplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyrdplyr:\%>\%anti_joinarrangecollectcomputecopy_tofilterfull_joingroup_byinner_joinleft_joinmutaterenameright_joinrows_appendrows_deleterows_insertrows_patchrows_updaterows_upsertselectsemi_joinsrc_tblssummarisesummarizetbltransmuteungroup]{\%>\%anti_joinarrangecollectcomputecopy_tofilterfull_joingroup_byinner_joinleft_joinmutaterenameright_joinrows_appendrows_deleterows_insertrows_patchrows_updaterows_upsertselectsemi_joinsrc_tblssummarisesummarizetbltransmuteungroup}()()()()()()()()()()()()()()()()()()()()()()()()()()()}}
 
-  \item{tibble}{\code{\link[tibble]{glimpse}}, \code{\link[tibble]{tibble}}}
+  \item{tibble}{\code{\link[tibbletibble:glimpsetibble]{glimpsetibble}()()}}
 
-  \item{tidyr}{\code{\link[tidyr]{separate}}, \code{\link[tidyr]{unite}}}
+  \item{tidyr}{\code{\link[tidyrtidyr:separateunite]{separateunite}()()}}
 }}
 
