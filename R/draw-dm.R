@@ -355,6 +355,7 @@ dm_get_all_column_types <- function(x) {
 #' @autoglobal
 dm_set_colors <- function(dm, ...) {
   dm_local_error_call()
+  check_dm(dm)
   quos <- enquos(...)
   if (any(names(quos) == "")) {
     abort_only_named_args("dm_set_colors", "the colors")
@@ -414,6 +415,8 @@ color_quos_to_display <- function(...) {
 #' @rdname dm_set_colors
 #' @export
 dm_get_colors <- function(dm) {
+  dm_local_error_call()
+  check_dm(dm)
   dm %>%
     dm_get_def() %>%
     select(table, display) %>%
