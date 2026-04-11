@@ -102,6 +102,38 @@
       Error in `check_cardinality_0_1()`:
       ! 0..1 cardinality (injectivity from child table to parent table) is not given: Column (`x`) in table child contains duplicate values.
 
+# dm_set_colors() - abort_is_not_dm
+
+    Code
+      dm_set_colors("not_a_dm", blue = a)
+    Condition
+      Error in `dm_set_colors()`:
+      ! Required class <dm> but instead is <character>.
+
+# dm_get_colors() - abort_is_not_dm
+
+    Code
+      dm_get_colors("not_a_dm")
+    Condition
+      Error in `dm_get_colors()`:
+      ! Required class <dm> but instead is <character>.
+
+# dm_discard_zoomed() - abort_is_not_dm
+
+    Code
+      dm_discard_zoomed("not_a_dm")
+    Condition
+      Error in `dm_discard_zoomed()`:
+      ! Required class <dm> but instead is <character>.
+
+# dm_wrap_tbl() - abort_is_not_dm
+
+    Code
+      dm_wrap_tbl("not_a_dm", root = a)
+    Condition
+      Error in `dm_wrap_tbl()`:
+      ! Required class <dm> but instead is <character>.
+
 # dm_set_colors() - abort_only_named_args
 
     Code

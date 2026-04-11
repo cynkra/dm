@@ -217,6 +217,7 @@ dm_update_zoomed <- function(dm) {
 #' @autoglobal
 dm_discard_zoomed <- function(dm) {
   dm_local_error_call()
+  check_dm(dm)
   if (!is_zoomed(dm)) {
     return(dm)
   }

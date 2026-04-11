@@ -123,6 +123,38 @@ test_that("check_cardinality_0_1() - abort_not_injective", {
   })
 })
 
+test_that("dm_set_colors() - abort_is_not_dm", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  expect_snapshot(error = TRUE, {
+    dm_set_colors("not_a_dm", blue = a)
+  })
+})
+
+test_that("dm_get_colors() - abort_is_not_dm", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  expect_snapshot(error = TRUE, {
+    dm_get_colors("not_a_dm")
+  })
+})
+
+test_that("dm_discard_zoomed() - abort_is_not_dm", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  expect_snapshot(error = TRUE, {
+    dm_discard_zoomed("not_a_dm")
+  })
+})
+
+test_that("dm_wrap_tbl() - abort_is_not_dm", {
+  local_options(lifecycle_verbosity = "quiet")
+
+  expect_snapshot(error = TRUE, {
+    dm_wrap_tbl("not_a_dm", root = a)
+  })
+})
+
 test_that("dm_set_colors() - abort_only_named_args", {
   local_options(lifecycle_verbosity = "quiet")
 
