@@ -69,7 +69,7 @@ financial %>%
   compute() %>%
   pull_tbl(districts) %>%
   dbplyr::remote_name()
-#> [1] "dbplyr_gmMcP0khb9"
+#> [1] "dbplyr_hIAmtaLLu2"
 
 # collect() returns a local dm:
 financial %>%

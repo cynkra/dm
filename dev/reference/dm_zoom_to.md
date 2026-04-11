@@ -117,10 +117,10 @@ e.g.
 and
 [`semi_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html).
 (Support for
-[`dplyr::nest_join()`](https://dplyr.tidyverse.org/reference/nest_join.html)
-is planned.) The join-methods for `dm_zoomed` infer the columns to join
-by from the primary and foreign keys, and have an extra argument
-`select` that allows choosing the columns of the RHS table.
+[`nest_join()`](https://dplyr.tidyverse.org/reference/nest_join.html) is
+planned.) The join-methods for `dm_zoomed` infer the columns to join by
+from the primary and foreign keys, and have an extra argument `select`
+that allows choosing the columns of the RHS table.
 
 And – last but not least – also the tidyr-functions
 [`unite()`](https://tidyr.tidyverse.org/reference/unite.html) and

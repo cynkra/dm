@@ -4,7 +4,7 @@
 
 This function returns a tibble with information about the cardinality of
 the FK constraints. The printing for this object is special, use
-[`tibble::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+[`as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
 to print as a regular tibble.
 
 ## Usage

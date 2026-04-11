@@ -1,18 +1,51 @@
 # Changelog
 
-## dm 1.1.0.9000
+## dm 1.1.1.9004
 
 ### Chore
 
-- Re-add remote while we’re waiting for a maintainer update.
+- Auto-update from GitHub Actions
+  ([\#2439](https://github.com/cynkra/dm/issues/2439)).
+
+## dm 1.1.1.9003
+
+### Chore
 
 - Auto-update from GitHub Actions
-  ([\#2421](https://github.com/cynkra/dm/issues/2421)).
+  ([\#2434](https://github.com/cynkra/dm/issues/2434)).
+
+## dm 1.1.1.9002
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#2432](https://github.com/cynkra/dm/issues/2432)).
+
+## dm 1.1.1.9001
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#2430](https://github.com/cynkra/dm/issues/2430)).
+
+## dm 1.1.1.9000
 
 ### fledge
 
-- CRAN release v1.1.0
-  ([\#2420](https://github.com/cynkra/dm/issues/2420)).
+- CRAN release v1.1.1
+  ([\#2428](https://github.com/cynkra/dm/issues/2428)).
+
+## dm 1.1.1
+
+CRAN release: 2026-03-05
+
+### Bug fixes
+
+- Fix igraph fallback to match igraph behavior for undirected edges and
+  girth ([\#2424](https://github.com/cynkra/dm/issues/2424),
+  [\#2425](https://github.com/cynkra/dm/issues/2425)).
+
+- Remove spurious debugging output.
 
 ## dm 1.1.0
 
