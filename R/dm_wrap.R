@@ -41,6 +41,7 @@
 #'   dm_wrap_tbl(root = airlines)
 dm_wrap_tbl <- function(dm, root, strict = TRUE, progress = NA) {
   dm_local_error_call()
+  check_dm(dm)
 
   wrap_plan <- dm_wrap_tbl_plan(dm, {{ root }})
 

@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.1.9005
+
+## Chore
+
+- Ensure exported dm functions call `check_dm()` first (#2441, #2442).
+
+
 # dm 1.1.1.9004
 
 ## Chore
