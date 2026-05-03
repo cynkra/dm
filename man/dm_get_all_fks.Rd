@@ -19,6 +19,7 @@ The default \code{NULL} returns information for all tables.}
 \value{
 A tibble with the following columns:
 \describe{
+
 \item{\code{child_table}}{child table,}
 \item{\code{child_fk_cols}}{foreign key column(s) in child table as list of character vectors,}
 \item{\code{parent_table}}{parent table,}
@@ -32,7 +33,7 @@ Get a summary of all foreign key relations in a \code{\link{dm}}.
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_get_all_fks()
+ dm_get_all_fks()
 \dontshow{\}) # examplesIf}
 }
 \seealso{

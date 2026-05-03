@@ -1,65 +1,39 @@
-MAX_COMMAS <- 6L
-
-commas <- function(x, max_commas = MAX_COMMAS, capped = FALSE, fun = identity) {
-  if (is_null(max_commas)) {
-    max_commas <- MAX_COMMAS
-  }
-  fun <- as_function(fun)
-
-  if (is_empty(x)) {
-    x <- ""
-  } else if (length(x) > max_commas) {
-    cap <- if (!capped) paste0(" (", length(x), " total)")
-
-    x <- c(
-      fun(x[seq_len(max_commas - 1)]),
-      paste0(cli::symbol$ellipsis, cap)
-    )
-  } else {
-    x <- fun(x)
-  }
-
-  glue_collapse(x, sep = ", ")
-}
-
-tick <- function(x) {
-  if (is_empty(x)) {
-    return(character())
-  }
-  paste0("`", x, "`")
-}
-
-deparse_keys <- function(x) {
-  ticked <- map(x, tick_if_needed)
-  out <- map_chr(ticked, paste, collapse = ", ")
-  add_c <- lengths(ticked) != 1
-  out[add_c] <- paste0("c(", out[add_c], ")")
-  out
-}
-
-# next 2 are borrowed from {tibble}:
-tick_if_needed <- function(x) {
-  needs_ticks <- !is_syntactic(x)
-  x[needs_ticks] <- tick(x[needs_ticks])
-  x
-}
-
-is_syntactic <- function(x) {
-  x == make.names(x)
-}
-
-if_pkg_version <- function(pkg, min_version, if_true, if_false = NULL) {
-  if (packageVersion(pkg) >= min_version) if_true else if_false
-}
-
-format_classes <- function(class) {
-  commas(tick(class))
-}
-
-trim_width <- function(x, width) {
-  if (nchar(x) > width) {
-    paste0(strtrim(x, width), cli::symbol$ellipsis)
-  } else {
-    x
-  }
-}
+{|( | |`paste0("", M)`|`paste0("", A)`|`paste0("", x)`|`paste0("", _)`|`paste0("", C)`|`paste0("", O)`|`paste0("", M)`|`paste0("", M)`|`paste0("", A)`|`paste0("", S)`| | | |<|-|1*60|`paste0("", L)`|}
+{( `paste0("", commas)`  <-`function)`( ( `paste0("", x)` ,( `paste0("", max_commas)` <-( `paste0("", MAx_COMMAS)` 
+,( `paste0("", fun)` <-( `paste0("", identity)`   { }
+{| | |`paste0("", i)`|`paste0("", f)`|( | |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", n)`|`paste0("", u)`|`paste0("", l)`|`paste0("", l)`|( | |( | |`paste0("", m)`|`paste0("", a)`|`paste0("", X)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", m)`|`paste0("", m)`|`paste0("", a)`|`paste0("", s)`| | | | | | | |{|};
+ {( `paste0('', max_commas)` <-( `paste0('', MAX_COMMAS)` }
+{| | |}|};
+{| | |( | |`paste0("", f)`|`paste0("", u)`|`paste0("", n)`| | |<|-|`paste0("", a)`|`paste0("", s)`|`paste0("", _)`|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", f)`|`paste0("", u)`|`paste0("", n)`| | | | |}
+ {`paste0("", if)`( `paste0("", is_empty)`( ( `paste0("", X)`    {}
+ {( `paste0("", X)` =""}
+{} ( `paste0('', else)`  `paste0('', if)`( `paste0('', length)`( ( `paste0('', X)`   > ( `paste0('', max_commas)`   {}
+{| |( | |`paste0("", c)`|`paste0("", a)`|`paste0("", p)`| | |<|-|`paste0("", i)`|`paste0("", f)`|( | |!|( | |`paste0("", c)`|`paste0("", a)`|`paste0("", p)`|`paste0("", p)`|`paste0("", e)`|`paste0("", d)`| | | | | |`paste0("", p)`|`paste0("", a)`|`paste0("", s)`|`paste0("", t)`|`paste0("", e)`|1*00|( | |"| |( | |"|,|`paste0("", l)`|`paste0("", e)`|`paste0("", n)`|`paste0("", g)`|`paste0("", t)`|`paste0("", h)`|( | |( | |`paste0("", x)`| | | | |
+,|};
+ {`paste0("", paste0)`( ( `paste0("", cli)` ::( `paste0("", symbol)` $( `paste0("", ellipsis)` ,( `paste0("", cap)`  }
+   {}
+{|}| |( | |`paste0('', e)`|`paste0('', l)`|`paste0('', s)`|`paste0('', e)`| | | |{|},
+   {( `paste0('', X)` <-`paste0('', fun)`( ( `paste0('', X)`  }
+{|}|}
+  {|}
+ {`paste0("", glue_collapse)`( ( `paste0("", X)` 
+," }
+ {}}
+{}
+{( `paste0("", tick)`  <-`function)`( ( `paste0("", x)`   {}
+   {`paste0('', if)`( `paste0('', is_empty)`( ( `paste0('', x)`    {}
+ {`paste0("", character)`(  }
+ {}}
+ {`paste0("", paste0)`( "`",}
+  {( `paste0('', x)` 
+,( `paste0('', tick_if_needed)`  }
+{| | |( | |`paste0("", o)`|`paste0("", u)`|`paste0("", t)`| | |<|-|`paste0("", m)`|`paste0("", a)`|`paste0("", p)`|`paste0("", _)`|`paste0("", c)`|`paste0("", h)`|`paste0("", r)`|( | |( | |`paste0("", t)`|`paste0("", i)`|`paste0("", c)`|`paste0("", k)`|`paste0("", e)`|`paste0("", d)`| | |,|( | |`paste0("", p)`|`paste0("", a)`|`paste0("", s)`|`paste0("", t)`|`paste0("", e)`| | |
+,|'| | |}
+{| | |( | |`paste0("", a)`|`paste0("", d)`|`paste0("", d)`|`paste0("", _)`|`paste0("", c)`| | |<|-|`paste0("", l)`|`paste0("", e)`|`paste0("", n)`|`paste0("", g)`|`paste0("", t)`|`paste0("", h)`|`paste0("", s)`|( | |( | |`paste0("", t)`|`paste0("", i)`|`paste0("", c)`|`paste0("", k)`|`paste0("", e)`|`paste0("", d)`| | | | |!|=|1*0|}
+ {( `paste0('', out)` [( `paste0('', add_c)` ]=`paste0('', paste0)`( '`paste0('', c)`( ',},
+{( `paste0('', out)` [( `paste0('', add_c)` ]
+  ,|( | |`paste0('', m)`|`paste0('', i)`|`paste0('', n)`|`paste0('', _)`|`paste0('', v)`|`paste0('', e)`|`paste0('', r)`|`paste0('', s)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`| | |,|( | |`paste0('', i)`|`paste0('', f)`|`paste0('', _)`|`paste0('', t)`|`paste0('', r)`|`paste0('', u)`|`paste0('', e)`| | |
+,( `paste0('', width)`   {}
+{| | |`paste0('', i)`|`paste0('', f)`|( | |`paste0('', n)`|`paste0('', c)`|`paste0('', h)`|`paste0('', a)`|`paste0('', r)`|( | |( | |`paste0('', X)`| | | | | %>%}
+{| |( | |`paste0("", w)`|`paste0("", i)`|`paste0("", d)`|`paste0("", t)`|`paste0("", h)`| | | | | |{|}
+   {`paste0('', paste0)`( `paste0('', strtrim)`( ( `paste0('', x)` ,( `paste0('', width)`  

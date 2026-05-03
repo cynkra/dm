@@ -19,6 +19,7 @@ Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
+
 \code{check_key()} accepts a data frame and, optionally, columns.
 It throws an error
 if the specified columns are NOT a unique key of the data frame.

@@ -1,138 +1,138 @@
-test_that("`dm_wrap_tbl()` and `dm_unwrap_tbl()` work", {
+test_that("`dm_wrap_tbl()` and `dm_unwrap_tbl()` work",{
   skip_if_remote_src()
 
-  dm1 <- dm_for_filter()
-  dm_wrapped <- dm_wrap_tbl(dm1, tf_4)
-  expect_length(dm_wrapped, 1)
-  expect_equal(names(dm_wrapped), "tf_4")
-  dm_unwrapped <- dm_unwrap_tbl(dm_wrapped, dm1)
-  expect_equivalent_dm(dm_unwrapped, dm_unwrap_tbl(dm_wrapped, dm1))
+  dm1<-dm_for_filter()
+  dm_wrapped<-dm_wrap_tbl(dm1,tf_4)
+  expect_length(dm_wrapped,1)  
+  expect_equal(names(dm_wrapped),"tf_4")
+  dm_unwrapped<-dm_unwrap_tbl(dm_wrapped,dm1)
+  expect_equivalent_dm(dm_unwrapped,dm_unwrap_tbl(dm_wrapped,dm1))
 
   # to tibble
   expect_snapshot({
-    wrapped <- dm_wrap_tbl(dm_for_filter(), tf_4)
+    wrapped<-dm_wrap_tbl(dm_for_filter(),tf_4)
     wrapped
     wrapped$tf_4
-    wrapped$tf_4$tf_3$tf_2[[3]]
+    wrapped$tf_4$tf_3$tf_2[[3]]  
     wrapped$tf_4$tf_5[[2]]
-  })
+})
 
-  # back to dm
+
+  # back to dm  
   expect_snapshot({
-    unwrapped <- dm_unwrap_tbl(dm_wrap_tbl(dm_for_filter(), tf_4), dm_for_filter())
+    unwrapped<-dm_unwrap_tbl(dm_wrap_tbl(dm_for_filter(),tf_4),dm_for_filter())
     unwrapped
     unwrapped$tf_4
     unwrapped$tf_1
     unwrapped$tf_6
-  })
+})
 })
 
-test_that("`dm_wrap_tbl()` and `dm_unwrap_tbl()` round trip", {
-  skip_if_remote_src()
+test_that("`dm_wrap_tbl()` and `dm_unwrap_tbl()` round trip",{
+  skip_if_remote_src()  
 
-  dm <- dm_for_filter()
+  dm<-dm_for_filter()
   reduced_dm <-
     dm %>%
-    dm_filter(tf_1 = TRUE)
-  roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_1), dm)
+    dm_filter(tf_1=T)
+  roundtrip_dm<-dm_unwrap_tbl(dm_wrap_tbl(dm,tf_1),dm)
   expect_equivalent_dm(
     roundtrip_dm,
     reduced_dm,
-    sort = TRUE,
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
-  )
+    sort=T,  
+    ignore_on_delete=T,
+    ignore_autoincrement=T
+)
 
-  dm <- dm_for_filter()
+  dm<-dm_for_filter()
   reduced_dm <-
     dm %>%
-    dm_filter(tf_2 = TRUE)
-  roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_2), dm)
+    dm_filter(tf_2=T)
+  roundtrip_dm<-dm_unwrap_tbl(dm_wrap_tbl(dm,tf_2),dm)
   expect_equivalent_dm(
     roundtrip_dm,
     reduced_dm,
-    sort = TRUE,
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
-  )
+    sort=T,
+    ignore_on_delete=T,
 
-  dm <- dm_for_filter()
+    ignore_autoincrement=T  
+)
+  dm<-dm_for_filter()
   reduced_dm <-
     dm %>%
-    dm_filter(tf_3 = TRUE)
-  roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_3), dm)
+    dm_filter(tf_3=T)
+  roundtrip_dm<-dm_unwrap_tbl(dm_wrap_tbl(dm,tf_3),dm)
   expect_equivalent_dm(
     roundtrip_dm,
     reduced_dm,
-    sort = TRUE,
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
-  )
-
-  dm <- dm_for_filter()
+    sort=T,
+    ignore_on_delete=T,
+    ignore_autoincrement=T
+)
+  dm<-dm_for_filter()
   reduced_dm <-
     dm %>%
-    dm_filter(tf_4 = TRUE)
-  roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_4), dm)
+    dm_filter(tf_4=T)
+  roundtrip_dm<-dm_unwrap_tbl(dm_wrap_tbl(dm,tf_4),dm)
   expect_equivalent_dm(
     roundtrip_dm,
     reduced_dm,
-    sort = TRUE,
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
-  )
+    sort=T,
+    ignore_on_delete=T,
+    ignore_autoincrement=T
+)
 
-  dm <- dm_for_filter()
+  
+  dm<-dm_for_filter()
   reduced_dm <-
     dm %>%
-    dm_filter(tf_5 = TRUE)
-  roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_5), dm)
+    dm_filter(tf_5=T)
+  roundtrip_dm<-dm_unwrap_tbl(dm_wrap_tbl(dm,tf_5),dm)
   expect_equivalent_dm(
     roundtrip_dm,
     reduced_dm,
-    sort = TRUE,
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
-  )
+    sort=T,
+    ignore_on_delete=T,
+    ignore_autoincrement=T
+)
 
-  dm <- dm_for_filter()
+  dm<-dm_for_filter()  
   reduced_dm <-
     dm %>%
-    dm_filter(tf_6 = TRUE)
-  roundtrip_dm <- dm_unwrap_tbl(dm_wrap_tbl(dm, tf_6), dm)
+    dm_filter(tf_6=T)
+  roundtrip_dm<-dm_unwrap_tbl(dm_wrap_tbl(dm,tf_6),dm)
   expect_equivalent_dm(
-    roundtrip_dm,
+    roundtrip_dm,  
     reduced_dm,
-    sort = TRUE,
-    ignore_on_delete = TRUE,
-    ignore_autoincrement = TRUE
-  )
-})
+    sort=T,
+    ignore_on_delete=T,
+    ignore_autoincrement=T  
+)
+})  
 
-test_that("`node_type_from_graph()` works", {
-  dm1 <- dm_for_filter()
-  graph <- create_graph_from_dm(dm1, directed = TRUE)
+test_that("`node_type_from_graph()` works",{
+  dm1<-dm_for_filter()
+  graph<-create_graph_from_dm(dm1,directed=T)
   expect_snapshot({
     node_type_from_graph(graph)
-  })
+})
   expect_snapshot({
-    node_type_from_graph(graph, drop = "tf_4")
-  })
+    node_type_from_graph(graph,drop="tf_4")  
+})
 })
 
-test_that("`dm_wrap_tbl()` fails for cyclic dm", {
+test_that("`dm_wrap_tbl()` fails for cyclic dm",{
   skip_if_remote_src()
-
   # Create a cyclic dm: a -> b -> a
-  a <- tibble::tibble(id = 1L, b_id = 1L)
-  b <- tibble::tibble(id = 1L, a_id = 1L)
-  cyclic_dm <- dm(a, b) %>%
-    dm_add_pk(a, id) %>%
-    dm_add_pk(b, id) %>%
-    dm_add_fk(a, b_id, b) %>%
-    dm_add_fk(b, a_id, a)
+  a<-tibble::tibble(id=1L,b_id=1L)
+  b<-tibble::tibble(id=1L,a_id=1L)
+  cyclic_dm<-dm(a,b) %>%
+    dm_add_pk(a,id) %>%
+    dm_add_pk(b,id) %>%
+    dm_add_fk(a,b_id,b) %>%
+    dm_add_fk(b,a_id,a)
 
-  expect_snapshot(error = TRUE, {
-    dm_wrap_tbl(cyclic_dm, a)
-  })
+  expect_snapshot(error=T,{
+    dm_wrap_tbl(cyclic_dm,a)
+})
 })

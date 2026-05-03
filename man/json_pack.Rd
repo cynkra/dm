@@ -7,7 +7,7 @@
 json_pack(.data, ..., .names_sep = NULL)
 }
 \arguments{
-\item{.data}{A data frame, a data frame extension (e.g. a tibble), or  a lazy data frame (e.g. from dbplyr or dtplyr).}
+\item{.data}{A data frame, a data frame extension (e.g. a tibble), or a lazy data frame (e.g. from dbplyr or dtplyr).}
 
 \item{...}{<\code{\link[tidyr:tidyr_tidy_select]{tidy-select}}> Columns to pack, specified
 using name-variable pairs of the form \code{new_col = c(col1, col2, col3)}.
@@ -19,6 +19,7 @@ The right hand side can be any valid tidy select expression.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 A wrapper around \code{\link[tidyr:pack]{tidyr::pack()}} which stores the packed data into JSON columns.
+
 }
 \examples{
 df <- tibble::tibble(x1 = 1:3, x2 = 4:6, x3 = 7:9, y = 1:3)

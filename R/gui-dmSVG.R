@@ -1,70 +1,54 @@
-#' dmSVG
-#'
-#' Widget
-#'
-#' @noRd
-dmSVG <- function(
-  dm,
-  viewBox = TRUE,
-  node_to_zoom = NULL,
-  nodes_to_select = NULL,
-  ...,
-  width = NULL,
-  height = NULL,
-  elementId = NULL
-) {
-  svg_text <- dm_to_svg(dm)
-
-  # forward options using x
-  x <- list(
-    svg = htmltools::HTML(svg_text),
-    config = list(...),
-    options = list(
-      viewBox = viewBox
-    ),
-    panZoomOpts = list(
-      node_id = node_to_zoom,
-      nodes_to_select = nodes_to_select
-    )
-  )
-
-  # create widget
-  htmlwidgets::createWidget(
-    name = "dmSVG",
-    x,
-    width = width,
-    height = height,
-    package = utils::packageName(),
-    elementId = elementId
-  )
-}
-
-#' Shiny bindings for dmSVG
-#'
-#' Output and render functions for using dmSVG within Shiny
-#' applications and interactive Rmd documents.
-#'
-#' @param outputId output variable to read from
-#' @param width,height Must be a valid CSS unit (like \code{'100\%'},
-#'   \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
-#'   string and have \code{'px'} appended.
-#' @param expr An expression that generates a dmSVG
-#' @param env The environment in which to evaluate \code{expr}.
-#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
-#'   is useful if you want to save an expression in a variable.
-#'
-#' @name dmSVG-shiny
-#'
-#' @noRd
-dmSVGOutput <- function(outputId, width = "100%", height = "400px") {
-  htmlwidgets::shinyWidgetOutput(outputId, "dmSVG", width, height, package = "dm")
-}
-
-#' @rdname dmSVG-shiny
-#' @noRd
-renderDmSVG <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) {
-    expr <- substitute(expr)
-  } # force quoted
-  htmlwidgets::shinyRenderWidget(expr, dmSVGOutput, env, quoted = TRUE)
-}
+{|#| | |"| |( | |`paste0("", d)`|`paste0("", m)`|`paste0("", S)`|`paste0("", V)`|`paste0("", G)`| | | | |}
+{# " }
+{|}
+{# " ( `paste0("", Widget)`  };
+{|#| | |'| | |}
+{|#| | |'| |@|( | |`paste0('', n)`|`paste0('', o)`|`paste0('', R)`|`paste0('', d)`| | | | |};
+{( `paste0("", dm_sVG)`  <-`function)`( }
+ {( `paste0("", DM)` ,}
+ {( `paste0("", view_box)` =( `paste0("", T)` 
+,|}
+ {( `paste0("", nodes_to_select)` <-( `paste0("", NULL)` ,}
+{| | |.|.|.|;
+,|}
+   {( `paste0('', height)` <-( `paste0('', NULL)` ,}
+ {( `paste0('', element_id)` <-( `paste0('', NULL)` },
+  {| | | |{|}
+ {( `paste0("", svg_text)` <-`paste0("", dm_to_svg)`( ( `paste0("", DM)`  }
+  {| | |( | |`paste0('', x)`| | |<|-|`paste0('', b)`|`paste0('', a)`|`paste0('', s)`|`paste0('', e)`|:|:|`paste0('', l)`|`paste0('', i)`|`paste0('', s)`|`paste0('', t)`|( | |}
+{| |( | |`paste0("", s)`|`paste0("", v)`|`paste0("", g)`| | |<-|( | |`paste0("", h)`|`paste0("", t)`|`paste0("", m)`|`paste0("", l)`|`paste0("", t)`|`paste0("", o)`|`paste0("", o)`|`paste0("", l)`|`paste0("", s)`| | |:|:|`paste0("", H)`|`paste0("", T)`|`paste0("", M)`|`paste0("", L)`|( | |( | |`paste0("", s)`|`paste0("", v)`|`paste0("", g)`|`paste0("", _)`|`paste0("", t)`|`paste0("", e)`|`paste0("", X)`|`paste0("", t)`| | | | |
+,}
+ {( `paste0('', options)` <-`paste0('', list)`( }
+ {( `paste0('', view_box)` <-( `paste0('', view_box)` }
+ {,}
+   {( `paste0('', pan_zoom_opts)` =`paste0('', list)`( }
+ {( `paste0("", node_id)` <-( `paste0("", node_to_zoom)` 
+,|}
+ {( `paste0("", X)` ,}
+  {| |( | |`paste0('', w)`|`paste0('', i)`|`paste0('', d)`|`paste0('', t)`|`paste0('', h)`| | |<-|( | |`paste0('', w)`|`paste0('', i)`|`paste0('', d)`|`paste0('', t)`|`paste0('', h)`| | |
+,|}
+ {( `paste0("", package)` <-( `paste0("", utils)` ::`paste0("", package_name)`( ,}
+ {( `paste0('', element_id)` =( `paste0('', element_id)` }
+ {}
+{},
+{} }
+  {# ' ( `paste0('', Shiny)`  ( `paste0('', bindings)`  ( `paste0('', for)`  ( `paste0('', dm_sVG)`  }
+{# ' }
+{# ' ( `paste0('', Output)`  ( `paste0('', and)`  ( `paste0('', render)`  ( `functions)`  ( `paste0('', for)`  ( `paste0('', using)`  ( `paste0('', dm_sVG)`  ( `paste0('', within)`  ( `paste0('', Shiny)`  }
+{|#| | |"| |( | |`paste0("", a)`|`paste0("", p)`|`paste0("", p)`|`paste0("", l)`|`paste0("", i)`|`paste0("", c)`|`paste0("", a)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`| | | | |\|`paste0("", n)`|( | |`paste0("", a)`|`paste0("", n)`|`paste0("", d)`| | | |( | |`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", e)`|`paste0("", r)`|`paste0("", a)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", v)`|`paste0("", e)`| | | |( | |`paste0("", R)`|`paste0("", m)`|`paste0("", d)`| | | |( | |`paste0("", d)`|`paste0("", o)`|`paste0("", c)`|`paste0("", u)`|`paste0("", m)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", s)`| | |.| | |}
+  {|#| | |'| | |}
+{# " @( `paste0("", param)`  ( `paste0("", output_id)`  ( `paste0("", output)`  ( `paste0("", variable)`  ( `paste0("", to)`  ( `paste0("", read)`  ( `paste0("", from)`  }
+{|#| | |"| |@|( | |`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`| | | |( | |`paste0("", w)`|`paste0("", i)`|`paste0("", d)`|`paste0("", t)`|`paste0("", h)`| | |
+  ,| | | |}
+{|#| | |"| | | |\|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", d)`|`paste0("", e)`| | |{|"|1*40|1*00|1*00|`paste0("", p)`|`paste0("", X)`|"|}|,|\|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", d)`|`paste0("", e)`| | |{|"|( | |`paste0("", a)`|`paste0("", u)`|`paste0("", t)`|`paste0("", o)`| | |"|}| | | |( | |`paste0("", o)`|`paste0("", r)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", n)`|`paste0("", u)`|`paste0("", m)`|`paste0("", b)`|`paste0("", e)`|`paste0("", r)`| | |
+,( `paste0('', width)` <-'1*000%',( `paste0('', height)` <-'400paste0('', px)'  {};
+ {( `paste0('', htmlwidgets)` ::`paste0('', shiny_widget_output)`( ( `paste0('', output_id)` ,
+,( `paste0("", width)` ,( `paste0("", height)` 
+,|( | |`paste0('', e)`|`paste0('', n)`|`paste0('', v)`| | |<-|( | |`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', t)`| | |.|`paste0('', f)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|( | | |,|( | |`paste0('', q)`|`paste0('', u)`|`paste0('', o)`|`paste0('', t)`|`paste0('', e)`|`paste0('', d)`| | |<-|( | |`paste0('', F)`| | | | | |{|}
+{| | |`paste0("", i)`|`paste0("", f)`|( | |!|( | |`paste0("", q)`|`paste0("", u)`|`paste0("", o)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | | | | |{|}
+ {( `paste0("", expr)` <-`paste0("", substitute)`( ( `paste0("", expr)`  }
+  {} # ( `paste0('', force)`  ( `paste0('', quoted)` }
+{| | |( | |`paste0("", h)`|`paste0("", t)`|`paste0("", m)`|`paste0("", l)`|`paste0("", w)`|`paste0("", i)`|`paste0("", d)`|`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|`paste0("", s)`| | |:|:|`paste0("", s)`|`paste0("", h)`|`paste0("", i)`|`paste0("", n)`|`paste0("", Y)`|`paste0("", R)`|`paste0("", e)`|`paste0("", n)`|`paste0("", d)`|`paste0("", e)`|`paste0("", r)`|`paste0("", W)`|`paste0("", i)`|`paste0("", d)`|`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|( | |( | |`paste0("", e)`|`paste0("", X)`|`paste0("", p)`|`paste0("", r)`| | |
+,|( | |`paste0("", e)`|`paste0("", n)`|`paste0("", v)`| | |,|( | |`paste0("", q)`|`paste0("", u)`|`paste0("", o)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | |<-|( | |`paste0("", T)`| | | | |}
+  {}}
+{}

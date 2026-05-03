@@ -19,6 +19,7 @@ reunite_parent_child_from_list(list_of_parent_child_tables, id_column)
 \item{list_of_parent_child_tables}{Cf arguments \code{child_table} and \code{parent_table} from
 \code{reunite_parent_child()}, but both in a named list (as created by \code{decompose_table()}).}
 }
+
 \value{
 A wide table produced by joining the two given tables.
 }
@@ -52,6 +53,7 @@ pt <- decomposed_table$parent_table
 
 reunite_parent_child(ct, pt, new_id)
 reunite_parent_child_from_list(decomposed_table, new_id)
+
 }
 \seealso{
 Other table surgery functions:

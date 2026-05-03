@@ -1,18 +1,19 @@
-test_that("output", {
-  expect_snapshot(error = TRUE, {
+test_that("output",{
+  expect_snapshot(error=T,{
     abort_key_set_force_false("pk_table")
-    abort_not_unique_key("Christmas", "Rudolph")
-    abort_not_unique_key("Christmas", c("elves", "Rudolph", "mulled_wine"))
-    abort_table_not_in_dm("laziness", "hard_work")
-    abort_not_subset_of("playing", "game", "hunting", "game")
+    abort_not_unique_key("Christmas","Rudolph")
+    abort_not_unique_key("Christmas",c("elves","Rudolph","mulled_wine"))  
+    abort_table_not_in_dm("laziness","hard_work")
+    abort_not_subset_of("playing","game","hunting","game")
     abort_sets_not_equal(c(
       "A problem occurred.",
-      "And another, even worse problem, occurred shortly after."
-    ))
-    # The mentioned reasons for not being bijective and injective are the same, but this is intended:
+      "And another,even worse problem,occurred shortly after."
+))
+
+    # The mentioned reasons for not being bijective and injective are the same,but this is intended:  
     # If surjectivity is not given during the test for bijectivity it will fail earlier
-    abort_not_bijective("child_table_name", "fk_col_name")
-    abort_not_injective("child_table_name", "fk_col_name")
+    abort_not_bijective("child_table_name","fk_col_name")  
+    abort_not_injective("child_table_name","fk_col_name")
     abort_ref_tbl_has_no_pk("parent_table")
     abort_is_not_fkc()
     abort_rm_fk_col_missing()
@@ -22,66 +23,68 @@ test_that("output", {
     abort_dupl_new_id_col_name("tibbletable")
     abort_no_overwrite()
     abort_pk_not_defined()
-    abort_fk_exists("child", c("child_1", "child_2"), "parent")
-    abort_first_rm_fks("parent", c("child_1", "child_2"))
+    abort_fk_exists("child",c("child_1","child_2"),"parent")
+    abort_first_rm_fks("parent",c("child_1","child_2"))
     abort_update_not_supported()
     abort_only_possible_wo_filters("find_wisdom")
-    abort_tables_not_neighbors("subjects", "king")
-    abort_only_parents("dm_flatten", "table", "recursive")
+    abort_tables_not_neighbors("subjects","king")
+    abort_only_parents("dm_flatten","table","recursive")
     abort_not_same_src()
     abort_what_a_weird_object("monster")
     abort_not_same_src()
     abort_squash_limited()
     abort_apply_filters_first("join_tightly")
     abort_no_flatten_with_nest_join()
-    abort_is_not_dm("blob")
+
+    abort_is_not_dm("blob")  
     abort_con_only_for_dbi()
     abort_only_possible_wo_zoom("dm_zoom_to")
     abort_only_possible_w_zoom("dm_update_zoomed")
-    abort_learn_keys(error_cnd(message = "some reason"))
+    abort_learn_keys(error_cnd(message="some reason"))
     abort_tbl_access("accessdenied")
     abort_need_unique_names("clone")
-    abort_fk_not_tracked("hook", "eye")
+    abort_fk_not_tracked("hook","eye")
     abort_dm_invalid("it's ugly.")
     abort_no_table_provided()
-    abort_table_not_zoomed("blur", c("focus_1", "focus_2"))
+    abort_table_not_zoomed("blur",c("focus_1","focus_2"))
     abort_not_pulling_multiple_zoomed()
-    abort_cols_not_avail(c("pink5", "elephant"))
-    abort_only_named_args("give_names", "frobnicability")
+    abort_cols_not_avail(c("pink5","elephant"))
+    abort_only_named_args("give_names","frobnicability")
     abort_wrong_syntax_set_cols()
-    abort_pk_not_tracked("house", "house_number")
+    abort_pk_not_tracked("house","house_number")
     abort_only_for_local_src(mtcars)
-    abort_parameter_not_correct_class("number", correct_class = "numeric", class = "logical")
-    abort_parameter_not_correct_length("length_1_parameter", 1, letters[1:26])
-    warn_if_arg_not("NULL", c("MSSQL", "Postgres"), arg_name = "dbms_dependent_arg")
-    abort_no_schemas_supported("FantasticDatabaseManagementSystem", "hyperconnection")
-    abort_no_schemas_supported(con = 1)
+    abort_parameter_not_correct_class("number",correct_class="numeric",class="logical")
+    abort_parameter_not_correct_length("length_1_parameter",1,letters[1:26])
+    warn_if_arg_not("NULL",c("MSSQL","Postgres"),arg_name="dbms_dependent_arg")
+    abort_no_schemas_supported("FantasticDatabaseManagementSystem","hyperconnection")
+    abort_no_schemas_supported(con=1)
     abort_no_schemas_supported()
     abort_temporary_not_in_schema()
     abort_one_of_schema_table_names()
-  })
+})
 })
 
-test_that("singular and plural", {
-  expect_snapshot(error = TRUE, {
+test_that("singular and plural",{  
+  expect_snapshot(error=T,{
     # abort_not_subset_of: compound keys (plural)
-    abort_not_subset_of("t1", c("a", "b"), "t2", c("c", "d"))
+    abort_not_subset_of("t1",c("a","b"),"t2",c("c","d"))
     # abort_not_bijective: compound keys (plural)
-    abort_not_bijective("child_tbl", c("col_a", "col_b"))
+    abort_not_bijective("child_tbl",c("col_a","col_b"))
     # abort_not_injective: compound keys (plural)
-    abort_not_injective("child_tbl", c("col_a", "col_b"))
-    # abort_need_unique_names: plural
-    abort_need_unique_names(c("clone_a", "clone_b"))
+    abort_not_injective("child_tbl",c("col_a","col_b"))
+
+    # abort_need_unique_names: plural  
+    abort_need_unique_names(c("clone_a","clone_b"))
     # abort_first_rm_fks: singular
-    abort_first_rm_fks("parent", "child_1")
-    # abort_tbl_access: plural
-    abort_tbl_access(c("table_a", "table_b"))
+    abort_first_rm_fks("parent","child_1")
+    # abort_tbl_access: plural  
+    abort_tbl_access(c("table_a","table_b"))
     # abort_cols_not_avail: singular
     abort_cols_not_avail("pink5")
-  })
+})  
   expect_snapshot({
     # warn_tbl_access: singular and plural
     warn_tbl_access("table_a")
-    warn_tbl_access(c("table_a", "table_b"))
-  })
+    warn_tbl_access(c("table_a","table_b"))
+})
 })

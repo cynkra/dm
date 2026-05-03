@@ -5,20 +5,21 @@
 \title{Add foreign keys}
 \usage{
 dm_add_fk(
-  dm,
-  table,
-  columns,
-  ref_table,
-  ref_columns = NULL,
-  ...,
-  check = FALSE,
-  on_delete = c("no_action", "cascade")
+ dm,
+ table,
+ columns,
+ ref_table,
+ ref_columns = NULL,
+ ...,
+ check = FALSE,
+ on_delete = c("no_action", "cascade")
 )
 }
 \arguments{
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.}
+
 
 \item{columns}{The columns of \code{table} which are to become the foreign key columns that
 reference \code{ref_table}.
@@ -52,6 +53,7 @@ An updated \code{dm} with an additional foreign key relation.
 \code{dm_add_fk()} marks the specified \code{columns} as the foreign key of table \code{table} with
 respect to a key of table \code{ref_table}.
 Usually the referenced columns are a primary key in \code{ref_table}.
+
 However, it is also possible to specify other columns via the \code{ref_columns} argument.
 If \code{check == TRUE}, then it will first check if the values in \code{columns} are a subset
 of the values of the key in table \code{ref_table}.
@@ -70,31 +72,35 @@ These columns are then a so-called "implicit unique key" of the referenced table
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 nycflights_dm <- dm(
-  planes = nycflights13::planes,
-  flights = nycflights13::flights,
-  weather = nycflights13::weather
+ planes = nycflights13::planes,
+ flights = nycflights13::flights,
+ weather = nycflights13::weather
 )
 
+
 nycflights_dm \%>\%
-  dm_draw()
+ dm_draw()
 
 # Create foreign keys:
 nycflights_dm \%>\%
-  dm_add_pk(planes, tailnum) \%>\%
-  dm_add_fk(flights, tailnum, planes) \%>\%
-  dm_add_pk(weather, c(origin, time_hour)) \%>\%
-  dm_add_fk(flights, c(origin, time_hour), weather) \%>\%
-  dm_draw()
+ dm_add_pk(planes, tailnum) \%>\%
+ dm_add_fk(flights, tailnum, planes) \%>\%
+ dm_add_pk(weather, c(origin, time_hour)) \%>\%
+
+ dm_add_fk(flights, c(origin, time_hour), weather) \%>\%
+ dm_draw()
 
 # Keys can be checked during creation:
 try(
-  nycflights_dm \%>\%
-    dm_add_pk(planes, tailnum) \%>\%
-    dm_add_fk(flights, tailnum, planes, check = TRUE)
+
+ nycflights_dm \%>\%
+dm_add_pk(planes, tailnum) \%>\%
+dm_add_fk(flights, tailnum, planes, check = TRUE)
 )
 \dontshow{\}) # examplesIf}
 }
 \seealso{
+
 Other foreign key functions:
 \code{\link[=dm_enum_fk_candidates]{dm_enum_fk_candidates()}},
 \code{\link[=dm_get_all_fks]{dm_get_all_fks()}},

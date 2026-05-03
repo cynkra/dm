@@ -19,6 +19,7 @@
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
+
 'progress' package.}
 }
 \value{
@@ -42,19 +43,20 @@ or \code{\link[=dm_sql]{dm_sql()}}, and then use \code{\link[=dm_rows_append]{dm
 financial <- dm_financial_sqlite()
 
 financial \%>\%
-  pull_tbl(districts) \%>\%
-  dbplyr::remote_name()
+ pull_tbl(districts) \%>\%
+ dbplyr::remote_name()
 
 # compute() copies the data to new tables:
 financial \%>\%
-  compute() \%>\%
-  pull_tbl(districts) \%>\%
-  dbplyr::remote_name()
+ compute() \%>\%
+ pull_tbl(districts) \%>\%
+ dbplyr::remote_name()
 
 # collect() returns a local dm:
+
 financial \%>\%
-  collect() \%>\%
-  pull_tbl(districts) \%>\%
-  class()
+ collect() \%>\%
+ pull_tbl(districts) \%>\%
+ class()
 \dontshow{\}) # examplesIf}
 }

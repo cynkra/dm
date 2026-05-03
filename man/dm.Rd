@@ -8,9 +8,9 @@
 \title{Data model class}
 \usage{
 dm(
-  ...,
-  .name_repair = c("check_unique", "unique", "universal", "minimal"),
-  .quiet = FALSE
+ ...,
+ .name_repair = c("check_unique", "unique", "universal", "minimal"),
+ .quiet = FALSE
 )
 
 new_dm(tables = list())
@@ -19,6 +19,7 @@ is_dm(x)
 
 as_dm(x, ...)
 }
+
 \arguments{
 \item{...}{Tables or existing \code{dm} objects to add to the \code{dm} object.
 Unnamed tables are auto-named, \code{dm} objects must not be named.}
@@ -52,6 +53,7 @@ the inputs are of the expected class and internally consistent;
 use \code{\link[=dm_validate]{dm_validate()}} to double-check the returned object.
 }
 
+
 \code{is_dm()} returns \code{TRUE} if the input is of class \code{dm}.
 
 \code{as_dm()} coerces objects to the \code{dm} class
@@ -74,6 +76,7 @@ dm_nycflights13()[["airports"]]
 
 dm_nycflights13() \%>\% names()
 \dontshow{\}) # examplesIf}
+
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 library(dm)
 library(nycflights13)
@@ -83,11 +86,13 @@ new_dm(tibble::lst(weather, airports))
 
 # using `dm_keyed_tbl` objects
 dm <- dm_nycflights13()
+
 y1 <- dm$planes \%>\%
-  mutate() \%>\%
-  select(everything())
+ mutate() \%>\%
+ select(everything())
 y2 <- dm$flights \%>\%
-  left_join(dm$airlines, by = "carrier")
+ left_join(dm$airlines, by = "carrier")
+
 
 new_dm(list("tbl1" = y1, "tbl2" = y2))
 \dontshow{\}) # examplesIf}
@@ -95,6 +100,7 @@ new_dm(list("tbl1" = y1, "tbl2" = y2))
 \seealso{
 \itemize{
 \item \code{\link[=dm_from_con]{dm_from_con()}} for connecting to all tables in a database
+
 and importing the primary and foreign keys
 \item \code{\link[=dm_get_tables]{dm_get_tables()}} for returning a list of tables
 \item \code{\link[=dm_add_pk]{dm_add_pk()}} and \code{\link[=dm_add_fk]{dm_add_fk()}} for adding primary and foreign keys
@@ -103,7 +109,7 @@ and importing the primary and foreign keys
 \item \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}} for flattening
 \item \code{\link[=dm_filter]{dm_filter()}} for filtering
 \item \code{\link[=dm_select_tbl]{dm_select_tbl()}} for creating a \code{dm} with only a subset of the tables
-\item \code{\link[=dm_nycflights13]{dm_nycflights13()}}  for creating an example \code{dm} object
+\item \code{\link[=dm_nycflights13]{dm_nycflights13()}} for creating an example \code{dm} object
 \item \code{\link[=decompose_table]{decompose_table()}} for table surgery
 \item \code{\link[=check_key]{check_key()}} and \code{\link[=check_subset]{check_subset()}} for checking for key properties
 \item \code{\link[=examine_cardinality]{examine_cardinality()}} for checking the cardinality of the relation between two tables

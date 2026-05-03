@@ -5,20 +5,21 @@
 \title{Copy data model to data source}
 \usage{
 copy_dm_to(
-  dest,
-  dm,
-  ...,
-  set_key_constraints = TRUE,
-  table_names = NULL,
-  temporary = TRUE,
-  schema = NULL,
-  progress = NA,
-  unique_table_names = NULL,
-  copy_to = NULL
+ dest,
+ dm,
+ ...,
+ set_key_constraints = TRUE,
+ table_names = NULL,
+ temporary = TRUE,
+ schema = NULL,
+ progress = NA,
+ unique_table_names = NULL,
+ copy_to = NULL
 )
 }
 \arguments{
 \item{dest}{An object of class \code{"src"} or \code{"DBIConnection"}.}
+
 
 \item{dm}{A \code{dm} object.}
 
@@ -52,6 +53,7 @@ Use a variant of
 \code{table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))}
 to specify the same schema for all tables.
 Use \code{table_names = identity} with \code{temporary = TRUE}
+
 to avoid giving temporary tables unique names.
 
 If a named character vector,
@@ -74,6 +76,7 @@ If \code{schema} is provided, an error will be thrown if \code{temporary = FALSE
 Not all DBMS are supported.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default)
+
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
 
@@ -83,11 +86,13 @@ hide in non-interactive mode, show in interactive mode. Requires the
 A \code{dm} object on the given \code{src} with the same table names
 as the input \code{dm}.
 }
+
 \description{
 \code{copy_dm_to()} takes a \code{\link[dbplyr:src_dbi]{dbplyr::src_dbi}} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
 and a \code{\link{dm}} object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set \code{temporary = FALSE} to create permanent tables.
+
 Unless \code{set_key_constraints} is \code{FALSE}, primary key, foreign key, and unique constraints
 are set, and indexes for foreign keys are created, on all databases.
 }
@@ -95,23 +100,25 @@ are set, and indexes for foreign keys are created, on all databases.
 \dontshow{if (rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))) withAutoprint(\{ # examplesIf}
 con <- DBI::dbConnect(RSQLite::SQLite())
 
+
 # Copy to temporary tables, unique table names by default:
 temp_dm <- copy_dm_to(
-  con,
-  dm_nycflights13(),
-  set_key_constraints = FALSE
+ con,
+ dm_nycflights13(),
+ set_key_constraints = FALSE
 )
 
 # Persist, explicitly specify table names:
 persistent_dm <- copy_dm_to(
-  con,
-  dm_nycflights13(),
-  temporary = FALSE,
-  table_names = ~ paste0("flights_", .x)
+ con,
+ dm_nycflights13(),
+ temporary = FALSE,
+ table_names = ~ paste0("flights_", .x)
 )
 dbplyr::remote_name(persistent_dm$planes)
 
 DBI::dbDisconnect(con)
 \dontshow{\}) # examplesIf}
 }
+
 \concept{DB interaction functions}

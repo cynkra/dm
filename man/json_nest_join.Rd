@@ -20,6 +20,7 @@ explicitly.
 To join on different variables between \code{x} and \code{y}, use a \code{\link[dplyr:join_by]{join_by()}}
 specification. For example, \code{join_by(a == b)} will match \code{x$a} to \code{y$b}.
 
+
 To join by multiple variables, use a \code{\link[dplyr:join_by]{join_by()}} specification with
 multiple expressions. For example, \code{join_by(a == b, c == d)} will match
 \code{x$a} to \code{y$b} and \code{x$c} to \code{y$d}. If the column names are the same between
@@ -42,7 +43,7 @@ To perform a cross-join, generating all combinations of \code{x} and \code{y}, s
 
 \item{copy}{If \code{x} and \code{y} are not from the same data source,
 and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
-same src as \code{x}.  This allows you to join tables across srcs, but
+same src as \code{x}. This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.}
 
 \item{keep}{Should the new list-column contain join keys? The default
@@ -52,6 +53,7 @@ will preserve the join keys for inequality joins.}
 the default, the name of \code{y} is used.}
 }
 \description{
+
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 A wrapper around \code{\link[dplyr:nest_join]{dplyr::nest_join()}} which stores the joined data into a JSON column.

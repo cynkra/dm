@@ -10,48 +10,50 @@
 \title{Check table relations}
 \usage{
 check_cardinality_0_n(
-  x,
-  y,
-  ...,
-  x_select = NULL,
-  y_select = NULL,
-  by_position = NULL
+ x,
+ y,
+ ...,
+ x_select = NULL,
+ y_select = NULL,
+ by_position = NULL
 )
 
 check_cardinality_1_n(
-  x,
-  y,
-  ...,
-  x_select = NULL,
-  y_select = NULL,
-  by_position = NULL
+
+ x,
+ y,
+ ...,
+ x_select = NULL,
+ y_select = NULL,
+ by_position = NULL
 )
 
 check_cardinality_1_1(
-  x,
-  y,
-  ...,
-  x_select = NULL,
-  y_select = NULL,
-  by_position = NULL
+ x,
+ y,
+ ...,
+ x_select = NULL,
+ y_select = NULL,
+ by_position = NULL
 )
 
 check_cardinality_0_1(
-  x,
-  y,
-  ...,
-  x_select = NULL,
-  y_select = NULL,
-  by_position = NULL
+ x,
+ y,
+ ...,
+ x_select = NULL,
+ y_select = NULL,
+ by_position = NULL
 )
 
 examine_cardinality(
-  x,
-  y,
-  ...,
-  x_select = NULL,
-  y_select = NULL,
-  by_position = NULL
+ x,
+ y,
+ ...,
+ x_select = NULL,
+ y_select = NULL,
+ by_position = NULL
+
 )
 }
 \arguments{
@@ -74,6 +76,7 @@ to align the names.}
 if the check is passed, to support pipes.
 Otherwise an error is thrown and the reason for it is explained.
 
+
 \code{examine_cardinality()} returns a character variable specifying the type of relationship between the two columns.
 }
 \description{
@@ -83,11 +86,13 @@ All \code{check_cardinality_...()} functions test the following conditions:
 \item Are the rows in \code{y} a subset of the rows in \code{x}?
 \item Does the relation between \code{x} and \code{y} meet the cardinality requirements?
 One row from \code{x} must correspond to the requested number of rows in \code{y},
+
 e.g. \verb{_0_1} means that there must be zero or one rows in \code{y} for each
 row in \code{x}.
 }
 
 \code{examine_cardinality()} also checks the first two points and subsequently determines the type of cardinality.
+
 
 For convenience, the \code{x_select} and \code{y_select} arguments allow restricting the check
 to a set of key columns without affecting the return value.
@@ -95,6 +100,7 @@ to a set of key columns without affecting the return value.
 \details{
 All cardinality functions accept a parent and a child table (\code{x} and \code{y}).
 All rows in \code{x} must be unique, and all rows in \code{y} must be a subset of the
+
 rows in \code{x}.
 The \code{x_select} and \code{y_select} arguments allow restricting the check
 to a set of key columns without affecting the return value.
@@ -114,6 +120,7 @@ n corresponding occurrences in \code{y}.
 This means that there is a "surjective" mapping from the child table
 to the parent table, i.e. each parent table row exists at least once in the
 child table.
+
 
 \strong{"0_1"}: each row in \code{x} has at least 0 and at most
 1 corresponding occurrence in \code{y}.
@@ -135,6 +142,7 @@ the requirements for a cardinality test is not fulfilled.
 No error will be thrown, but
 the result will contain the information which prerequisite was violated.
 }
+
 \examples{
 d1 <- tibble::tibble(a = 1:5)
 d2 <- tibble::tibble(a = c(1:4, 4L))
@@ -146,6 +154,7 @@ try(check_cardinality_0_n(d2, d1))
 try(check_cardinality_0_n(d1, d3))
 
 # This passes, multiple values in d3$c are allowed:
+
 check_cardinality_0_n(d1, d2)
 
 # This does not pass, injectivity is violated:
@@ -157,6 +166,7 @@ examine_cardinality(d1, d3, x_select = c(c = a))
 examine_cardinality(d1, d2)
 }
 \seealso{
+
 Other cardinality functions:
 \code{\link[=dm_examine_cardinalities]{dm_examine_cardinalities()}}
 }

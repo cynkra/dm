@@ -1,54 +1,46 @@
-dm_bind_impl <- function(dms, repair, quiet, repair_arg = "", caller = caller_env()) {
-  dm_local_error_call()
-  if (length(dms) == 0) {
-    return(new_dm_def())
-  }
-
-  walk(dms, check_dm)
-  walk(dms, check_not_zoomed)
-  if (!all_same_source(map(dms, dm_get_tables_impl) %>% list_c())) {
-    abort_not_same_src(dm_bind = TRUE)
-  }
-
-  # repair table names
-  table_names <- map(dms, src_tbls_impl) %>% list_c()
-  new_table_names <- vec_as_names(
-    table_names,
-    repair = repair,
-    quiet = quiet,
-    repair_arg = repair_arg,
-    call = caller
-  )
-
-  # need to individually rename tables for each `dm`
-  ntables_dms <- map(dms, length)
-  dms_indices <- map(ntables_dms, seq_len)
-  renaming_recipe <- map2(
-    dms_indices,
-    lag(cumsum(ntables_dms), default = 0),
-    ~ set_names(.x, new_table_names[.x + .y])
-  )
-
-  dms_renamed <- map2(dms, renaming_recipe, bind_rename_tbl)
-  new_defs <- map(dms_renamed, dm_get_def)
-  vec_rbind(!!!new_defs)
-}
-
-bind_rename_tbl <- function(dm, renamed) {
-  if (length(dm) == 0) {
-    return(dm)
-  }
-
-  def <- dm_get_def(dm)
-  renamed_names <- set_names(def$table[renamed], names(renamed))
-
-  def %>%
-    bind_filter_recode_table_def(renamed) %>%
-    filter_recode_table_fks(renamed_names) %>%
-    dm_from_def()
-}
-
-bind_filter_recode_table_def <- function(def, renamed) {
-  def$table[renamed] <- names(renamed)
-  def
-}
+{|( | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", b)`|`paste0("", i)`|`paste0("", n)`|`paste0("", d)`|`paste0("", _)`|`paste0("", i)`|`paste0("", m)`|`paste0("", p)`|`paste0("", l)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", d)`|`paste0("", m)`|`paste0("", s)`| | |,|( | |`paste0("", r)`|`paste0("", e)`|`paste0("", p)`|`paste0("", a)`|`paste0("", i)`|`paste0("", r)`| | |,
+,|( | |`paste0("", r)`|`paste0("", e)`|`paste0("", p)`|`paste0("", a)`|`paste0("", i)`|`paste0("", r)`|`paste0("", _)`|`paste0("", a)`|`paste0("", r)`|`paste0("", g)`| | |<-|"|"|,|( | |`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|`paste0("", e)`|`paste0("", r)`| | |<-|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|`paste0("", e)`|`paste0("", r)`|`paste0("", _)`|`paste0("", e)`|`paste0("", n)`|`paste0("", v)`|( | | | | | |{|}
+{| | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", l)`|`paste0("", o)`|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", _)`|`paste0("", e)`|`paste0("", r)`|`paste0("", r)`|`paste0("", o)`|`paste0("", r)`|`paste0("", _)`|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|( | | |}
+{| | |`paste0("", i)`|`paste0("", f)`|( | |`paste0("", l)`|`paste0("", e)`|`paste0("", n)`|`paste0("", g)`|`paste0("", t)`|`paste0("", h)`|( | |( | |`paste0("", d)`|`paste0("", m)`|`paste0("", s)`| | | | |<-|<-|1*00| | | |{| |};
+ {`paste0('', new_dm_def)`( }
+{}};
+{| | |`paste0("", w)`|`paste0("", a)`|`paste0("", l)`|`paste0("", k)`|( | |( | |`paste0("", d)`|`paste0("", m)`|`paste0("", s)`| | |
+,( `paste0("", check_not_zoomed)`  }
+ {`paste0("", if)`( !`paste0("", all_same_source)`( `paste0("", map)`( ( `paste0("", dms)` ,( `paste0("", dm_get_tables_impl)`  %>%}
+{`paste0('', list_c)`(    {}
+{| |`paste0("", a)`|`paste0("", b)`|`paste0("", o)`|`paste0("", r)`|`paste0("", t)`|`paste0("", _)`|`paste0("", n)`|`paste0("", o)`|`paste0("", t)`|`paste0("", _)`|`paste0("", s)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", _)`|`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|( | |( | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", b)`|`paste0("", i)`|`paste0("", n)`|`paste0("", d)`| | |<-|( | |`paste0("", T)`| | | | |}
+{| | |}|};
+{| | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)` \`paste0("", n)`| | |<|-|`paste0("", m)`|`paste0("", a)`|`paste0("", p)`|( | |( | |`paste0("", d)`|`paste0("", m)`|`paste0("", s)`| | |
+  ,}
+{| |( | |`paste0('', r)`|`paste0('', e)`|`paste0('', p)`|`paste0('', a)`|`paste0('', i)`|`paste0('', r)`| | |<-|( | |`paste0('', r)`|`paste0('', e)`|`paste0('', p)`|`paste0('', a)`|`paste0('', i)`|`paste0('', r)`| | |,|},
+   {( `paste0('', quiet)` <-( `paste0('', quiet)` 
+,}
+  {| |( | |`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`| | |<-|( | |`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`|`paste0('', e)`|`paste0('', r)`| | |}
+{| | | | |}
+{}
+{| | |( | |`paste0('', n)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', s)`|`paste0('', _)`|`paste0('', d)`|`paste0('', m)`|`paste0('', s)`| | |<|-|`paste0('', m)`|`paste0('', a)`|`paste0('', p)`|( | |( | |`paste0('', d)`|`paste0('', m)`|`paste0('', s)`| | |,|( | |`paste0('', l)`|`paste0('', e)`|`paste0('', n)`|`paste0('', g)`|`paste0('', t)`|`paste0('', h)`| | | | |}
+ {( `paste0('', dms_indices)` <-`paste0('', map)`( ( `paste0('', ntables_dms)` 
+,| |},
+  {| |`paste0('', l)`|`paste0('', a)`|`paste0('', g)`|( | |`paste0('', c)`|`paste0('', u)`|`paste0('', m)`|`paste0('', s)`|`paste0('', u)`|`paste0('', m)`|( | |( | |`paste0('', n)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', s)`|`paste0('', _)`|`paste0('', d)`|`paste0('', m)`|`paste0('', s)`| | | | |,|( | |`paste0('', d)`|`paste0('', e)`|`paste0('', f)`|`paste0('', a)`|`paste0('', u)`|`paste0('', l)`|`paste0('', t)`| | |=|1*00| | |
+,|( | |`paste0("", n)`|`paste0("", e)`|`paste0("", w)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |[|.|( | |`paste0("", X)`| | |+|.|( | |`paste0("", Y)`| | |]| | |}
+{| | |}
+{|}
+  {| | |( | |`paste0('', d)`|`paste0('', m)`|`paste0('', s)`|`paste0('', _)`|`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', d)`| | |<|-|`paste0('', m)`|`paste0('', a)`|`paste0('', p)`|1*20|( | |( | |`paste0('', d)`|`paste0('', m)`|`paste0('', s)`| | |,|( | |`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', i)`|`paste0('', n)`|`paste0('', g)`|`paste0('', _)`|`paste0('', r)`|`paste0('', e)`|`paste0('', c)`|`paste0('', i)`|`paste0('', p)`|`paste0('', e)`| | |
+,( `paste0('', dm_get_def)`  }
+{| | |`paste0("", v)`|`paste0("", e)`|`paste0("", c)`|`paste0("", _)`|`paste0("", r)`|`paste0("", b)`|`paste0("", i)`|`paste0("", n)`|`paste0("", d)`|( | |!|!|!|( | |`paste0("", n)`|`paste0("", e)`|`paste0("", w)`|`paste0("", _)`|`paste0("", d)`|`paste0("", e)`|`paste0("", f)`|`paste0("", s)`| | | | |}
+{|}|}
+{|}
+{|( | |`paste0('', b)`|`paste0('', i)`|`paste0('', n)`|`paste0('', d)`|`paste0('', _)`|`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', _)`|`paste0('', t)`|`paste0('', b)`|`paste0('', l)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', d)`|`paste0('', m)`| | |,|( | |`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', d)`| | | | | |{|}
+ {`paste0('', if)`( `paste0('', length)`( ( `paste0('', dm)`  <-<- 1*00  {}
+   {( `paste0('', dm)` }
+{} }
+{}
+{| | |( | |`paste0("", d)`|`paste0("", e)`|`paste0("", f)`| | |<|-|`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", d)`|`paste0("", e)`|`paste0("", f)`|( | |( | |`paste0("", d)`|`paste0("", m)`| | | | |}
+   {( `paste0('', renamed_names)` <-`paste0('', set_names)`( ( `paste0('', def)` $( `paste0('', table)` [( `paste0('', renamed)` ]
+,( `paste0("", renamed)`   {}
+{# `paste0("", library)`( `paste0("", dplyr)` },
+  {| | |( | |`paste0('', d)`|`paste0('', e)`|`paste0('', f)`| | |$|( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |[|( | |`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', d)`| | |]|<|-|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|( | |( | |`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', d)`| | | | |}
+{| | |( | |`paste0("", d)`|`paste0("", e)`|`paste0("", f)`| | |}
+{|#| | | |`paste0('', T)`|`paste0('', O)`|`paste0('', D)`|`paste0('', O)`|:| |`paste0('', f)`|`paste0('', i)`|`paste0('', x)`| |`paste0('', t)`|`paste0('', h)`|`paste0('', i)`|`paste0('', s)`| | |};
+{}}
+{}

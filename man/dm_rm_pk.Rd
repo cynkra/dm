@@ -19,6 +19,7 @@ Pass \code{NULL} (the default) to remove all matching keys.}
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{fail_fk}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
+
 }
 \value{
 An updated \code{dm} without the indicated primary key(s).
@@ -33,8 +34,8 @@ Foreign keys are never removed.
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_rm_pk(airports) \%>\%
-  dm_draw()
+ dm_rm_pk(airports) \%>\%
+ dm_draw()
 \dontshow{\}) # examplesIf}
 }
 \seealso{

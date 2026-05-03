@@ -12,31 +12,32 @@ Provides tools for working with multiple related tables, stored as data frames o
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://dm.cynkra.com/}
-  \item \url{https://github.com/cynkra/dm}
-  \item Report bugs at \url{https://github.com/cynkra/dm/issues}
+ \item \url{https://dm.cynkra.com/}
+ \item \url{https://github.com/cynkra/dm}
+ \item Report bugs at \url{https://github.com/cynkra/dm/issues}
 }
 
 }
 \author{
+
 \strong{Maintainer}: Kirill Müller \email{kirill@cynkra.com} (\href{https://orcid.org/0000-0002-1416-3412}{ORCID})
 
 Authors:
 \itemize{
-  \item Kirill Müller \email{kirill@cynkra.com} (\href{https://orcid.org/0000-0002-1416-3412}{ORCID})
-  \item Tobias Schieferdecker \email{tobias@cynkra.com}
-  \item Darko Bergant \email{darko.bergant@gmail.com}
+ \item Kirill Müller \email{kirill@cynkra.com} (\href{https://orcid.org/0000-0002-1416-3412}{ORCID})
+ \item Tobias Schieferdecker \email{tobias@cynkra.com}
+ \item Darko Bergant \email{darko.bergant@gmail.com}
 }
 
 Other contributors:
 \itemize{
-  \item Antoine Fabri [contributor]
-  \item Katharina Brunner [contributor]
-  \item James Wondrasek [contributor]
-  \item Indrajeet Patil (\href{https://orcid.org/0000-0003-1995-6531}{ORCID}) [contributor]
-  \item Maëlle Salmon (\href{https://orcid.org/0000-0002-2815-0399}{ORCID}) [contributor]
-  \item energie360° AG \email{info@energie360.ch} [funder]
-  \item cynkra GmbH \email{mail@cynkra.com} (\href{https://ror.org/0335t7e62}{ROR}) [funder, copyright holder]
+ \item Antoine Fabri [contributor]
+ \item Katharina Brunner [contributor]
+ \item James Wondrasek [contributor]
+ \item Indrajeet Patil (\href{https://orcid.org/0000-0003-1995-6531}{ORCID}) [contributor]
+ \item Maëlle Salmon (\href{https://orcid.org/0000-0002-2815-0399}{ORCID}) [contributor]
+ \item energie360° AG \email{info@energie360.ch} [funder]
+ \item cynkra GmbH \email{mail@cynkra.com} (\href{https://ror.org/0335t7e62}{ROR}) [funder, copyright holder]
 }
 
 }

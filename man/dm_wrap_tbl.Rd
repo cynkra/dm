@@ -19,6 +19,7 @@ hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
 }
 \value{
+
 A \code{dm} object.
 }
 \description{
@@ -46,10 +47,11 @@ which always return a single table, and not a \code{dm} object.
 }
 \examples{
 dm_nycflights13() \%>\%
-  dm_wrap_tbl(root = airlines)
+ dm_wrap_tbl(root = airlines)
 }
 \seealso{
 \code{\link[=dm_unwrap_tbl]{dm_unwrap_tbl()}}, \code{\link[=dm_nest_tbl]{dm_nest_tbl()}},
 \code{\link[=dm_examine_constraints]{dm_examine_constraints()}},
 \code{\link[=dm_examine_cardinalities]{dm_examine_cardinalities()}}.
+
 }

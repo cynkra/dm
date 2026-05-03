@@ -19,6 +19,7 @@ Only the rows where the condition evaluates
 to \code{TRUE} are kept.}
 }
 \value{
+
 An updated \code{dm} object with filters executed across all tables.
 }
 \description{
@@ -42,21 +43,22 @@ Use \code{\link[=dm_zoom_to]{dm_zoom_to()}} and \code{\link[dplyr:filter]{dplyr:
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nyc <- dm_nycflights13()
 dm_nyc \%>\%
-  dm_nrow()
+ dm_nrow()
 
 dm_nyc_filtered <-
-  dm_nycflights13() \%>\%
-  dm_filter(airports = (name == "John F Kennedy Intl"))
+ dm_nycflights13() \%>\%
+ dm_filter(airports = (name == "John F Kennedy Intl"))
 
 dm_nyc_filtered \%>\%
-  dm_nrow()
+ dm_nrow()
 
 # If you want to keep only those rows in the parent tables
+
 # whose primary key values appear as foreign key values in
 # `flights`, you can set a `TRUE` filter in `flights`:
 dm_nyc \%>\%
-  dm_filter(flights = (1 == 1)) \%>\%
-  dm_nrow()
+ dm_filter(flights = (1 == 1)) \%>\%
+ dm_nrow()
 # note that in this example, the only affected table is
 # `airports` because the departure airports in `flights` are
 # only the three New York airports.

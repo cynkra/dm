@@ -2,6 +2,7 @@
 title: "Function naming logic"
 output: rmarkdown::html_vignette
 vignette: >
+
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{Technical: Function naming logic}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,7 +11,7 @@ editor_options:
 ---
 
 
-``````{r setup, include = FALSE}
+``````{r setup, include=F}
 source("setup/setup.R")
 ``````
 
@@ -21,10 +22,12 @@ In most situations, a `dm_zoomed` behaves like a table and there are mostly no e
 
 ## Prefixes
 
+
 1. `dm_`: There are two cases for this prefix:
     - The function takes a `dm` object as a first argument
     - The function constructs a `dm` object from other objects
 1. `check_`: Certain tests on the arguments are performed and an error is thrown in case they are not passed. If the tests are passed, the first argument is returned invisibly.
+
 1. `examine_`: The function executes checks and returns an object containing an overview of the results of the checks.
 
 Most important extended prefixes `dm_..._`:
@@ -39,8 +42,10 @@ Most important extended prefixes `dm_..._`:
 1. `_dm`: Validators, checkers, or coercers
 1. `_to_tbl`: Data from a `dm` is processed in a way that a tibble is produced
 1. `_candidates`: If key-candidates are to be calculated and presented in tibble-form
+
 1. `_pk(s)`: Relates to primary key(s)
 1. `_fk(s)`: Relates to foreign key(s)
 1. `_tbl`: Add/remove/select/rename a tibble to/from/within a `dm` object
 1. `_colors`: Relates to the colors for the visualization of a `dm` object
+
 1. `_zoomed`: Insert, update, or discard the zoomed table. In combination with the prefix `dm_`, this indicates that the first argument is a `dm_zoomed` rather than a `dm`.

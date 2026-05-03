@@ -5,12 +5,12 @@
 \title{Creates a dm object for the \pkg{nycflights13} data}
 \usage{
 dm_nycflights13(
-  ...,
-  cycle = FALSE,
-  color = TRUE,
-  subset = TRUE,
-  compound = TRUE,
-  table_description = FALSE
+ ...,
+ cycle = FALSE,
+ color = TRUE,
+ subset = TRUE,
+ compound = TRUE,
+ table_description = FALSE
 )
 }
 \arguments{
@@ -19,6 +19,7 @@ dm_nycflights13(
 \item{cycle}{Boolean.
 If \code{FALSE} (default), only one foreign key relation
 (from \code{flights$origin} to \code{airports$faa}) between the \code{flights} table and the \code{airports} table is
+
 established.
 If \code{TRUE}, a \code{dm} object with a double reference
 between those tables will be produced.}
@@ -48,9 +49,10 @@ data integrity constraints.
 \examples{
 \dontshow{if (rlang::is_installed("DiagrammeR")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_draw()
+ dm_draw()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
+
 \code{vignette("howto-dm-df")}
 }

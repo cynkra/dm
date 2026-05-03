@@ -19,6 +19,7 @@ for example a fact table in a star schema.}
 Unquoted names of the tables to be included in addition to the \code{.start} table.
 The order of the tables here determines the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
+
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
 \item{.recursive}{Logical, defaults to \code{FALSE}. Should not only parent tables be joined to \code{.start}, but also their ancestors?}
@@ -52,6 +53,7 @@ each nested column entry would be a tibble of one row), an error will be thrown 
 The difference between \code{.recursive = FALSE} and \code{.recursive = TRUE} is
 the following (see the examples):
 \itemize{
+
 \item \code{.recursive = FALSE} allows only one level of hierarchy
 (i.e., direct neighbors to table \code{.start}), while
 \item \code{.recursive = TRUE} will go through all levels of hierarchy while joining.
@@ -64,16 +66,17 @@ returns a \code{dm} object.
 \dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}
 
 dm_financial() \%>\%
-  dm_select_tbl(-loans) \%>\%
-  dm_flatten_to_tbl(.start = cards)
+ dm_select_tbl(-loans) \%>\%
+ dm_flatten_to_tbl(.start = cards)
 
 dm_financial() \%>\%
-  dm_select_tbl(-loans) \%>\%
-  dm_flatten_to_tbl(.start = cards, .recursive = TRUE)
+ dm_select_tbl(-loans) \%>\%
+ dm_flatten_to_tbl(.start = cards, .recursive = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 Other flattening functions:
+
 \code{\link[=dm_flatten]{dm_flatten()}}
 }
 \concept{flattening functions}

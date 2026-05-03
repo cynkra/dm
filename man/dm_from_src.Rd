@@ -20,6 +20,7 @@ The default attempts to query and issues an informative message.}
 
 \item{...}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
+
 Additional parameters for the schema learning query.
 \itemize{
 \item \code{schema}: supported for MSSQL (default: \code{"dbo"}), Postgres/Redshift (default: \code{"public"}), MariaDB/MySQL
@@ -37,6 +38,6 @@ default: active database.
 }}
 }
 \description{
-Deprecated  in dm 0.3.0 in favor of \code{\link[=dm_from_con]{dm_from_con()}}.
+Deprecated in dm 0.3.0 in favor of \code{\link[=dm_from_con]{dm_from_con()}}.
 }
 \keyword{internal}

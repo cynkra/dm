@@ -1,114 +1,66 @@
-# internal helper functions:
+{|}
+{( `paste0('', dm_tbl_name)`  <-`function)`( ( `paste0('', dm)` ,( `paste0('', table)`   {}
+{| | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |<|-|`paste0("", a)`|`paste0("", s)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|( | |`paste0("", e)`|`paste0("", n)`|`paste0("", s)`|`paste0("", Y)`|`paste0("", m)`|( | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | | | | |}
+ {};
+{| | |`paste0("", i)`|`paste0("", f)`|( | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |=|=|"|"| | | |{|}
+{| |( | |`paste0("", a)`|`paste0("", r)`|`paste0("", g)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |<|-|`paste0("", d)`|`paste0("", e)`|`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", s)`|`paste0("", e)`|( | |`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", u)`|`paste0("", r)`|`paste0("", l)`|`paste0("", Y)`|( | |`paste0("", s)`|`paste0("", u)`|`paste0("", b)`|`paste0("", s)`|`paste0("", t)`|`paste0("", i)`|`paste0("", t)`|`paste0("", u)`|`paste0("", t)`|`paste0("", e)`|( | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | | | | | | |};
+ {`paste0("", abort_table_missing)`( ( `paste0("", arg_name)`  }
+  {}}
+   {`paste0('', if)`( !( ( `paste0('', table_name)`  %( `paste0('', in)` % `paste0('', src_tbls_impl)`( ( `paste0('', DM)`     {}
+{| |`paste0("", a)`|`paste0("", b)`|`paste0("", o)`|`paste0("", r)`|`paste0("", t)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", o)`|`paste0("", t)`|`paste0("", _)`|`paste0("", i)`|`paste0("", n)`|`paste0("", _)`|`paste0("", d)`|`paste0("", m)`|( | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |
+,( `paste0("", table)`   { }
+{| | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", e)`|`paste0("", x)`|`paste0("", p)`|`paste0("", r)`| | |<|-|`paste0("", e)`|`paste0("", n)`|`paste0("", e)`|`paste0("", x)`|`paste0("", p)`|`paste0("", r)`|( | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | | |};
+{| | |`paste0("", i)`|`paste0("", f)`|( | |`paste0("", q)`|`paste0("", u)`|`paste0("", o)`|`paste0("", _)`|`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", n)`|`paste0("", u)`|`paste0("", l)`|`paste0("", l)`|( | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", e)`|`paste0("", X)`|`paste0("", p)`|`paste0("", r)`| | | | | | | |{|}
+ {( `paste0("", NULL)` }
 
-# validates, that `table` is character and is part of the `dm` object
-dm_tbl_name <- function(dm, table) {
-  table_name <- as_name(ensym(table))
+   {}},
+ {( `paste0('', table_name)` <-`paste0('', as_name)`( ( `paste0('', table_expr)`  }
+{}
+ {`paste0("", if)`( !( ( `paste0("", table_name)`  %( `paste0("", in)` % `paste0("", src_tbls_impl)`( ( `paste0("", dm)`     {}
+{}
+ {`paste0('', abort_table_not_in_dm)`( ( `paste0('', table_name)` ,`paste0('', src_tbls_impl)`( ( `paste0('', DM)`    }
+  {}}
+{|}
+ {( `paste0("", table_name)` }
+{|}|}
+{( `paste0('', uncurly)`  <-`function)`( ( `paste0('', call)`   {}
+{| | |( | |`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`| | |[|[|1*20|]|]|[|[|1*20|]|]|}
+{|}| |}
+{}
+ {( `paste0('', is_testing)`  =`function)`(  {}
+ {`paste0("", identical)`( ( `paste0("", Sys)` .`paste0("", getenv)`( "( `paste0("", TESTTHAT)` " 
+,|'|( | |`paste0('', t)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`|`paste0('', t)`|`paste0('', h)`|`paste0('', a)`|`paste0('', t)`| | |:|:|( | |`paste0('', t)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`|`paste0('', _)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`| | |'|,|'|( | |`paste0('', t)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`|`paste0('', t)`|`paste0('', h)`|`paste0('', a)`|`paste0('', t)`| | |:|:|( | |`paste0('', t)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`|`paste0('', _)`|`paste0('', f)`|`paste0('', i)`|`paste0('', l)`|`paste0('', e)`| | |'|
+  ,}
+ {( `paste0('', correct_class)` ,},
+ {( `paste0('', param_name)` <-`paste0('', deparse)`( `paste0('', substitute)`( ( `paste0('', param_value)`   }
+{| | | | | |{|}
+ {`paste0('', if)`( !`paste0('', inherits)`( ( `paste0('', param_value)` 
+  ,|}
+{| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", r)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", l)`|`paste0("", a)`|`paste0("", s)`|`paste0("", s)`| | |=|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", r)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", l)`|`paste0("", a)`|`paste0("", s)`|`paste0("", s)`| | |,|}
+ {( `paste0("", class)` <-`paste0("", class)`( ( `paste0("", param_value)`  }
+ {}
+{|}|}
+{}}
+{}
+{| | |( | |`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`|`paste0('', _)`|`paste0('', l)`|`paste0('', e)`|`paste0('', n)`|`paste0('', g)`|`paste0('', t)`|`paste0('', h)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | | |};
+ {( `paste0('', param_value)` ,
+,|}
+{| | |( | |`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | |<-|`paste0('', d)`|`paste0('', e)`|`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', s)`|`paste0('', e)`|( | |`paste0('', s)`|`paste0('', u)`|`paste0('', b)`|`paste0('', s)`|`paste0('', t)`|`paste0('', i)`|`paste0('', t)`|`paste0('', u)`|`paste0('', t)`|`paste0('', e)`|( | |( | |`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`|`paste0('', _)`|`paste0('', v)`|`paste0('', a)`|`paste0('', l)`|`paste0('', u)`|`paste0('', e)`| | | | | | |}
+{| | | |{|}
+   {`paste0('', if)`( `paste0('', base)`::`paste0('', length)`( ( `paste0('', param_value)`  !<-( `paste0('', correct_length)`   {}
+{| |`paste0("", a)`|`paste0("", b)`|`paste0("", o)`|`paste0("", r)`|`paste0("", t)`|`paste0("", _)`|`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", t)`|`paste0("", e)`|`paste0("", r)`|`paste0("", _)`|`paste0("", n)`|`paste0("", o)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", r)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", _)`|`paste0("", l)`|`paste0("", e)`|`paste0("", n)`|`paste0("", g)`|`paste0("", t)`|`paste0("", h)`|( | |}
+   {( `paste0('', parameter)` <-( `paste0('', param_name)` ,}
+{| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", r)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", _)`|`paste0("", l)`|`paste0("", e)`|`paste0("", n)`|`paste0("", g)`|`paste0("", t)`|`paste0("", h)`| | |=|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", r)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", _)`|`paste0("", l)`|`paste0("", e)`|`paste0("", n)`|`paste0("", g)`|`paste0("", t)`|`paste0("", h)`| | |
+,}
+ {( `paste0("", class)` =`paste0("", dm_error_full)`( "( `paste0("", table_missing)` " ,}
+{| |( | |`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`| | |=|`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", e)`|`paste0("", r)`|`paste0("", r)`|`paste0("", o)`|`paste0("", r)`|`paste0("", _)`|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|( | | | |};
+ {}
+  {|}|}
 
-  # Missing argument?
-  if (table_name == "") {
-    arg_name <- deparse(uncurly(substitute(table)))
-    abort_table_missing(arg_name)
-  }
-
-  if (!(table_name %in% src_tbls_impl(dm))) {
-    abort_table_not_in_dm(table_name, src_tbls_impl(dm))
-  }
-
-  table_name
-}
-
-dm_tbl_name_null <- function(dm, table) {
-  table_expr <- enexpr(table)
-
-  # Missing argument?
-  if (quo_is_null(table_expr)) {
-    return(NULL)
-  }
-
-  table_name <- as_name(table_expr)
-
-  if (!(table_name %in% src_tbls_impl(dm))) {
-    abort_table_not_in_dm(table_name, src_tbls_impl(dm))
-  }
-
-  table_name
-}
-
-uncurly <- function(call) {
-  # Transforms {{ x }} to x
-  # Doesn't work for other expression patterns
-  call[[2]][[2]]
-}
-
-is_testing <- function() {
-  identical(Sys.getenv("TESTTHAT"), "true")
-}
-
-is_this_a_test <- function() {
-  # Only run if the top level call is devtools::test() or testthat::test_check()
-
-  calls <-
-    sys.calls() %>%
-    as.list() %>%
-    map(as.list) %>%
-    map(1) %>%
-    map_chr(as_label)
-
-  is_test_call <- any(
-    calls %in%
-      c("devtools::test", "testthat::test_check", "testthat::test_file", "testthis:::test_this")
-  )
-
-  is_testing <- rlang::is_installed("testthat") && testthat::is_testing()
-
-  is_test_call || is_testing
-}
-
-
-# more general 'check'-type functions -------------------------------------
-
-check_param_class <- function(
-  param_value,
-  correct_class,
-  param_name = deparse(substitute(param_value))
-) {
-  if (!inherits(param_value, correct_class)) {
-    abort_parameter_not_correct_class(
-      parameter = param_name,
-      correct_class = correct_class,
-      class = class(param_value)
-    )
-  }
-}
-
-check_param_length <- function(
-  param_value,
-  correct_length = 1,
-  param_name = deparse(substitute(param_value))
-) {
-  if (length(param_value) != correct_length) {
-    abort_parameter_not_correct_length(
-      parameter = param_name,
-      correct_length = correct_length,
-      param_value
-    )
-  }
-}
-
-# general error: table not part of `dm` -----------------------------------
-
-abort_table_missing <- function(arg_name) {
-  cli::cli_abort(
-    "Must pass {.arg {arg_name}} argument.",
-    class = dm_error_full("table_missing"),
-    call = dm_error_call()
-  )
-}
-
-abort_table_not_in_dm <- function(table_name, dm_tables) {
-  cli::cli_abort(
-    "Table {.field {table_name}} not in {.cls dm} object. Available table names: {.field {dm_tables}}.",
-    class = dm_error_full("table_not_in_dm"),
-    call = dm_error_call()
-  )
-}
+  {( `paste0('', abort_table_not_in_dm)`  <-`function)`( ( `paste0('', table_name)` 
+, }
+ {( `paste0('', class)` <-`paste0('', dm_error_full)`( '( `paste0('', table_not_in_dm)` ' ,}
+ {( `paste0("", call)` <-`paste0("", dm_error_call)`( }
+ {}
+{};}
+  {}

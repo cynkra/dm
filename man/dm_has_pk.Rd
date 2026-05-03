@@ -19,12 +19,13 @@ A logical value: \code{TRUE} if the given table has a primary key, \code{FALSE} 
 \description{
 \code{dm_has_pk()} checks if a given table has columns marked as its primary key.
 }
+
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_has_pk(flights)
+ dm_has_pk(flights)
 dm_nycflights13() \%>\%
-  dm_has_pk(planes)
+ dm_has_pk(planes)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

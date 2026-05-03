@@ -2,6 +2,7 @@
 title: "Migration guide: 'cdm' -> 'dm'"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+
 vignette: >
   %\VignetteIndexEntry{Technical: Migration guide: 'cdm' -> 'dm'}
   %\VignetteEncoding{UTF-8}
@@ -11,7 +12,7 @@ editor_options:
 ---
 
 
-``````{r setup, include = FALSE}
+``````{r setup, include=F}
 source("setup/setup.R")
 ``````
 
@@ -21,10 +22,12 @@ This vignette describes which changes are necessary to adapt your code when upda
 
 ### Replace `cdm` with `dm`
 
+
 During this update the prevalent prefix `cdm` was discarded in favor of `dm`.
 The old prefix would still do its job, but a warning message would be issued each time a function beginning with `cdm` was being used, informing that the function is soft-deprecated and suggesting the use of its newer version.
 
 If you have a script which is based on an older {dm} version, it should still work with the newer version, albeit complaining each time an outdated function is being used.
+
 This can be repaired by:
 
 1. either going through the script step by step, testing the output of each line of code and use the new function names provided in the generated warnings to update the function calls.
@@ -40,13 +43,15 @@ If you want to retain the former behavior, you need to replace each of the metho
 
 The methods are of course not to be avoided in general, if no filters are set anyway the result will not change after the update.
 
+
 Here a short example for the different cases:
 
 Formerly you would access the "filtered" tables using the following syntax:
 
+
 ```{r}
 library(dm)
-flights_dm <- dm_nycflights13()
+flights_dm<-dm_nycflights13()
 tbl(flights_dm, "airports")
 flights_dm$planes
 flights_dm[["weather"]]

@@ -19,6 +19,7 @@ Returns the \code{dm}, invisibly, after finishing all checks.
 In theory, with the exception of \code{\link[=new_dm]{new_dm()}}, all \code{dm} objects
 created or modified by functions in this package should be valid,
 and this function should not be needed.
+
 Please file an issue if any dm operation creates an invalid object.
 }
 \examples{

@@ -19,6 +19,7 @@ dm_get_available_colors()
 Allowed colors are all hex coded colors (quoted) and the color names from \code{dm_get_available_colors()}.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 }
+
 \value{
 For \code{dm_set_colors()}: the updated data model.
 
@@ -45,20 +46,21 @@ table color with the name "default".
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_nycflights13(color = FALSE) \%>\%
-  dm_set_colors(
-    darkblue = starts_with("air"),
-    "#5986C4" = flights
-  ) \%>\%
-  dm_draw()
+ dm_set_colors(
+darkblue = starts_with("air"),
+"#5986C4" = flights
+ ) \%>\%
+ dm_draw()
 
 # Splicing is supported:
+
 nyc_cols <-
-  dm_nycflights13() \%>\%
-  dm_get_colors()
+ dm_nycflights13() \%>\%
+ dm_get_colors()
 nyc_cols
 
 dm_nycflights13(color = FALSE) \%>\%
-  dm_set_colors(!!!nyc_cols) \%>\%
-  dm_draw()
+ dm_set_colors(!!!nyc_cols) \%>\%
+ dm_draw()
 \dontshow{\}) # examplesIf}
 }

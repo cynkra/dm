@@ -5,11 +5,11 @@
 \title{Load a dm from a remote data source}
 \usage{
 dm_from_con(
-  con = NULL,
-  table_names = NULL,
-  learn_keys = NULL,
-  .names = NULL,
-  ...
+ con = NULL,
+ table_names = NULL,
+ learn_keys = NULL,
+ .names = NULL,
+ ...
 )
 }
 \arguments{
@@ -18,6 +18,7 @@ dm_from_con(
 \item{table_names}{A character vector of the names of the tables to include.}
 
 \item{learn_keys}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 
 Set to \code{TRUE} to query the definition of primary and
 foreign keys from the database.
@@ -52,6 +53,7 @@ default: active database.
 }
 }}
 }
+
 \value{
 A \code{dm} object.
 }

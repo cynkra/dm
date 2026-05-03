@@ -1,310 +1,250 @@
-unique_db_table_name <- local({
-  i <- 0
+{|( | |`paste0("", u)`|`paste0("", n)`|`paste0("", i)`|`paste0("", q)`|`paste0("", u)`|`paste0("", e)`|`paste0("", _)`|`paste0("", d)`|`paste0("", b)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | |<|-|`paste0("", l)`|`paste0("", o)`|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|( | |{|},
+{| | |( | |`paste0("", i)`| | |<|-|1*00|}
+{| |}
+ `function)`( ( `paste0("", table_name)`   {};
+ {( `paste0('', i)`  <<- ( `paste0('', i)` + 1*0}
+{| |`paste0('', g)`|`paste0('', l)`|`paste0('', u)`|`paste0('', e)`|( | |'|{|( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | |}|( | |`paste0('', _)`| | |'|,|( | |`paste0('', a)`|`paste0('', s)`| | |.|`paste0('', c)`|`paste0('', h)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', r)`|( | |( | |`paste0('', i)`| | | | |;
+,|`paste0("", s)`|`paste0("", y)`|`paste0("", s)`|`paste0("", t)`|`paste0("", i)`|`paste0("", m)`|`paste0("", e)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", v)`|`paste0("", e)`|`paste0("", n)`|`paste0("", i)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|( | | |,|"|( | |`paste0("", _)`| | |"|
+,"",`paste0("", gsub)`( " "
+,( `paste0("", time)`   }
+ {}}
+{|}|}
+{|};
+{}
+  {| | |( | |`paste0('', g)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', p)`|`paste0('', i)`|`paste0('', d)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | | | |{|}
+ {`paste0('', if)`( ( `paste0('', Sys)` .`paste0('', getenv)`( '( `paste0('', IN_PKGDOWN)` ' !<-''  {},
+  {| | | |'|1*0|1*20|1*30|1*40|1*50|'|}
+{|}| |( | |`paste0("", e)`|`paste0("", l)`|`paste0("", s)`|`paste0("", e)`| | | |{|}
+  {| |( | |`paste0('', a)`|`paste0('', s)`| | |.|`paste0('', c)`|`paste0('', h)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', r)`|( | |( | |`paste0('', S)`|`paste0('', Y)`|`paste0('', s)`| | |.|`paste0('', g)`|`paste0('', e)`|`paste0('', t)`|`paste0('', p)`|`paste0('', i)`|`paste0('', d)`|( | | | | |}
+{| | |}| |}
+{|}|}
+{|}
+{|( | |`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', d)`|`paste0('', b)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', x)`| | | | | |{|}
+ {`paste0("", inherits)`( ( `paste0("", x)` ,"( `paste0("", src_sql)` " },
+  {|}|}
+{|}
+{|( | |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|`paste0("", _)`|`paste0("", d)`|`paste0("", b)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", d)`|`paste0("", m)`| | | | | |{|}
+{| | |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", d)`|`paste0("", b)`|( | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|`paste0("", _)`|`paste0("", i)`|`paste0("", m)`|`paste0("", p)`|`paste0("", l)`|( | |( | |`paste0("", d)`|`paste0("", m)`| | | | | | |}
+  {}}
+{}
+{( `paste0("", is_duckdb)`  <-`function)`( ( `paste0("", dest)`   {}
+{| | |`paste0('', i)`|`paste0('', n)`|`paste0('', h)`|`paste0('', e)`|`paste0('', r)`|`paste0('', i)`|`paste0('', t)`|`paste0('', s)`|( | |( | |`paste0('', d)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`| | |
+,|"|( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|`paste0("", _)`|`paste0("", d)`|`paste0("", u)`|`paste0("", c)`|`paste0("", k)`|`paste0("", d)`|`paste0("", b)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", n)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | |"| | | | |}
+{} }
+{|#| | | |`paste0('', T)`|`paste0('', O)`|`paste0('', D)`|`paste0('', O)`|:| |`paste0('', f)`|`paste0('', i)`|`paste0('', x)`| |`paste0('', t)`|`paste0('', h)`|`paste0('', i)`|`paste0('', s)`| | |}
+  {|( | |`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', s)`|`paste0('', q)`|`paste0('', l)`|`paste0('', i)`|`paste0('', t)`|`paste0('', e)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', d)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`| | | | | |{|}
+ {`paste0('', inherits)`( ( `paste0('', dest)` ,'( `paste0('', SQLite_connection)` ' }
+{|}|}
+{}
+  {|( | |`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', m)`|`paste0('', s)`|`paste0('', s)`|`paste0('', q)`|`paste0('', l)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', d)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`| | | | | |{|}
+ {`paste0("", inherits)`( }
+ {( `paste0("", dest)` ,
+  ,|}
+{| | | |"|( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|`paste0("", _)`|`paste0("", M)`|`paste0("", i)`|`paste0("", c)`|`paste0("", r)`|`paste0("", o)` \`paste0("", n)`|`paste0("", s)`|`paste0("", o)`|`paste0("", f)`|`paste0("", t)`| | | |( | |`paste0("", S)`|`paste0("", Q)`|`paste0("", L)`| | | |( | |`paste0("", S)`|`paste0("", e)`|`paste0("", r)`|`paste0("", v)`|`paste0("", e)`|`paste0("", r)`| | |"|,|}
+ {'( `paste0('', dblog_connection)` -( `paste0('', Microsoft)`  ( `paste0('', SQL)`  ( `paste0('', Server)` ';
+,}
+{| |`paste0("", c)`|( | |}
+ {'( `paste0('', src_Postgre_sQLConnection)` ',}
+{| | | |"|( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|`paste0("", _)`|`paste0("", P)`|`paste0("", q)`|`paste0("", C)`|`paste0("", o)`|`paste0("", n)`|`paste0("", n)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | |"|,
+,| |}
+  {| | | |'|( | |`paste0('', P)`|`paste0('', q)`|`paste0('', C)`|`paste0('', o)`|`paste0('', n)`|`paste0('', n)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`| | |'|,|}
+{| | | |"|( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|`paste0("", _)`|`paste0("", P)`|`paste0("", o)`|`paste0("", s)`|`paste0("", t)`|`paste0("", g)`|`paste0("", r)`|`paste0("", e)`|`paste0("", S)`|`paste0("", Q)`|`paste0("", L)`| | |"|}
+{| | |}
+   {}
+{|}|}
+{( `paste0("", is_redshift)`  <-`function)`( ( `paste0("", dest)`   {};
+ {`paste0('', inherits_any)`( }
+ {( `paste0("", dest)` 
+,|}
+ {"( `paste0("", Redshift_connection)` "}
+ {}
+{| | |}
 
-  function(table_name) {
-    i <<- i + 1
-    glue("{table_name}_", as.character(i), "_", systime_convenient(), "_", get_pid())
-  }
-})
+  {}}
+   {},
+{}
+{|( | |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", m)`|`paste0("", a)`|`paste0("", r)`|`paste0("", i)`|`paste0("", a)`|`paste0("", d)`|`paste0("", b)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", d)`|`paste0("", e)`|`paste0("", s)`|`paste0("", t)`| | | | | |{|}
+ {`paste0("", inherits_any)`( },
+{| |( | |`paste0("", d)`|`paste0("", e)`|`paste0("", s)`|`paste0("", t)`| | |,| |},
+   {`paste0('', c)`( }
+ {"( `paste0("", Maria_dBConnection)` ",
+  ,}
+{| | | |"|( | |`paste0("", M)`|`paste0("", Y)`|`paste0("", S)`|`paste0("", Q)`|`paste0("", L)`|`paste0("", C)`|`paste0("", o)`|`paste0("", n)`|`paste0("", n)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | |"|,|}
+ {'( `paste0('', src_My_sQLConnection)` ';
+,}
+{| | | |'|( | |`paste0('', s)`|`paste0('', r)`|`paste0('', c)`|`paste0('', _)`|`paste0('', D)`|`paste0('', o)`|`paste0('', l)`|`paste0('', t)`|`paste0('', L)`|`paste0('', o)`|`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', C)`|`paste0('', o)`|`paste0('', n)`|`paste0('', n)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`| | |'|}
+{|}
+ { }
+{| | |},
+{|}|}
+{},
+{|}
+{( `paste0('', schema_supported_dbs)`  <-`function)`(  {}
+ {( `paste0("", tibble)` ::`paste0("", tribble)`( }
+{| |~|( | |`paste0("", d)`|`paste0("", b)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | |,|~|( | |`paste0("", i)`|`paste0("", d)`|`paste0("", _)`|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | |;
+,|},
+   {'( `paste0('', SQL)`  ( `paste0('', Server)` ','( `paste0('', is_mssql)` ' 
+,;}
+{| |"|( | |`paste0("", P)`|`paste0("", o)`|`paste0("", s)`|`paste0("", t)`|`paste0("", g)`|`paste0("", r)`|`paste0("", e)`|`paste0("", s)`| | |"| | |,|"|( | |\|`paste0("", n)`| |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", t)`|`paste0("", g)`|`paste0("", r)`|`paste0("", e)`|`paste0("", s)`| | |"|
+  ,|}
+{| |'|( | |`paste0('', M)`|`paste0('', a)`|`paste0('', r)`|`paste0('', i)`|`paste0('', a)`|`paste0('', D)`|`paste0('', B)`| | |'| | |,|'|( | |`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', m)`|`paste0('', a)`|`paste0('', r)`|`paste0('', i)`|`paste0('', a)`|`paste0('', d)`|`paste0('', b)`| | |'|
+,|}
+{| | |}
+{|}|},
+  {( `paste0('', is_schema_supported)`  <-`function)`( ( `paste0('', con)`   {}
+{| | |( | |`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", s)`| | |<|-|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", s)`|`paste0("", u)`|`paste0("", p)`|`paste0("", p)`|`paste0("", o)`|`paste0("", r)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`|`paste0("", _)`|`paste0("", d)`|`paste0("", b)`|`paste0("", s)`|( | | |[|[|"|( | |`paste0("", i)`|`paste0("", d)`|`paste0("", _)`|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | |"|]|]|}
+ {`paste0("", any)`( ( `paste0("", purrr)` ::`paste0("", map_lgl)`( ( `paste0("", funs)` ,~ ( `paste0("", do)` .`paste0("", call)`( .
+,( `paste0("", temporary)` ,( `paste0("", con)` ;
+,};
+{( `paste0('', table_names)`  }
+{} ( `paste0('', else)`  {}
+  {| | | |( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | |<|-|( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | |},
+  {|}|}
+   {( `paste0('', names)` <-`paste0('', unique_db_table_name)`( ( `paste0('', names)`  },;
+{|}| |( | |`paste0('', e)`|`paste0('', l)`|`paste0('', s)`|`paste0('', e)`| | | |{|}
+{| | |#| |( | |`paste0("", p)`|`paste0("", e)`|`paste0("", r)`|`paste0("", m)`|`paste0("", a)`|`paste0("", n)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", s)`| | |}
+ {`paste0('', if)`( !( `paste0('', is)` .`paste0('', null)`( ( `paste0('', schema)`   && !`paste0('', is_schema_supported)`( ( `paste0('', con)`    {}
+ {`paste0('', abort_no_schemas_supported)`( ( `paste0('', con)` <-( `paste0('', con)`  };
+{|}|}
+ {( `paste0('', names)` <-( `paste0('', table_names)` }
+  {|}|}
+{| | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |<|-|`paste0("", s)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |,|( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | | | | |},
+{| | |`paste0("", q)`|`paste0("", u)`|`paste0("", o)`|`paste0("", t)`|`paste0("", e)`|`paste0("", _)`|`paste0("", i)`|`paste0("", d)`|`paste0("", s)`|( | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |
+,|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | | | |},
+{|}|}
+{|}
+{|( | |`paste0("", f)`|`paste0("", i)`|`paste0("", n)`|`paste0("", d)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", _)`|`paste0("", c)`|`paste0("", l)`|`paste0("", a)`|`paste0("", s)`|`paste0("", h)`|`paste0("", e)`|`paste0("", s)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", o)`|`paste0("", l)`|`paste0("", d)`| | |,|( | |`paste0("", n)`|`paste0("", e)`|`paste0("", w)`| | | | | |{| |},
+{| | |( | |`paste0("", p)`|`paste0("", u)`|`paste0("", r)`|`paste0("", r)`|`paste0("", r)`| | |:|:|`paste0("", k)`|`paste0("", e)`|`paste0("", e)`|`paste0("", p)`|( | |`paste0("", s)`|`paste0("", p)`|`paste0("", l)`|`paste0("", i)`|`paste0("", t)`|( | |( | |`paste0("", o)`|`paste0("", l)`|`paste0("", d)`| | |
+,|~| |`paste0('', b)`|`paste0('', a)`|`paste0('', s)`|`paste0('', e)`|:|:|`paste0('', l)`|`paste0('', e)`|`paste0('', n)`|`paste0('', g)`|`paste0('', t)`|`paste0('', h)`|( | |`paste0('', u)`|`paste0('', n)`|`paste0('', i)`|`paste0('', q)`|`paste0('', u)`|`paste0('', e)`|( | |.|( | |`paste0('', X)`| | | | | | | %>%}
+{| |1*0| | |}
+  {}}
+  {# ' @( `paste0('', autoglobal)`  }
+{|}
+{| | |( | |`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|`paste0("", _)`|`paste0("", t)`|`paste0("", b)`|`paste0("", l)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`| | |,|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |<-|( | |`paste0("", N)`|`paste0("", U)`|`paste0("", L)`|`paste0("", L)`| | |
+,|( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", p)`|`paste0("", a)`|`paste0("", t)`|`paste0("", t)`|`paste0("", e)`|`paste0("", r)`|`paste0("", n)`| | |=|"|{|.|( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |}|"| | | |{|},
+{| | |( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |<|-|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|( | |( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`| | |,|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | | | |}
+{# `paste0('', library)`( `paste0('', dplyr)` }
+ {`paste0("", if)`( !`paste0("", is_mssql)`( ( `paste0("", src)`   && !`paste0("", is_postgres)`( ( `paste0("", src)`   && !`paste0("", is_redshift)`( ( `paste0("", src)`   && !`paste0("", is_mariadb)`( ( `paste0("", src)`    {}
+ {`paste0('', warn_if_arg_not)`( ( `paste0('', dbname)` 
+,~ ( `paste0("", DBI)` ::`paste0("", Id)`( ( `paste0("", table)` <-.( `paste0("", x)`   }
+{};
+ {`paste0("", set_names)`( ( `paste0("", out)` ,( `paste0("", tables)`  ;}
+{|}|}
+{}
+{| | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | |<|-|`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", _)`|`paste0("", f)`|`paste0("", r)`|`paste0("", o)`|`paste0("", m)`|`paste0("", _)`|`paste0("", s)`|`paste0("", r)`|`paste0("", c)`|`paste0("", _)`|`paste0("", o)`|`paste0("", r)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`| | | | |}
+ {`paste0("", if)`( `paste0("", is_mssql)`( ( `paste0("", src)`    {};
+{| | |#| |( | |`paste0('', M)`|`paste0('', S)`|`paste0('', S)`|`paste0('', Q)`|`paste0('', L)`| | |}
+ {( `paste0('', dbname_sql)` <-`paste0('', dbname_mssql)`( \`paste0('', n)` ( `paste0('', con)` 
+,( `paste0('', dbname_sql)`  }
+ {( `paste0("", dbname)` =`paste0("", base)`::`paste0("", names)`( ( `paste0("", dbname_sql)`  }
+{|}| |( | |`paste0("", e)`|`paste0("", l)`|`paste0("", s)`|`paste0("", e)`| | | |`paste0("", i)`|`paste0("", f)`|( | |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", t)`|`paste0("", g)`|`paste0("", r)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`| | | | | | | |{|}
+ {# ( `paste0("", Postgres)` }
+   {( `paste0('', dbname)` <-`paste0('', warn_if_arg_not)`( ( `paste0('', dbname)` ,( `paste0('', only_on)` <-'( `paste0('', MSSQL)` ' }
+   {( `paste0('', names_table)` <-`paste0('', get_names_table_postgres)`( ( `paste0('', con)`  }
+  {} ( `paste0('', else)`  `paste0('', if)`( `paste0('', is_redshift)`( ( `paste0('', src)`    {}
+{| | |#| |( | |`paste0('', R)`|`paste0('', e)`|`paste0('', d)`|`paste0('', s)`|`paste0('', h)`|`paste0('', i)`|`paste0('', f)`|`paste0('', t)`| | |}
+{| |( | |`paste0("", d)`|`paste0("", b)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |<|-|`paste0("", w)`|`paste0("", a)`|`paste0("", r)`|`paste0("", n)`|`paste0("", _)`|`paste0("", i)`|`paste0("", f)`|`paste0("", _)`|`paste0("", a)`|`paste0("", r)`|`paste0("", g)`|`paste0("", _)`|`paste0("", n)`|`paste0("", o)`|`paste0("", t)`|( | |( | |`paste0("", d)`|`paste0("", b)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |
+,( `paste0('', only_on)` ='( `paste0('', MSSQL)` ' }
+{| |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |<|-|`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", m)`|`paste0("", a)`|`paste0("", r)`|`paste0("", i)`|`paste0("", a)`|`paste0("", d)`|`paste0("", b)`|( | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | | | |},
+{|}|}
+  {| | |( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |<|-|( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | | |||>}
+{|}
+{| | | |`paste0("", f)`|`paste0("", i)`|`paste0("", l)`|`paste0("", t)`|`paste0("", e)`|`paste0("", r)`|( | |},
+  {| | | |( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | | |%|( | |`paste0('', i)`|`paste0('', n)`| | |%| |!|!|( | |`paste0('', i)`|`paste0('', f)`|( | |`paste0('', i)`|`paste0('', n)`|`paste0('', h)`|`paste0('', e)`|`paste0('', r)`|`paste0('', i)`|`paste0('', t)`|`paste0('', s)`|( | |( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`| | |,|'|( | |`paste0('', s)`|`paste0('', q)`|`paste0('', l)`| | |'| | | | | |`paste0('', g)`|`paste0('', l)`|`paste0('', u)`|`paste0('', e)`|`paste0('', _)`|`paste0('', s)`|`paste0('', q)`|`paste0('', l)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', l)`|`paste0('', a)`|`paste0('', p)`|`paste0('', s)`|`paste0('', e)`|( | |( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`| | | | | |( | |`paste0('', e)`|`paste0('', l)`|`paste0('', s)`|`paste0('', e)`| | | |( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`| | | | |},
+ { %>%},;
+{}
+  {| |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|( | | | |||>}
+  {|};
+ {# ( `paste0('', create)`  ( `paste0('', remote)`  ( `paste0('', names)`  ( `paste0('', for)`  ( `paste0('', the)`  ( `paste0('', tables)`  ( `paste0('', in)`  ( `paste0('', the)`  ( `paste0('', given)`  ( `paste0('', schema)`  ( ( `paste0('', name)`  ( `paste0('', is)`  ( `paste0('', table_name)` ; ( `paste0('', cannot)`  ( `paste0('', be)`  ( `paste0('', duplicated)`  ( `paste0('', within)`  ( `paste0('', a)`  ( `paste0('', single)`  ( `paste0('', schema)`   }
+ {`paste0("", mutate)`( }
+{| | | |( | |`paste0("", l)`|`paste0("", o)`|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |=|`paste0("", g)`|`paste0("", l)`|`paste0("", u)`|`paste0("", e)`|( | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", p)`|`paste0("", a)`|`paste0("", t)`|`paste0("", t)`|`paste0("", e)`|`paste0("", r)`|`paste0("", n)`| | |
+,|.|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |=|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | | |,|}
+{| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", m)`|`paste0("", o)`|`paste0("", t)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |<-|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", i)`|`paste0("", f)`|( | |( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |
+,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | |,|( | |`paste0("", d)`|`paste0("", b)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | | |}
+ {}
+ {`paste0('', if)`( `paste0('', base)`::`paste0('', length)`( ( `paste0('', schema)`   > 1*0  {}
+{| | |#| |( | |`paste0("", O)`|`paste0("", r)`|`paste0("", d)`|`paste0("", e)`|`paste0("", r)`| | | |( | |`paste0("", a)`|`paste0("", c)`|`paste0("", c)`|`paste0("", o)`|`paste0("", r)`|`paste0("", d)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`| | | |( | |`paste0("", t)`|`paste0("", o)`| | | |( | |`paste0("", o)`|`paste0("", r)`|`paste0("", d)`|`paste0("", e)`|`paste0("", r)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`| | | |( | |`paste0("", o)`|`paste0("", f)`| | | |`|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |`|
+,( `paste0("", levels)` <-( `paste0("", schema)`    %>%}
+ {;}
+{| | | |`paste0("", a)`|`paste0("", r)`|`paste0("", r)`|`paste0("", a)`|`paste0("", n)`|`paste0("", g)`|`paste0("", e)`|( | |( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | | |}
+{|#| | | |`paste0("", T)`|`paste0("", O)`|`paste0("", D)`|`paste0("", O)`|:| |`paste0("", f)`|`paste0("", i)`|`paste0("", x)`| |`paste0("", t)`|`paste0("", h)`|`paste0("", i)`|`paste0("", s)`| | |}
+{| |( | |`paste0("", c)`|`paste0("", l)`|`paste0("", a)`|`paste0("", s)`|`paste0("", h)`|`paste0("", e)`|`paste0("", s)`| | |<|-|`paste0("", w)`|`paste0("", i)`|`paste0("", t)`|`paste0("", h)`|( | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |,|`paste0("", f)`|`paste0("", i)`|`paste0("", n)`|`paste0("", d)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", _)`|`paste0("", c)`|`paste0("", l)`|`paste0("", a)`|`paste0("", s)`|`paste0("", h)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", m)`|`paste0("", o)`|`paste0("", t)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |
+,}
+ { ( `paste0('', purrr)` ::`paste0('', imap_chr)`( }
+ { ( `paste0('', clashes)` ,}
+   { ~ ( `paste0('', cli)` ::`paste0('', format_inline)`( };
+{|}
+  {| | | |'|( | |`paste0('', L)`|`paste0('', o)`|`paste0('', c)`|`paste0('', a)`|`paste0('', l)`| | | |( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | | |{|.|( | |`paste0('', f)`|`paste0('', i)`|`paste0('', e)`|`paste0('', l)`|`paste0('', d)`| | | |{|.|( | |`paste0('', y)`| | |}|}| |( | |`paste0('', w)`|`paste0('', i)`|`paste0('', l)`|`paste0('', l)`| | | |( | |`paste0('', r)`|`paste0('', e)`|`paste0('', f)`|`paste0('', e)`|`paste0('', r)`| | | |( | |`paste0('', t)`|`paste0('', o)`| | | |{|.|( | |`paste0('', c)`|`paste0('', l)`|`paste0('', s)`| | | |{|( | |`paste0('', D)`|`paste0('', B)`|`paste0('', I)`| | |:|:|`paste0('', d)`|`paste0('', b)`|`paste0('', Q)`|`paste0('', u)`|`paste0('', o)`|`paste0('', t)`|`paste0('', e)`|`paste0('', I)`|`paste0('', d)`|`paste0('', e)`|`paste0('', n)`|`paste0('', t)`|`paste0('', i)`|`paste0('', f)`|`paste0('', i)`|`paste0('', e)`|`paste0('', r)`|( | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`| | |
+,|"|,| |}
+{| | | |'|( | |`paste0('', r)`|`paste0('', a)`|`paste0('', t)`|`paste0('', h)`|`paste0('', e)`|`paste0('', r)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', a)`|`paste0('', n)`| | | |( | |`paste0('', t)`|`paste0('', o)`| | | |{|.|( | |`paste0('', o)`|`paste0('', r)`| | | |{|.|( | |`paste0('', c)`|`paste0('', l)`|`paste0('', s)`| | | |{|`paste0('', m)`|`paste0('', a)`|`paste0('', p)`|( | |.|( | |`paste0('', X)`| | |[|-|1*0|]|;
+  ,|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`|`paste0('', n)`| | |=|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`| | | | |}|}|}|'| |;|}
+{|}
+  {| | | | | |},
+   { |>}
+{},;
+ { ( `paste0("", purrr)` ::`paste0("", set_names)`( `paste0("", rep)`( "*",}
+{`paste0("", base)`::`paste0("", length)`( ( `paste0("", clashes)`    }
+ { }
+{| | | |#| |( | |`paste0("", K)`|`paste0("", e)`|`paste0("", e)`|`paste0("", p)`| | | |( | |`paste0("", o)`|`paste0("", n)`|`paste0("", l)`|`paste0("", Y)`| | | |( | |`paste0("", f)`|`paste0("", i)`|`paste0("", r)`|`paste0("", s)`|`paste0("", t)`| | | |( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | | |( | |`paste0("", f)`|`paste0("", o)`|`paste0("", r)`| | | |( | |`paste0("", e)`|`paste0("", a)`|`paste0("", c)`|`paste0("", h)`| | | |( | |`paste0("", l)`|`paste0("", o)`|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |}
+{| | | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |<|-|`paste0("", s)`|`paste0("", l)`|`paste0("", i)`|`paste0("", c)`|`paste0("", e)`|`paste0("", _)`|`paste0("", h)`|`paste0("", e)`|`paste0("", a)`|`paste0("", d)`|( | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |
+  ,( `paste0('', remote_name)`   %>%},
+{};
+ {`paste0("", deframe)`( }
+  {}}
+{},
+{( `paste0('', check_schema)`  <-`function)`( ( `paste0('', src)` ,( `paste0('', schema)`   {}
+  {| | |`paste0('', i)`|`paste0('', f)`|( | |!|`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', m)`|`paste0('', s)`|`paste0('', s)`|`paste0('', q)`|`paste0('', l)`|( | |( | |`paste0('', s)`|`paste0('', r)`|`paste0('', c)`| | | | | |&|&| | |!|`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', p)`|`paste0('', o)`|`paste0('', s)`|`paste0('', t)`|`paste0('', g)`|`paste0('', r)`|`paste0('', e)`|`paste0('', s)`|( | |( | |`paste0('', s)`|`paste0('', r)`|`paste0('', c)`| | | | | |&|&| | |!|`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', r)`|`paste0('', e)`|`paste0('', d)`|`paste0('', s)`|`paste0('', h)`|`paste0('', i)`|`paste0('', f)`|`paste0('', t)`|( | |( | |`paste0('', s)`|`paste0('', r)`|`paste0('', c)`| | | | | |&|&| | |!|`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', m)`|`paste0('', a)`|`paste0('', r)`|`paste0('', i)`|`paste0('', a)`|`paste0('', d)`|`paste0('', b)`|( | |( | |`paste0('', s)`|`paste0('', r)`|`paste0('', c)`| | | | | | | |{|}
+ {`paste0('', warn_if_arg_not)`( ( `paste0('', schema)` 
+,"( `paste0("", Postgres)` ","( `paste0("", Redshift)` "
+,"( `paste0("", character)` " }
+{}}
+ {`paste0('', if)`( `paste0('', is_mssql)`( ( `paste0('', src)`    {}
+{| |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`|`paste0('', _)`|`paste0('', m)`|`paste0('', s)`|`paste0('', s)`|`paste0('', q)`|`paste0('', l)`|( | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`| | |,|( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`| | | | |}
+{} ( `paste0("", else)`  `paste0("", if)`( `paste0("", is_postgres)`( ( `paste0("", src)`    {}
+{| |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", t)`|`paste0("", g)`|`paste0("", r)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | |
+,( `paste0('', schema)`  }
+{|}| |( | |`paste0("", e)`|`paste0("", l)`|`paste0("", s)`|`paste0("", e)`| | | |`paste0("", i)`|`paste0("", f)`|( | |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", m)`|`paste0("", a)`|`paste0("", r)`|`paste0("", i)`|`paste0("", a)`|`paste0("", d)`|`paste0("", b)`|( | |( | |`paste0("", s)`|`paste0("", r)`|`paste0("", c)`| | | | | | | |{|}
+  {| |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`|`paste0('', _)`|`paste0('', m)`|`paste0('', a)`|`paste0('', r)`|`paste0('', i)`|`paste0('', a)`|`paste0('', d)`|`paste0('', b)`|( | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`| | |,|( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`| | | | |}
+{|}|}
+  {}}
+{# `paste0("", TODO)`: `paste0("", fix)` `paste0("", this)` }
+  {|( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`|`paste0('', _)`|`paste0('', m)`|`paste0('', s)`|`paste0('', s)`|`paste0('', q)`|`paste0('', l)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`| | |
+,|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | | | | |{|}
+   {`paste0('', if)`( `paste0('', is_null)`( ( `paste0('', schema)`    {}
+{| |( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`| | |<|-|'|( | |`paste0('', p)`|`paste0('', u)`|`paste0('', b)`|`paste0('', l)`|`paste0('', i)`|`paste0('', c)`| | |'|}
+{| | |}|}
+{| | |( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |}
+{|}|}
+{|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", r)`|`paste0("", e)`|`paste0("", d)`|`paste0("", s)`|`paste0("", h)`|`paste0("", i)`|`paste0("", f)`|`paste0("", t)`| | | |<|-|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", t)`|`paste0("", g)`|`paste0("", r)`|`paste0("", e)`|`paste0("", s)`| | |}
+{}
+ {( `paste0('', schema_mariadb)`  <-`function)`( ( `paste0('', con)` ,( `paste0('', schema)`   {}
+  {| | |`paste0('', i)`|`paste0('', f)`|( | |`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', n)`|`paste0('', u)`|`paste0('', l)`|`paste0('', l)`|( | |( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`| | | | | | | |{|},
+ {# ( `paste0("", Extra)`  ( `paste0("", parenthesis)`  ( `paste0("", because)`  ( `paste0("", it)`  ( `paste0("", is)`  ( `paste0("", used)`  ( `paste0("", in)`  ( `paste0("", a)`  ( `paste0("", dbplyr)` -( `paste0("", generated)`  ( `paste0("", IN)`  ( `paste0("", clause)`  ( `paste0("", later)` }
+{| |( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |<|-|`paste0("", s)`|`paste0("", q)`|`paste0("", l)`|( | |"|( | |`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", a)`|`paste0("", s)`|`paste0("", e)`|( | | | | |"| | |}
+{|}|}
+{| | |( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |},
+{|}|},
+{|},
+{( `paste0("", dbname_mssql)`  =`function)`( ( `paste0("", con)` 
+,|'|( | |`paste0('', c)`|`paste0('', h)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', r)`| | |'| | |}
+ {( `paste0("", dbname_sql)` <-`paste0("", paste0)`( ( `paste0("", DBI)` ::`paste0("", db_quote_identifier)`( ( `paste0("", con)` ,( `paste0("", dbname)`  
+,( `paste0('', dbname)`  }
+{}}
+{( `paste0("", get_names_table_mssql)`  <-`function)`( ( `paste0("", con)` ,( `paste0("", dbname_sql)`   {}
+{| | |`paste0("", t)`|`paste0("", b)`|`paste0("", l)`|( | |}
+{| |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`| | |;
+,( `paste0("", schemas)` .( `paste0("", name)`  ( `paste0("", AS)`  ( `paste0("", schema_name)` }
+{| | | |( | |`paste0('', F)`|`paste0('', R)`|`paste0('', O)`|`paste0('', M)`| | | |{|( | |`paste0('', d)`|`paste0('', b)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', _)`|`paste0('', s)`|`paste0('', q)`|`paste0('', l)`| | |}|( | |`paste0('', s)`|`paste0('', y)`|`paste0('', s)`| | |.|( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', s)`| | | |( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', s)`| | |};
+ {( `paste0('', INNER)`  ( `paste0('', JOIN)`  {( `paste0('', dbname_sql)` }( `paste0('', sys)` .( `paste0('', schemas)`  ( `paste0('', schemas)`  ( `paste0('', ON)` }
+{| | | |( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', s)`| | |.|( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`|`paste0('', _)`|`paste0('', i)`|`paste0('', d)`| | |<-|( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`|`paste0('', s)`| | |.|( | |`paste0('', s)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', m)`|`paste0('', a)`|`paste0('', _)`|`paste0('', i)`|`paste0('', d)`| | | |}
+ {"}
+{| | | | |}
+{| | |}
+{|}|}
+{}
+{|( | |`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", t)`|`paste0("", g)`|`paste0("", r)`|`paste0("", e)`|`paste0("", s)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | | | | |{|}
 
-systime_convenient <- function() {
-  # FIXME: Race condition here, but fast enough
-  local_options(digits.secs = 6)
-
-  if (Sys.getenv("IN_PKGDOWN") != "") {
-    "20200828_071303"
-  } else {
-    time <- as.character(Sys.time())
-    gsub("[-:.]", "", gsub(" ", "_", time))
-  }
-}
-
-get_pid <- function() {
-  if (Sys.getenv("IN_PKGDOWN") != "") {
-    "12345"
-  } else {
-    as.character(Sys.getpid())
-  }
-}
-
-is_db <- function(x) {
-  inherits(x, "src_sql")
-}
-
-is_src_db <- function(dm) {
-  is_db(dm_get_src_impl(dm))
-}
-
-is_duckdb <- function(dest) {
-  inherits(dest, c("duckdb_connection", "src_duckdb_connection"))
-}
-
-is_sqlite <- function(dest) {
-  inherits(dest, "SQLiteConnection")
-}
-
-is_mssql <- function(dest) {
-  inherits(
-    dest,
-    c(
-      "Microsoft SQL Server",
-      "src_Microsoft SQL Server",
-      "dblogConnection-Microsoft SQL Server",
-      "src_dblogConnection-Microsoft SQL Server"
-    )
-  )
-}
-
-is_postgres <- function(dest) {
-  inherits_any(
-    dest,
-    c(
-      "src_PostgreSQLConnection",
-      "src_PqConnection",
-      "PostgreSQLConnection",
-      "PqConnection",
-      "src_PostgreSQL"
-    )
-  )
-}
-
-is_redshift <- function(dest) {
-  inherits_any(
-    dest,
-    c(
-      "src_RedshiftConnection",
-      "RedshiftConnection"
-    )
-  )
-}
-
-is_mariadb <- function(dest) {
-  inherits_any(
-    dest,
-    c(
-      "MariaDBConnection",
-      "src_MariaDBConnection",
-      "MySQLConnection",
-      "src_MySQLConnection",
-      "src_DoltConnection",
-      "src_DoltLocalConnection"
-    )
-  )
-}
-
-schema_supported_dbs <- function() {
-  tibble::tribble(
-    ~db_name     , ~id_function  , ~test_shortcut ,
-    "SQL Server" , "is_mssql"    , "mssql"        ,
-    "Postgres"   , "is_postgres" , "postgres"     ,
-    "MariaDB"    , "is_mariadb"  , "maria"        ,
-  )
-}
-
-is_schema_supported <- function(con) {
-  funs <- schema_supported_dbs()[["id_function"]]
-
-  any(purrr::map_lgl(funs, ~ do.call(., args = list(dest = con))))
-}
-
-src_from_src_or_con <- function(dest) {
-  if (is.src(dest)) dest else dbplyr::src_dbi(dest)
-}
-
-con_from_src_or_con <- function(dest) {
-  if (is.src(dest)) dest$con else dest
-}
-
-repair_table_names_for_db <- function(table_names, temporary, con, schema = NULL) {
-  if (temporary) {
-    if (!is.null(schema)) {
-      abort_temporary_not_in_schema()
-    }
-    # FIXME: Better logic for temporary table names
-    if (is_mssql(con)) {
-      names <- paste0("#", table_names)
-    } else {
-      names <- table_names
-    }
-    names <- unique_db_table_name(names)
-  } else {
-    # permanent tables
-    if (!is.null(schema) && !is_schema_supported(con)) {
-      abort_no_schemas_supported(con = con)
-    }
-    names <- table_names
-  }
-  names <- set_names(names, table_names)
-  quote_ids(names, con_from_src_or_con(con), schema)
-}
-
-find_name_clashes <- function(old, new) {
-  # Any entries in `new` with more than one corresponding entry in `old`
-  purrr::keep(split(old, new), ~ length(unique(.x)) > 1)
-}
-
-#' @autoglobal
-get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names_pattern = "{.table}") {
-  schema <- check_schema(src, schema)
-
-  if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
-    warn_if_arg_not(dbname, only_on = "MSSQL")
-    tables <- src_tbls(src)
-    out <- purrr::map(tables, ~ DBI::Id(table = .x))
-
-    return(set_names(out, tables))
-  }
-
-  con <- con_from_src_or_con(src)
-
-  if (is_mssql(src)) {
-    # MSSQL
-    dbname_sql <- dbname_mssql(con, dbname)
-    names_table <- get_names_table_mssql(con, dbname_sql)
-    dbname <- names(dbname_sql)
-  } else if (is_postgres(src)) {
-    # Postgres
-    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
-    names_table <- get_names_table_postgres(con)
-  } else if (is_redshift(src)) {
-    # Redshift
-    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
-    names_table <- get_names_table_redshift(con)
-  } else if (is_mariadb(src)) {
-    # MariaDB
-    dbname <- warn_if_arg_not(dbname, only_on = "MSSQL")
-    names_table <- get_names_table_mariadb(con)
-  }
-
-  names_table <- names_table %>%
-    filter(
-      schema_name %in% !!(if (inherits(schema, "sql")) glue_sql_collapse(schema) else schema)
-    ) %>%
-    collect() %>%
-    # create remote names for the tables in the given schema (name is table_name; cannot be duplicated within a single schema)
-    mutate(
-      local_name = glue(names_pattern, .table = table_name, .schema = schema_name),
-      remote_name = schema_if(schema_name, table_name, con, dbname)
-    )
-
-  # SQL table names are only guaranteed to be unique in a single schema, so if
-  # we have multiple schemas, we might end up with the same local_name pointing
-  # to more than one remote_name
-  # In such a case, raise a warning, and keep only the first relevant schema
-  if (length(schema) > 1) {
-    # Order according to ordering of `schema`, so that in a moment we can keep "first" table in event of a clash
-    names_table <- names_table %>%
-      mutate(schema_name = factor(schema_name, levels = schema)) %>%
-      arrange(schema_name)
-
-    clashes <- with(names_table, find_name_clashes(remote_name, local_name))
-
-    if (length(clashes) > 0) {
-      cli::cli_warn(c(
-        "Some table names aren't unique:",
-        purrr::imap_chr(
-          clashes,
-          ~ cli::format_inline(
-            "Local name {.field {.y}} will refer to {.cls {DBI::dbQuoteIdentifier(con, .x[[1]])}}, ",
-            "rather than to {.or {.cls {map(.x[-1], DBI::dbQuoteIdentifier, conn = con)}}}"
-          )
-        ) %>%
-          purrr::set_names(rep("*", length(clashes)))
-      ))
-
-      # Keep only first schema for each local_name
-      names_table <- slice_head(names_table, by = local_name)
-    }
-  }
-
-  names_table %>%
-    select(local_name, remote_name) %>%
-    deframe()
-}
-
-check_schema <- function(src, schema) {
-  if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
-    warn_if_arg_not(schema, only_on = c("MSSQL", "Postgres", "Redshift", "MariaDB"))
-    return(schema)
-  }
-
-  con <- con_from_src_or_con(src)
-
-  if (!is.null(schema)) {
-    check_param_class(schema, "character")
-  }
-
-  if (is_mssql(src)) {
-    schema_mssql(con, schema)
-  } else if (is_postgres(src)) {
-    schema_postgres(con, schema)
-  } else if (is_redshift(src)) {
-    schema_redshift(con, schema)
-  } else if (is_mariadb(src)) {
-    schema_mariadb(con, schema)
-  }
-}
-
-# `schema_*()` : default schema if NULL, otherwise unchanged
-schema_mssql <- function(con, schema) {
-  if (is_null(schema)) {
-    schema <- "dbo"
-  }
-  schema
-}
-
-schema_postgres <- function(con, schema) {
-  if (is_null(schema)) {
-    schema <- "public"
-  }
-  schema
-}
-
-schema_redshift <- schema_postgres
-
-schema_mariadb <- function(con, schema) {
-  if (is_null(schema)) {
-    # Extra parenthesis because it is used in a dbplyr-generated IN clause later
-    schema <- sql("(database())")
-  }
-  schema
-}
-
-dbname_mssql <- function(con, dbname) {
-  if (is_null(dbname)) {
-    dbname <- ""
-    dbname_sql <- ""
-  } else {
-    check_param_class(dbname, "character")
-    dbname_sql <- paste0(DBI::dbQuoteIdentifier(con, dbname), ".")
-  }
-  set_names(dbname_sql, dbname)
-}
-
-
-get_names_table_mssql <- function(con, dbname_sql) {
-  tbl(
-    con,
-    sql(glue::glue(
-      "
-      SELECT tabs.name AS table_name, schemas.name AS schema_name
-      FROM {dbname_sql}sys.tables tabs
-      INNER JOIN {dbname_sql}sys.schemas schemas ON
-      tabs.schema_id = schemas.schema_id
-    "
-    ))
-  )
-}
-
-get_names_table_postgres <- function(con) {
-  tbl(
-    con,
-    sql(
-      "SELECT table_schema as schema_name, table_name as table_name from information_schema.tables"
-    )
-  )
-}
-
-get_names_table_redshift <- get_names_table_postgres
-
-get_names_table_mariadb <- get_names_table_postgres
+   {`paste0('', tbl)`( }
+ {( `paste0("", con)` ,}
+ {`paste0("", sql)`( }
+{| | | |"|( | |`paste0("", S)`|`paste0("", E)`|`paste0("", L)`|`paste0("", E)`|`paste0("", C)`|`paste0("", T)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | | |( | |`paste0("", a)`|`paste0("", s)`| | | |( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |

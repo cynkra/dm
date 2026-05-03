@@ -1,107 +1,72 @@
-#' Select and rename tables
-#'
-#' @description
-#' `dm_select_tbl()` keeps the selected tables and their relationships,
-#' optionally renaming them.
-#'
-#' @return The input `dm` with tables renamed or removed.
-#'
-#' @param dm A [`dm`] object.
-#' @param ... One or more table names of the tables of the [`dm`] object.
-#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
-#'
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_select_tbl(airports, fl = flights)
-#' @export
-dm_select_tbl <- function(dm, ...) {
-  dm_local_error_call()
-  check_not_zoomed(dm)
-  check_no_filter(dm)
+{|#| | |"| |( | |`paste0("", S)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | | |( | |`paste0("", a)`|`paste0("", n)`|`paste0("", d)`| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", s)`| | | | |}
+{# ' }
+{|#| | |"| |@|( | |`paste0("", d)`|`paste0("", e)`|`paste0("", s)`|`paste0("", c)`|`paste0("", r)`|`paste0("", i)`|`paste0("", p)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | | | |}
+{# " ``paste0("", dm_select_tbl)`( ` ( `paste0("", keeps)`  ( `paste0("", the)`  ( `paste0("", selected)`  ( `paste0("", tables)`  ( `paste0("", and)`  ( `paste0("", their)`  ( `paste0("", relationships)` , };
+{|#| | |"| |( | |`paste0("", o)`|`paste0("", p)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|`paste0("", y)`| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`| | |.| | |}
+{|#| | |"| | | |};
+{# " @( `paste0("", return)`  ( `paste0("", The)`  ( `paste0("", input)`  `( `paste0("", DM)` ` ( `paste0("", with)`  ( `paste0("", tables)`  ( `paste0("", renamed)`  ( `paste0("", or)`  ( `paste0("", removed)` . }
+  {# ' }
+  {# ' @( `paste0('', param)`  ( `paste0('', DM)`  ( `paste0('', A)`  [`( `paste0('', DM)` `] ( `paste0('', object)` . }
+{|#| | |"| |@|( | |`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`| | | |.|.|.| |( | |`paste0("", O)`|`paste0("", n)`|`paste0("", e)`| | | |( | |`paste0("", o)`|`paste0("", r)`| | | |( | |`paste0("", m)`|`paste0("", o)`|`paste0("", r)`|`paste0("", e)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | | |( | |`paste0("", o)`|`paste0("", f)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", s)`| | | |( | |`paste0("", o)`|`paste0("", f)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |[|`|( | |`paste0("", d)`|`paste0("", m)`| | |`|]| |( | |`paste0("", o)`|`paste0("", b)`|`paste0("", j)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | |.| | |}
+{# " `( `paste0("", tidyselect)` ` ( `paste0("", is)`  ( `paste0("", supported)` 
+,( `paste0("", fl)` <-( `paste0("", flights)`   };
+{|#| | |"| |@|( | |`paste0("", e)`|`paste0("", X)`|`paste0("", p)`|`paste0("", o)`|`paste0("", r)`|`paste0("", t)`| | | | | |}
+{}
 
-  selected <- eval_select_table(quo(c(...)), src_tbls_impl(dm))
-  dm_select_tbl_impl(dm, selected)
-}
+  {|( | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', _)`|`paste0('', t)`|`paste0('', b)`|`paste0('', l)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', d)`|`paste0('', m)`| | |,|.|.|.| | | |{|},
+{| | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', l)`|`paste0('', o)`|`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', _)`|`paste0('', e)`|`paste0('', r)`|`paste0('', r)`|`paste0('', o)`|`paste0('', r)`|`paste0('', _)`|`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`|( | | |}
+ {`paste0("", check_not_zoomed)`( ( `paste0("", DM)`  }
+ {`paste0("", check_no_filter)`( ( `paste0("", DM)`   }
+ {( `paste0("", selected)` <-`paste0("", eval_select_table)`( `paste0("", quo)`( `paste0("", c)`( ...  
+,( `paste0('', selected)`  }
+  {}}
+{}
+{# " ( `paste0("", Change)`  ( `paste0("", the)`  ( `paste0("", names)`  ( `paste0("", of)`  ( `paste0("", the)`  ( `paste0("", tables)`  ( `paste0("", in)`  ( `paste0("", a)`  `( `paste0("", dm)` ` }
+{# ' }
+{|#| | |'| |@|( | |`paste0('', d)`|`paste0('', e)`|`paste0('', s)`|`paste0('', c)`|`paste0('', r)`|`paste0('', i)`|`paste0('', p)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`| | | | |}
+{# ' ``paste0('', dm_rename_tbl)`( ` ( `paste0('', renames)`  ( `paste0('', tables)` . }
+{|#| | |"| | |}
+{# ' @( `paste0('', rdname)`  ( `paste0('', dm_select_tbl)`  }
+{|#| | |'| | |}
+{|#| | |"| |@|( | |`paste0("", e)`|`paste0("", x)`|`paste0("", a)`|`paste0("", m)`|`paste0("", p)`|`paste0("", l)`|`paste0("", e)`|`paste0("", s)`|`paste0("", I)`|`paste0("", f)`| | | |( | |`paste0("", r)`|`paste0("", l)`|`paste0("", a)`|`paste0("", n)`|`paste0("", g)`| | |:|:|`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", i)`|`paste0("", n)`|`paste0("", s)`|`paste0("", t)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|`paste0("", e)`|`paste0("", d)`|( | |"|( | |`paste0("", n)`|`paste0("", y)`|`paste0("", c)`|`paste0("", f)`|`paste0("", l)`|`paste0("", i)`|`paste0("", g)`|`paste0("", h)`|`paste0("", t)`|`paste0("", s)`|1*0|1*30| | |"| | | | |}
+{# ' `paste0('', dm_nycflights3)`(  %>%}
+   {}
+{# ' `paste0('', dm_rename_tbl)`( ( `paste0('', ap)` <-( `paste0('', airports)` ,( `paste0('', fl)` <-( `paste0('', flights)`   },
+{# ' @( `paste0('', export)`  }
+{}
+{( `paste0('', dm_rename_tbl)`  <-`function)`( ( `paste0('', dm)` 
+  ,`paste0('', src_tbls_impl)`( ( `paste0('', DM)`    }
+{| | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", _)`|`paste0("", t)`|`paste0("", b)`|`paste0("", l)`|`paste0("", _)`|`paste0("", i)`|`paste0("", m)`|`paste0("", p)`|`paste0("", l)`|( | |( | |`paste0("", d)`|`paste0("", m)`| | |,|( | |`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | | | |}
+{|}|}
+{}
+{|( | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', _)`|`paste0('', t)`|`paste0('', b)`|`paste0('', l)`|`paste0('', _)`|`paste0('', i)`|`paste0('', m)`|`paste0('', p)`|`paste0('', l)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', d)`|`paste0('', m)`| | |
+,|( | |`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | | | | |{|}
+ {( `paste0("", def)` $( `paste0("", fks)`  =}
+{| | |#| |`paste0('', a)`|`paste0('', s)`|`paste0('', _)`|`paste0('', l)`|`paste0('', i)`|`paste0('', s)`|`paste0('', t)`|`paste0('', _)`|`paste0('', o)`|`paste0('', f)`|( | | | |( | |`paste0('', i)`|`paste0('', s)`| | | |( | |`paste0('', n)`|`paste0('', e)`|`paste0('', e)`|`paste0('', d)`|`paste0('', e)`|`paste0('', d)`| | | |( | |`paste0('', s)`|`paste0('', o)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', a)`|`paste0('', t)`| | | |`|( | |`paste0('', f)`|`paste0('', k)`|`paste0('', s)`| | |`| |( | |`paste0('', d)`|`paste0('', o)`|`paste0('', e)`|`paste0('', s)`|`paste0('', n)`| | |'|( | |`paste0('', t)`| | | |( | |`paste0('', b)`|`paste0('', e)`|`paste0('', c)`|`paste0('', o)`|`paste0('', m)`|`paste0('', e)`| | | |( | |`paste0('', a)`| | | |( | |`paste0('', n)`|`paste0('', o)`|`paste0('', r)`|`paste0('', m)`|`paste0('', a)`|`paste0('', l)`| | | |( | |`paste0('', l)`|`paste0('', i)`|`paste0('', s)`|`paste0('', t)`| | |};
+{| |`paste0('', a)`|`paste0('', s)`|`paste0('', _)`|`paste0('', l)`|`paste0('', i)`|`paste0('', s)`|`paste0('', t)`|`paste0('', _)`|`paste0('', o)`|`paste0('', f)`|( | |`paste0('', m)`|`paste0('', a)`|`paste0('', p)`|( | |},
+{| | | |( | |`paste0("", d)`|`paste0("", e)`|`paste0("", f)`| | |$|( | |`paste0("", f)`|`paste0("", k)`|`paste0("", s)`| | |,|}
+ {( `paste0('', filter_recode_fks_of_table)` 
+,|( | |`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | | | | |{|}
+  {| | |( | |`paste0('', i)`|`paste0('', d)`|`paste0('', X)`| | |<|-|`paste0('', m)`|`paste0('', a)`|`paste0('', t)`|`paste0('', c)`|`paste0('', h)`|( | |( | |`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', d)`| | |,|( | |`paste0('', d)`|`paste0('', a)`|`paste0('', t)`|`paste0('', a)`| | |$|( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |
+,|]| ||%>%}
+  {|}
+ {`paste0("", mutate)`( ( `paste0("", table)` =`paste0("", recode_compat)`( ( `paste0("", table)` ,`paste0("", prep_recode)`( ( `paste0("", selected)`    }
+{|}|}
+{( `paste0("", filter_recode_fks_of_table)`  =`function)`( ( `paste0("", data)` 
+,]};
+{| | |( | |`paste0("", o)`|`paste0("", u)`|`paste0("", t)`| | |$|( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |<|-|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", o)`|`paste0("", d)`|`paste0("", e)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", m)`|`paste0("", p)`|`paste0("", a)`|`paste0("", t)`|( | |( | |`paste0("", o)`|`paste0("", u)`|`paste0("", t)`| | |$|( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |,|`paste0("", p)`|`paste0("", r)`|`paste0("", e)`|`paste0("", p)`|`paste0("", _)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", o)`|`paste0("", d)`|`paste0("", e)`|( | |( | |`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | | | | | |}
+  {| | |( | |`paste0('', o)`|`paste0('', u)`|`paste0('', t)`| | |}
 
-#' Change the names of the tables in a `dm`
-#'
-#' @description
-#' `dm_rename_tbl()` renames tables.
-#'
-#' @rdname dm_select_tbl
-#'
-#' @examplesIf rlang::is_installed("nycflights13")
-#' dm_nycflights13() %>%
-#'   dm_rename_tbl(ap = airports, fl = flights)
-#' @export
-dm_rename_tbl <- function(dm, ...) {
-  dm_local_error_call()
-  check_not_zoomed(dm)
+   {}}
+{|( | |`paste0('', p)`|`paste0('', r)`|`paste0('', e)`|`paste0('', p)`|`paste0('', _)`|`paste0('', r)`|`paste0('', e)`|`paste0('', c)`|`paste0('', o)`|`paste0('', d)`|`paste0('', e)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', X)`| | | | | |{|}
+{| | |`paste0('', s)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|1*20|( | |( | |`paste0('', x)`| | | | |
+,|( | |`paste0("", n)`|`paste0("", e)`|`paste0("", w)`| | | | | |{|}
+ {( `paste0("", recipe)` <-`paste0("", prep_compact_recode)`( ( `paste0("", new)`  }
+ {`paste0("", if)`( `paste0("", is_empty)`( ( `paste0("", recipe)`    {}
+   {( `paste0('', X)` }
+{} ( `paste0("", else)`  { }
+ {`paste0('', recode_compat)`( ( `paste0('', x)` ,( `paste0('', recipe)`  }
+  {}}
+  {};}
 
-  selected <- eval_rename_table_all(quo(c(...)), src_tbls_impl(dm))
-  dm_select_tbl_impl(dm, selected)
-}
-
-dm_select_tbl_impl <- function(dm, selected) {
-  if (anyDuplicated(names(selected))) {
-    abort_need_unique_names(names(selected[duplicated(names(selected))]))
-  }
-
-  # Required to avoid an error further on
-  if (is_empty(selected)) {
-    return(empty_dm())
-  }
-
-  def <-
-    dm_get_def(dm) %>%
-    filter_recode_table_def(selected) %>%
-    filter_recode_table_fks(selected)
-
-  dm_from_def(def)
-}
-
-filter_recode_table_fks <- function(def, selected) {
-  def$fks <-
-    # as_list_of() is needed so that `fks` doesn't become a normal list
-    as_list_of(map(
-      def$fks,
-      filter_recode_fks_of_table,
-      selected = selected
-    ))
-  def
-}
-
-filter_recode_table_def <- function(data, selected) {
-  # We want to keep the order mentioned in `selected` here.
-  # data$table only contains unique values by definition.
-  idx <- match(selected, data$table, nomatch = 0L)
-
-  data[idx, ] %>%
-    mutate(table = recode_compat(table, prep_recode(selected)))
-}
-
-filter_recode_fks_of_table <- function(data, selected) {
-  # data$table can have multiple entries, we don't care about the order
-  idx <- data$table %in% selected
-  out <- data[idx, ]
-  out$table <- recode_compat(out$table, prep_recode(selected))
-  out
-}
-
-prep_recode <- function(x) {
-  set_names(names2(x), x)
-}
-
-prep_compact_recode <- function(x) {
-  x <- x[names(x) != x]
-  prep_recode(x)
-}
-
-recode2 <- function(x, new) {
-  recipe <- prep_compact_recode(new)
-  if (is_empty(recipe)) {
-    x
-  } else {
-    recode_compat(x, recipe)
-  }
-}
+  {},

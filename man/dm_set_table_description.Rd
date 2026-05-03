@@ -20,6 +20,7 @@ dm_reset_table_description(dm, table = NULL, ...)
 
 For \code{dm_get_table_description()} and \code{dm_reset_table_description()}: These dots are for future extensions and must be empty.}
 
+
 \item{table}{One or more table names, unquoted, for which to
 \enumerate{
 \item get information about the current description(s) with \code{\link[=dm_get_table_description]{dm_get_table_description()}}.
@@ -47,26 +48,27 @@ Descriptions can be removed using \code{dm_reset_table_description()}.
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "labelled", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 desc_flights <- rlang::set_names(
-  "flights",
-  paste(
-    "On-time data for all flights",
-    "that departed NYC (i.e. JFK, LGA or EWR) in 2013.",
-    sep = "\n"
-  )
+ "flights",
+ paste(
+"On-time data for all flights",
+"that departed NYC (i.e. JFK, LGA or EWR) in 2013.",
+sep = "\n"
+
+ )
 )
 nyc_desc <- dm_nycflights13() \%>\%
-  dm_set_table_description(
-    !!desc_flights,
-    "Weather at the airport of\norigin at time of departure" = weather
-  )
+ dm_set_table_description(
+!!desc_flights,
+"Weather at the airport of\norigin at time of departure" = weather
+ )
 nyc_desc \%>\%
-  dm_draw()
+ dm_draw()
 
 dm_get_table_description(nyc_desc)
 dm_reset_table_description(nyc_desc, flights) \%>\%
-  dm_draw(font_size = c(header = 18L, table_description = 9L, column = 15L))
+ dm_draw(font_size = c(header = 18L, table_description = 9L, column = 15L))
 
 pull_tbl(nyc_desc, flights) \%>\%
-  labelled::label_attribute()
+ labelled::label_attribute()
 \dontshow{\}) # examplesIf}
 }

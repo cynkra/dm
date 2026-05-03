@@ -19,6 +19,7 @@ dm_rename_tbl(dm, ...)
 The input \code{dm} with tables renamed or removed.
 }
 \description{
+
 \code{dm_select_tbl()} keeps the selected tables and their relationships,
 optionally renaming them.
 
@@ -27,10 +28,10 @@ optionally renaming them.
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_select_tbl(airports, fl = flights)
+ dm_select_tbl(airports, fl = flights)
 \dontshow{\}) # examplesIf}
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_rename_tbl(ap = airports, fl = flights)
+ dm_rename_tbl(ap = airports, fl = flights)
 \dontshow{\}) # examplesIf}
 }

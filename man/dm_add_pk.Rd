@@ -5,13 +5,13 @@
 \title{Add a primary key}
 \usage{
 dm_add_pk(
-  dm,
-  table,
-  columns,
-  ...,
-  autoincrement = FALSE,
-  check = FALSE,
-  force = FALSE
+ dm,
+ table,
+ columns,
+ ...,
+ autoincrement = FALSE,
+ check = FALSE,
+ force = FALSE
 )
 }
 \arguments{
@@ -19,13 +19,14 @@ dm_add_pk(
 
 \item{table}{A table in the \code{dm}.}
 
+
 \item{columns}{Table columns, unquoted.
 To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{autoincrement}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-If \code{TRUE}, the  column specified in \code{columns} will be populated
+If \code{TRUE}, the column specified in \code{columns} will be populated
 automatically with a sequence of integers.}
 
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
@@ -52,28 +53,30 @@ or adding foreign keys pointing to columns other than the primary key columns wi
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 nycflights_dm <- dm(
-  planes = nycflights13::planes,
-  airports = nycflights13::airports,
-  weather = nycflights13::weather
+
+ planes = nycflights13::planes,
+ airports = nycflights13::airports,
+ weather = nycflights13::weather
 )
 
 nycflights_dm \%>\%
-  dm_draw()
+ dm_draw()
 
 # Create primary keys:
 nycflights_dm \%>\%
-  dm_add_pk(planes, tailnum) \%>\%
-  dm_add_pk(airports, faa, check = TRUE) \%>\%
-  dm_add_pk(weather, c(origin, time_hour)) \%>\%
-  dm_draw()
+ dm_add_pk(planes, tailnum) \%>\%
+ dm_add_pk(airports, faa, check = TRUE) \%>\%
+ dm_add_pk(weather, c(origin, time_hour)) \%>\%
+ dm_draw()
 
 # Keys can be checked during creation:
 try(
-  nycflights_dm \%>\%
-    dm_add_pk(planes, manufacturer, check = TRUE)
+ nycflights_dm \%>\%
+dm_add_pk(planes, manufacturer, check = TRUE)
 )
 \dontshow{\}) # examplesIf}
 }
+
 \seealso{
 Other primary key functions:
 \code{\link[=dm_add_uk]{dm_add_uk()}},
@@ -83,5 +86,6 @@ Other primary key functions:
 \code{\link[=dm_rm_pk]{dm_rm_pk()}},
 \code{\link[=dm_rm_uk]{dm_rm_uk()}},
 \code{\link[=enum_pk_candidates]{enum_pk_candidates()}}
+
 }
 \concept{primary key functions}

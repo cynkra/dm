@@ -5,12 +5,12 @@
 \title{Validate your data model}
 \usage{
 dm_examine_constraints(
-  .dm,
-  ...,
-  .progress = NA,
-  .max_value = 6L,
-  dm = deprecated(),
-  progress = deprecated()
+ .dm,
+ ...,
+ .progress = NA,
+ .max_value = 6L,
+ dm = deprecated(),
+ progress = deprecated()
 )
 }
 \arguments{
@@ -19,6 +19,7 @@ dm_examine_constraints(
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{.progress}{Whether to display a progress bar, if \code{NA} (the default)
+
 hide in non-interactive mode, show in interactive mode. Requires the
 'progress' package.}
 
@@ -52,7 +53,8 @@ form a subset of the values of the referenced column.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
+
 dm_nycflights13() \%>\%
-  dm_examine_constraints()
+ dm_examine_constraints()
 \dontshow{\}) # examplesIf}
 }

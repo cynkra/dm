@@ -2,12 +2,13 @@
 title: "Zooming and manipulating tables"
 output: rmarkdown::html_vignette
 vignette: >
+
   %\VignetteIndexEntry{Technical: Zooming and manipulating tables}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-``````{r setup, include = FALSE}
+``````{r setup, include=F}
 source("setup/setup.R")
 ``````
 
@@ -21,9 +22,11 @@ Both approaches aim at maintaining the key relations whenever possible.
 We will explore the second approach here. 
 For the first approach, see `vignette("tech-dm-zoom")`.
 
+
 ## Enabling {dplyr}-workflow within a `dm`
 
 "Zooming" to a table of a `dm` means:
+
 
 - all information stored in the original `dm` is kept, including the originally zoomed table
 - an object of class `dm_zoomed` is produced, presenting a view of the table for transformations
@@ -40,8 +43,10 @@ When employing one of the first two options, the resulting table in the `dm` wil
 
 ## Examples
 
+
 So much for the theory, but how does it look and feel?
 To explore this, we once more make use of our trusted {nycflights13} data.
+
 
 ### Use case 1: Add a new column to an existing table
 
@@ -52,7 +57,7 @@ Let us do this step by step:
 ```{r zoom}
 library(dm)
 library(dplyr)
-flights_dm <- dm_nycflights13()
+flights_dm<-dm_nycflights13()
 flights_dm
 flights_zoomed <-
   flights_dm %>%
@@ -62,7 +67,7 @@ flights_zoomed
 
 flights_zoomed_mutate <-
   flights_zoomed %>%
-  mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm")) %>%
+  mutate(am_pm_dep=if_else(dep_time < 1200, "am", "pm")) %>%
   # in order to see our changes in the output we use `select()` for reordering the columns
   select(year:dep_time, am_pm_dep, everything())
 
@@ -88,6 +93,7 @@ library(tidyr)
 
 weather_zoomed <-
   flights_dm %>%
+
   dm_zoom_to(weather)
 weather_zoomed
 # Maybe there is some hidden candidate for a primary key that we overlooked
@@ -98,37 +104,39 @@ enum_pk_candidates(weather_zoomed)
 weather_zoomed_mutate <-
   weather_zoomed %>%
   # first convert all times to the same time zone:
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
+  mutate(time_hour_fmt=format(time_hour, tz="UTC")) %>%
   # paste together as character the airport code and the time
   unite("origin_slot_id", origin, time_hour_fmt) %>%
   select(origin_slot_id, everything())
 # check if we the result is as expected:
-enum_pk_candidates(weather_zoomed_mutate) %>% filter(candidate)
+enum_pk_candidates(weather_zoomed_mutate)%>%filter(candidate)
 flights_upd_weather_dm <-
   weather_zoomed_mutate %>%
   dm_update_zoomed() %>%
   dm_add_pk(weather, origin_slot_id)
 flights_upd_weather_dm
+
 # creating the coveted FK relation between `flights` and `weather`
 extended_flights_dm <-
   flights_upd_weather_dm %>%
   dm_zoom_to(flights) %>%
-  mutate(time_hour_fmt = format(time_hour, tz = "UTC")) %>%
-  # need to keep `origin` as FK to airports, so `remove = FALSE`
-  unite("origin_slot_id", origin, time_hour_fmt, remove = FALSE) %>%
+  mutate(time_hour_fmt=format(time_hour, tz="UTC")) %>%
+  # need to keep `origin` as FK to airports, so `remove=F`
+  unite("origin_slot_id", origin, time_hour_fmt, remove=F) %>%
   dm_update_zoomed() %>%
   dm_add_fk(flights, origin_slot_id, weather)
-extended_flights_dm %>% dm_draw()
+extended_flights_dm%>%dm_draw()
 ```
 
 
 ### Use case 3: Disentangle `dm`
 
-If you look at the `dm` created by `dm_nycflights13(cycle = TRUE)`, you see that two columns of `flights` relate to one and the same table, `airports`.
+If you look at the `dm` created by `dm_nycflights13(cycle=T)`, you see that two columns of `flights` relate to one and the same table, `airports`.
 One column stands for the departure airport and the other for the arrival airport.
 
+
 ```{r}
-dm_draw(dm_nycflights13(cycle = TRUE))
+dm_draw(dm_nycflights13(cycle=T))
 ```
 
 This generates a cycle which leads to failures with many operations that only work on cycle-free data models, such as `dm_flatten_to_tbl()`, `dm_filter()` or `dm_wrap_to_tbl()`.
@@ -137,13 +145,13 @@ One way to do this in the {dm}-framework is as follows:
 
 ```{r}
 disentangled_flights_dm <-
-  dm_nycflights13(cycle = TRUE) %>%
+  dm_nycflights13(cycle=T) %>%
   # zooming and immediately inserting essentially creates a copy of the original table
   dm_zoom_to(airports) %>%
   # reinserting the `airports` table under the name `destination`
   dm_insert_zoomed("destination") %>%
   # renaming the originally zoomed table
-  dm_rename_tbl(origin = airports) %>%
+  dm_rename_tbl(origin=airports) %>%
   # Key relations are also duplicated, so the wrong ones need to be removed
   dm_rm_fk(flights, dest, origin) %>%
   dm_rm_fk(flights, origin, destination)
@@ -167,6 +175,7 @@ dm_draw(dm_with_summary)
 
 ### Use case 5: Joining tables
 
+
 If you would like to join some or all of the columns of one table to another, you can make use of one of the `join`-methods for a `dm_zoomed`.
 In addition to the usual arguments for the {dplyr}-joins, by supplying the `select` argument you can specify which columns of the RHS-table you want to be included in the join.
 For the syntax please see the example below.
@@ -179,11 +188,14 @@ joined_flights_dm <-
   # let's first reduce the number of columns of flights
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>%
   # in the {dm}-method for the joins you can specify which columns you want to add to the zoomed table
-  left_join(planes, select = c(tailnum, plane_type = type)) %>%
+
+  left_join(planes, select=c(tailnum, plane_type=type)) %>%
+
   dm_insert_zoomed("flights_plane_type")
 # this is how the table looks now
 joined_flights_dm$flights_plane_type
 # also here, the FK-relations are transferred to the new table
+
 dm_draw(joined_flights_dm)
 ```
 
@@ -196,7 +208,7 @@ To use our last example once more:
 flights_dm %>%
   dm_zoom_to(flights) %>%
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>%
-  left_join(planes, select = c(tailnum, plane_type = type)) %>%
+  left_join(planes, select=c(tailnum, plane_type=type)) %>%
   pull_tbl()
 ```
 
@@ -214,6 +226,7 @@ This is because a rigid logic is implemented, that does drop a key when its asso
 In these cases, the key relations will need to be re-established after finishing with the manipulations.
 
 1. For each implemented {dplyr}-verb, there is a logic for tracking key relations between the tables.
+
 Up to {dm} version 0.2.4 we tried to track the columns in a very detailed manner. This has become increasingly difficult, especially with `dplyr::across()`. As of {dm} 0.2.5, we give more responsibility to the {dm} user:
 Now those columns are tracked whose **names** remain in the resulting table.
 Affected by these changes are the methods for: `mutate()`, `transmute()`, `distinct()`.

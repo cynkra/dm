@@ -19,14 +19,15 @@ from the foreign keys unambiguously but useful to be explicit.}
 
 \code{dm_nest_tbl()} converts a child table to a nested column in its parent
 table.
+
 The child table should not have children itself (i.e. it needs to be a
 \emph{terminal child table}).
 }
 \examples{
 nested_dm <-
-  dm_nycflights13() \%>\%
-  dm_select_tbl(airlines, flights) \%>\%
-  dm_nest_tbl(flights)
+ dm_nycflights13() \%>\%
+ dm_select_tbl(airlines, flights) \%>\%
+ dm_nest_tbl(flights)
 
 nested_dm
 

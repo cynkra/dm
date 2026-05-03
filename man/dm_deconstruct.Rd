@@ -19,6 +19,7 @@ generated code.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
+
 Emits code that assigns each table in the dm to a variable,
 using \code{\link[=pull_tbl]{pull_tbl()}} with \code{keyed = TRUE}.
 These tables retain information about primary and foreign keys,
@@ -35,11 +36,11 @@ flights <- pull_tbl(dm, "flights", keyed = TRUE)
 planes <- pull_tbl(dm, "planes", keyed = TRUE)
 weather <- pull_tbl(dm, "weather", keyed = TRUE)
 by_origin <-
-  flights \%>\%
-  summarize(.by = origin, mean_arr_delay = mean(arr_delay, na.rm = TRUE))
+ flights \%>\%
+ summarize(.by = origin, mean_arr_delay = mean(arr_delay, na.rm = TRUE))
 
 by_origin
 dm(airlines, airports, flights, planes, weather, by_origin) \%>\%
-  dm_draw()
+ dm_draw()
 \dontshow{\}) # examplesIf}
 }

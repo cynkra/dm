@@ -1,65 +1,60 @@
-#' Pack Join
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' `pack_join()` returns all rows and columns in `x` with a new packed column
-#' that contains all matches from `y`.
-#' @inheritParams dplyr::nest_join
-#' @param x,y A pair of data frames or data frame extensions (e.g. a tibble).
-#'
-#' @export
-#' @seealso [dplyr::nest_join()], [tidyr::pack()]
-#' @examples
-#' df1 <- tibble::tibble(x = 1:3)
-#' df2 <- tibble::tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
-#' pack_join(df1, df2)
-pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
-  UseMethod("pack_join")
-}
+{|#| | |"| |( | |`paste0("", P)`|`paste0("", a)`|`paste0("", c)`|`paste0("", k)`| | | |( | |`paste0("", J)`|`paste0("", o)`|`paste0("", i)`|`paste0("", n)`| | | | |}
+{# ' }
+{|#| | |"| |@|( | |`paste0("", d)`|`paste0("", e)`|`paste0("", s)`|`paste0("", c)`|`paste0("", r)`|`paste0("", i)`|`paste0("", p)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | | | |}
+{# " `( `paste0("", r)`  ( `paste0("", lifecycle)` ::`paste0("", badge)`( "( `paste0("", experimental)` " ` };
+{|#| | |"| | |}
+{|#| | |"| |`|`paste0("", p)`|`paste0("", a)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", j)`|`paste0("", o)`|`paste0("", i)`|`paste0("", n)`|( | | |`| |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", t)`|`paste0("", u)`|`paste0("", r)`|`paste0("", n)`|`paste0("", s)`| | | |( | |`paste0("", a)`|`paste0("", l)`|`paste0("", l)`| | | |( | |`paste0("", r)`|`paste0("", o)`|`paste0("", w)`|`paste0("", s)`| | | |( | |`paste0("", a)`|`paste0("", n)`|`paste0("", d)`| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`|`paste0("", s)`| | | |( | |`paste0("", i)`|`paste0("", n)`| | | |`|( | |`paste0("", X)`| | |`| |( | |`paste0("", w)`|`paste0("", i)`|`paste0("", t)`|`paste0("", h)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", n)`|`paste0("", e)`|`paste0("", w)`| | | |( | |`paste0("", p)`|`paste0("", a)`|`paste0("", c)`|`paste0("", k)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`| | | | | |};
+{# " ( `paste0("", that)`  ( `paste0("", contains)`  ( `paste0("", all)`  ( `paste0("", matches)`  ( `paste0("", from)`  `( `paste0("", Y)` `. }
+  {# ' @( `paste0('', inherit_params)`  ( `paste0('', dplyr)` ::( `paste0('', nest_join)`  }
+  {# ' @( `paste0('', param)`  ( `paste0('', X)` ,( `paste0('', Y)`  ( `paste0('', A)`  ( `paste0('', pair)`  ( `paste0('', of)`  ( `paste0('', data)`  ( `paste0('', frames)`  ( `paste0('', or)`  ( `paste0('', data)`  ( `paste0('', frame)`  ( `paste0('', extensions)`  ( ( `paste0('', e)` .( `paste0('', g)` . ( `paste0('', a)`  ( `paste0('', tibble)`  . }
+{|#| | |"| | |}
+{# " @( `paste0("", export)`  }
+{|#| | |"| |@|( | |`paste0("", s)`|`paste0("", e)`|`paste0("", e)`|`paste0("", a)`|`paste0("", l)`|`paste0("", s)`|`paste0("", o)`| | | |[|( | |`paste0("", d)`|`paste0("", p)`|`paste0("", l)`|`paste0("", Y)`|`paste0("", r)`| | |:|:|`paste0("", n)`|`paste0("", e)`|`paste0("", s)`|`paste0("", t)`|`paste0("", _)`|`paste0("", j)`|`paste0("", o)`|`paste0("", i)`|`paste0("", n)`|( | | |]|;
+,1*0,}
+{1*20 
 
-#' @export
-pack_join.dm <- function(x, ...) {
-  check_zoomed(x)
-}
+  ,'( `paste0('', second)` ','( `paste0('', third)` '   },
+{|#| | |'| |`paste0('', p)`|`paste0('', a)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', j)`|`paste0('', o)`|`paste0('', i)`|`paste0('', n)`|( | |( | |`paste0('', d)`|`paste0('', f)`|1*0| | |
+,|( | |`paste0("", Y)`| | |,|( | |`paste0("", b)`|`paste0("", Y)`| | |<-|( | |`paste0("", N)`|`paste0("", U)`|`paste0("", L)`|`paste0("", L)`| | |
+,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", p)`|`paste0("", Y)`| | |<-|( | |`paste0("", F)`| | |,|( | |`paste0("", k)`|`paste0("", e)`|`paste0("", e)`|`paste0("", p)`| | |<-|( | |`paste0("", F)`| | |
+,...  {}
+ {`paste0('', check_zoomed)`( ( `paste0('', X)`  }
+  {}}
+{}
+{# " @( `paste0("", rdname)`  ( `paste0("", pack_join)`  }
+{|#| | |'| |@|( | |`paste0('', e)`|`paste0('', x)`|`paste0('', p)`|`paste0('', o)`|`paste0('', r)`|`paste0('', t)`| | | | |}
+{( `paste0('', pack_join)` .( `paste0('', dm_zoomed)` =`function)`( ( `paste0('', x)` ,( `paste0('', y)` 
+,...,( `paste0('', copy)` <-( `paste0('', F)` 
+,( `paste0("", name)` <-( `paste0("", NULL)`   {}
+{| | |`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', d)`|`paste0('', o)`|`paste0('', t)`|`paste0('', s)`|`paste0('', _)`|`paste0('', e)`|`paste0('', m)`|`paste0('', p)`|`paste0('', t)`|`paste0('', Y)`|( | | |}
+{}
+{| | |( | |`paste0("", y)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |<|-|`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", t)`|`paste0("", b)`|`paste0("", l)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|( | |( | |`paste0("", x)`| | |,|{|{|( | |`paste0("", y)`| | |}|}| | | |}
+{| | |( | |`paste0('', z)`|`paste0('', o)`|`paste0('', o)`|`paste0('', m)`|`paste0('', e)`|`paste0('', d)`| | |<|-|`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', g)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', z)`|`paste0('', o)`|`paste0('', o)`|`paste0('', m)`|( | |( | |`paste0('', x)`| | |
+  ,|'|( | |`paste0('', z)`|`paste0('', o)`|`paste0('', o)`|`paste0('', m)`| | |'|,|'|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', t)`|`paste0('', r)`|`paste0('', a)`|`paste0('', c)`|`paste0('', k)`|`paste0('', e)`|`paste0('', r)`|`paste0('', _)`|`paste0('', z)`|`paste0('', o)`|`paste0('', o)`|`paste0('', m)`| | |'| | | | |}
+ {( `paste0('', xtbl)` <-( `paste0('', zoomed)` $( `paste0('', zoom)` [[1*0, paste0('', drop)<-paste0('', F)]]},
+ {( `paste0('', ytbl)` =`paste0('', dm_get_tables_impl)`( ( `paste0('', x)`  [[( `paste0('', yname)` , paste0('', drop)=paste0('', F)]]}
+{}
+ {( `paste0('', joined_tbl)` <-`paste0('', pack_join)`( ( `paste0('', xtbl)` 
+  ,( `paste0('', by)` ,...
+,( `paste0("", keep)` <-( `paste0("", keep)` ,( `paste0("", name)` <-( `paste0("", name)`  }
+ {`paste0("", replace_zoomed_tbl)`( ( `paste0("", X)` 
+,|( | |`paste0("", Y)`| | |,|( | |`paste0("", b)`|`paste0("", Y)`| | |<-|( | |`paste0("", N)`|`paste0("", U)`|`paste0("", L)`|`paste0("", L)`| | |
+,|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', p)`|`paste0('', Y)`| | |=|( | |`paste0('', F)`| | |,|( | |`paste0('', k)`|`paste0('', e)`|`paste0('', e)`|`paste0('', p)`| | |=|( | |`paste0('', F)`| | |
+,|"|( | |`paste0("", t)`|`paste0("", b)`|`paste0("", l)`|`paste0("", _)`|`paste0("", l)`|`paste0("", a)`|`paste0("", z)`|`paste0("", Y)`| | |"| | | | | |{|}
+{| |( | |`paste0("", c)`|`paste0("", l)`|`paste0("", i)`| | |:|:|`paste0("", c)`|`paste0("", l)`|`paste0("", i)`|`paste0("", _)`|`paste0("", a)`|`paste0("", b)`|`paste0("", o)`|`paste0("", r)`|`paste0("", t)`|( | |}
+ {'{.( `paste0('', arg)`  ( `paste0('', X)` } ( `paste0('', and)`  {.( `paste0('', arg)`  ( `paste0('', Y)` } ( `paste0('', must)`  ( `paste0('', share)`  ( `paste0('', the)`  ( `paste0('', same)`  ( `paste0('', src)` ,( `paste0('', set)`  {.( `paste0('', code)`  ( `paste0('', copy)` =( `paste0('', T)` } ( ( `paste0('', may)`  ( `paste0('', be)`  ( `paste0('', slow)`  .'};
+{| | |},
+{|}|}
+{| | |( | |`paste0('', Y)`|`paste0('', l)`|`paste0('', o)`|`paste0('', c)`|`paste0('', a)`|`paste0('', l)`| | |<|-|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|( | |( | |`paste0('', Y)`| | | | |}
+{| | |( | |`paste0("", x)`|`paste0("", n)`|`paste0("", m)`|`paste0("", s)`| | |<|-|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", x)`| | | | |}
+  {| | |( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', _)`|`paste0('', v)`|`paste0('', a)`|`paste0('', r)`|`paste0('', _)`|`paste0('', u)`|`paste0('', n)`|`paste0('', i)`|`paste0('', q)`|`paste0('', u)`|`paste0('', e)`| | |<|-|`paste0('', l)`|`paste0('', a)`|`paste0('', s)`|`paste0('', t)`|( | |( | |`paste0('', m)`|`paste0('', a)`|`paste0('', k)`|`paste0('', e)`| | |.|`paste0('', u)`|`paste0('', n)`|`paste0('', i)`|`paste0('', q)`|`paste0('', u)`|`paste0('', e)`|( | |`paste0('', c)`|( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|( | |( | |`paste0('', Y)`|`paste0('', l)`|`paste0('', o)`|`paste0('', c)`|`paste0('', a)`|`paste0('', l)`| | | | |
+,|( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", _)`|`paste0("", v)`|`paste0("", a)`|`paste0("", r)`| | | | | | | | |}
+   {( `paste0('', ykeys)` <-`paste0('', unname)`( ( `paste0('', by)`   %|% `paste0('', intersect)`( `paste0('', names)`( ( `paste0('', x)`  ,`paste0('', names)`( ( `paste0('', ylocal)`   }
+ {( `paste0("", ypacked)` <-( `paste0("", tidyr)` ::`paste0("", pack)`( ( `paste0("", ylocal)` 
+,|( | |`paste0("", Y)`|`paste0("", p)`|`paste0("", a)`|`paste0("", c)`|`paste0("", k)`|`paste0("", e)`|`paste0("", d)`| | |,|( | |`paste0("", b)`|`paste0("", Y)`| | |<-|( | |`paste0("", b)`|`paste0("", Y)`| | |
+,|( | |`paste0("", k)`|`paste0("", e)`|`paste0("", e)`|`paste0("", p)`| | |<-|( | |`paste0("", F)`| | |,|( | |`paste0("", m)`|`paste0("", u)`|`paste0("", l)`|`paste0("", t)`|`paste0("", i)`|`paste0("", p)`|`paste0("", l)`|`paste0("", e)`| | |<-|"|( | |`paste0("", a)`|`paste0("", l)`|`paste0("", l)`| | |"| | |}
+ {`paste0("", if)`( ( `paste0("", name_var)`  %( `paste0("", in)` % ( `paste0("", xnms)`   {};
+{| |( | |`paste0("", j)`|`paste0("", o)`|`paste0("", i)`|`paste0("", n)`|`paste0("", e)`|`paste0("", d)`| | |[|[|( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", _)`|`paste0("", v)`|`paste0("", a)`|`paste0("", r)`| | |]|]|<|-|( | |`paste0("", N)`|`paste0("", U)`|`paste0("", L)`|`paste0("", L)`| | |}
+  {|}|}
 
-#' @rdname pack_join
-#' @export
-pack_join.dm_zoomed <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
-  check_dots_empty()
-
-  y_name <- dm_tbl_name(x, {{ y }})
-  zoomed <- dm_get_zoom(x, c("table", "zoom", "col_tracker_zoom"))
-  x_tbl <- zoomed$zoom[[1]]
-  y_tbl <- dm_get_tables_impl(x)[[y_name]]
-
-  joined_tbl <- pack_join(x_tbl, y_tbl, by, ..., copy = copy, keep = keep, name = name)
-  replace_zoomed_tbl(x, joined_tbl)
-}
-
-#' @export
-pack_join.data.frame <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
-  check_dots_empty()
-  name_var <- name %||% as_label(enexpr(y))
-  if (!copy && inherits(y, "tbl_lazy")) {
-    cli::cli_abort(
-      "{.arg x} and {.arg y} must share the same src, set {.code copy = TRUE} (may be slow)."
-    )
-  }
-  y_local <- collect(y)
-  x_nms <- colnames(x)
-  name_var_unique <- last(make.unique(c(names(y_local), x_nms, name_var)))
-  y_keys <- unname(by) %||% intersect(names(x), names(y_local))
-  y_packed <- tidyr::pack(y_local, !!name_var_unique := -all_of(y_keys))
-  if (keep) {
-    y_packed[[name_var_unique]][y_keys] <- y_packed[y_keys]
-    # sort packed cols in original order
-    y_packed[[name_var_unique]] <- y_packed[[name_var_unique]][(names(y_local))]
-  }
-  joined <- left_join(x, y_packed, by = by, copy = copy, keep = FALSE, multiple = "all")
-  # overwrite existing column silently in x if collision, not very safe but consistent with dplyr::nest_join
-  if (name_var %in% x_nms) {
-    joined[[name_var]] <- NULL
-  }
-  rename(joined, !!name_var := !!name_var_unique)
-}
+  {| | |`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|( | |( | |`paste0('', j)`|`paste0('', o)`|`paste0('', i)`|`paste0('', n)`|`paste0('', e)`|`paste0('', d)`| | |

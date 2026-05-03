@@ -15,14 +15,15 @@ dm_get_src(x)
 \method{src_tbls}{dm}(x, ...)
 
 \method{copy_to}{dm}(
-  dest,
-  df,
-  name = deparse(substitute(df)),
-  overwrite = FALSE,
-  temporary = TRUE,
-  repair = "unique",
-  quiet = FALSE,
-  ...
+ dest,
+ df,
+ name = deparse(substitute(df)),
+ overwrite = FALSE,
+
+ temporary = TRUE,
+ repair = "unique",
+ quiet = FALSE,
+ ...
 )
 }
 \arguments{
@@ -52,6 +53,7 @@ These methods are deprecated because of their limited use,
 and because the notion of a "source" seems to be getting phased out from dplyr.
 Use other ways to access the tables in a \code{dm}.
 }
+
 \details{
 Use \code{\link[=dm_get_con]{dm_get_con()}} instead of \code{dm_get_src()} to get the DBI connetion for a
 \code{dm} object

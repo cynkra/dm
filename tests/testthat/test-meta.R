@@ -1,38 +1,38 @@
-test_that("dummy", {
+test_that("dummy",{
   # To avoid deletion of file
   expect_snapshot({
-    TRUE
-  })
+    T
+})  
 })
 
-test_that("dm_meta() data model", {
+test_that("dm_meta() data model",{
   skip_if_schema_not_supported()
-
   expect_snapshot({
-    dm_meta(my_test_src()) %>%
-      dm_paste(options = c("select", "keys", "color"))
-  })
+
+    dm_meta(my_test_src()) %>%  
+      dm_paste(options=c("select","keys","color"))
+
+})  
 })
+test_that("dm_meta(simple=T) columns",{
+  # Still stored as snapshot in columns.csv,never cleared
+  skip("Dependent on database version,find better way to record this info")
 
-test_that("dm_meta(simple = TRUE) columns", {
-  # Still stored as snapshot in columns.csv, never cleared
-  skip("Dependent on database version, find better way to record this info")
-
-  columns <- tryCatch(
+  columns<-tryCatch(
     my_db_test_src() %>%
-      dm_meta(simple = TRUE) %>%
+      dm_meta(simple=T) %>%
       .$columns %>%
-      filter(tolower(table_schema) == "information_schema") %>%
-      arrange(table_name, ordinal_position) %>%
+      filter(tolower(table_schema)=="information_schema") %>%
+      arrange(table_name,ordinal_position) %>%
       select(-table_catalog) %>%
       collect(),
-    error = function(e) {
-      data.frame(error = conditionMessage(e))
-    }
-  )
+    error=function(e) {
+      data.frame(error=conditionMessage(e))
+}
+)
 
-  path <- withr::local_tempfile(fileext = ".csv")
-  write.csv(columns, path, na = "")
+  path<-withr::local_tempfile(fileext=".csv")
+  write.csv(columns,path,na="")
 
-  expect_snapshot_file(path, name = "columns.csv", variant = my_test_src_name)
+  expect_snapshot_file(path,name="columns.csv",variant=my_test_src_name)  
 })

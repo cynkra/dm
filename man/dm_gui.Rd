@@ -19,6 +19,7 @@ dm_gui(..., dm = NULL, select_tables = TRUE, debug = FALSE)
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 This function starts a Shiny application that allows to define \code{dm} objects
+
 from a database or from local data frames.
 The application generates R code that can be inserted or copy-pasted
 into an R script or function.

@@ -1,131 +1,143 @@
-Package: dm
-Title: Relational Data Models
-Version: 1.1.1.9005
-Date: 2026-04-12
-Authors@R: 
-    c(person(given = "Tobias",
-             family = "Schieferdecker",
-             role = "aut",
-             email = "tobias@cynkra.com"),
-      person(given = "Kirill",
-             family = "Müller",
-             role = c("aut", "cre"),
-             email = "kirill@cynkra.com",
-             comment = c(ORCID = "0000-0002-1416-3412")),
-      person(given = "Antoine",
-             family = "Fabri",
-             role = "ctb"),
-      person(given = "Darko",
-             family = "Bergant",
-             role = "aut",
-             email = "darko.bergant@gmail.com"),
-      person(given = "Katharina",
-             family = "Brunner",
-             role = "ctb"),
-      person(given = "James",
-             family = "Wondrasek",
-             role = "ctb"),
-      person(given = "Indrajeet",
-             family = "Patil",
-             comment = c(ORCID = "0000-0003-1995-6531"),
-             role = "ctb"),
-      person(given = "Maëlle",
-             family = "Salmon",
-             comment = c(ORCID = "0000-0002-2815-0399"),
-             role = "ctb"),
-      person(given = "energie360° AG",
-             role = "fnd",
-             email = "info@energie360.ch"),
-      person(given = "cynkra GmbH",
-             role = c("fnd", "cph"),
-             email = "mail@cynkra.com",
-             comment = c(ROR = "0335t7e62"))
-    )
-Description: Provides tools for working with multiple related
-    tables, stored as data frames or in a relational database.  Multiple
-    tables (data and metadata) are stored in a compound object, which can
-    then be manipulated with a pipe-friendly syntax.
-License: MIT + file LICENSE
-URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
-BugReports: https://github.com/cynkra/dm/issues
-Depends: 
-    R (>= 4.0)
+Package:dm
+Title:Relational Data Models
+Version:1.1.1.9005
+Date:2026-04-12
+Authors@R:
+c(person(given = "Tobias",
+     family = "Schieferdecker",
+     role = "aut",
+     email = "tobias@cynkra.com"),
+ person(given = "Kirill",
+     family = "Müller",
+
+     role = c("aut","cre"),
+     email = "kirill@cynkra.com",
+     comment = c(ORCID = "0000-0002-1416-3412")),
+ person(given = "Antoine",
+     family = "Fabri",
+     role = "ctb"),
+ person(given = "Darko",
+     family = "Bergant",
+     role = "aut",
+     email = "darko.bergant@gmail.com"),
+ person(given = "Katharina",
+     family = "Brunner",
+     role = "ctb"),
+ person(given = "James",
+     family = "Wondrasek",
+     role = "ctb"),
+ person(given = "Indrajeet",
+
+     family = "Patil",
+     comment = c(ORCID = "0000-0003-1995-6531"),
+     role = "ctb"),
+ person(given = "Maëlle",
+     family = "Salmon",
+
+     comment = c(ORCID = "0000-0002-2815-0399"),
+     role = "ctb"),
+ person(given = "energie360° AG",
+     role = "fnd",
+     email = "info@energie360.ch"),
+ person(given = "cynkra GmbH",
+     role = c("fnd","cph"),
+     email = "mail@cynkra.com",
+     comment = c(ROR = "0335t7e62"))
+)
+Description:Provides tools for working with multiple related
+tables,stored as data frames or in a relational database. Multiple
+tables (data and metadata) are stored in a compound object,which can
+then be manipulated with a pipe-friendly syntax.
+License:MIT + file LICENSE
+URL:https://dm.cynkra.com/,https://github.com/cynkra/dm
+BugReports:https://github.com/cynkra/dm/issues
+Depends:
+R (>= 4.0)
 Imports:
-    backports,
-    cli (>= 2.2.0),
-    dplyr (>= 1.2.0),
-    glue,
-    lifecycle (>= 1.0.3),
-    memoise,
-    methods,
-    purrr (>= 1.0.0),
-    rlang (>= 1.0.2),
-    tibble (>= 3.0.0),
-    tidyr (>= 1.0.0),
-    tidyselect (>= 1.2.0),
-    vctrs (>= 0.3.2)
-Suggests: 
-    brio,
-    colourpicker,
-    covr,
-    DBI (>= 1.2.0),
-    dbplyr (>= 2.3.4),
-    DiagrammeR,
-    DiagrammeRsvg,
-    digest,
-    duckdb (>= 0.4.0),
-    duckplyr,
-    fansi,
-    forcats,
-    htmltools,
-    htmlwidgets,
-    igraph (>= 2.2.0),
-    jsonlite,
-    keyring,
-    knitr,
-    labelled (>= 2.12.0),
-    magrittr,
-    nycflights13,
-    odbc (>= 1.4.2),
-    pillar,
-    pixarfilms,
-    pool,
-    progress,
-    reactable,
-    RMariaDB (>= 1.3.3),
-    rmarkdown,
-    RPostgres,
-    RSQLite (>= 2.2.8),
-    rstudioapi,
-    shiny,
-    shinyAce,
-    shinydashboard,
-    testthat (>= 3.2.0),
-    tidyverse,
-    waldo,
-    withr
+backports,
+cli (>= 2.2.0),
+dplyr (>= 1.2.0),
+glue,
+
+lifecycle (>= 1.0.3),
+memoise,
+methods,
+purrr (>= 1.0.0),
+
+rlang (>= 1.0.2),
+tibble (>= 3.0.0),
+tidyr (>= 1.0.0),
+tidyselect (>= 1.2.0),
+vctrs (>= 0.3.2)
+Suggests:
+brio,
+colourpicker,
+covr,
+DBI (>= 1.2.0),
+dbplyr (>= 2.3.4),
+DiagrammeR,
+
+DiagrammeRsvg,
+digest,
+duckdb (>= 0.4.0),
+duckplyr,
+
+fansi,
+
+forcats,
+
+htmltools,
+htmlwidgets,
+igraph (>= 2.2.0),
+jsonlite,
+keyring,
+knitr,
+labelled (>= 2.12.0),
+magrittr,
+nycflights13,
+odbc (>= 1.4.2),
+pillar,
+pixarfilms,
+pool,
+progress,
+reactable,
+RMariaDB (>= 1.3.3),
+rmarkdown,
+RPostgres,
+RSQLite (>= 2.2.8),
+rstudioapi,
+shiny,
+shinyAce,
+shinydashboard,
+testthat (>= 3.2.0),
+tidyverse,
+waldo,
+withr
 Config/Needs/website:
-    brio,
-    bslib,
-    cynkra/cynkratemplate,
-    htmltools,
-    pagedown,
-    purrr,
-    rmarkdown,
-    whisker,
-    xml2
-Config/Needs/check: anthonynorth/roxyglobals
-VignetteBuilder: 
-    knitr
-Config/autostyle/scope: line_breaks
-Config/autostyle/strict: true
-Config/testthat/edition: 3
-Config/testthat/parallel: false
-Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
-    draw-dm, bind, rows-dm, learn
-Encoding: UTF-8
-Roxygen: list(
-      markdown = TRUE,
-      roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet")
-    )
-RoxygenNote: 7.3.3.9000
+brio,
+bslib,
+cynkra/cynkratemplate,
+htmltools,
+pagedown,
+purrr,
+rmarkdown,
+
+whisker,
+
+xml2
+Config/Needs/check:anthonynorth/roxyglobals
+VignetteBuilder:
+knitr
+Config/autostyle/scope:line_breaks
+Config/autostyle/strict:true
+Config/testthat/edition:3
+
+Config/testthat/parallel:false
+Config/testthat/start-first:zzx-deprecated,flatten,dplyr,filter-dm,
+draw-dm,bind,rows-dm,learn
+Encoding:UTF-8
+Roxygen:list(
+ markdown = TRUE,
+ roclets = c("collate","namespace","rd","roxyglobals::global_roclet")
+)
+RoxygenNote:7.3.3.9000

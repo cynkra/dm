@@ -19,6 +19,7 @@ Pass \code{NULL} (the default) to remove all matching keys.}
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
+
 An updated \code{dm} without the indicated unique key(s).
 }
 \description{

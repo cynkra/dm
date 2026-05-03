@@ -19,6 +19,7 @@
 \alias{distinct.dm_zoomed}
 \alias{distinct.dm_keyed_tbl}
 \alias{arrange.dm_zoomed}
+
 \alias{arrange.dm_keyed_tbl}
 \alias{slice.dm_zoomed}
 \alias{slice.dm_keyed_tbl}
@@ -47,21 +48,22 @@
 \method{filter_out}{dm_keyed_tbl}(.data, ..., .by = NULL, .preserve = FALSE)
 
 \method{mutate}{dm_zoomed}(
-  .data,
-  ...,
-  .by = NULL,
-  .keep = c("all", "used", "unused", "none"),
-  .before = NULL,
-  .after = NULL
+ .data,
+ ...,
+ .by = NULL,
+ .keep = c("all", "used", "unused", "none"),
+ .before = NULL,
+
+ .after = NULL
 )
 
 \method{mutate}{dm_keyed_tbl}(
-  .data,
-  ...,
-  .by = NULL,
-  .keep = c("all", "used", "unused", "none"),
-  .before = NULL,
-  .after = NULL
+ .data,
+ ...,
+ .by = NULL,
+ .keep = c("all", "used", "unused", "none"),
+ .before = NULL,
+ .after = NULL
 )
 
 \method{transmute}{dm_zoomed}(.data, ...)
@@ -74,6 +76,7 @@
 
 \method{relocate}{dm_zoomed}(.data, ..., .before = NULL, .after = NULL)
 
+
 \method{relocate}{dm_keyed_tbl}(.data, ..., .before = NULL, .after = NULL)
 
 \method{rename}{dm_zoomed}(.data, ...)
@@ -84,9 +87,11 @@
 
 \method{distinct}{dm_keyed_tbl}(.data, ..., .keep_all = FALSE)
 
+
 \method{arrange}{dm_zoomed}(.data, ..., .by_group = FALSE, .locale = NULL)
 
 \method{arrange}{dm_keyed_tbl}(.data, ..., .by_group = FALSE, .locale = NULL)
+
 
 \method{slice}{dm_zoomed}(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL)
 
@@ -95,6 +100,7 @@
 \method{group_by}{dm_zoomed}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
 
 \method{group_by}{dm_keyed_tbl}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
+
 
 \method{ungroup}{dm_zoomed}(x, ...)
 
@@ -109,21 +115,22 @@
 \method{reframe}{dm_keyed_tbl}(.data, ..., .by = NULL)
 
 \method{count}{dm_zoomed}(
-  x,
-  ...,
-  wt = NULL,
-  sort = FALSE,
-  name = NULL,
-  .drop = group_by_drop_default(x)
+ x,
+ ...,
+ wt = NULL,
+ sort = FALSE,
+ name = NULL,
+
+ .drop = group_by_drop_default(x)
 )
 
 \method{count}{dm_keyed_tbl}(
-  x,
-  ...,
-  wt = NULL,
-  sort = FALSE,
-  name = NULL,
-  .drop = group_by_drop_default(x)
+ x,
+ ...,
+ wt = NULL,
+ sort = FALSE,
+ name = NULL,
+ .drop = group_by_drop_default(x)
 )
 
 \method{tally}{dm_zoomed}(x, wt = NULL, sort = FALSE, name = NULL)
@@ -135,6 +142,7 @@
 \method{compute}{dm_zoomed}(x, ...)
 }
 \arguments{
+
 \item{.data}{object of class \code{dm_zoomed}}
 
 \item{...}{see corresponding function in package \pkg{dplyr} or \pkg{tidyr}}
@@ -145,6 +153,7 @@ details and examples, see \link[dplyr:dplyr_by]{?dplyr_by}.}
 
 \item{.preserve}{Relevant when the \code{.data} input is grouped. If \code{.preserve = FALSE} (the default), the grouping structure is recalculated based on the
 resulting data, otherwise the grouping is kept as is.}
+
 
 \item{.keep}{Control which columns from \code{.data} are retained in the output. Grouping
 columns and columns created by \code{...} are always kept.
@@ -157,6 +166,7 @@ and outputs side-by-side.
 columns. This is useful if you generate new columns, but no longer need
 the columns used to generate them.
 \item \code{"none"} doesn't retain any extra columns from \code{.data}. Only the grouping
+
 variables and columns created by \code{...} are kept.
 }}
 
@@ -183,9 +193,11 @@ supplying a locale identifier.
 }
 
 The C locale is not the same as English locales, such as \code{"en"},
+
 particularly when it comes to data containing a mix of upper and lower case
 letters. This is explained in more detail on the \link[dplyr:dplyr-locale]{locale}
 help page under the \verb{Default locale} section.}
+
 
 \item{.keep_pk}{For \code{slice.dm_zoomed}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.
@@ -193,6 +205,7 @@ This argument is specific for the \code{slice.dm_zoomed()} method.}
 
 \item{.add}{When \code{FALSE}, the default, \code{group_by()} will
 override existing groups. To add to the existing groups, use
+
 \code{.add = TRUE}.}
 
 \item{.drop}{Drop groups formed by factor levels that don't appear in the
@@ -204,6 +217,7 @@ grouped with \code{.drop = FALSE}. See \code{\link[dplyr:group_by_drop_default]{
 \item{.groups}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} Grouping structure of the
 result.
 \itemize{
+
 \item \code{"drop_last"}: drops the last level of grouping. This was the
 only supported option before version 1.0.0.
 \item \code{"drop"}: All levels of grouping are dropped.
@@ -214,6 +228,7 @@ only supported option before version 1.0.0.
 When \code{.groups} is not specified, it is set to \code{"drop_last"} for a grouped
 data frame, and \code{"keep"} for a rowwise data frame. In addition, a message
 informs you of how the result will be grouped unless the result is
+
 ungrouped, the option \code{"dplyr.summarise.inform"} is set to \code{FALSE}, or when
 \code{summarise()} is called from a function in a package.}
 
@@ -230,6 +245,7 @@ Can be \code{NULL} or a variable:
 
 If omitted, it will default to \code{n}. If there's already a column called \code{n},
 it will use \code{nn}. If there's a column called \code{n} and \code{nn}, it'll use
+
 \code{nnn}, and so on, adding \code{n}s until it gets a new name.}
 
 \item{var}{A variable specified as:
@@ -243,8 +259,10 @@ The default returns the last column (on the assumption that's the
 column you've created most recently).
 
 This argument is taken by expression and supports
+
 \link[rlang:topic-inject]{quasiquotation} (you can unquote column
 names and column locations).}
+
 }
 \description{
 Use these methods without the '.dm_zoomed' suffix (see examples).
@@ -252,9 +270,9 @@ Use these methods without the '.dm_zoomed' suffix (see examples).
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 zoomed <- dm_nycflights13() \%>\%
-  dm_zoom_to(flights) \%>\%
-  arrange(desc(day)) \%>\%
-  summarize(.by = month, avg_air_time = mean(air_time, na.rm = TRUE))
+ dm_zoom_to(flights) \%>\%
+ arrange(desc(day)) \%>\%
+ summarize(.by = month, avg_air_time = mean(air_time, na.rm = TRUE))
 zoomed
 dm_insert_zoomed(zoomed, new_tbl_name = "avg_air_time_per_month")
 \dontshow{\}) # examplesIf}

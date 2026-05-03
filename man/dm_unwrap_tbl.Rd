@@ -19,6 +19,7 @@ hide in non-interactive mode, show in interactive mode. Requires the
 A dm.
 }
 \description{
+
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{dm_unwrap_tbl()} unwraps all tables in a dm object so that the resulting dm
@@ -29,9 +30,9 @@ on the dm.
 \examples{
 
 roundtrip <-
-  dm_nycflights13() \%>\%
-  dm_wrap_tbl(root = flights) \%>\%
-  dm_unwrap_tbl(ptype = dm_ptype(dm_nycflights13()))
+ dm_nycflights13() \%>\%
+ dm_wrap_tbl(root = flights) \%>\%
+ dm_unwrap_tbl(ptype = dm_ptype(dm_nycflights13()))
 roundtrip
 
 # The roundtrip has the same structure but fewer rows:

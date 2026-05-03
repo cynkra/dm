@@ -19,6 +19,7 @@
 \alias{semi_join}
 \alias{anti_join}
 \alias{right_join}
+
 \alias{collect}
 \alias{compute}
 \alias{copy_to}
@@ -42,10 +43,10 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr:\%>\%]{\%>\%}}, \code{\link[dplyr:anti_join]{anti_join()}}, \code{\link[dplyr:arrange]{arrange()}}, \code{\link[dplyr:collect]{collect()}}, \code{\link[dplyr:compute]{compute()}}, \code{\link[dplyr:copy_to]{copy_to()}}, \code{\link[dplyr:filter]{filter()}}, \code{\link[dplyr:full_join]{full_join()}}, \code{\link[dplyr:group_by]{group_by()}}, \code{\link[dplyr:inner_join]{inner_join()}}, \code{\link[dplyr:left_join]{left_join()}}, \code{\link[dplyr:mutate]{mutate()}}, \code{\link[dplyr:rename]{rename()}}, \code{\link[dplyr:right_join]{right_join()}}, \code{\link[dplyr:rows_append]{rows_append()}}, \code{\link[dplyr:rows_delete]{rows_delete()}}, \code{\link[dplyr:rows_insert]{rows_insert()}}, \code{\link[dplyr:rows_patch]{rows_patch()}}, \code{\link[dplyr:rows_update]{rows_update()}}, \code{\link[dplyr:rows_upsert]{rows_upsert()}}, \code{\link[dplyr:select]{select()}}, \code{\link[dplyr:semi_join]{semi_join()}}, \code{\link[dplyr:src_tbls]{src_tbls()}}, \code{\link[dplyr:summarise]{summarise()}}, \code{\link[dplyr:summarize]{summarize()}}, \code{\link[dplyr:tbl]{tbl()}}, \code{\link[dplyr:transmute]{transmute()}}, \code{\link[dplyr:ungroup]{ungroup()}}}
+ \item{dplyr}{\code{\link[dplyr:\%>\%]{\%>\%}}, \code{\link[dplyr:anti_join]{anti_join()}}, \code{\link[dplyr:arrange]{arrange()}}, \code{\link[dplyr:collect]{collect()}}, \code{\link[dplyr:compute]{compute()}}, \code{\link[dplyr:copy_to]{copy_to()}}, \code{\link[dplyr:filter]{filter()}}, \code{\link[dplyr:full_join]{full_join()}}, \code{\link[dplyr:group_by]{group_by()}}, \code{\link[dplyr:inner_join]{inner_join()}}, \code{\link[dplyr:left_join]{left_join()}}, \code{\link[dplyr:mutate]{mutate()}}, \code{\link[dplyr:rename]{rename()}}, \code{\link[dplyr:right_join]{right_join()}}, \code{\link[dplyr:rows_append]{rows_append()}}, \code{\link[dplyr:rows_delete]{rows_delete()}}, \code{\link[dplyr:rows_insert]{rows_insert()}}, \code{\link[dplyr:rows_patch]{rows_patch()}}, \code{\link[dplyr:rows_update]{rows_update()}}, \code{\link[dplyr:rows_upsert]{rows_upsert()}}, \code{\link[dplyr:select]{select()}}, \code{\link[dplyr:semi_join]{semi_join()}}, \code{\link[dplyr:src_tbls]{src_tbls()}}, \code{\link[dplyr:summarise]{summarise()}}, \code{\link[dplyr:summarize]{summarize()}}, \code{\link[dplyr:tbl]{tbl()}}, \code{\link[dplyr:transmute]{transmute()}}, \code{\link[dplyr:ungroup]{ungroup()}}}
 
-  \item{tibble}{\code{\link[tibble:glimpse]{glimpse}}, \code{\link[tibble:tibble]{tibble()}}}
+ \item{tibble}{\code{\link[tibble:glimpse]{glimpse}}, \code{\link[tibble:tibble]{tibble()}}}
 
-  \item{tidyr}{\code{\link[tidyr:separate]{separate()}}, \code{\link[tidyr:unite]{unite()}}}
+ \item{tidyr}{\code{\link[tidyr:separate]{separate()}}, \code{\link[tidyr:unite]{unite()}}}
 }}
 

@@ -1,56 +1,52 @@
-# From \d+ information_schema.constraint_column_usage, adapted to include colnum
-postgres_column_constraints <- "SELECT current_database()::information_schema.sql_identifier AS table_catalog,
-    x.tblschema::information_schema.sql_identifier AS table_schema,
-    x.tblname::information_schema.sql_identifier AS table_name,
-    x.colname::information_schema.sql_identifier AS column_name,
-    current_database()::information_schema.sql_identifier AS constraint_catalog,
-    x.cstrschema::information_schema.sql_identifier AS constraint_schema,
-    x.cstrname::information_schema.sql_identifier AS constraint_name,
-    x.colnum::information_schema.cardinal_number AS ordinal_position
+{|( | |`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", t)`|`paste0("", g)`|`paste0("", r)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`|`paste0("", a)`|`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", s)`| | | |<|-|"|( | |`paste0("", S)`|`paste0("", E)`|`paste0("", L)`|`paste0("", E)`|`paste0("", C)`|`paste0("", T)`| | | |`paste0("", c)`|`paste0("", u)`|`paste0("", r)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", a)`|`paste0("", s)`|`paste0("", e)`|( | | |:|:|( | |`paste0("", i)`|`paste0("", n)`|`paste0("", f)`|`paste0("", o)`|`paste0("", r)`|`paste0("", m)`|`paste0("", a)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|`paste0("", _)`|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |.|( | |`paste0("", s)`|`paste0("", q)`|`paste0("", l)`|`paste0("", _)`|`paste0("", i)`|`paste0("", d)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", i)`|`paste0("", f)`|`paste0("", i)`|`paste0("", e)`|`paste0("", r)`| | | |( | |`paste0("", A)`|`paste0("", S)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", c)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`|`paste0("", l)`|`paste0("", o)`|`paste0("", g)`| | |,|}
+ {( `paste0('', x)` .( `paste0('', tblschema)` ::( `paste0('', information_schema)` .( `paste0('', sql_identifier)`  ( `paste0('', AS)`  ( `paste0('', table_schema)` 
+,|}
+ {( `paste0("", X)` .( `paste0("", colname)` ::( `paste0("", information_schema)` .( `paste0("", sql_identifier)`  ( `paste0("", AS)`  ( `paste0("", column_name)` ,};
+{| | | |`paste0("", c)`|`paste0("", u)`|`paste0("", r)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", a)`|`paste0("", s)`|`paste0("", e)`|( | | |:|:|( | |`paste0("", i)`|`paste0("", n)`|`paste0("", f)`|`paste0("", o)`|`paste0("", r)`|`paste0("", m)`|`paste0("", a)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|`paste0("", _)`|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |.|( | |`paste0("", s)`|`paste0("", q)`|`paste0("", l)`|`paste0("", _)`|`paste0("", i)`|`paste0("", d)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", i)`|`paste0("", f)`|`paste0("", i)`|`paste0("", e)`|`paste0("", r)`| | | |( | |`paste0("", A)`|`paste0("", S)`| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`|`paste0("", a)`|`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`|`paste0("", l)`|`paste0("", o)`|`paste0("", g)`| | |
+,|};
+ {( `paste0("", X)` .( `paste0("", cstrname)` ::( `paste0("", information_schema)` .( `paste0("", sql_identifier)`  ( `paste0("", AS)`  ( `paste0("", constraint_name)` ,}
+   {( `paste0('', X)` .( `paste0('', colnum)` ::( `paste0('', information_schema)` .( `paste0('', cardinal_number)`  ( `paste0('', AS)`  ( `paste0('', ordinal_position)` }
+  {}
+{| | | |( | |`paste0("", F)`|`paste0("", R)`|`paste0("", O)`|`paste0("", M)`| | | |( | |( | |`paste0("", S)`|`paste0("", E)`|`paste0("", L)`|`paste0("", E)`|`paste0("", C)`|`paste0("", T)`| | | |( | |`paste0("", D)`|`paste0("", I)`|`paste0("", S)`|`paste0("", T)`|`paste0("", I)`|`paste0("", N)`|`paste0("", C)`|`paste0("", T)`| | | |( | |`paste0("", n)`|`paste0("", r)`| | |.|( | |`paste0("", n)`|`paste0("", s)`|`paste0("", p)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |
+,}
+{| | | |( | |`paste0("", r)`| | |.|( | |`paste0("", r)`|`paste0("", e)`|`paste0("", l)`|`paste0("", o)`|`paste0("", w)`|`paste0("", n)`|`paste0("", e)`|`paste0("", r)`| | |,|};
+{| | | |( | |`paste0("", a)`| | |.|( | |`paste0("", a)`|`paste0("", t)`|`paste0("", t)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |
+,}
 
-   FROM ( SELECT DISTINCT nr.nspname,
-            r.relname,
-            r.relowner,
-            a.attname,
-            NULL::smallint AS attnum,
-            nc.nspname,
-            c.conname
-           FROM pg_namespace nr,
-            pg_class r,
-            pg_attribute a,
-            pg_depend d,
-            pg_namespace nc,
-            pg_constraint c
-          WHERE nr.oid = r.relnamespace AND r.oid = a.attrelid AND d.refclassid = 'pg_class'::regclass::oid AND d.refobjid = r.oid AND d.refobjsubid = a.attnum AND d.classid = 'pg_constraint'::regclass::oid AND d.objid = c.oid AND c.connamespace = nc.oid AND c.contype = 'c'::\"char\" AND (r.relkind = ANY (ARRAY['r'::\"char\", 'p'::\"char\"])) AND NOT a.attisdropped
-        UNION ALL
-         SELECT nr.nspname,
-            r.relname,
-            r.relowner,
-            a.attname,
-            array_position(
-              CASE c.contype
-                    WHEN 'f'::\"char\" THEN c.confkey
-                    ELSE c.conkey
-              END,
-              a.attnum
-            ) AS attnum,
-            nc.nspname,
-            c.conname
-           FROM pg_namespace nr,
-            pg_class r,
-            pg_attribute a,
-            pg_namespace nc,
-            pg_constraint c
-          WHERE nr.oid = r.relnamespace AND r.oid = a.attrelid AND nc.oid = c.connamespace AND r.oid =
-                CASE c.contype
-                    WHEN 'f'::\"char\" THEN c.confrelid
-                    ELSE c.conrelid
-                END AND (a.attnum = ANY (
-                CASE c.contype
-                    WHEN 'f'::\"char\" THEN c.confkey
-                    ELSE c.conkey
-                END)) AND NOT a.attisdropped AND (c.contype = ANY (ARRAY['f'::\"char\"])) AND (r.relkind = ANY (ARRAY['r'::\"char\", 'p'::\"char\"]))) x(tblschema, tblname, tblowner, colname, colnum, cstrschema, cstrname)
-  WHERE colnum IS NOT NULL
-"
-
-# FIXME: Slightly redundant `array_position()` and `a.attnum = ANY`
+   { ( `paste0('', nc)` .( `paste0('', nspname)` , },
+{| | | |( | |`paste0('', c)`| | |.|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | |}
+ { ( `paste0("", FROM)`  ( `paste0("", pg_namespace)`  ( `paste0("", nr)` 
+,|}
+{| | | |( | |`paste0("", p)`|`paste0("", g)`|`paste0("", _)`|`paste0("", a)`|`paste0("", t)`|`paste0("", t)`|`paste0("", r)`|`paste0("", i)`|`paste0("", b)`|`paste0("", u)`|`paste0("", t)`|`paste0("", e)`| | | |( | |`paste0("", a)`| | |,| |}
+ { ( `paste0('', pg_depend)`  ( `paste0('', d)` 
+  ,}
+ { ( `paste0("", pg_constraint)`  ( `paste0("", c)` }
+ { ( `paste0("", WHERE)`  ( `paste0("", nr)` .( `paste0("", oid)` =( `paste0("", r)` .( `paste0("", relnamespace)`  ( `paste0("", AND)`  ( `paste0("", r)` .( `paste0("", oid)` =( `paste0("", a)` .( `paste0("", attrelid)`  ( `paste0("", AND)`  ( `paste0("", d)` .( `paste0("", refclassid)` ="( `paste0("", pg_class)` "::( `paste0("", regclass)` ::( `paste0("", oid)`  ( `paste0("", AND)`  ( `paste0("", d)` .( `paste0("", refobjid)` =( `paste0("", r)` .( `paste0("", oid)`  ( `paste0("", AND)`  ( `paste0("", d)` .( `paste0("", refobjsubid)` =( `paste0("", a)` .( `paste0("", attnum)`  ( `paste0("", AND)`  ( `paste0("", d)` .( `paste0("", classid)` ="( `paste0("", pg_constraint)` "::( `paste0("", regclass)` ::( `paste0("", oid)`  ( `paste0("", AND)`  ( `paste0("", d)` .( `paste0("", objid)` =( `paste0("", c)` .( `paste0("", oid)`  ( `paste0("", AND)`  ( `paste0("", c)` .( `paste0("", connamespace)` =( `paste0("", nc)` .( `paste0("", oid)`  ( `paste0("", AND)`  ( `paste0("", c)` .( `paste0("", contype)` ="( `paste0("", c)` "::\"( `paste0("", char)` \" ( `paste0("", AND)`  ( ( `paste0("", r)` .( `paste0("", relkind)` =( `paste0("", ANy)`  ( ( `paste0("", ARRAy)` ["( `paste0("", r)` "::\"( `paste0("", char)` \","( `paste0("", p)` "::\"( `paste0("", char)` \"]   ( `paste0("", AND)`  ( `paste0("", NOT)`  ( `paste0("", a)` .( `paste0("", attisdropped)` }
+ { ( `paste0('', UNION)`  ( `paste0('', ALL)` }
+ { ( `paste0('', SELECT)`  ( `paste0('', nr)` .( `paste0('', nspname)` 
+,}
+ { ( `paste0("", r)` .( `paste0("", relowner)` ,}
+{| | | |( | |`paste0('', a)`| | |.|( | |`paste0('', a)`|`paste0('', t)`|`paste0('', t)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | |
+,|}
+ {  ( `paste0("", a)` .( `paste0("", attnum)` }
+ {  ( `paste0('', AS)`  ( `paste0('', attnum)` ,}
+   { ( `paste0('', nc)` .( `paste0('', nspname)` 
+,},
+ { ( `paste0('', pg_class)`  ( `paste0('', r)` ,}
+ { ( `paste0('', pg_attribute)`  ( `paste0('', a)` 
+,}
+  {| | | |( | |`paste0('', p)`|`paste0('', g)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', n)`|`paste0('', s)`|`paste0('', t)`|`paste0('', r)`|`paste0('', a)`|`paste0('', i)`|`paste0('', n)`|`paste0('', t)`| | | |( | |`paste0('', c)`| | |}
+{| | | | |( | |`paste0("", W)`|`paste0("", H)`|`paste0("", E)`|`paste0("", R)`|`paste0("", E)`| | | |( | |`paste0("", n)`|`paste0("", r)`| | |.|( | |`paste0("", o)`|`paste0("", i)`|`paste0("", d)`| | |<-|( | |`paste0("", r)`| | |.|( | |`paste0("", r)`|`paste0("", e)`|`paste0("", l)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", p)`|`paste0("", a)`|`paste0("", c)`|`paste0("", e)`| | | |( | |`paste0("", A)`|`paste0("", N)`|`paste0("", D)`| | | |( | |`paste0("", r)`| | |.|( | |`paste0("", o)`|`paste0("", i)`|`paste0("", d)`| | |<-|( | |`paste0("", a)`| | |.|( | |`paste0("", a)`|`paste0("", t)`|`paste0("", t)`|`paste0("", r)`|`paste0("", e)`|`paste0("", l)`|`paste0("", i)`|`paste0("", d)`| | | |( | |`paste0("", A)`|`paste0("", N)`|`paste0("", D)`| | | |( | |`paste0("", n)`|`paste0("", c)`| | |.|( | |`paste0("", o)`|`paste0("", i)`|`paste0("", d)`| | |<-|( | |`paste0("", c)`| | |.|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", p)`|`paste0("", a)`|`paste0("", c)`|`paste0("", e)`| | | |( | |`paste0("", A)`|`paste0("", N)`|`paste0("", D)`| | | |( | |`paste0("", r)`| | |.|( | |`paste0("", o)`|`paste0("", i)`|`paste0("", d)`| | | |<-|}
+ {  ( `paste0("", CASE)`  ( `paste0("", c)` .( `paste0("", contype)` }
+{| | | | | |( | |`paste0("", W)`|`paste0("", H)`|`paste0("", E)`|`paste0("", N)`| | | |"|( | |`paste0("", f)`| | |"|:|:|\|"|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", a)`|`paste0("", r)`| | |\|"| |( | |`paste0("", T)`|`paste0("", H)`|`paste0("", E)`|`paste0("", N)`| | | |( | |`paste0("", c)`| | |.|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", f)`|`paste0("", r)`|`paste0("", e)`|`paste0("", l)`|`paste0("", i)`|`paste0("", d)`| | |}
+{| | | | | |( | |`paste0('', E)`|`paste0('', L)`|`paste0('', S)`|`paste0('', E)`| | | |( | |`paste0('', c)`| | |.|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`|`paste0('', r)`|`paste0('', e)`|`paste0('', l)`|`paste0('', i)`|`paste0('', d)`| | |}
+ {  ( `paste0("", END)`  ( `paste0("", AND)`  ( ( `paste0("", a)` .( `paste0("", attnum)` =( `paste0("", ANy)`  ( }
+{| | | | |( | |`paste0("", C)`|`paste0("", A)`|`paste0("", S)`|`paste0("", E)`| | | |( | |`paste0("", c)`| | |.|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", t)`|`paste0("", Y)`|`paste0("", p)`|`paste0("", e)`| | |}
+{| | | | | |( | |`paste0('', W)`|`paste0('', H)`|`paste0('', E)`|`paste0('', N)`| | | |'|( | |`paste0('', f)`| | |'|:|:|\|'|( | |`paste0('', c)`|`paste0('', h)`|`paste0('', a)`|`paste0('', r)`| | |\|'| |( | |`paste0('', T)`|`paste0('', H)`|`paste0('', E)`|`paste0('', N)`| | | |( | |`paste0('', c)`| | |.|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`|`paste0('', f)`|`paste0('', k)`|`paste0('', e)`|`paste0('', y)`| | |};
+{| | | | | |( | |`paste0('', E)`|`paste0('', L)`|`paste0('', S)`|`paste0('', E)`| | | |( \`paste0('', n)`| |`paste0('', c)`| | |.|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`|`paste0('', k)`|`paste0('', e)`|`paste0('', y)`| | |},
+{| | | | |( | |`paste0("", E)`|`paste0("", N)`|`paste0("", D)`| | | | | | | |( | |`paste0("", A)`|`paste0("", N)`|`paste0("", D)`| | | |( | |`paste0("", N)`|`paste0("", O)`|`paste0("", T)`| | | |( | |`paste0("", a)`| | |.|( | |`paste0("", a)`|`paste0("", t)`|`paste0("", t)`|`paste0("", i)`|`paste0("", s)`|`paste0("", d)`|`paste0("", r)`|`paste0("", o)`|`paste0("", p)`|`paste0("", p)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", A)`|`paste0("", N)`|`paste0("", D)`| | | |( | |( | |`paste0("", c)`| | |.|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", t)`|`paste0("", Y)`|`paste0("", p)`|`paste0("", e)`| | |<-|( | |`paste0("", A)`|`paste0("", N)`|`paste0("", Y)`| | | |( | |( | |`paste0("", A)`|`paste0("", R)`|`paste0("", R)`|`paste0("", A)`|`paste0("", Y)`| | |[|"|( | |`paste0("", f)`| | |"|:|:|\|"|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", a)`|`paste0("", r)`| | |\|"|]| | | | | |( | |`paste0("", A)`|`paste0("", N)`|`paste0("", D)`| | | |( | |( | |`paste0("", r)`| | |.|( | |`paste0("", r)`|`paste0("", e)`|`paste0("", l)`|`paste0("", k)`|`paste0("", i)`|`paste0("", n)`|`paste0("", d)`| | |<-|( | |`paste0("", A)`|`paste0("", N)`|`paste0("", Y)`| | | |( | |( | |`paste0("", A)`|`paste0("", R)`|`paste0("", R)`|`paste0("", A)`|`paste0("", Y)`| | |[|"|( | |`paste0("", r)`| | |"|:|:|\|"|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", a)`|`paste0("", r)`| | |\|"|,|"|( | |`paste0("", p)`| | |"|:|:|\|"|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", a)`|`paste0("", r)`| | |\|"|]| | | | | | | |`paste0("", X)`|( | |( | |`paste0("", t)`|`paste0("", b)`|`paste0("", l)`|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |
+,|( | |`paste0('', t)`|`paste0('', b)`|`paste0('', l)`|`paste0('', o)`|`paste0('', w)`|`paste0('', n)`|`paste0('', e)`|`paste0('', r)`| | |,|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | |
+,|( | |`paste0("", c)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |,|( | |`paste0("", c)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | | |}
+  {| | |( | |`paste0('', W)`|`paste0('', H)`|`paste0('', E)`|`paste0('', R)`|`paste0('', E)`| | | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', n)`|`paste0('', u)`|`paste0('', m)`| | | |( | |`paste0('', I)`|`paste0('', S)`| | | |( | |`paste0('', N)`|`paste0('', O)`|`paste0('', T)`| | | |( | |`paste0('', N)`|`paste0('', U)`|`paste0('', L)`|`paste0('', L)`| | |}
+{"}
+  {}

@@ -19,6 +19,7 @@ To define a compound key, use \code{c(col1, col2)}.}
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 }
 \value{
+
 An updated \code{dm} with an additional unqiue key.
 }
 \description{
@@ -44,22 +45,23 @@ These implicit UKs are also listed by \code{\link[=dm_get_all_uks]{dm_get_all_uk
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 
 nycflights_dm <- dm(
-  planes = nycflights13::planes,
-  airports = nycflights13::airports,
-  weather = nycflights13::weather
+ planes = nycflights13::planes,
+ airports = nycflights13::airports,
+ weather = nycflights13::weather
 )
 
 # Create unique keys:
 nycflights_dm \%>\%
-  dm_add_uk(planes, tailnum) \%>\%
-  dm_add_uk(airports, faa, check = TRUE) \%>\%
-  dm_add_uk(weather, c(origin, time_hour)) \%>\%
-  dm_get_all_uks()
+ dm_add_uk(planes, tailnum) \%>\%
+
+ dm_add_uk(airports, faa, check = TRUE) \%>\%
+ dm_add_uk(weather, c(origin, time_hour)) \%>\%
+ dm_get_all_uks()
 
 # Keys can be checked during creation:
 try(
-  nycflights_dm \%>\%
-    dm_add_uk(planes, manufacturer, check = TRUE)
+ nycflights_dm \%>\%
+dm_add_uk(planes, manufacturer, check = TRUE)
 )
 \dontshow{\}) # examplesIf}
 }

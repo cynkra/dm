@@ -19,12 +19,13 @@ This is useful for performing creation and population of a database
 in separate steps.
 }
 \examples{
+
 \dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}
 dm_financial() \%>\%
-  dm_ptype()
+ dm_ptype()
 
 dm_financial() \%>\%
-  dm_ptype() \%>\%
-  dm_nrow()
+ dm_ptype() \%>\%
+ dm_nrow()
 \dontshow{\}) # examplesIf}
 }

@@ -19,12 +19,13 @@ The connection is established once per session,
 subsequent calls return the same connection.
 
 \code{dm_financial_sqlite()} copies the data to a temporary SQLite database.
+
 The data is downloaded once per session, subsequent calls return the same database.
 The \code{trans} table is excluded due to its size.
 }
 \examples{
 \dontshow{if (dm:::dm_has_financial() && rlang::is_installed("DiagrammeR")) withAutoprint(\{ # examplesIf}
 dm_financial() \%>\%
-  dm_draw()
+ dm_draw()
 \dontshow{\}) # examplesIf}
 }

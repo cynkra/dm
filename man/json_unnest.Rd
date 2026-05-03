@@ -7,7 +7,7 @@
 json_unnest(data, cols, ..., names_sep = NULL, names_repair = "check_unique")
 }
 \arguments{
-\item{data}{A data frame, a data frame extension (e.g. a tibble), or  a lazy
+\item{data}{A data frame, a data frame extension (e.g. a tibble), or a lazy
 data frame (e.g. from dbplyr or dtplyr).}
 
 \item{cols}{<\code{\link[tidyr:tidyr_tidy_select]{tidy-select}}> List-columns to unnest.
@@ -19,6 +19,7 @@ to their common size.}
 
 \item{names_sep}{If \code{NULL}, the default, the outer names will come from the
 inner names. If a string, the outer names will be formed by pasting
+
 together the outer and the inner column names, separated by \code{names_sep}.}
 
 \item{names_repair}{Used to check that output data frame has valid
@@ -45,5 +46,5 @@ The inverse of \code{\link[=json_nest]{json_nest()}}.
 }
 \examples{
 tibble(a = 1, b = '[{ "c": 2 }, { "c": 3 }]') \%>\%
-  json_unnest(b)
+ json_unnest(b)
 }

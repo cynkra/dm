@@ -5,21 +5,22 @@
 \title{Draw a diagram of the data model}
 \usage{
 dm_draw(
-  dm,
-  rankdir = "LR",
-  ...,
-  col_attr = NULL,
-  view_type = c("keys_only", "all", "title_only"),
-  column_types = NULL,
-  backend = c("DiagrammeR"),
-  backend_opts = list(),
-  columnArrows = lifecycle::deprecated(),
-  graph_attrs = lifecycle::deprecated(),
-  node_attrs = lifecycle::deprecated(),
-  edge_attrs = lifecycle::deprecated(),
-  focus = lifecycle::deprecated(),
-  graph_name = lifecycle::deprecated(),
-  font_size = lifecycle::deprecated()
+ dm,
+ rankdir = "LR",
+ ...,
+ col_attr = NULL,
+ view_type = c("keys_only", "all", "title_only"),
+ column_types = NULL,
+ backend = c("DiagrammeR"),
+ backend_opts = list(),
+ columnArrows = lifecycle::deprecated(),
+ graph_attrs = lifecycle::deprecated(),
+ node_attrs = lifecycle::deprecated(),
+ edge_attrs = lifecycle::deprecated(),
+ focus = lifecycle::deprecated(),
+ graph_name = lifecycle::deprecated(),
+
+ font_size = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -52,6 +53,7 @@ For the \code{"DiagrammeR"} backend, supported options are:
 \item \code{font_size}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Font size for \code{header} (default \code{16}), \code{column} (default \code{16}),
 and \code{table_description} (default \code{8}).
+
 Can be set as a named integer vector, e.g.
 \code{c(table_headers = 18L, table_description = 6L)}.
 }}
@@ -74,6 +76,7 @@ Can be set as a named integer vector, e.g.
 \item{graph_name}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
 \code{backend_opts = list(graph_name = ...)} instead.}
 
+
 \item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
 \code{backend_opts = list(font_size = ...)} instead.}
 }
@@ -83,11 +86,13 @@ when printed, produces the output seen in the viewer as a side effect.
 Currently, this is an object of class \code{grViz} (see also
 \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), but this is subject to change.
 }
+
 \description{
 \code{dm_draw()} draws a diagram, a visual representation of the data model.
 }
 \details{
 Currently, \pkg{dm} uses \pkg{DiagrammeR} to draw diagrams.
+
 Use \code{\link[DiagrammeRsvg:export_svg]{DiagrammeRsvg::export_svg()}} to convert the diagram to an SVG file.
 
 The backend for drawing the diagrams might change in the future.
@@ -95,17 +100,18 @@ If you rely on DiagrammeR, pass an explicit value for the \code{backend} argumen
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
+
 dm_nycflights13() \%>\%
-  dm_draw()
+ dm_draw()
 
 dm_nycflights13(cycle = TRUE) \%>\%
-  dm_draw(view_type = "title_only")
+ dm_draw(view_type = "title_only")
 
 head(dm_get_available_colors())
 length(dm_get_available_colors())
 
 dm_nycflights13() \%>\%
-  dm_get_colors()
+ dm_get_colors()
 \dontshow{\}) # examplesIf}
 }
 \seealso{

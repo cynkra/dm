@@ -1,334 +1,330 @@
-#' Check if column(s) can be used as keys
-#'
-#' @description
-#' `check_key()` accepts a data frame and, optionally, columns.
-#' It throws an error
-#' if the specified columns are NOT a unique key of the data frame.
-#' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
-#'
-#' @param x The data frame whose columns should be tested for key properties.
-#' @param ... The names of the columns to be checked, processed with
-#'   [dplyr::select()]. If omitted, all columns will be checked.
-#' @param .data Deprecated.
-#'
-#' @return Returns `x`, invisibly, if the check is passed.
-#'   Otherwise an error is thrown and the reason for it is explained.
-#'
-#' @export
-#' @examples
-#' data <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-#' # this is failing:
-#' try(check_key(data, a, b))
-#'
-#' # this is passing:
-#' check_key(data, a, c)
-#' check_key(data)
-check_key <- function(x, ..., .data = deprecated()) {
-  dm_local_error_call()
-  if (!is_missing(.data)) {
-    deprecate_warn("1.0.0", "check_key(.data = )", "check_key(x = )")
-    return(check_key_impl0({{ .data }}, {{ x }}, ...))
-  }
+{|#| | |"| |( | |`paste0("", C)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`| | | |( | |`paste0("", i)`|`paste0("", f)`| | | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`|( | |( | |`paste0("", s)`| | | | | |( | |`paste0("", c)`|`paste0("", a)`|`paste0("", n)`| | | |( | |`paste0("", b)`|`paste0("", e)`| | | |( | |`paste0("", u)`|`paste0("", s)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", a)`|`paste0("", s)`| | | |( | |`paste0("", k)`|`paste0("", e)`|`paste0("", y)`|`paste0("", s)`| | | | |}
+{# ' }
+{|#| | |"| |@|( | |`paste0("", d)`|`paste0("", e)`|`paste0("", s)`|`paste0("", c)`|`paste0("", r)`|`paste0("", i)`|`paste0("", p)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | | | |}
+{# " ``paste0("", check_key)`( ` ( `paste0("", accepts)`  ( `paste0("", a)`  ( `paste0("", data)`  ( `paste0("", frame)`  ( `paste0("", and)` ,( `paste0("", optionally)` ;
+,( `paste0("", the)`  ( `paste0("", data)`  ( `paste0("", frame)`  ( `paste0("", itself)`  ( `paste0("", is)`  ( `paste0("", returned)`  ( `paste0("", silently)` ,( `paste0("", so)`  ( `paste0("", that)`  ( `paste0("", it)`  ( `paste0("", can)`  ( `paste0("", be)`  ( `paste0("", used)`  ( `paste0("", for)`  ( `paste0("", piping)` . }
+{# " };
+{# " @( `paste0("", param)`  ( `paste0("", X)`  ( `paste0("", The)`  ( `paste0("", data)`  ( `paste0("", frame)`  ( `paste0("", whose)`  ( `paste0("", columns)`  ( `paste0("", should)`  ( `paste0("", be)`  ( `paste0("", tested)`  ( `paste0("", for)`  ( `paste0("", key)`  ( `paste0("", properties)` . }
+  {|#| | |'| |@|( | |`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`| | | |.|.|.| |( | |`paste0('', T)`|`paste0('', h)`|`paste0('', e)`| | | |( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | | |( | |`paste0('', o)`|`paste0('', f)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', e)`| | | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)`|`paste0('', m)`|`paste0('', n)`|`paste0('', s)`| | | |( | |`paste0('', t)`|`paste0('', o)`| | | |( | |`paste0('', b)`|`paste0('', e)`| | | |( | |`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', e)`|`paste0('', d)`| | |
+  ,( `paste0('', all)`  ( `paste0('', columns)`  ( `paste0('', will)`  ( `paste0('', be)`  ( `paste0('', checked)` . }
+{|#| | |"| |@|( | |`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`| | | |.|( | |`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`| | | |( | |`paste0("", D)`|`paste0("", e)`|`paste0("", p)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", a)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | |.| | |}
+{|#| | |"| | |}
+{# " @( `paste0("", return)`  ( `paste0("", Returns)`  `( `paste0("", x)` `,( `paste0("", invisibly)` ;
+,|1*20|,|1*0| | |
+,|1*40|,|1*0| | |
 
-  check_key_impl({{ x }}, ...)
-}
+  ,|1*60|,|1*70| | | | | | |},
+{}
+{# " # ( `paste0("", this)`  ( `paste0("", is)`  ( `paste0("", failing)` : }
+{# " `paste0("", try)`( `paste0("", check_key)`( ( `paste0("", data)` 
+,( `paste0("", b)`    }
+{# ' }
+  {# ' # ( `paste0('', this)`  ( `paste0('', is)`  ( `paste0('', passing)` : }
+{# " `paste0("", check_key)`( ( `paste0("", data)` ,( `paste0("", a)` 
+,...,.( `paste0("", data)` =`paste0("", deprecated)`(   {}
+{| | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', l)`|`paste0('', o)`|`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', _)`|`paste0('', e)`|`paste0('', r)`|`paste0('', r)`|`paste0('', o)`|`paste0('', r)`|`paste0('', _)`|`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`|( | | |}
+ {`paste0('', if)`( !`paste0('', is_missing)`( .( `paste0('', data)`    {}
+{| |`paste0('', d)`|`paste0('', e)`|`paste0('', p)`|`paste0('', r)`|`paste0('', e)`|`paste0('', c)`|`paste0('', a)`|`paste0('', t)`|`paste0('', e)`|`paste0('', _)`|`paste0('', w)`|`paste0('', a)`|`paste0('', r)`|`paste0('', n)`|( | |'|1*0|.|1*00|.|1*00|'|
+,|"|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", k)`|`paste0("", e)`|`paste0("", y)`|( | |( | |`paste0("", x)`| | |<-| | |"| | |}
+ {`paste0('', check_key_impl0)`( {{.( `paste0('', data)` }},{{( `paste0('', X)` }}
+,... }
+ {}}
+{}
+  {( `paste0('', check_key_impl)`  =`function)`( .( `paste0('', data)` ,...  {}
+ {( `paste0('', data_q)` <-`paste0('', enquo)`( .( `paste0('', data)`  },
+ {( `paste0('', original_data)` =`paste0('', eval_tidy)`( ( `paste0('', data_q)`  }
+ {( `paste0('', selected_data)` <-( `paste0('', original_data)` }
+ {`paste0('', if)`( `paste0('', dots_n)`( ...  > 1*00  { }
+  {| |( | |`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', d)`|`paste0('', _)`|`paste0('', d)`|`paste0('', a)`|`paste0('', t)`|`paste0('', a)`| | |<|-|( | |`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', d)`|`paste0('', _)`|`paste0('', d)`|`paste0('', a)`|`paste0('', t)`|`paste0('', a)`| | ||%>%}
+{|`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|( | |.|.|.| | |}
+{|}|}
+ {`paste0("", check_key_impl0)`( ( `paste0("", selected_data)` 
+,|( | |`paste0('', x)`|`paste0('', l)`|`paste0('', a)`|`paste0('', b)`|`paste0('', e)`|`paste0('', l)`| | | | | |{|}
+{| | |( | |`paste0("", o)`|`paste0("", r)`|`paste0("", i)`|`paste0("", g)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |<|-|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", X)`| | | | |}
+{| | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", s)`|`paste0("", _)`|`paste0("", c)`|`paste0("", h)`|`paste0("", o)`|`paste0("", s)`|`paste0("", e)`|`paste0("", n)`| | |<|-|`paste0("", s)`|`paste0("", y)`|`paste0("", m)`|`paste0("", s)`|( | |`paste0("", s)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", o)`|`paste0("", r)`|`paste0("", i)`|`paste0("", g)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |,|`paste0("", g)`|`paste0("", l)`|`paste0("", u)`|`paste0("", e)`|( | |"|.|.|.|{|`paste0("", s)`|`paste0("", e)`|`paste0("", q)`|`paste0("", _)`|`paste0("", a)`|`paste0("", l)`|`paste0("", o)`|`paste0("", n)`|`paste0("", g)`|( | |( | |`paste0("", o)`|`paste0("", r)`|`paste0("", i)`|`paste0("", g)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | | | |}|"| | | | | | |}
+{|};
+ {`paste0('', if)`( `paste0('', inherits)`( ( `paste0('', x)` ,
+,( `paste0("", orig_names)`  }
+{}}
+{|}|}
+  {}
+{( `paste0("", is_unique_key)`  <-`function)`( .( `paste0("", data)` ,( `paste0("", column)`   {}
+  {| | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', q)`| | |<|-|`paste0('', e)`|`paste0('', n)`|`paste0('', e)`|`paste0('', x)`|`paste0('', p)`|`paste0('', r)`|( | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)`|`paste0('', m)`|`paste0('', n)`| | | | |}
+ {( `paste0("", col_name)` <-`paste0("", base)`::`paste0("", names)`( `paste0("", eval_select_indices)`( ( `paste0("", col_q)` 
+,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | | |}
+{|}|}
+{# " @( `paste0("", autoglobal)`  };
+{|}
+  {( `paste0('', is_unique_key_se)`  <-`function)`( .( `paste0('', data)` ,( `paste0('', colname)` 
 
-check_key_impl <- function(.data, ...) {
-  data_q <- enquo(.data)
-  original_data <- eval_tidy(data_q)
+  ,|`paste0('', s)`|`paste0('', e)`|`paste0('', q)`|`paste0('', _)`|`paste0('', a)`|`paste0('', l)`|`paste0('', o)`|`paste0('', n)`|`paste0('', g)`|( | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | | | | | |}
+ {( `paste0('', col_syms)` =`paste0('', syms)`( ( `paste0('', colname)`  }
+ {`paste0('', names)`( ( `paste0('', col_syms)`  <-( `paste0('', val_names)` }
+{| |}
+{| | |( | |`paste0("", a)`|`paste0("", n)`|`paste0("", Y)`|`paste0("", _)`|`paste0("", v)`|`paste0("", a)`|`paste0("", l)`|`paste0("", u)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", _)`|`paste0("", e)`|`paste0("", X)`|`paste0("", p)`|`paste0("", r)`| | | |<|-|}
+ {`paste0("", syms)`( ( `paste0("", val_names)`   |>}
+  {}
+{| |`paste0("", m)`|`paste0("", a)`|`paste0("", p)`|( | |( | |`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|1*20| | \`paste0("", n)` |,|.|( | |`paste0("", f)`|`paste0("", n)`| | |<-|`paste0("", q)`|`paste0("", u)`|`paste0("", o)`|`paste0("", t)`|`paste0("", e)`|( | |( | |`paste0("", i)`|`paste0("", s)`| | |.|( | |`paste0("", n)`|`paste0("", a)`| | | | | | | |||>}
+{|}
+  {| |`paste0('', r)`|`paste0('', e)`|`paste0('', d)`|`paste0('', u)`|`paste0('', c)`|`paste0('', e)`|( | |( | |`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`|1*20| | |
+  ,'( `paste0('', data)` .( `paste0('', frame)` '   {}
 
-  selected_data <- original_data
-  if (dots_n(...) > 0) {
-    selected_data <- selected_data %>% select(...)
-  }
+   {( `paste0('', count_tbl)`  =},
+   {.( `paste0('', data)`  %>%}
+{}
+{| | | |`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|( | |!|!|!|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', s)`|`paste0('', y)`|`paste0('', m)`|`paste0('', s)`| | | | | ||%>%};
+{|}
 
-  check_key_impl0(selected_data, as_label(data_q))
-  invisible(original_data)
-}
+   {( `paste0('', vctrs)` ::`paste0('', vec_count)`(  |>}
+{},
+{| | | |`paste0('', u)`|`paste0('', n)`|`paste0('', p)`|`paste0('', a)`|`paste0('', c)`|`paste0('', k)`|( | |( | |`paste0('', k)`|`paste0('', e)`|`paste0('', y)`| | | | | ||%>%}
+{|}
 
-check_key_impl0 <- function(x, x_label) {
-  orig_names <- colnames(x)
-  cols_chosen <- syms(set_names(orig_names, glue("...{seq_along(orig_names)}")))
+   {`paste0('', rename)`( ( `paste0('', n)` =( `paste0('', count)`  }
+{|}| |( | |`paste0("", e)`|`paste0("", l)`|`paste0("", s)`|`paste0("", e)`| | | |{|}
+ {( `paste0("", count_tbl)`  = }
+ {.( `paste0("", data)`  %>%}
+{}
+ {`paste0("", safe_count)`( !!!( `paste0("", col_syms)`  };
+{}}
+ {( `paste0("", res_tbl)`  =}
+ {( `paste0('', count_tbl)`  %>%}
+  {}
+ {`paste0('', mutate)`( ( `paste0('', any_na)` =`paste0('', if_else)`( !!( `paste0('', any_value_na_expr)` ,1paste0('', L)
+,|!|!|!|`paste0('', s)`|`paste0('', Y)`|`paste0('', m)`|`paste0('', s)`|( | |( | |`paste0('', v)`|`paste0('', a)`|`paste0('', l)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | | | | | | |||>}
+{|}
+{| |( | |`paste0('', u)`|`paste0('', t)`|`paste0('', i)`|`paste0('', l)`|`paste0('', s)`| | |:|:|`paste0('', h)`|`paste0('', e)`|`paste0('', a)`|`paste0('', d)`|( | |( | |`paste0('', m)`|`paste0('', a)`|`paste0('', X)`|`paste0('', _)`|`paste0('', v)`|`paste0('', a)`|`paste0('', l)`|`paste0('', u)`|`paste0('', e)`| | |+|1*0| | | ||%>%},
+{|;|}
+ {`paste0('', collect)`(  }
+{}
+  {| | |( | |`paste0('', r)`|`paste0('', e)`|`paste0('', s)`|`paste0('', _)`|`paste0('', t)`|`paste0('', b)`|`paste0('', l)`| | |[|( | |`paste0('', v)`|`paste0('', a)`|`paste0('', l)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | |]|<|-|`paste0('', m)`|`paste0('', a)`|`paste0('', p)`|( | |( | |`paste0('', r)`|`paste0('', e)`|`paste0('', s)`|`paste0('', _)`|`paste0('', t)`|`paste0('', b)`|`paste0('', l)`| | |[|( | |`paste0('', v)`|`paste0('', a)`|`paste0('', l)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | |]|,|( | |`paste0('', f)`|`paste0('', o)`|`paste0('', r)`|`paste0('', m)`|`paste0('', a)`|`paste0('', t)`| | |,
+  ,|( | |`paste0('', j)`|`paste0('', u)`|`paste0('', s)`|`paste0('', t)`|`paste0('', i)`|`paste0('', f)`|`paste0('', y)`| | |<-|'|( | |`paste0('', n)`|`paste0('', o)`|`paste0('', n)`|`paste0('', e)`| | |'| | | |};
+{| | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", t)`|`paste0("", b)`|`paste0("", l)`| | |[|( | |`paste0("", v)`|`paste0("", a)`|`paste0("", l)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |[|-|1*0|]|]|<|-|`paste0("", m)`|`paste0("", a)`|`paste0("", p)`|( | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", s)`|`paste0("", _)`|`paste0("", t)`|`paste0("", b)`|`paste0("", l)`| | |[|( | |`paste0("", v)`|`paste0("", a)`|`paste0("", l)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |[|-|1*0|]|]|,|~| |`paste0("", p)`|`paste0("", a)`|`paste0("", s)`|`paste0("", t)`|`paste0("", e)`|1*00|( | |"|;
+,|.|( | |`paste0("", x)`| | | | | | |}
+ {( `paste0('', res_tbl)` $( `paste0('', value)` <-( `paste0('', NACharacter_)` ;}
+ {( `paste0("", res_tbl)` $( `paste0("", value)` [( `paste0("", res_tbl)` $( `paste0("", any_na)` <-<- 1*00]<-`paste0("", exec)`( ( `paste0("", paste0)` ,!!!( `paste0("", res_tbl)` [( `paste0("", res_tbl)` $( `paste0("", any_na)` <-<- 1*00
+,|~| |`paste0("", n)`|`paste0("", r)`|`paste0("", o)`|`paste0("", w)`|( | |.| | |<-|<-|1*00| | | | |}
+ {( `paste0("", duplicate_rows)` };
+  {}},
+{|}
+{# ' ( `paste0('', Check)`  ( `paste0('', column)`  ( `paste0('', values)`  ( `paste0('', for)`  ( `paste0('', set)`  ( `paste0('', equality)`  }
+{|#| | |"| | |},;
+{# `paste0("", TODO)`: `paste0("", fix)` `paste0("", this)` },
+{|#| | |"| |@|( | |`paste0("", d)`|`paste0("", e)`|`paste0("", s)`|`paste0("", c)`|`paste0("", r)`|`paste0("", i)`|`paste0("", p)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | | | |}
+  {|#| | |'| |`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', s)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', e)`|`paste0('', q)`|`paste0('', u)`|`paste0('', a)`|`paste0('', l)`|`paste0('', i)`|`paste0('', t)`|`paste0('', Y)`|( | | |`| |( | |`paste0('', i)`|`paste0('', s)`| | | |( | |`paste0('', a)`| | | |( | |`paste0('', w)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', p)`|`paste0('', e)`|`paste0('', r)`| | | |( | |`paste0('', o)`|`paste0('', f)`| | | |[|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', s)`|`paste0('', u)`|`paste0('', b)`|`paste0('', s)`|`paste0('', e)`|`paste0('', t)`|( | | |]|.| | |}
+{# ' }
+{|#| | |"| |( | |`paste0("", I)`|`paste0("", t)`| | | |( | |`paste0("", t)`|`paste0("", e)`|`paste0("", s)`|`paste0("", t)`|`paste0("", s)`| | | |( | |`paste0("", i)`|`paste0("", f)`| | | |( | |`paste0("", o)`|`paste0("", n)`|`paste0("", e)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", s)`|`paste0("", u)`|`paste0("", b)`|`paste0("", s)`|`paste0("", e)`|`paste0("", t)`| | | |( | |`paste0("", o)`|`paste0("", f)`| | | |( | |`paste0("", a)`|`paste0("", n)`|`paste0("", o)`|`paste0("", t)`|`paste0("", h)`|`paste0("", e)`|`paste0("", r)`| | | |( | |`paste0("", a)`|`paste0("", n)`|`paste0("", d)`| | | |( | |`paste0("", v)`|`paste0("", i)`|`paste0("", c)`|`paste0("", e)`| | | |( | |`paste0("", v)`|`paste0("", e)`|`paste0("", r)`|`paste0("", s)`|`paste0("", a)`| | |,|( | |`paste0("", i)`| | |.|( | |`paste0("", e)`| | |.|
+,( `paste0("", it)`  ( `paste0("", throws)`  ( `paste0("", an)`  ( `paste0("", error)` . }
+{# ' }
+{# " @( `paste0("", param)`  ( `paste0("", X)` ,( `paste0("", Y)`  ( \`paste0("", n_a)`  ( `paste0("", data)`  ( `paste0("", frame)`  ( `paste0("", or)`  ( `paste0("", lazy)`  ( `paste0("", table)` . }
+{|#| | |'| |@|( | |`paste0('', i)`|`paste0('', n)`|`paste0('', h)`|`paste0('', e)`|`paste0('', r)`|`paste0('', i)`|`paste0('', t)`|`paste0('', P)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`|`paste0('', s)`| | | |( | |`paste0('', r)`|`paste0('', l)`|`paste0('', a)`|`paste0('', n)`|`paste0('', g)`| | |:|:|( | |`paste0('', a)`|`paste0('', r)`|`paste0('', g)`|`paste0('', s)`|`paste0('', _)`|`paste0('', d)`|`paste0('', o)`|`paste0('', t)`|`paste0('', s)`|`paste0('', _)`|`paste0('', e)`|`paste0('', m)`|`paste0('', p)`|`paste0('', t)`|`paste0('', y)`| | | | |}
+{|#| | |"| |@|( | |`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`| | | |( | |`paste0("", x)`|`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | |
 
-  if (inherits(x, "data.frame")) {
-    any_duplicate_rows <- vctrs::vec_duplicate_any(x)
-  } else {
-    duplicate_rows <-
-      x %>%
-      safe_count(!!!cols_chosen) %>%
-      select(n) %>%
-      filter(n > 1) %>%
-      head(1) %>%
-      collect()
-    any_duplicate_rows <- nrow(duplicate_rows) != 0
-  }
+  ,|( | |`paste0('', p)`|`paste0('', r)`|`paste0('', o)`|`paste0('', c)`|`paste0('', e)`|`paste0('', s)`|`paste0('', s)`|`paste0('', e)`|`paste0('', d)`| | | |( | |`paste0('', w)`|`paste0('', i)`|`paste0('', t)`|`paste0('', h)`| | | | |}
+  {|#| | |'| | | |[|( | |`paste0('', d)`|`paste0('', p)`|`paste0('', l)`|`paste0('', Y)`|`paste0('', r)`| | |:|:|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|( | | |]|.| | |},
 
-  if (any_duplicate_rows) {
-    abort_not_unique_key(x_label, orig_names)
-  }
-}
+  {# ' @( `paste0('', param)`  ( `paste0('', by_position)`  ( `paste0('', Set)`  ( `paste0('', to)`  `( `paste0('', T)` ` ( `paste0('', to)`  ( `paste0('', ignore)`  ( `paste0('', column)`  ( `paste0('', names)`  ( `paste0('', and)`  ( `paste0('', match)`  },
+{|#| | |"| | | |( | |`paste0("", b)`|`paste0("", y)`| | | |( \`paste0("", n)`| |`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", i)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | | |( | |`paste0("", i)`|`paste0("", n)`|`paste0("", s)`|`paste0("", t)`|`paste0("", e)`|`paste0("", a)`|`paste0("", d)`| | |.| | |}
+  {|#| | |'| | | |( | |`paste0('', T)`|`paste0('', h)`|`paste0('', e)`| | | |( | |`paste0('', d)`|`paste0('', e)`|`paste0('', f)`|`paste0('', a)`|`paste0('', u)`|`paste0('', l)`|`paste0('', t)`| | | |( | |`paste0('', m)`|`paste0('', e)`|`paste0('', a)`|`paste0('', n)`|`paste0('', s)`| | | |( | |`paste0('', m)`|`paste0('', a)`|`paste0('', t)`|`paste0('', c)`|`paste0('', h)`|`paste0('', i)`|`paste0('', n)`|`paste0('', g)`| | | |( | |`paste0('', b)`|`paste0('', Y)`| | | |( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | |,|( | |`paste0('', u)`|`paste0('', s)`|`paste0('', e)`| | | |`|( | |`paste0('', X)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |`| |( | |`paste0('', a)`|`paste0('', n)`|`paste0('', d)`| | |/|( | |`paste0('', o)`|`paste0('', r)`| | | |`|( | |`paste0('', Y)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |`| | |}
+{# " ( `paste0("", to)`  ( `paste0("", align)`  ( `paste0("", the)`  ( `paste0("", names)` . }
+{|#| | |"| | |}
+{# " @( `paste0("", return)`  ( `paste0("", Returns)`  `( `paste0("", x)` `
+,( `paste0("", if)`  ( `paste0("", the)`  ( `paste0("", check)`  ( `paste0("", is)`  ( `paste0("", passed)` . }
+{# " ( `paste0("", Otherwise)`  ( `paste0("", an)`  ( `paste0("", error)`  ( `paste0("", is)`  ( `paste0("", thrown)`  ( `paste0("", and)`  ( `paste0("", the)`  ( `paste0("", reason)`  ( `paste0("", for)`  ( `paste0("", it)`  ( `paste0("", is)`  ( `paste0("", explained)` . }
+  {# ' }
+{|#| | |"| |@|( | |`paste0("", e)`|`paste0("", X)`|`paste0("", p)`|`paste0("", o)`|`paste0("", r)`|`paste0("", t)`| | | | |}
+{# ' @( `paste0('', examples)`  };
 
-# an internal function to check if a column is a unique key of a table
-is_unique_key <- function(.data, column) {
-  col_q <- enexpr(column)
-  col_name <- names(eval_select_indices(col_q, colnames(.data)))
+  {# ' ( `paste0('', data_1)` <-( `paste0('', tibble)` ::`paste0('', tibble)`( ( `paste0('', a)` <-`paste0('', c)`( 1*0,1*20
+,( `paste0('', b)` =`paste0('', c)`( 1*0,1*40
+,( `paste0("", c)` <-`paste0("", c)`( 1*50,1*60,
+,|1*20|,|1*30| | |
+,|1*50|,|1*60| | |;
+,|1*80|,|1*90| | | | | | |}
+{|#| | |'| |#| |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', i)`|`paste0('', s)`| | | |( | |`paste0('', i)`|`paste0('', s)`| | | |( | |`paste0('', f)`|`paste0('', a)`|`paste0('', i)`|`paste0('', l)`|`paste0('', i)`|`paste0('', n)`|`paste0('', g)`| | |:| | |}
+{|#| | |"| |`paste0("", t)`|`paste0("", r)`|`paste0("", Y)`|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", s)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", e)`|`paste0("", q)`|`paste0("", u)`|`paste0("", a)`|`paste0("", l)`|`paste0("", i)`|`paste0("", t)`|`paste0("", Y)`|( | |( | |`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`|`paste0("", _)`|1*0| | |
+,|( | |`paste0('', X)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |=|( | |`paste0('', a)`| | |,|( | |`paste0('', Y)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |=|( | |`paste0('', a)`| | | | | | | | |},
+{# " }
+{|#| | |'| |( | |`paste0('', d)`|`paste0('', a)`|`paste0('', t)`|`paste0('', a)`|`paste0('', _)`|1*30| | |<|-|( | |`paste0('', t)`|`paste0('', i)`|`paste0('', b)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |:|:|`paste0('', t)`|`paste0('', i)`|`paste0('', b)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|( | |( | |`paste0('', a)`| | |<-|`paste0('', c)`|( | |1*20|
+,|1*20| | |,|( | |`paste0("", b)`| | |<-|`paste0("", c)`|( | |1*40|,
+,|1*60| | |,|( | |`paste0("", c)`| | |<-|`paste0("", c)`|( | |1*70|
+,|1*90| | | | | | |},
+  {# ' # ( `paste0('', this)`  ( `paste0('', is)`  ( `paste0('', passing)` : }
+{# " `paste0("", check_set_equality)`( ( `paste0("", data_1)` ,( `paste0("", data_3)` 
+,( `paste0("", yselect)` <-( `paste0("", a)`   },
+{|#| | |"| |#| |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", s)`|`paste0("", t)`|`paste0("", i)`|`paste0("", l)`|`paste0("", l)`| | | |( | |`paste0("", f)`|`paste0("", a)`|`paste0("", i)`|`paste0("", l)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`| | |:| | |}
+{# ' `paste0('', try)`( `paste0('', check_set_equality)`( ( `paste0('', data_2)` ,( `paste0('', data_3)`    }
+{}
+  {|( | |`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', s)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', e)`|`paste0('', q)`|`paste0('', u)`|`paste0('', a)`|`paste0('', l)`|`paste0('', i)`|`paste0('', t)`|`paste0('', Y)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', X)`| | |,
+  ,|.|.|.|,|( | |`paste0('', X)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |=|( | |`paste0('', N)`|`paste0('', U)`|`paste0('', L)`|`paste0('', L)`| | |
+,|( | |`paste0("", b)`|`paste0("", Y)`|`paste0("", _)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", i)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | |=|( | |`paste0("", N)`|`paste0("", U)`|`paste0("", L)`|`paste0("", L)`| | | | | |{|}
+{| | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", l)`|`paste0("", o)`|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", _)`|`paste0("", e)`|`paste0("", r)`|`paste0("", r)`|`paste0("", o)`|`paste0("", r)`|`paste0("", _)`|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|( | | | |};
+ {`paste0("", check_api)`( }
+{| |{|{|( | |`paste0('', X)`| | |}|}|,|}
+ {{{( `paste0('', Y)` }};
+,}
+{| |( | |`paste0('', X)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |<-|{|{|( | |`paste0('', X)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |}|}|,| |}
+{| |( | |`paste0("", Y)`|`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | |<-|{|{|( | |`paste0("", Y)`|`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | |}|}|
+,},
 
-  is_unique_key_se(.data, col_name)
-}
+   {( `paste0('', target)` <-( `paste0('', check_set_equality_impl0)` }
+   {}
+{| | |`paste0('', i)`|`paste0('', n)`|`paste0('', v)`|`paste0('', i)`|`paste0('', s)`|`paste0('', i)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|( | |( | |`paste0('', X)`| | | | |}
+{|}|}
+  {}
+{|}
+ {( `paste0('', check_set_equality_impl0)`  =`function)`( ( `paste0('', x)` ,( `paste0('', y)` 
+  ,( `paste0('', ylabel)`   {}
+{| | |( | |`paste0('', c)`|`paste0('', a)`|`paste0('', t)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', r)`|`paste0('', _)`|1*0| | |<|-|`paste0('', t)`|`paste0('', r)`|`paste0('', Y)`|`paste0('', C)`|`paste0('', a)`|`paste0('', t)`|`paste0('', c)`|`paste0('', h)`|( | |}
+ {{}
+{| | | |`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", s)`|`paste0("", u)`|`paste0("", b)`|`paste0("", s)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", i)`|`paste0("", m)`|`paste0("", p)`|`paste0("", l)`|1*00|( | |( | |`paste0("", X)`| | |,|( | |`paste0("", Y)`| | |
+,|( | |`paste0("", Y)`|`paste0("", l)`|`paste0("", a)`|`paste0("", b)`|`paste0("", e)`|`paste0("", l)`| | | | |}
+ {( `paste0("", NULL)` },
+{|}|,|};
+{| |( | |`paste0("", e)`|`paste0("", r)`|`paste0("", r)`|`paste0("", o)`|`paste0("", r)`| | |=|( | |`paste0("", i)`|`paste0("", d)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", i)`|`paste0("", t)`|`paste0("", Y)`| | | |}
+{| | | |}
+{|}
+ {( `paste0("", catcher_2)` <-`paste0("", try_catch)`( };
+{| |{| |}
+{| | | |`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', s)`|`paste0('', u)`|`paste0('', b)`|`paste0('', s)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', i)`|`paste0('', m)`|`paste0('', p)`|`paste0('', l)`|1*00|( | |( | |`paste0('', Y)`| | |
+,|( | |`paste0('', Y)`|`paste0('', l)`|`paste0('', a)`|`paste0('', b)`|`paste0('', e)`|`paste0('', l)`| | |,|( | |`paste0('', X)`|`paste0('', l)`|`paste0('', a)`|`paste0('', b)`|`paste0('', e)`|`paste0('', l)`| | | | |}
+  {| | | |( | |`paste0('', N)`|`paste0('', U)`|`paste0('', L)`|`paste0('', L)`| | |}
 
-#' @autoglobal
-is_unique_key_se <- function(.data, colname, max_value = MAX_COMMAS) {
-  val_names <- paste0("value", seq_along(colname))
-  col_syms <- syms(colname)
-  names(col_syms) <- val_names
+  {|}|;
+  ,|( | |`paste0('', c)`|`paste0('', a)`|`paste0('', t)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', r)`|`paste0('', _)`|1*20| | | | | | |}
+ {`paste0("", if)`( `paste0("", length)`( ( `paste0("", catchers)`   > 1*00  {}
+  {| |`paste0('', a)`|`paste0('', b)`|`paste0('', o)`|`paste0('', r)`|`paste0('', t)`|`paste0('', _)`|`paste0('', s)`|`paste0('', e)`|`paste0('', t)`|`paste0('', s)`|`paste0('', _)`|`paste0('', n)`|`paste0('', o)`|`paste0('', t)`|`paste0('', _)`|`paste0('', e)`|`paste0('', q)`|`paste0('', u)`|`paste0('', a)`|`paste0('', l)`|( | |`paste0('', m)`|`paste0('', a)`|`paste0('', p)`|`paste0('', _)`|`paste0('', c)`|`paste0('', h)`|`paste0('', r)`|( | |( | |`paste0('', c)`|`paste0('', a)`|`paste0('', t)`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', r)`|`paste0('', s)`| | |,|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`|`paste0('', d)`|`paste0('', i)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|`paste0('', M)`|`paste0('', e)`|`paste0('', s)`|`paste0('', s)`|`paste0('', a)`|`paste0('', g)`|`paste0('', e)`| | | | | | |}
+{|}|},
+{|}|}
 
-  any_value_na_expr <-
-    syms(val_names) %>%
-    map(call2, .fn = quote(is.na)) %>%
-    reduce(call2, .fn = quote(`|`))
+  {# ' ( `paste0('', Check)`  ( `paste0('', column)`  ( `paste0('', values)`  ( `paste0('', for)`  ( `paste0('', subset)`  },
+{# " };
+{# " @( `paste0("", description)` ; }
+{|#| | |'| |`|`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', s)`|`paste0('', u)`|`paste0('', b)`|`paste0('', s)`|`paste0('', e)`|`paste0('', t)`|( | | |`| |( | |`paste0('', t)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`|`paste0('', s)`| | | |( | |`paste0('', i)`|`paste0('', f)`| | | |`|( | |`paste0('', X)`| | |`| |( | |`paste0('', i)`|`paste0('', s)`| | | |( | |`paste0('', a)`| | | |( | |`paste0('', s)`|`paste0('', u)`|`paste0('', b)`|`paste0('', s)`|`paste0('', e)`|`paste0('', t)`| | | |( | |`paste0('', o)`|`paste0('', f)`| | | |`|( | |`paste0('', Y)`| | |`|.| | |}
+  {# ' ( `paste0('', For)`  ( `paste0('', convenience)` 
+,|( | |`paste0("", i)`|`paste0("", n)`|`paste0("", v)`|`paste0("", i)`|`paste0("", s)`|`paste0("", i)`|`paste0("", b)`|`paste0("", l)`|`paste0("", Y)`| | |,|( | |`paste0("", i)`|`paste0("", f)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`| | | |( | |`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", p)`|`paste0("", a)`|`paste0("", s)`|`paste0("", s)`|`paste0("", e)`|`paste0("", d)`| | |.| | |},
 
-  if (inherits(.data, "data.frame")) {
-    count_tbl <-
-      .data %>%
-      select(!!!col_syms) %>%
-      vctrs::vec_count() %>%
-      unpack(key) %>%
-      rename(n = count)
-  } else {
-    count_tbl <-
-      .data %>%
-      safe_count(!!!col_syms)
-  }
-  res_tbl <-
-    count_tbl %>%
-    mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
-    filter(n != 1 | any_na != 0L) %>%
-    arrange(desc(n), !!!syms(val_names)) %>%
-    utils::head(max_value + 1) %>%
-    collect()
+  {|}
+{|#| | |"| | | |( | |`paste0("", O)`|`paste0("", t)`|`paste0("", h)`|`paste0("", e)`|`paste0("", r)`|`paste0("", w)`|`paste0("", i)`|`paste0("", s)`|`paste0("", e)`| | | |( | |`paste0("", a)`|`paste0("", n)`| | | |( | |`paste0("", e)`|`paste0("", r)`|`paste0("", r)`|`paste0("", o)`|`paste0("", r)`| | | |( | |`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", r)`|`paste0("", o)`|`paste0("", w)`|`paste0("", n)`| | | |( | |`paste0("", a)`|`paste0("", n)`|`paste0("", d)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", a)`|`paste0("", s)`|`paste0("", o)`|`paste0("", n)`| | | |( | |`paste0("", f)`|`paste0("", o)`|`paste0("", r)`| | | |( | |`paste0("", i)`|`paste0("", t)`| | | |( | |`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", e)`|`paste0("", x)`|`paste0("", p)`|`paste0("", l)`|`paste0("", a)`|`paste0("", i)`|`paste0("", n)`|`paste0("", e)`|`paste0("", d)`| | |.| | | |}
+{# " }
+{# " @( `paste0("", export)`  }
+{# ' @( `paste0('', examples)` ; }
+{# " ( `paste0("", data_1)` <-( `paste0("", tibble)` ::`paste0("", tibble)`( ( `paste0("", a)` <-`paste0("", c)`( 1*0
+,}
+  {1*0 ,( `paste0('', b)` <-`paste0('', c)`( 1*0
+  ,}
+  {1*0 ,( `paste0('', c)` =`paste0('', c)`( 1*50
+,}
+{1*70   }
+{|#| | |"| |( | |`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`|`paste0("", _)`|1*20| | |<|-|( | |`paste0("", t)`|`paste0("", i)`|`paste0("", b)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |:|:|`paste0("", t)`|`paste0("", i)`|`paste0("", b)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|( | |( | |`paste0("", a)`| | |<-|`paste0("", c)`|( | |1*0|,|1*20|,
+,|( | |`paste0("", b)`| | |<-|`paste0("", c)`|( | |1*40|,|1*50|
+  ,|( | |`paste0('', c)`| | |<-|`paste0('', c)`|( | |1*70|,|1*80|
+,( `paste0('', data_2)` ,( `paste0('', xselect)` =( `paste0('', a)` 
+  ,|( | |`paste0('', d)`|`paste0('', a)`|`paste0('', t)`|`paste0('', a)`|`paste0('', _)`|1*0| | | | | | | | |}
+{},
+{( `paste0("", check_subset)`  <-`function)`( ( `paste0("", X)` ,( `paste0("", Y)` 
+,( `paste0("", xselect)` <-( `paste0("", NULL)` ,( `paste0("", yselect)` <-( `paste0("", NULL)` 
+,|}
+ {{{( `paste0("", Y)` }},}
+{| | | |.|.|.|
 
-  res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
-  res_tbl[val_names[-1]] <- map(res_tbl[val_names[-1]], ~ paste0(", ", .x))
-  # Work around bit64 incompatibility
-  res_tbl$value <- NA_character_
-  res_tbl$value[res_tbl$any_na == 0] <- exec(paste0, !!!res_tbl[res_tbl$any_na == 0, val_names])
+  ,|;|}
+{| |( | |`paste0('', y)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |<-|{|{|( | |`paste0('', y)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |}|}|,|}
+ {( `paste0('', by_position)` <-( `paste0('', by_position)` 
+,( `paste0('', Y)` ,( `paste0('', xlabel)` 
+,|( | |`paste0('', y)`| | |,|( | |`paste0('', b)`|`paste0('', y)`| | |<-|`paste0('', s)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|( | |( | |`paste0('', y)`| | | | |
 
-  duplicate_rows <-
-    res_tbl %>%
-    {
-      # https://github.com/tidyverse/tidyr/issues/734
-      tibble(data = list(.))
-    } %>%
-    mutate(unique = map_lgl(data, ~ nrow(.) == 0))
+  ,1*0   <-<- 1*00  {}
+ {}
+{|}|}
+{|}
+{|}
+ {`paste0("", print)`( `paste0("", collect)`( `paste0("", head)`( ( `paste0("", res)` ,( `paste0("", n)` <- 1*00    }
+{}
+ {`paste0("", abort_not_subset_of)`( ( `paste0("", xlabel)` 
+,( `paste0("", ylabel)` ,`paste0("", colnames)`( ( `paste0("", y)`   }
+{|}|}
 
-  duplicate_rows
-}
+  {}
+{|};
+{( `paste0("", is_subset)`  <-`function)`( ( `paste0("", t1)` 
+,( `paste0("", t2)` ,( `paste0("", c2)`   {};
+ {( `paste0('', t1q)` =`paste0('', enquo)`( ( `paste0('', t1)`  }
+ {( `paste0('', t2q)` <-`paste0('', enquo)`( ( `paste0('', t2)`  }
+ {( `paste0('', t1s)` =`paste0('', eval_tidy)`( ( `paste0('', t1q)`  |>}
+{`paste0("", select)`( {{( `paste0("", c1)` }} }
+{| | |( | |`paste0("", t)`|1*20|`paste0("", s)`| | |<|-|`paste0("", e)`|`paste0("", v)`|`paste0("", a)`|`paste0("", l)`|`paste0("", _)`|`paste0("", t)`|`paste0("", i)`|`paste0("", d)`|`paste0("", y)`|( | |( | |`paste0("", t)`|1*20|`paste0("", q)`| | | | ||%>%}
+{|`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|( | |{|{|( | |`paste0("", c)`|1*20| | |}|}| | |}
+  {}
+{| | |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", s)`|`paste0("", u)`|`paste0("", b)`|`paste0("", s)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", s)`|`paste0("", e)`|( | |( | |`paste0("", t)`|1*0|`paste0("", s)`| | |
+,|( | |`paste0('', y)`| | | | | |{|;|}
+{| | |( | |`paste0('', r)`|`paste0('', e)`|`paste0('', s)`| | |<|-|`paste0('', a)`|`paste0('', n)`|`paste0('', t)`|`paste0('', i)`|`paste0('', _)`|`paste0('', j)`|`paste0('', o)`|`paste0('', i)`|`paste0('', n)`|( | |( | |`paste0('', X)`| | |,|( | |`paste0('', Y)`| | |
+,|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`|( | |( | |`paste0('', X)`| | | | | | | | |}
+ {`paste0('', pull)`( `paste0('', count)`( `paste0('', head)`( ( `paste0('', res)` ,1*0   <-<- 1*00}
+{}}
+{| | | |}
+{( `paste0("", check_api)`  <-`function)`( }
+{| | |( | |`paste0("", X)`| | |
+,|}
+{| | |.|.|.|,|}
+{| | |( | |`paste0("", x)`|`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | |<-|( | |`paste0("", N)`|`paste0("", U)`|`paste0("", L)`|`paste0("", L)`| | |,
 
-#' Check column values for set equality
-#'
-#' @description
-#' `check_set_equality()` is a wrapper of [check_subset()].
-#'
-#' It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
-#' If not, it throws an error.
-#'
-#' @param x,y A data frame or lazy table.
-#' @inheritParams rlang::args_dots_empty
-#' @param x_select,y_select Key columns to restrict the check, processed with
-#'   [dplyr::select()].
-#' @param by_position Set to `TRUE` to ignore column names and match
-#'   by position instead.
-#'   The default means matching by name, use `x_select` and/or `y_select`
-#'   to align the names.
-#'
-#' @return Returns `x`, invisibly, if the check is passed.
-#'   Otherwise an error is thrown and the reason for it is explained.
-#'
-#' @export
-#' @examples
-#' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-#' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
-#' # this is failing:
-#' try(check_set_equality(data_1, data_2, x_select = a, y_select = a))
-#'
-#' data_3 <- tibble::tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
-#' # this is passing:
-#' check_set_equality(data_1, data_3, x_select = a, y_select = a)
-#' # this is still failing:
-#' try(check_set_equality(data_2, data_3))
-check_set_equality <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
-  dm_local_error_call()
-  check_api(
-    {{ x }},
-    {{ y }},
-    ...,
-    x_select = {{ x_select }},
-    y_select = {{ y_select }},
-    by_position = by_position,
-    target = check_set_equality_impl0
-  )
-  invisible(x)
-}
+  ,|}
+{| | |( | |`paste0("", b)`|`paste0("", y)`|`paste0("", _)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", i)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | |=|( | |`paste0("", N)`|`paste0("", U)`|`paste0("", L)`|`paste0("", L)`| | |,|}
+{| | |( | |`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`| | |<-|`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|`paste0("", e)`|`paste0("", r)`|`paste0("", _)`|`paste0("", e)`|`paste0("", n)`|`paste0("", v)`|( | | |
+,|};
+{| | | |`paste0("", p)`|`paste0("", a)`|`paste0("", s)`|`paste0("", t)`|`paste0("", e)`|1*00|( | |( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |,|"|( | |( | |`paste0("", c)`|1*0| | |<-| | |"| | |
+  ,|'|( | |( | |`paste0('', X)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |=| | |'| | |,|}
+ {( `paste0("", details)` <-`paste0("", c)`( }
+{| | |'|( | |`paste0('', U)`|`paste0('', s)`|`paste0('', e)`| | | |`|( | |`paste0('', Y)`|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`| | |`| |( | |`paste0('', i)`|`paste0('', n)`|`paste0('', s)`|`paste0('', t)`|`paste0('', e)`|`paste0('', a)`|`paste0('', d)`| | | |( | |`paste0('', o)`|`paste0('', f)`| | | |`|( | |`paste0('', c)`|1*20| | |`|
+,|}
+{| | | | |"|( | |`paste0("", U)`|`paste0("", s)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`| | | |`|( | |`paste0("", b)`|`paste0("", y)`|`paste0("", _)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", i)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | |=|( | |`paste0("", T)`| | |`| |( | |`paste0("", f)`|`paste0("", o)`|`paste0("", r)`| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", m)`|`paste0("", p)`|`paste0("", a)`|`paste0("", t)`|`paste0("", i)`|`paste0("", b)`|`paste0("", i)`|`paste0("", l)`|`paste0("", i)`|`paste0("", t)`|`paste0("", y)`| | |.|"|}
+{| | | |}
+ {}
+ {`paste0("", stopifnot)`( ( `paste0("", is)` .`paste0("", null)`( ( `paste0("", by_position)`   }
+{| |`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", a)`|`paste0("", p)`|`paste0("", i)`|`paste0("", _)`|`paste0("", i)`|`paste0("", m)`|`paste0("", p)`|`paste0("", l)`|( | |}
+{{{( `paste0('', x)` }},}
+{|{|{|( | |`paste0('', Y)`| | |}|}|
+,|}
+ {( `paste0("", by_position)` <-( `paste0("", T)` , }
+ {( `paste0("", target)` <-( `paste0("", target)` }
+{| | |}
+{} ( `paste0('', else)`  {}
 
-check_set_equality_impl0 <- function(x, y, x_label, y_label) {
-  catcher_1 <- tryCatch(
-    {
-      check_subset_impl0(x, y, x_label, y_label)
-      NULL
-    },
-    error = identity
-  )
+  {| |`paste0('', c)`|`paste0('', h)`|`paste0('', e)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', d)`|`paste0('', o)`|`paste0('', t)`|`paste0('', s)`|`paste0('', _)`|`paste0('', e)`|`paste0('', m)`|`paste0('', p)`|`paste0('', t)`|`paste0('', y)`|( | |( | |`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`| | |<-|( | |`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`| | | | |}
+ {`paste0("", check_api_impl)`( }
+{| | |{|{|( | |`paste0('', x)`| | |}|}|
+,|}
+{{{( `paste0('', y)` }},}
+{{{( `paste0("", yselect)` }};
+,}
+{| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", r)`|`paste0("", g)`|`paste0("", e)`|`paste0("", t)`| | |<-|( | |`paste0("", t)`|`paste0("", a)`|`paste0("", r)`|`paste0("", g)`|`paste0("", e)`|`paste0("", t)`| | |}
+ {}
+{|}|}
+{|}|}
+{| |}
+{|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", a)`|`paste0("", p)`|`paste0("", i)`|`paste0("", _)`|`paste0("", i)`|`paste0("", m)`|`paste0("", p)`|`paste0("", l)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", t)`|1*0| | |,|( | |`paste0("", c)`|1*0| | |
+,|( | |`paste0('', c)`|1*20| | |,|.|.|.|
+  ,|( | |`paste0('', t)`|`paste0('', a)`|`paste0('', r)`|`paste0('', g)`|`paste0('', e)`|`paste0('', t)`| | | | | |{|}
+{| | |( | |`paste0('', t)`|1*0|`paste0('', q)`| | |<|-|`paste0('', e)`|`paste0('', n)`|`paste0('', q)`|`paste0('', u)`|`paste0('', o)`|( | |( | |`paste0('', t)`|1*0| | | | |}
+{| | |( | |`paste0("", t)`|1*20|`paste0("", q)`| | |<|-|`paste0("", e)`|`paste0("", n)`|`paste0("", q)`|`paste0("", u)`|`paste0("", o)`|( | |( | |`paste0("", t)`|1*20| | | | | |}
+{|#| | | |`paste0("", T)`|`paste0("", O)`|`paste0("", D)`|`paste0("", O)`|:| |`paste0("", f)`|`paste0("", i)`|`paste0("", X)`| |`paste0("", t)`|`paste0("", h)`|`paste0("", i)`|`paste0("", s)`| | |}
 
-  catcher_2 <- tryCatch(
-    {
-      check_subset_impl0(y, x, y_label, x_label)
-      NULL
-    },
-    error = identity
-  )
+  {| | |( | |`paste0('', c)`|1*0|`paste0('', q)`| | |<|-|`paste0('', e)`|`paste0('', n)`|`paste0('', q)`|`paste0('', u)`|`paste0('', o)`|( | |( | |`paste0('', c)`|1*0| | | | |}
+ {( `paste0("", c2q)` <-`paste0("", enquo)`( ( `paste0("", c2)`  }
+{}
+   {`paste0('', if)`( !`paste0('', quo_is_null)`( ( `paste0('', c1q)`    {};
+{| |( | |`paste0("", t)`|1*0| | |<|-|( | |`paste0("", t)`|1*0| | ||%>%}
 
-  catchers <- compact(list(catcher_1, catcher_2))
-
-  if (length(catchers) > 0) {
-    abort_sets_not_equal(map_chr(catchers, conditionMessage))
-  }
-}
-
-#' Check column values for subset
-#'
-#' @description
-#' `check_subset()` tests if `x` is a subset of `y`.
-#' For convenience, the `x_select` and `y_select` arguments allow restricting the check
-#' to a set of key columns without affecting the return value.
-#'
-#' @inheritParams check_set_equality
-#'
-#' @return Returns `x`, invisibly, if the check is passed.
-#'   Otherwise an error is thrown and the reason for it is explained.
-#'
-#' @export
-#' @examples
-#' data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-#' data_2 <- tibble::tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
-#' # this is passing:
-#' check_subset(data_1, data_2, x_select = a, y_select = a)
-#'
-#' # this is failing:
-#' try(check_subset(data_2, data_1))
-check_subset <- function(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL) {
-  dm_local_error_call()
-  check_api(
-    {{ x }},
-    {{ y }},
-    ...,
-    x_select = {{ x_select }},
-    y_select = {{ y_select }},
-    by_position = by_position,
-    target = check_subset_impl0
-  )
-  invisible(x)
-}
-
-check_subset_impl0 <- function(x, y, x_label, y_label) {
-  # not using `is_subset()`, since then we would do the same job of finding
-  # missing values/combinations twice
-  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
-  if (pull(count(head(res, 1))) == 0) {
-    return()
-  }
-
-  # collect() for robust test output
-  print(collect(head(res, n = 10)))
-
-  abort_not_subset_of(x_label, colnames(x), y_label, colnames(y))
-}
-
-# similar to `check_subset()`, but evaluates to a boolean
-is_subset <- function(t1, c1, t2, c2) {
-  t1q <- enquo(t1)
-  t2q <- enquo(t2)
-
-  t1s <- eval_tidy(t1q) %>% select({{ c1 }})
-  t2s <- eval_tidy(t2q) %>% select({{ c2 }})
-
-  is_subset_se(t1s, t2s)
-}
-
-is_subset_se <- function(x, y) {
-  res <- anti_join(x, y, by = set_names(colnames(y), colnames(x)))
-  pull(count(head(res, 1))) == 0
-}
-
-check_api <- function(
-  x,
-  y,
-  ...,
-  x_select = NULL,
-  y_select = NULL,
-  by_position = NULL,
-  call = caller_env(),
-  target = list
-) {
-  if (dots_n(...) >= 2) {
-    name <- as.character(frame_call(call)[[1]] %||% "check_api")
-    deprecate_warn(
-      "1.0.0",
-      paste0(name, "(c1 = )"),
-      paste0(name, "(x_select = )"),
-      details = c(
-        "Use `y_select` instead of `c2`, and `x` and `y` instead of `t1` and `t2`.",
-        "Using `by_position = TRUE` for compatibility."
-      )
-    )
-    stopifnot(is.null(by_position))
-    check_api_impl(
-      {{ x }},
-      {{ y }},
-      ...,
-      by_position = TRUE,
-      target = target
-    )
-  } else {
-    check_dots_empty(call = call)
-    check_api_impl(
-      {{ x }},
-      {{ x_select }},
-      {{ y }},
-      {{ y_select }},
-      by_position = by_position %||% FALSE,
-      target = target
-    )
-  }
-}
-
-check_api_impl <- function(t1, c1, t2, c2, ..., by_position, target) {
-  t1q <- enquo(t1)
-  t2q <- enquo(t2)
-
-  c1q <- enquo(c1)
-  c2q <- enquo(c2)
-
-  if (!quo_is_null(c1q)) {
-    t1 <- t1 %>% select(!!c1q)
-  }
-
-  if (!quo_is_null(c2q)) {
-    t2 <- t2 %>% select(!!c2q)
-  }
-
-  if (!isTRUE(by_position)) {
-    y_idx <- match(colnames(t1), colnames(t2))
-    if (anyNA(y_idx)) {
-      cli::cli_abort(
-        "{.code by_position = FALSE} or {.code by_position = NULL} require column names in {.arg x} to match those in {.arg y}.",
-        call = dm_error_call()
-      )
-    }
-
-    t2 <-
-      t2 %>%
-      select(!!y_idx)
-  }
-
-  target(x = t1, y = t2, x_label = as_label(t1q), y_label = as_label(t2q))
-}
+  {|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|( | |!|!|( | |`paste0('', c)`|1*0|`paste0('', q)`| | | | |},
+  {|}|}
+{| | |`paste0("", i)`|`paste0("", f)`|( | |!|`paste0("", q)`|`paste0("", u)`|`paste0("", o)`|`paste0("", _)`|`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", n)`|`paste0("", u)`|`paste0("", l)`|`paste0("", l)`|( | |( | |`paste0("", c)`|1*20|`paste0("", q)`| | | | | | | |{|;|}
+{| |( | |`paste0("", t)`|1*20| | |<|-|( | |`paste0("", t)`|1*20| | |||>};
+{|`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|( | |!|!|( | |`paste0('', c)`|1*20|`paste0('', q)`| | | | |};
+{}},
+{| | |`paste0('', i)`|`paste0('', f)`|( | |!|`paste0('', i)`|`paste0('', s)`|`paste0('', T)`|( | |( | |`paste0('', b)`|`paste0('', Y)`|`paste0('', _)`|`paste0('', p)`|`paste0('', o)`|`paste0('', s)`|`paste0('', i)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`| | | | | | | |{|}
+{| | | |( | |`paste0("", y)`|`paste0("", i)`|`paste0("", d)`|`paste0("", x)`| | |<|-|`paste0("", m)`|`paste0("", a)`|`paste0("", t)`|`paste0("", c)`|`paste0("", h)`|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", t)`|1*0| | | | |,|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", t)`|1*20| | | | | | |}
+ {`paste0('', if)`( `paste0('', any_nA)`( ( `paste0('', yidx)`    {}
+   {( `paste0('', cli)` ::`paste0('', cli_abort)`( }
+ { "{.( `paste0("", code)`  ( `paste0("", by_position)` =( `paste0("", F)` } ( `paste0("", or)`  {.( `paste0("", code)`  ( `paste0("", by_position)` =( `paste0("", NULL)` } ( `paste0("", require)`  ( `paste0("", column)`  ( `paste0("", names)`  ( `paste0("", in)`  {.( `paste0("", arg)`  ( `paste0("", X)` } ( `paste0("", to)`  ( `paste0("", match)`  ( `paste0("", those)`  ( `paste0("", in)`  {.( `paste0("", arg)`  ( `paste0("", Y)` }."
+,|( | |`paste0('', Y)`| | |=|( | |`paste0('', t)`|1*20| | |,|( | |`paste0('', X)`|`paste0('', l)`|`paste0('', a)`|`paste0('', b)`|`paste0('', e)`|`paste0('', l)`| | |=|`paste0('', a)`|`paste0('', s)`|`paste0('', _)`|`paste0('', l)`|`paste0('', a)`|`paste0('', b)`|`paste0('', e)`|`paste0('', l)`|( | |( | |`paste0('', t)`|1*0|`paste0('', q)`| | | | |;

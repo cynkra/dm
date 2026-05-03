@@ -32,6 +32,7 @@
 
 ## Chore
 
+
 - Auto-update from GitHub Actions (#2430).
 
 
@@ -57,104 +58,111 @@
 
 - Aligned with dplyr 1.2.0, all new verbs and arguments are supported.
 
-  ``` r
-  dm_nycflights13() |>
-    dm_zoom_to(flights) |>
-    summarize(.by = origin, mean(dep_delay, na.rm = TRUE))
-  ```
+ ``` r
+ dm_nycflights13() |>
+dm_zoom_to(flights) |>
+summarize(.by = origin, mean(dep_delay, na.rm = TRUE))
+ ```
+
 
 - New `dm_flatten()` joins parent tables into a target table in-place and removes
-  the now-integrated parents from the dm (#2393, #2394).
-  Useful for denormalizing a star schema before reporting or further analysis.
-  Supports `recursive`, `allow_deep`, and any dplyr join type.
+ the now-integrated parents from the dm (#2393, #2394).
+ Useful for denormalizing a star schema before reporting or further analysis.
 
-  ``` r
-  dm_nycflights13() |>
-    dm_select_tbl(-weather) |>
-    dm_flatten(flights, recursive = TRUE)
-  ```
+ Supports `recursive`, `allow_deep`, and any dplyr join type.
+
+ ``` r
+ dm_nycflights13() |>
+dm_select_tbl(-weather) |>
+
+dm_flatten(flights, recursive = TRUE)
+ ```
 
 - `dm_draw()` gains a `backend_opts` argument that collects all backend-specific
-  options in a single named list (#2381).
-  The individual top-level arguments (`graph_attrs`, `node_attrs`, `edge_attrs`,
-  `focus`, `graph_name`, `font_size`, `columnArrows`) are soft-deprecated in
-  favour of passing their equivalents in `backend_opts`.
+ options in a single named list (#2381).
+ The individual top-level arguments (`graph_attrs`, `node_attrs`, `edge_attrs`,
+ `focus`, `graph_name`, `font_size`, `columnArrows`) are soft-deprecated in
+ favour of passing their equivalents in `backend_opts`.
 
-  ``` r
-  dm_nycflights13() |>
-    dm_draw(backend_opts = list(column_arrow = FALSE))
-  ```
+ ``` r
+ dm_nycflights13() |>
+dm_draw(backend_opts = list(column_arrow = FALSE))
+ ```
 
 - `dm_examine_constraints()` gains a `.max_value` argument controlling how many
-  distinct problematic values are reported in the `problem` column (#2200, #2387).
-  The default is `6`; use `.max_value = Inf` to report all violations.
+ distinct problematic values are reported in the `problem` column (#2200, #2387).
+ The default is `6`; use `.max_value = Inf` to report all violations.
 
-  ``` r
-  dm_nycflights13() |>
-    dm_examine_constraints(.max_value = Inf)
-  ```
+
+ ``` r
+ dm_nycflights13() |>
+dm_examine_constraints(.max_value = Inf)
+ ```
 
 - `check_key()` now returns its input data frame when the key is valid
-  (#2221, #2303), making it usable in pipelines.
+ (#2221, #2303), making it usable in pipelines.
 
-  ``` r
-  my_data |>
-    check_key(id) |>
-    dplyr::filter(value > 0)
-  ```
+ ``` r
+ my_data |>
+check_key(id) |>
+dplyr::filter(value > 0)
+ ```
+
 
 - igraph is now an optional dependency (#2146, #2364), reducing the mandatory
-  install footprint.
-  Functions that require igraph will prompt you to install it when needed.
-  Set `options(dm.use_igraph = FALSE)` to turn off the startup message.
+
+ install footprint.
+ Functions that require igraph will prompt you to install it when needed.
+ Set `options(dm.use_igraph = FALSE)` to turn off the startup message.
 
 - Keys are now learned automatically from SQLite databases (@gadenbuie, #352).
 
 - Improved duckplyr compatibility.
 
 - `dm_pixarfilms()` now bundles the pixarfilms data directly and gains a `version`
-  argument (#2368, #2369).
+ argument (#2368, #2369).
 
 - All user-facing messages now use `cli::cli_inform()` with native formatting
-  (#2374).
+ (#2374).
 
 ## Breaking changes
 
 - A startup message now recommends running `library(dplyr)` before `library(dm)`.
-  In a future version, the dm package will no longer reexport all dplyr functions.
-  The new pattern ensures that scripts written today will work after that change.
-  Set `options(dm.suppress_dplyr_startup_message = TRUE)` to turn off the startup message.
+ In a future version, the dm package will no longer reexport all dplyr functions.
+ The new pattern ensures that scripts written today will work after that change.
+ Set `options(dm.suppress_dplyr_startup_message = TRUE)` to turn off the startup message.
 
-  ``` r
-  library(dplyr) # or library(tidyverse)
-  library(dm)
-  ```
+ ``` r
+ library(dplyr) # or library(tidyverse)
+ library(dm)
+ ```
 
 - `copy_dm_to()` now uses `dm_sql()` internally and creates key constraints on the
-  database (@krlmlr, #1887, #2022).
-  Unique keys and autoincrement primary keys (#1725) are set up automatically.
-  Data models with cyclic foreign-key references are now supported on all databases
-  that allow `ALTER TABLE` to add constraints (all except DuckDB and SQLite, #664).
+ database (@krlmlr, #1887, #2022).
+ Unique keys and autoincrement primary keys (#1725) are set up automatically.
+ Data models with cyclic foreign-key references are now supported on all databases
+ that allow `ALTER TABLE` to add constraints (all except DuckDB and SQLite, #664).
 
-  ``` r
-  con <- DBI::dbConnect(duckdb::duckdb())
-  dm_financial() |>
-    copy_dm_to(con, ., temporary = FALSE, set_key_constraints = TRUE)
-  DBI::dbDisconnect(con)
-  ```
+ ``` r
+ con <- DBI::dbConnect(duckdb::duckdb())
+ dm_financial() |>
+copy_dm_to(con, ., temporary = FALSE, set_key_constraints = TRUE)
+ DBI::dbDisconnect(con)
+ ```
 
 ## Bug fixes
 
+
 - `dm_from_con(learn_keys = TRUE, .names = )` now correctly applies the specified
-  table naming pattern (@owenjonesuob, #2213, #2214).
+ table naming pattern (@owenjonesuob, #2213, #2214).
 
 - `dm_from_con()` no longer learns tables from all schemas by default for Postgres,
-  MSSQL, and MariaDB (@mgirlich, #1440, #1448).
-  The defaults are `"public"` (Postgres), `"dbo"` (MSSQL), and the current
-  database (MariaDB), avoiding spurious system tables.
+ MSSQL, and MariaDB (@mgirlich, #1440, #1448).
+ The defaults are `"public"` (Postgres), `"dbo"` (MSSQL), and the current
+ database (MariaDB), avoiding spurious system tables.
 
 - `dm_rm_fk()` no longer issues a spurious message when foreign keys reference
-  non-primary-key columns (#1270, #2367).
+ non-primary-key columns (#1270, #2367).
 
 - `dm_paste()` limits its pipelines to up to 100 steps, splitting longer pipelines as needed (#2301).
 
@@ -188,6 +196,7 @@
 - Fix intended links (@guspan-tanadi, #2278).
 
 - Restore empty space removed by styler (#2269).
+
 
 - Use `index.md`.
 
@@ -253,6 +262,7 @@
 
 ## Features
 
+
 - Explicitly fail on `compute(temporary = TRUE)`, which never worked correctly (#2059, #2103).
 
 - Warn about DuckDB not supporting autoincrementing primary keys (#2099).
@@ -280,6 +290,7 @@
 - Remove most skips from tests (#2052).
 
 
+
 # dm 1.0.7
 
 ## Features
@@ -296,9 +307,11 @@
 
 - Improve MySQL compatibility regarding learning of database schemas and checking of constraints (#1938).
 
+
 ## Breaking changes
 
 - Breaking change: Add `check_dots_empty()` calls (#1929, #1943).
+
 
 ## Bug fixes
 
@@ -395,6 +408,7 @@
 
 ## Chore
 
+
 - Establish compatibility with dbplyr 2.3.3 and 2.4.0 (@mgirlich, #1919).
 
 - In `copy_dm_to()`, call `collect()` only when copying data, table by table (@jangorecki, #1900).
@@ -436,6 +450,7 @@
 
 - Compatibility with dev jsonlite (#1837).
 
+
 - Remove tidyverse dependency (#1798, #1834).
 
 - Minimal patch to fix multiple match updates (@DavisVaughan, #1806).
@@ -475,6 +490,7 @@
 
 - Require dplyr >= 1.1.0 and lifecycle >= 1.0.3 (#1771, #1637).
 
+
 - Checks pass if all suggested packages are missing (#1659).
 
 - Fix r-devel builds (#1776).
@@ -493,6 +509,7 @@
 ## Chore
 
 - Avoid running example without database connection.
+
 
 
 # dm 1.0.2
@@ -531,9 +548,11 @@
 - Use `dm_ptype()` in `dm_gui()`, generate better code (#1353).
 
 
+
 # dm 1.0.0
 
 ## Features
+
 
 - New `dm_gui()` for interactive editing of `dm` objects (#1076, #1319).
 
@@ -558,6 +577,7 @@
 - `dm_disambiguate_cols()` adds table names as a suffix by default, and gains a `.position` argument to restore the original behavior. Arguments `sep` and `quiet` are renamed to `.sep` and `.quiet` (#1293, #1327).
 
 - `dm_squash_to_tbl()` is deprecated in favor of the new `.recursive` argument to `dm_flatten_to_tbl()`. Arguments `start` and `join` are renamed to `.start` and `.join` (#1272, #1324).
+
 
 - `dm_rm_tbl()` is deprecated in favor of `dm_select_tbl()` (#1275).
 
@@ -625,6 +645,7 @@
 
 - Marked stable functions as stable, in particular `dm()` and related functions (#1032, #1040).
 
+
 - Remove own `rows_*()` implementation for lazy tables, they are now available in dbplyr >= 2.2.0 (#912, #1024, #1028).
 
 - Deprecate `dm_join_to_tbl()`, `dm_is_referenced()` and `dm_get_referencing_tables()` (#1038).
@@ -638,6 +659,7 @@
 - Add ellipses to `dm_disambiguate_cols()`, `dm_draw()`, `dm_examine_constraints()`, `dm_nycflights13()` and `dm_pixarfilms()` (#1035).
 
 - New `dm_from_con()`, soft-deprecated `dm_from_src()` (#1014, #1018, #1044).
+
 
 - Moved `pack_join()` arguments past the ellipsis for consistency (#920, #921).
 
@@ -658,6 +680,7 @@
 - Greatly improved consistency, content, and language across all articles (@IndrajeetPatil, #1056, #1132, #1157, #1166, #1079, #1082, #1098, #1100, #1101, #1103, #1112, #1120, #1158, #1175).
 
 - Tweaks of intro vignette and README (#1066, #1075, @maelle).
+
 
 - Document `glimpse()` S3 method for `dm` (@IndrajeetPatil, #1121).
 
@@ -713,6 +736,7 @@
 ## Internal
 
 - Establish compatibility with rlang 1.0.0 (#756).
+
 - Simplify database checks on GitHub Actions (#712).
 
 
@@ -720,11 +744,12 @@
 
 ## Features
 
+
 - New `dm_pixarfilms()` creates a dm object with data from the {pixarfilms} package (#600, @erictleung).
 - `check_cardinality_0_1()`, `check_cardinality_0_n()`, `check_cardinality_1_1()`, `check_cardinality_1_n()`, and `examine_cardinality()` now support compound keys (#524).
 - `check_subset()` and `check_set_equality()` support compound keys (#523).
 - `dm_paste()` adds the `on_delete` argument to `dm_add_fk()` (#673).
-- `dm_disambiguate_cols()` also disambiguates columns used in keys, to support correct disambiguation for compound keys  (#662).
+- `dm_disambiguate_cols()` also disambiguates columns used in keys, to support correct disambiguation for compound keys (#662).
 - `dm_disambiguate_cols()` now emits the source code equivalent of a renaming operation (#684).
 - `dm_examine_constraints()` uses backticks to surround table names (#687).
 
@@ -736,6 +761,7 @@
 ## Internal
 
 - Fix compatibility with dplyr 1.0.8 (#698).
+
 
 
 # dm 0.2.5
@@ -823,7 +849,7 @@
 
 ## Breaking changes
 
-- `dm_get_all_fks()` returns a data frame with a  `parent_key_cols` instead of a `parent_pk_cols` column (introduced in dm 0.2.0), to reflect the fact that a foreign key no longer necessarily points to a primary key (#562).
+- `dm_get_all_fks()` returns a data frame with a `parent_key_cols` instead of a `parent_pk_cols` column (introduced in dm 0.2.0), to reflect the fact that a foreign key no longer necessarily points to a primary key (#562).
 - `*_pk()` and `*_fk()` functions now verify that the dots are actually empty (#536).
 - `dm_get_pk()` is deprecated in favor of `dm_get_all_pks()` (#561).
 - `dm_has_fk()` and `dm_get_fk()` are deprecated in favor of `dm_get_all_fks()` (#561).
@@ -831,6 +857,7 @@
 ## Features
 
 - `dm_add_fk()` gains `ref_columns` argument that supports creating foreign keys to non-primary keys (#402).
+
 - `dm_get_all_pks()` gains `table` argument for filtering the returned primary keys (#560).
 - `dm_get_all_fks()` gains `parent_table` argument for filtering the returned foreign keys (#560).
 - `dm_rm_fk()` gains an optional `ref_columns` argument. This function now supports removal of multiple foreign keys filtered by parent or child table or columns, with a message (#559).
@@ -915,6 +942,7 @@
 
 # dm 0.1.7
 
+
 - Bump RMariaDB required version to 1.0.10 to work around timeout with `R CMD check`.
 - `dm_from_src()` accepts `schema` argument for MSSQL databases (#367).
 
@@ -962,6 +990,7 @@
 
 - `rows_insert()` works if column names consist of SQL keywords (#409).
 - Cycles in other connected components don't affect filtering in a cycle-free component.
+
 - Avoid `src_sqlite()` in examples (#372).
 
 ## Internal
@@ -1001,10 +1030,12 @@
 
 # dm 0.1.3
 
+
 - Avoid `src_sqlite()` in vignettes (#372).
 - Rename vignettes (#349).
 - Rename error class `"dm_error_tables_not_neighbours"` to `"dm_error_tables_not_neighbors"`.
 - Shortened README and intro article (#192, @jawond).
+
 - Better testing for MSSQL (#339).
 - Fix compatibility with dplyr 1.0.0.
 
@@ -1020,7 +1051,9 @@
 - `dm_paste()` supports writing colors and the table definition via the new `options` argument. The definition can be written to a file via the new `path` argument. The `select` argument is soft-deprecated (#218, #302).
 - `dm_add_tbl()` uses `rlang::list2()` internally, now accepts `:=` to specify table names.
 - New `dm_ptype()` (#301).
+
 - New `dm_financial()` and `dm_financial_sqlite()`.
+
 - Printing dm objects from database sources with many tables is now faster (#308, @gadenbuie).
 - `check_key()` now also works on a zoomed dm.
 - Key columns are always selected in a join operation, with a message (#153).
@@ -1043,6 +1076,7 @@
 ## Compatibility
 
 - Remove use of deprecated `src_df()` (#336).
+
 - Fix compatibility with dplyr 1.0.0 (#203).
 
 
@@ -1057,6 +1091,7 @@
 - Testing on local data frames (by default), optionally also SQLite, Postgres, RMariaDB, and SQL Server. Currently requires development versions and various pull requests (#334, #327, #312, #76).
 - `dm_nycflights13(subset = TRUE)` memoizes subset and also reduces the size of the `weather` table.
 - Expand definitions of deprecated functions (#204).
+
 
 
 # dm 0.1.1
@@ -1120,6 +1155,7 @@
 - Joins on zoomed dm objects now supported (#121). Joins use the same column name disambiguation algorithm as `cdm_flatten_to_tbl()` (#147).
 - `slice.dm_zoomed()`: user decides in arg `.keep_pk` if PK column is tracked or not (#152).
 - Supported {dplyr} and {tidyr} verbs are reexported.
+
 - `enum_pk_candidates()` works with zoomed dm-s (#156).
 - New `enum_fk_candidates()` (#156).
 - Add name repair argument for both `cdm_insert_zoomed_tbl()` and `cdm_add_tbl()`, defaulting to renaming of old and new tables when adding tables with duplicate names (#132).
@@ -1144,6 +1180,7 @@
 - Integrate code from {datamodelr} in this package (@bergant, #111).
 - Reorder tables in `"dm"` using `cdm_select_tbl()` (#108).
 - More accurate documentation of filtering operation (#98).
+
 - Support empty `dm` objects via `dm()` and `new_dm()` (#96).
 - `cdm_flatten_to_tbl()` now flattens all immediate neighbors by default (#95).
 - New `cdm_add_tbl()` and `cdm_rm_tbl()` (#90).
@@ -1208,6 +1245,7 @@
 
 - Requires tidyr >= 1.0.0.
 - `cdm_nrow()` returns named list (#49).
+
 - Remove `cdm_semi_join()`.
 - Remove `cdm_find_conn_tbls()` and the `all_connected` argument to `cdm_select()` (#35).
 - Unexport `cdm_set_key_constraints()`.
@@ -1301,10 +1339,13 @@ Initial GitHub release.
 ## Filtering
 
 - `cdm_filter()`
+
 - `cdm_semi_join()`
 - `cdm_nrow()`
 
+
 ## Interaction with DBs
+
 
 - `cdm_copy_to()`
 - `cdm_set_key_constraints()`
@@ -1323,6 +1364,7 @@ Initial GitHub release.
 - `reunite_parent_child()`
 - `reunite_parent_child_from_list()`
 
+
 ## Check keys and cardinalities
 
 - `check_key()`
@@ -1337,4 +1379,5 @@ Initial GitHub release.
 
 - `cdm_nycflights13()`
 - `cdm_rename_table()`
+
 - `cdm_rename_tables()`

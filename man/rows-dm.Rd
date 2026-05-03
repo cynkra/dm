@@ -19,6 +19,7 @@ dm_rows_update(x, y, ..., in_place = NULL, progress = NA)
 
 dm_rows_patch(x, y, ..., in_place = NULL, progress = NA)
 
+
 dm_rows_upsert(x, y, ..., in_place = NULL, progress = NA)
 
 dm_rows_delete(x, y, ..., in_place = NULL, progress = NA)
@@ -52,6 +53,7 @@ These functions provide a framework for updating data in existing tables.
 Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created
 on the database.
 All operations expect that both existing and new data are presented
+
 in two compatible \link{dm} objects on the same data source.
 
 The functions make sure that the tables in the target dm
@@ -74,6 +76,7 @@ This must be ensured by the caller and might be checked by the underlying databa
 Use \code{in_place = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.
 
 \code{dm_rows_update()} updates existing records via \code{\link[=rows_update]{rows_update()}}.
+
 Primary keys must match for all records to be updated.
 
 \code{dm_rows_patch()} updates missing values in existing records
@@ -83,11 +86,13 @@ Primary keys must match for all records to be patched.
 \code{dm_rows_upsert()} updates existing records and adds new records,
 based on the primary key, via \code{\link[=rows_upsert]{rows_upsert()}}.
 
+
 \code{dm_rows_delete()} removes matching records via \code{\link[=rows_delete]{rows_delete()}},
 based on the primary key.
 The order in which the tables are processed is reversed.
 }
 \examples{
+
 \dontshow{if (rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))) withAutoprint(\{ # examplesIf}
 # Establish database connection:
 sqlite <- DBI::dbConnect(RSQLite::SQLite())
@@ -95,13 +100,14 @@ sqlite <- DBI::dbConnect(RSQLite::SQLite())
 # Entire dataset with all dimension tables populated
 # with flights and weather data truncated:
 flights_init <-
-  dm_nycflights13() \%>\%
-  dm_zoom_to(flights) \%>\%
-  filter(FALSE) \%>\%
-  dm_update_zoomed() \%>\%
-  dm_zoom_to(weather) \%>\%
-  filter(FALSE) \%>\%
-  dm_update_zoomed()
+
+ dm_nycflights13() \%>\%
+ dm_zoom_to(flights) \%>\%
+ filter(FALSE) \%>\%
+ dm_update_zoomed() \%>\%
+ dm_zoom_to(weather) \%>\%
+ filter(FALSE) \%>\%
+ dm_update_zoomed()
 
 # Target database:
 flights_sqlite <- copy_dm_to(sqlite, flights_init, temporary = FALSE)
@@ -109,14 +115,15 @@ print(dm_nrow(flights_sqlite))
 
 # First update:
 flights_jan <-
-  dm_nycflights13() \%>\%
-  dm_select_tbl(flights, weather) \%>\%
-  dm_zoom_to(flights) \%>\%
-  filter(month == 1) \%>\%
-  dm_update_zoomed() \%>\%
-  dm_zoom_to(weather) \%>\%
-  filter(month == 1) \%>\%
-  dm_update_zoomed()
+ dm_nycflights13() \%>\%
+ dm_select_tbl(flights, weather) \%>\%
+ dm_zoom_to(flights) \%>\%
+ filter(month == 1) \%>\%
+ dm_update_zoomed() \%>\%
+
+ dm_zoom_to(weather) \%>\%
+ filter(month == 1) \%>\%
+ dm_update_zoomed()
 print(dm_nrow(flights_jan))
 
 # Copy to temporary tables on the target database:
@@ -132,30 +139,33 @@ print(dm_nrow(flights_sqlite))
 
 # Second update:
 flights_feb <-
-  dm_nycflights13() \%>\%
-  dm_select_tbl(flights, weather) \%>\%
-  dm_zoom_to(flights) \%>\%
-  filter(month == 2) \%>\%
-  dm_update_zoomed() \%>\%
-  dm_zoom_to(weather) \%>\%
-  filter(month == 2) \%>\%
-  dm_update_zoomed()
+ dm_nycflights13() \%>\%
+ dm_select_tbl(flights, weather) \%>\%
+ dm_zoom_to(flights) \%>\%
+
+ filter(month == 2) \%>\%
+ dm_update_zoomed() \%>\%
+ dm_zoom_to(weather) \%>\%
+ filter(month == 2) \%>\%
+ dm_update_zoomed()
 
 # Copy to temporary tables on the target database:
 flights_feb_sqlite <- copy_dm_to(sqlite, flights_feb)
 
 # Explicit dry run:
 flights_new <- dm_rows_append(
-  flights_sqlite,
-  flights_feb_sqlite,
-  in_place = FALSE
+
+ flights_sqlite,
+ flights_feb_sqlite,
+ in_place = FALSE
 )
 print(dm_nrow(flights_new))
 print(dm_nrow(flights_sqlite))
 
 # Check for consistency before applying:
 flights_new \%>\%
-  dm_examine_constraints()
+ dm_examine_constraints()
+
 
 # Apply:
 dm_rows_append(flights_sqlite, flights_feb_sqlite, in_place = TRUE)

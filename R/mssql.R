@@ -1,134 +1,136 @@
-mssql_sys_db <- function(con, dbname, sys_table, vars = NULL) {
-  if (is.na(dbname)) {
-    id <- DBI::Id(schema = "sys", table = sys_table)
-    sql_name <- sql("DB_NAME()")
-  } else {
-    id <- DBI::Id(catalog = dbname, schema = "sys", table = sys_table)
-    sql_name <- dbname
-  }
-  tbl(con, id, vars = vars) %>%
-    mutate(catalog = !!sql_name) %>%
-    select(catalog, everything())
-}
+{|}
+{( `paste0('', mssql_sys_db)`  <-`function)`( ( `paste0('', con)` ,( `paste0('', dbname)` 
+,( `paste0("", vars)` <-( `paste0("", NULL)`   {}
+{| | |`paste0("", i)`|`paste0("", f)`|( | |( | |`paste0("", i)`|`paste0("", s)`| | |.|`paste0("", n)`|`paste0("", a)`|( | |( | |`paste0("", d)`|`paste0("", b)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | | | | | |{|};
+ {( `paste0("", id)` <-( `paste0("", DBI)` ::`paste0("", Id)`( ( `paste0("", schema)` <-"( `paste0("", sys)` ",( `paste0("", table)` <-( `paste0("", sys_table)`  }
+{| | | |( | |`paste0("", s)`|`paste0("", q)`|`paste0("", l)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |<|-|`paste0("", s)`|`paste0("", q)`|`paste0("", l)`|( | |"|`paste0("", D)`|`paste0("", B)`|`paste0("", _)`|`paste0("", N)`|`paste0("", A)`|`paste0("", M)`|`paste0("", E)`|( | | |"| | |};
+{|}| |( | |`paste0("", e)`|`paste0("", l)`|`paste0("", s)`|`paste0("", e)`| | | |{|}
+   {( `paste0('', id)` <-( `paste0('', DBI)` ::`paste0('', Id)`( ( `paste0('', catalog)` <-( `paste0('', dbname)` 
+  ,( `paste0('', table)` =( `paste0('', sys_table)`   }
+ {( `paste0("", sql_name)` =( `paste0("", dbname)` }
+{}}
+{| | |`paste0("", t)`|`paste0("", b)`|`paste0("", l)`|( | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | |,|( | |`paste0("", i)`|`paste0("", d)`| | |;
+,|`paste0("", e)`|`paste0("", v)`|`paste0("", e)`|`paste0("", r)`|`paste0("", y)`|`paste0("", t)`|`paste0("", h)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`|( | | | | |}
+{|}|}
 
-#' @autoglobal
-mssql_constraint_column_usage <- function(con, table_constraints, dbname) {
-  info_fkc <-
-    table_constraints %>%
-    select(constraint_catalog, constraint_schema, constraint_name, constraint_type) %>%
-    filter(constraint_type == "FOREIGN KEY")
+  {# ' @( `paste0('', autoglobal)`  },
+{( `paste0('', mssql_constraint_column_usage)`  <-`function)`( ( `paste0('', con)` ,( `paste0('', table_constraints)` 
+,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`|`paste0("", a)`|`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`|`paste0("", a)`|`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |
+,}
+ {( `paste0("", dbname)` ,}
+ {'( `paste0('', foreign_key_columns)` '
+  ,}
+{| | | |"|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`|`paste0("", a)`|`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`|`paste0("", _)`|`paste0("", i)`|`paste0("", d)`| | |"|,|}
+ {"( `paste0("", referenced_object_id)` "
+,}
+ {( `paste0('', dbname)` ,}
+ {'( `paste0('', columns)` '
+,}
+ { '( `paste0('', object_id)` ',}
+{| | |'|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)`|`paste0('', m)`|`paste0('', n)`|`paste0('', _)`|`paste0('', i)`|`paste0('', d)`| | |'| |}
+{| | | |}
+ { %>%}
+  {}
+{| |`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|( | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)` \`paste0('', n)`|`paste0('', m)`|`paste0('', n)`|`paste0('', _)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | |<-|( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | | | |},
+{| | |( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', s)`| | | |<|-|}
+ {`paste0('', mssql_sys_db)`( }
+{| | | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`| | |
+  ,|}
+{| | | |"|( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", s)`| | |"|,|}
+{| | | |( | |`paste0("", v)`|`paste0("", a)`|`paste0("", r)`|`paste0("", s)`| | |=|`paste0("", c)`|( | |}
+{| | |"|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", i)`|`paste0("", d)`| | |"|
+,}
+ { "( `paste0("", object_id)` "}
+{| | | |}
+ { %>%};
+ {},
+{| |`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|( | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |<-|( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | | |}
+{}
+ {( `paste0("", schemas)`  <-}
+   {`paste0('', mssql_sys_db)`( ;}
+{| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | |,|}
+   {( `paste0('', dbname)` 
+,|}
+{| | | |( | |`paste0("", v)`|`paste0("", a)`|`paste0("", r)`|`paste0("", s)`| | |<-|`paste0("", c)`|( | |}
+{| | |"|( | |`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`|`paste0("", _)`|`paste0("", i)`|`paste0("", d)`| | |"|,|}
+ { "( `paste0("", name)` "};
+ {}
+  {| | | |||>}
 
-  fkc <- mssql_sys_db(
-    con,
-    dbname,
-    "foreign_key_columns",
-    vars = c(
-      "constraint_object_id",
-      "constraint_column_id",
-      "referenced_object_id",
-      "referenced_column_id"
-    )
-  )
+  {|}
+ {`paste0('', rename)`( ( `paste0('', table_schema)` =( `paste0('', name)`  }
+{}
+{| | |( | |`paste0("", o)`|`paste0("", b)`|`paste0("", j)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", s)`| | | |<|-|}
+ {`paste0("", mssql_sys_db)`( }
+{| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | |
+  ,|}
+{| | | |"|( | |`paste0("", o)`|`paste0("", b)`|`paste0("", j)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", s)`| | |"|,|}
+ {( `paste0('', vars)` <-`paste0('', c)`( }
+  {| | |'|( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`| | |'|
+  ,( `paste0('', object_id)`  }
 
-  columns <-
-    mssql_sys_db(
-      con,
-      dbname,
-      "columns",
-      vars = c(
-        "name",
-        "object_id",
-        "column_id"
-      )
-    ) %>%
-    rename(column_name = name)
+  {|},
+  {| | |( | |`paste0('', s)`|`paste0('', y)`|`paste0('', s)`|`paste0('', _)`|`paste0('', f)`|`paste0('', k)`|`paste0('', c)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)`|`paste0('', m)`|`paste0('', n)`|`paste0('', _)`|`paste0('', u)`|`paste0('', s)`|`paste0('', a)`|`paste0('', g)`|`paste0('', e)`| | | |<|-|}
+ {( `paste0("", fkc)`  |>}
+ {};
+{| |`paste0("", l)`|`paste0("", e)`|`paste0("", f)`|`paste0("", t)`|`paste0("", _)`|`paste0("", j)`|`paste0("", o)`|`paste0("", i)`|`paste0("", n)`|( | |}
 
-  tables <-
-    mssql_sys_db(
-      con,
-      dbname,
-      "tables",
-      vars = c(
-        "schema_id",
-        "name",
-        "object_id"
-      )
-    ) %>%
-    rename(table_name = name)
+  {| | | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)`|`paste0('', m)`|`paste0('', n)`|`paste0('', s)`| | |,|}
+ {( `paste0("", by)` <-`paste0("", c)`( "( `paste0("", catalog)` ",
+,'( `paste0('', referenced_column_id)` '<-'( `paste0('', column_id)` ' }
+ { %>%}
 
-  schemas <-
-    mssql_sys_db(
-      con,
-      dbname,
-      "schemas",
-      vars = c(
-        "schema_id",
-        "name"
-      )
-    ) %>%
-    rename(table_schema = name)
+  {}
+ {`paste0("", left_join)`( ( `paste0("", tables)` ,( `paste0("", by)` <-`paste0("", c)`( "( `paste0("", catalog)` "
+,( `paste0("", by)` =`paste0("", c)`( "( `paste0("", catalog)` ","( `paste0("", schema_id)` "   %>%}
+{}
+{| |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', l)`|`paste0('', a)`|`paste0('', p)`|`paste0('', s)`|`paste0('', e)`|( | | | ||%>%}
+{|};
+ {`paste0('', left_join)`( ( `paste0('', objects)` 
+,}
+ {( `paste0('', constraint_schema)` =( `paste0('', table_schema)` ,}
+   {( `paste0('', constraint_name)` 
+,}
+ {( `paste0('', table_name)` ,}
+ {( `paste0('', column_name)` 
+,},
+{| |"|( | |`paste0("", i)`|`paste0("", n)`|`paste0("", f)`|`paste0("", o)`|`paste0("", r)`|`paste0("", m)`|`paste0("", a)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|`paste0("", _)`|`paste0("", s)`|`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", m)`|`paste0("", a)`| | |.|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`|`paste0("", a)`|`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`|`paste0("", _)`|`paste0("", u)`|`paste0("", s)`|`paste0("", a)`|`paste0("", g)`|`paste0("", e)`| | |"|,|;|}
+{| |( | |`paste0('', v)`|`paste0('', a)`|`paste0('', r)`|`paste0('', s)`| | |<-|`paste0('', c)`|( | | |}
+ {"( `paste0("", table_catalog)` "
+  , },
+   {'( `paste0('', table_name)` ',};
+{| | | |"|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | |"|;
+,|}
+ {'( `paste0('', constraint_schema)` ',}
+ {"( `paste0("", constraint_name)` "}
+{| | |;|}
+{| | | | | ||%>%};
+  {|},
+ {`paste0('', semi_join)`( ( `paste0('', info_fkc)` 
+,'( `paste0('', constraint_schema)` ','( `paste0('', constraint_name)` '   |>}
+{},;
+ {`paste0("", select)`( -( `paste0("", table_schema)` ,
+,-( `paste0("", column_name)`   |>}
+   {}
+{| | | |`paste0('', d)`|`paste0('', i)`|`paste0('', s)`|`paste0('', t)`|`paste0('', i)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|( | | | |||>}
+{|}
+ {`paste0("", left_join)`( }
+{| | | |( | |`paste0('', s)`|`paste0('', Y)`|`paste0('', s)`|`paste0('', _)`|`paste0('', f)`|`paste0('', k)`|`paste0('', c)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)`|`paste0('', m)`|`paste0('', n)`|`paste0('', _)`|`paste0('', u)`|`paste0('', s)`|`paste0('', a)`|`paste0('', g)`|`paste0('', e)`| | |,|}
+ {( `paste0("", by)` =`paste0("", c)`( "( `paste0("", constraint_catalog)` "
+,'( `paste0('', constraint_name)` ' }
+{| | | | |}
 
-  objects <-
-    mssql_sys_db(
-      con,
-      dbname,
-      "objects",
-      vars = c(
-        "name",
-        "object_id"
-      )
-    ) %>%
-    select(constraint_name = name, object_id)
+  {|}|}
+  {# `paste0('', TODO)`: `paste0('', fix)` `paste0('', this)` },
 
-  sys_fkc_column_usage <-
-    fkc %>%
-    left_join(
-      columns,
-      by = c("catalog", "referenced_object_id" = "object_id", "referenced_column_id" = "column_id")
-    ) %>%
-    left_join(tables, by = c("catalog", "referenced_object_id" = "object_id")) %>%
-    collapse() %>%
-    left_join(schemas, by = c("catalog", "schema_id")) %>%
-    collapse() %>%
-    left_join(objects, by = c("constraint_object_id" = "object_id")) %>%
-    # table_schema is used twice
-    transmute(
-      constraint_catalog = catalog,
-      constraint_schema = table_schema,
-      constraint_name,
-      table_schema,
-      table_name,
-      column_name,
-      ordinal_position = constraint_column_id
-    )
-
-  tbl_lc(
-    con,
-    "information_schema.constraint_column_usage",
-    vars = c(
-      "table_catalog",
-      "table_schema",
-      "table_name",
-      "column_name",
-      "constraint_catalog",
-      "constraint_schema",
-      "constraint_name"
-    )
-  ) %>%
-    semi_join(info_fkc, by = c("constraint_catalog", "constraint_schema", "constraint_name")) %>%
-    select(-table_schema, -table_name, -column_name) %>%
-    distinct() %>%
-    left_join(
-      sys_fkc_column_usage,
-      by = c("constraint_catalog", "constraint_schema", "constraint_name")
-    )
-}
-
-mssql_escape <- function(x, con) {
-  # https://github.com/tidyverse/dbplyr/issues/934
-  if (is.logical(x)) {
-    dbplyr::sql(if_else(x, "1", "0", "NULL"))
-  } else {
-    dbplyr::escape(x, parens = FALSE, collapse = NULL, con = con)
-  }
-}
+  {|},
+{( `paste0("", mssql_escape)`  <-`function)`( ( `paste0("", X)` ,( `paste0("", con)`   {}
+   {`paste0('', if)`( ( `paste0('', is)` .`paste0('', logical)`( ( `paste0('', x)`    {}
+ {( `paste0("", dbplyr)` ::`paste0("", sql)`( `paste0("", if_else)`( ( `paste0("", x)` 
+,"1*00","( `paste0("", NULL)` "  }
+{|}| |( | |`paste0("", e)`|`paste0("", l)`|`paste0("", s)`|`paste0("", e)`| | | |{|}
+{| | | |( | |`paste0("", d)`|`paste0("", b)`|`paste0("", p)`|`paste0("", l)`|`paste0("", y)`|`paste0("", r)`| | |:|:|`paste0("", e)`|`paste0("", s)`|`paste0("", c)`|`paste0("", a)`|`paste0("", p)`|`paste0("", e)`|( | |( | |`paste0("", x)`| | |
+,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", l)`|`paste0("", a)`|`paste0("", p)`|`paste0("", s)`|`paste0("", e)`| | |<-|( | |`paste0("", N)`|`paste0("", U)`|`paste0("", L)`|`paste0("", L)`| | |,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | |<-|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", n)`| | | | |}
+  {|}|}
+{}}
+{};

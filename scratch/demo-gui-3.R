@@ -2,23 +2,26 @@ library(conflicted)
 library(dm)
 library(tidyverse)
 
-dm <- dm_nycflights13(cycle = TRUE)
-dm
+dm<-dm_nycflights13(cycle=T)
+dm  
 dm_deconstruct(dm)
 
-airlines <- pull_tbl(dm, "airlines", keyed = TRUE)
-airports <- pull_tbl(dm, "airports", keyed = TRUE)
-flights <- pull_tbl(dm, "flights", keyed = TRUE)
-planes <- pull_tbl(dm, "planes", keyed = TRUE)
-weather <- pull_tbl(dm, "weather", keyed = TRUE)
+airlines<-pull_tbl(dm,"airlines",keyed=T)
+airports<-pull_tbl(dm,"airports",keyed=T)
+flights<-pull_tbl(dm,"flights",keyed=T)
+planes<-pull_tbl(dm,"planes",keyed=T)
 
-dm(airlines, airports, flights, planes, weather)
+weather<-pull_tbl(dm,"weather",keyed=T)
 
+dm(airlines,airports,flights,planes,weather)
+  
 by_origin <-
   flights %>%
   group_by(origin) %>%
-  summarize(n = n(), mean_arr_delay = mean(arr_delay)) %>%
+
+  summarize(n=n(),mean_arr_delay=mean(arr_delay))%>% 
   ungroup()
 
-dm(airlines, airports, flights, planes, weather, by_origin) %>%
+
+dm(airlines,airports,flights,planes,weather,by_origin) %>%
   dm_draw()

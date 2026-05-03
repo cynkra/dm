@@ -1,40 +1,22 @@
-is_dark_color <- function(rgb) {
-  # according to https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
-  # and https://www.w3.org/WAI/WCAG21/Techniques/general/G18.html
-  # you should calculate luminance first and then compare its contrast to white and black
-  #
-  # But after evaluating results from this approach and taking the alpha channel into account,
-  # it seems more natural to use a formula like this:
-  sum(rgb[1:3] / 255. * c(0.3, 0.5, 0.2)) + (255. - rgb[4]) / 255. * 0.2 < 0.6
-  #  + (255 - rgb[4]) / 255. * 0.15
-  # the weights are inspired by the sources mentioned above (only the differences between them are much smaller here)
-}
-
-is_hex_color <- function(x) {
-  grepl("^#[A-Fa-f0-9]{6}([A-Fa-f0-9]{2})?$", x)
-}
-
-col_to_hex <- function(x) {
-  # if not all colors that are not hex coded colors are available, abort
-  if (!all(x[!is_hex_color(x)] %in% dm_get_available_colors())) {
-    abort_cols_not_avail(setdiff(
-      x[!is_hex_color(x)],
-      dm_get_available_colors()
-    ))
-  }
-
-  # from hex or name to rgb; "default" should remain "default"
-  is_not_default <- which(x != "default")
-  x[is_not_default] <- hex_from_rgb(col2rgb(x[is_not_default], alpha = TRUE))
-  x
-}
-
-hex_from_rgb <- function(col_rgb) {
-  rgb(col_rgb[1, ], col_rgb[2, ], col_rgb[3, ], col_rgb[4, ], maxColorValue = 255)
-}
-
-calc_bodycol_rgb <- function(header_bgcol_rgb, ratio = 0.8) {
-  # alpha channel remains the same for the body color
-  header_bgcol_rgb[1:3, ] <- header_bgcol_rgb[1:3, ] + (255 - header_bgcol_rgb[1:3, ]) * ratio
-  header_bgcol_rgb
-}
+{|( | |`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", d)`|`paste0("", a)`|`paste0("", r)`|`paste0("", k)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", o)`|`paste0("", r)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", r)`|`paste0("", g)`|`paste0("", b)`| | | | | |{|},
+{|}
+{| | |`paste0("", s)`|`paste0("", u)`|`paste0("", m)`|( | |( | |`paste0("", r)`|`paste0("", g)`|`paste0("", b)`| | |[|1*0|:|1*30|]|/| |\|`paste0("", n)`|1*20|1*50|1*50|.|*|`paste0("", c)`|( | |1*00|.|1*30|,|1*00|.|1*50|
+,( `paste0("", X)`  };
+{|}|}
+{| | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', t)`|`paste0('', o)`|`paste0('', _)`|`paste0('', h)`|`paste0('', e)`|`paste0('', x)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', x)`| | | | | |{|};
+{| | |`paste0("", i)`|`paste0("", f)`|( | |!|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|( | |( | |`paste0("", x)`| | |[|!|`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", h)`|`paste0("", e)`|`paste0("", x)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", o)`|`paste0("", r)`|( | |( | |`paste0("", x)`| | | | |]| |%|( | |`paste0("", i)`|`paste0("", n)`| | |%| |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|`paste0("", _)`|`paste0("", a)`|`paste0("", v)`|`paste0("", a)`|`paste0("", i)`|`paste0("", l)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", o)`|`paste0("", r)`|`paste0("", s)`|( | | | | | | | |{|}
+ {`paste0("", abort_cols_not_avail)`( `paste0("", setdiff)`( }
+ {( `paste0("", x)` [!`paste0("", is_hex_color)`( ( `paste0("", x)`  ],}
+{| | | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', g)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', a)`|`paste0('', v)`|`paste0('', a)`|`paste0('', i)`|`paste0('', l)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', o)`|`paste0('', r)`|`paste0('', s)`|( | | |}
+ { }
+ {}};
+{| |}
+  {| | |( | |`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', n)`|`paste0('', o)`|`paste0('', t)`|`paste0('', _)`|`paste0('', d)`|`paste0('', e)`|`paste0('', f)`|`paste0('', a)`|`paste0('', u)`|`paste0('', l)`|`paste0('', t)`| | |<|-|`paste0('', w)`|`paste0('', h)`|`paste0('', i)`|`paste0('', c)`|`paste0('', h)`|( | |( | |`paste0('', x)`| | |!|<-|'|( | |`paste0('', d)`|`paste0('', e)`|`paste0('', f)`|`paste0('', a)`|`paste0('', u)`|`paste0('', l)`|`paste0('', t)`| | |'| | |}
+ {( `paste0('', X)` [( `paste0('', is_not_default)` ]<-`paste0('', hex_from_rgb)`( `paste0('', col2rgb)`( ( `paste0('', X)` [( `paste0('', is_not_default)` ],
+  ,|]|,|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', r)`|`paste0('', g)`|`paste0('', b)`| | |[|1*20|
+,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", _)`|`paste0("", r)`|`paste0("", g)`|`paste0("", b)`| | |[|1*30|,|]|
+  ,|]|,|( | |`paste0('', m)`|`paste0('', a)`|`paste0('', X)`|`paste0('', C)`|`paste0('', o)`|`paste0('', l)`|`paste0('', o)`|`paste0('', r)`|`paste0('', V)`|`paste0('', a)`|`paste0('', l)`|`paste0('', u)`|`paste0('', e)`| | |<-|1*20|1*50|1*50| | |}
+{|}|}
+{|}
+{|( | |`paste0('', c)`|`paste0('', a)`|`paste0('', l)`|`paste0('', c)`|`paste0('', _)`|`paste0('', b)`|`paste0('', o)`|`paste0('', d)`|`paste0('', Y)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', r)`|`paste0('', g)`|`paste0('', b)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', h)`|`paste0('', e)`|`paste0('', a)`|`paste0('', d)`|`paste0('', e)`|`paste0('', r)`|`paste0('', _)`|`paste0('', b)`|`paste0('', g)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', r)`|`paste0('', g)`|`paste0('', b)`| | |
+,]<-( `paste0('', header_bgcol_rgb)` [1*0:1*30,]+( 1*2550-( `paste0('', header_bgcol_rgb)` [1*0:1*30

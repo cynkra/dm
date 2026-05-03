@@ -19,6 +19,7 @@ by position instead.
 The default means matching by name, use \code{x_select} and/or \code{y_select}
 to align the names.}
 }
+
 \value{
 Returns \code{x}, invisibly, if the check is passed.
 Otherwise an error is thrown and the reason for it is explained.

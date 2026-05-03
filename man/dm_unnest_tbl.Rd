@@ -19,6 +19,7 @@ dm_unnest_tbl(dm, parent_table, col, ptype)
 A dm.
 }
 \description{
+
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{dm_unnest_tbl()} target a specific column to unnest
@@ -33,15 +34,15 @@ are satisfied.
 }
 \examples{
 airlines_wrapped <-
-  dm_nycflights13() \%>\%
-  dm_wrap_tbl(airlines)
+ dm_nycflights13() \%>\%
+ dm_wrap_tbl(airlines)
 
 # The ptype is required for reconstruction.
 # It can be an empty dm, only primary and foreign keys are considered.
 ptype <- dm_ptype(dm_nycflights13())
 
 airlines_wrapped \%>\%
-  dm_unnest_tbl(airlines, flights, ptype)
+ dm_unnest_tbl(airlines, flights, ptype)
 }
 \seealso{
 \code{\link[=dm_unwrap_tbl]{dm_unwrap_tbl()}}, \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}},

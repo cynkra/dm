@@ -19,6 +19,7 @@ db_schema_create(con, schema, ...)
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
+
 \code{db_schema_create()} creates a schema on the database.
 }
 \details{

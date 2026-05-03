@@ -19,6 +19,7 @@ printing. If \code{NULL}, \code{getOption("width")} will be consulted.}
 }
 \description{
 \code{glimpse()} provides an overview (dimensions, column data types, primary
+
 keys, etc.) of all tables included in the \code{dm} object. It will additionally
 print details about outgoing foreign keys for the child table.
 
@@ -30,7 +31,7 @@ See \code{\link[pillar:glimpse]{pillar::glimpse()}} for more details.
 dm_nycflights13() \%>\% glimpse()
 
 dm_nycflights13() \%>\%
-  dm_zoom_to(flights) \%>\%
-  glimpse()
+ dm_zoom_to(flights) \%>\%
+ glimpse()
 
 }

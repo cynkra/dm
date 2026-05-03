@@ -19,6 +19,7 @@ A boolean: \code{TRUE} if schema exists, \code{FALSE} otherwise.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
+
 \code{db_schema_exists()} checks, if a schema exists on the database.
 }
 \details{

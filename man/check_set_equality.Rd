@@ -5,12 +5,12 @@
 \title{Check column values for set equality}
 \usage{
 check_set_equality(
-  x,
-  y,
-  ...,
-  x_select = NULL,
-  y_select = NULL,
-  by_position = NULL
+ x,
+ y,
+ ...,
+ x_select = NULL,
+ y_select = NULL,
+ by_position = NULL
 )
 }
 \arguments{
@@ -19,6 +19,7 @@ check_set_equality(
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{x_select, y_select}{Key columns to restrict the check, processed with
+
 \code{\link[dplyr:select]{dplyr::select()}}.}
 
 \item{by_position}{Set to \code{TRUE} to ignore column names and match

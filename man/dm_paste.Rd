@@ -19,6 +19,7 @@ dm_paste(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL)
 \itemize{
 \item \code{"tables"}: \code{\link[=tibble]{tibble()}} calls for empty table definitions
 derived from \code{\link[=dm_ptype]{dm_ptype()}}, overrides \code{"select"}.
+
 \item \code{"select"}: \code{\link[=dm_select]{dm_select()}} statements for columns that are part
 of the dm.
 \item \code{"keys"}: \code{\link[=dm_add_pk]{dm_add_pk()}}, \code{\link[=dm_add_fk]{dm_add_fk()}} and \code{\link[=dm_add_uk]{dm_add_uk()}} statements for adding keys.
@@ -44,13 +45,14 @@ Data in the tables is never included, see \code{\link[=dm_ptype]{dm_ptype()}} fo
 }
 \examples{
 dm() \%>\%
-  dm_paste()
+ dm_paste()
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 
 dm_nycflights13() \%>\%
-  dm_paste()
+ dm_paste()
 
 dm_nycflights13() \%>\%
-  dm_paste(options = "select")
+ dm_paste(options = "select")
+
 \dontshow{\}) # examplesIf}
 }

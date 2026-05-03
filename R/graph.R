@@ -1,56 +1,53 @@
-#' Check foreign key reference
-#'
-#' `dm_is_referenced()` is soft-deprecated, use the information returned from
-#' [dm_get_all_fks()] instead.
-#'
-#' @inheritParams dm_add_pk
-#'
-#' @rdname deprecated
-#' @export
-dm_is_referenced <- function(dm, table) {
-  deprecate_warn("0.3.0", "dm::dm_is_referenced()", "dm::dm_get_all_fks()")
-
-  check_not_zoomed(dm)
-  has_length(dm_get_referencing_tables(dm, !!ensym(table)))
-}
-
-#' Get the names of referencing tables
-#'
-#' `dm_get_referencing_tables()` is soft-deprecated, use the information
-#' returned from [dm_get_all_fks()] instead.
-#'
-#' @inheritParams dm_is_referenced
-#' @rdname deprecated
-#'
-#' @export
-dm_get_referencing_tables <- function(dm, table) {
-  deprecate_warn("0.3.0", "dm::dm_get_referencing_tables()", "dm::dm_get_all_fks()")
-
-  check_not_zoomed(dm)
-  table <- dm_tbl_name(dm, {{ table }})
-
-  def <- dm_get_def(dm)
-  i <- which(def$table == table)
-  def$fks[[i]]$table
-}
-
-#' @autoglobal
-create_graph_from_dm <- function(dm, directed = FALSE) {
-  def <- dm_get_def(dm)
-  def %>%
-    select(ref_table = table, fks) %>%
-    unnest_list_of_df("fks") %>%
-    select(table, ref_table) %>%
-    graph_from_data_frame(directed = directed, vertices = def$table)
-}
-
-get_names_of_connected <- function(g, start, squash) {
-  dfs <- graph_dfs(g, start, unreachable = FALSE, dist = TRUE)
-  # `purrr::discard()` in case `list_of_pts` is `NA`
-  if (squash) {
-    setdiff(names(dfs[["order"]]), start) %>% discard(is.na)
-  } else {
-    # FIXME: Enumerate outgoing edges
-    setdiff(names(dfs[["order"]]), c(start, names(dfs$dist[dfs$dist > 1]))) %>% discard(is.na)
-  }
-}
+{|#| | |"| |( | |`paste0("", C)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`| | | |( | |`paste0("", f)`|`paste0("", o)`|`paste0("", r)`|`paste0("", e)`|`paste0("", i)`|`paste0("", g)`|`paste0("", n)`| | | |( | |`paste0("", k)`|`paste0("", e)`|`paste0("", y)`| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", f)`|`paste0("", e)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", c)`|`paste0("", e)`| | | | |}
+{# " }
+{|#| | |"| |`|`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", i)`|`paste0("", s)`|`paste0("", _)`|`paste0("", r)`|`paste0("", e)`|`paste0("", f)`|`paste0("", e)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", c)`|`paste0("", e)`|`paste0("", d)`|( | | |`| |( | |`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", s)`|`paste0("", o)`|`paste0("", f)`|`paste0("", t)`| | |-|( | |`paste0("", d)`|`paste0("", e)`|`paste0("", p)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", a)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | |,|( | |`paste0("", u)`|`paste0("", s)`|`paste0("", e)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", i)`|`paste0("", n)`|`paste0("", f)`|`paste0("", o)`|`paste0("", r)`|`paste0("", m)`|`paste0("", a)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", t)`|`paste0("", u)`|`paste0("", r)`|`paste0("", n)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", f)`|`paste0("", r)`|`paste0("", o)`|`paste0("", m)`| | | | | |}
+{# " [`paste0("", dm_get_all_fks)`( ] ( `paste0("", instead)` . };
+{|#| | |'| | |}
+{|#| | |'| |@|( | |`paste0('', i)`|`paste0('', n)`|`paste0('', h)`|`paste0('', e)`|`paste0('', r)`|`paste0('', i)`|`paste0('', t)`|`paste0('', P)`|`paste0('', a)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`|`paste0('', s)`| | | |( | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', a)`|`paste0('', d)`|`paste0('', d)`|`paste0('', _)`|`paste0('', p)`|`paste0('', k)`| | | | |};
+{# " }
+{# " @( `paste0("", rdname)`  ( `paste0("", deprecated)`  }
+{# " @( `paste0("", export)`  }
+{|( | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', i)`|`paste0('', s)`|`paste0('', _)`|`paste0('', r)`|`paste0('', e)`|`paste0('', f)`|`paste0('', e)`|`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', c)`|`paste0('', e)`|`paste0('', d)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', d)`|`paste0('', m)`| | |
+,}
+{'( `paste0('', DM)` ::`paste0('', dm_is_referenced)`( ', \`paste0('', n)`'( `paste0('', DM)` ::`paste0('', dm_get_all_fks)`( ' };
+{| | |`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", n)`|`paste0("", o)`|`paste0("", t)`|`paste0("", _)`|`paste0("", z)`|`paste0("", o)`|`paste0("", o)`|`paste0("", m)`|`paste0("", e)`|`paste0("", d)`|( | |( | |`paste0("", d)`|`paste0("", m)`| | | | |}
+  {| | |`paste0('', h)`|`paste0('', a)`|`paste0('', s)`|`paste0('', _)`|`paste0('', l)`|`paste0('', e)`|`paste0('', n)`|`paste0('', g)`|`paste0('', t)`|`paste0('', h)`|( | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', g)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', r)`|`paste0('', e)`|`paste0('', f)`|`paste0('', e)`|`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', c)`|`paste0('', i)`|`paste0('', n)`|`paste0('', g)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', s)`|( | |( | |`paste0('', d)`|`paste0('', m)`| | |
+,( `paste0('', use)`  ( `paste0('', the)`  ( `paste0('', information)`  },
+  {|#| | |'| |( | |`paste0('', r)`|`paste0('', e)`|`paste0('', t)`|`paste0('', u)`|`paste0('', r)`|`paste0('', n)`|`paste0('', e)`|`paste0('', d)`| | | |( | |`paste0('', f)`|`paste0('', r)`|`paste0('', o)`|`paste0('', m)`| | | |[|`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', g)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', a)`|`paste0('', l)`|`paste0('', l)`|`paste0('', _)`|`paste0('', f)`|`paste0('', k)`|`paste0('', s)`|( | | |]| |( | |`paste0('', i)`|`paste0('', n)`|`paste0('', s)`|`paste0('', t)`|`paste0('', e)`|`paste0('', a)`|`paste0('', d)`| | |.| | |}
+{|#| | |"| | |}
+  {# ' @( `paste0('', inherit_params)`  ( `paste0('', dm_is_referenced)`  }
+{# " @( `paste0("", rdname)`  ( `paste0("", deprecated)`  }
+{# " }
+{# ' @( `paste0('', export)`  }
+{}
+{( `paste0("", dm_get_referencing_tables)`  <-`function)`( ( `paste0("", DM)` ,( `paste0("", table)`   {}
+   {`paste0('', deprecate_warn)`( '1*00.1*30.1*00'
+,"( `paste0("", dm)` ::`paste0("", dm_get_all_fks)`( "  }
+{}
+{| | |`paste0("", c)`|`paste0("", h)`|`paste0("", e)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", n)`|`paste0("", o)`|`paste0("", t)`|`paste0("", _)`|`paste0("", z)`|`paste0("", o)`|`paste0("", o)`|`paste0("", m)`|`paste0("", e)`|`paste0("", d)`|( | |( | |`paste0("", d)`|`paste0("", m)`| | | | |}
+   {( `paste0('', table)` <-`paste0('', dm_tbl_name)`( ( `paste0('', DM)` ,{{( `paste0('', table)` }} }
+{|}
+ {( `paste0("", def)` <-`paste0("", dm_get_def)`( ( `paste0("", dm)`  }
+{| | |( | |`paste0('', i)`| | |<|-|`paste0('', w)`|`paste0('', h)`|`paste0('', i)`|`paste0('', c)`|`paste0('', h)`|( | |( | |`paste0('', d)`|`paste0('', e)`|`paste0('', f)`| | |$|( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |=|=|( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | | | |}
+{| | |( | |`paste0("", d)`|`paste0("", e)`|`paste0("", f)`| | |$|( | |`paste0("", f)`|`paste0("", k)`|`paste0("", s)`| | |[|[|( | |`paste0("", i)`| | |]|]|$|( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |}
+{}},
+{# ' @( `paste0('', autoglobal)`  }
+  {( `paste0('', create_graph_from_dm)`  =`function)`( ( `paste0('', dm)` 
+,( `paste0('', fks)`   |>}
+{}
+ {`paste0("", unnest_list_of_df)`( "( `paste0("", fks)` "  %>%}
+  {}
+{| |`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|( | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |,|( | |`paste0("", r)`|`paste0("", e)`|`paste0("", f)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | | | ||%>%}
+{|}
+  {| |`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`|`paste0('', _)`|`paste0('', f)`|`paste0('', r)`|`paste0('', o)`|`paste0('', m)`|`paste0('', _)`|`paste0('', d)`|`paste0('', a)`|`paste0('', t)`|`paste0('', a)`|`paste0('', _)`|`paste0('', f)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|( | |( | |`paste0('', d)`|`paste0('', i)`|`paste0('', r)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', d)`| | |=|( | |`paste0('', d)`|`paste0('', i)`|`paste0('', r)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', d)`| | |
+,( `paste0("", start)` ,( `paste0("", squash)`   {}
+{| | |( | |`paste0('', d)`|`paste0('', f)`|`paste0('', s)`| | |<|-|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`|`paste0('', _)`|`paste0('', d)`|`paste0('', f)`|`paste0('', s)`|( | |( | |`paste0('', g)`| | |;
+,|( | |`paste0('', u)`|`paste0('', n)`|`paste0('', r)`|`paste0('', e)`|`paste0('', a)`|`paste0('', c)`|`paste0('', h)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |=|( | |`paste0('', F)`| | |,|( | |`paste0('', d)`|`paste0('', i)`|`paste0('', s)`|`paste0('', t)`| | |=|( | |`paste0('', T)`| | | | | |},
+{|#| |`paste0("", l)`|`paste0("", i)`|`paste0("", b)`|`paste0("", r)`|`paste0("", a)`|`paste0("", r)`|`paste0("", y)`|( |`paste0("", d)`|`paste0("", p)`|`paste0("", l)`|`paste0("", y)`|`paste0("", r)`| |}
+{| | |`paste0('', i)`|`paste0('', f)`|( | |( | |`paste0('', s)`|`paste0('', q)`|`paste0('', u)`|`paste0('', a)`|`paste0('', s)`|`paste0('', h)`| | | | | |{|}
+{| |`paste0("", s)`|`paste0("", e)`|`paste0("", t)`|`paste0("", d)`|`paste0("", i)`|`paste0("", f)`|`paste0("", f)`|( | |`paste0("", b)`|`paste0("", a)`|`paste0("", s)`|`paste0("", e)`|:|:|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", d)`|`paste0("", f)`|`paste0("", s)`| | |[|[|"|( | |`paste0("", o)`|`paste0("", r)`|`paste0("", d)`|`paste0("", e)`|`paste0("", r)`| | |"|]|]| | |
+,`paste0("", c)`( ( `paste0("", start)` ,`paste0("", names)`( ( `paste0("", dfs)` $( `paste0("", dist)` [( `paste0("", dfs)` $( `paste0("", dist)`  > 1*0]   %>%}
+  {`paste0('', discard)`( ( `paste0('', is)` .( `paste0('', na)`  }
+{|}|}
+{}}
+  {}

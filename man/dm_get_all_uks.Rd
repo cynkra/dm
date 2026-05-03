@@ -19,6 +19,7 @@ The default \code{NULL} returns information for all tables.}
 A tibble with the following columns:
 \describe{
 \item{\code{table}}{table name,}
+
 \item{\code{uk_col}}{column name(s) of primary key, as list of character vectors,}
 \item{\code{kind}}{kind of unique key, see details.}
 }
@@ -39,7 +40,7 @@ There are 3 kinds of unique keys:
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_get_all_uks()
+ dm_get_all_uks()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
@@ -52,4 +53,5 @@ Other primary key functions:
 \code{\link[=dm_rm_uk]{dm_rm_uk()}},
 \code{\link[=enum_pk_candidates]{enum_pk_candidates()}}
 }
+
 \concept{primary key functions}

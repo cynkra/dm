@@ -5,13 +5,13 @@
 \title{Flatten a table in a \code{dm} by joining its parent tables}
 \usage{
 dm_flatten(
-  dm,
-  table,
-  ...,
-  parent_tables = NULL,
-  recursive = FALSE,
-  allow_deep = FALSE,
-  join = left_join
+ dm,
+ table,
+ ...,
+ parent_tables = NULL,
+ recursive = FALSE,
+ allow_deep = FALSE,
+ join = left_join
 )
 }
 \arguments{
@@ -19,6 +19,7 @@ dm_flatten(
 
 \item{table}{The table to flatten by joining its parent tables.
 An interesting choice could be
+
 for example a fact table in a star schema.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -52,6 +53,7 @@ Cannot be \code{TRUE} when \code{recursive} is \code{TRUE}.}
 see \code{\link[dplyr:join]{dplyr::join()}}.
 Defaults to \code{\link[dplyr:left_join]{dplyr::left_join()}}.
 \code{nest_join} is not supported.
+
 When \code{recursive = TRUE}, only \code{\link[dplyr:left_join]{dplyr::left_join()}},
 \code{\link[dplyr:inner_join]{dplyr::inner_join()}}, and \code{\link[dplyr:full_join]{dplyr::full_join()}} are supported.}
 }
@@ -67,12 +69,13 @@ and removes the now integrated parent tables from the dm.
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_select_tbl(-weather) \%>\%
-  dm_flatten(flights, recursive = TRUE)
+ dm_select_tbl(-weather) \%>\%
+ dm_flatten(flights, recursive = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 Other flattening functions:
 \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}}
+
 }
 \concept{flattening functions}

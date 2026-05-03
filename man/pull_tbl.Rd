@@ -19,6 +19,7 @@ that will contain information on primary and foreign keys
 in the individual table objects.
 This allows using dplyr workflows on those tables and later reconstruct them
 into a \code{dm} object.
+
 See \code{\link[=dm_deconstruct]{dm_deconstruct()}} for a function that generates corresponding code
 for an existing dm object, and \code{vignette("tech-dm-keyed")} for details.}
 }
@@ -36,12 +37,12 @@ This generic has methods for both \code{dm} classes:
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 # For an unzoomed dm you need to specify the table to pull:
 dm_nycflights13() \%>\%
-  pull_tbl(airports)
+ pull_tbl(airports)
 
 # If zoomed, pulling detaches the zoomed table from the dm:
 dm_nycflights13() \%>\%
-  dm_zoom_to(airports) \%>\%
-  pull_tbl()
+ dm_zoom_to(airports) \%>\%
+ pull_tbl()
 \dontshow{\}) # examplesIf}
 }
 \seealso{

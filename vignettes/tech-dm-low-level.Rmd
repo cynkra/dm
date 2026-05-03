@@ -2,6 +2,7 @@
 title: "Model verification - keys, constraints and normalization"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+
 vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{Technical: Model verification - keys, constraints and normalization}
@@ -11,7 +12,7 @@ editor_options:
 ---
 
 
-``````{r setup, include = FALSE}
+``````{r setup, include=F}
 source("setup/setup.R")
 ``````
 
@@ -23,7 +24,9 @@ library(dm)
 ```
 
 
+
 ## Testing key constraints
+
 
 This section contains information and examples about the following functions:
 
@@ -35,14 +38,16 @@ When you have tables (data frames) that are connected by key relations, {dm} can
 For example, if you have tables:
 
 ```{r}
-data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
-data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
+data_1<-tibble(a=c(1, 2, 1), b=c(1, 4, 1), c=c(5, 6, 7))
+data_2<-tibble(a=c(1, 2, 3), b=c(4, 5, 6), c=c(7, 8, 9))
 ```
+
 
 and you want to know if `a` is a primary key for `data_1`, you can use the `check_key()` function:
 
-```{r error = TRUE}
+```{r error=T}
 check_key(data_1, a)
+
 ```
 
 Mind the error message when a test is not passed.
@@ -62,31 +67,32 @@ check_subset(data_1, a, data_2, a)
 This function is important for determining if a column is a foreign key to some other table.
 What about the inverse relation?
 
-```{r error = TRUE}
+```{r error=T}
 check_subset(data_2, a, data_1, a)
 ```
 
 It should be kept in mind that `check_subset()` does not test if column `c2` is a unique key of table `t2`.
 In order to find out if a (child) table `t1` contains a column `c1` that is a foreign key to a (parent) table `t2` with the corresponding column `c2`, the following method should be used:
 
-```{r eval=FALSE}
+```{r eval=F}
 check_key(t2, c2)
 check_subset(t1, c1, t2, c2)
 ```
 
 To check both directions at once, and to find out if the unique values of `c_1` in `t_1` are the same as those of `c_2` in `t_2`, {dm} provides the function `check_set_equality()`:
 
-```{r error=TRUE}
+```{r error=T}
 check_set_equality(data_1, a, data_2, a)
 ```
 
 Introducing one more table enables us to show how it looks when the test is passed:
 
 ```{r}
-data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
+data_3<-tibble(a=c(2, 1, 2), b=c(4, 5, 6), c=c(7, 8, 9))
 
 check_set_equality(data_1, a, data_3, a)
 ```
+
 
 If the test is passed, the return value of the function will be the first table parameter (invisibly).
 This ensures that the functions can be conveniently used in a pipe configuration.
@@ -109,6 +115,7 @@ The functions first test if that requirement is fulfilled by checking if:
 
 The cardinality specifications `0_n`, `1_n`, `0_1`, `1_1` refer to the expected relation that the child table has with the parent table.
 The numbers '0', '1' and 'n' refer to the number of values in the child table's column (`foreign_key_column`) that correspond to each value of the parent table's column (`primary_key_column`).
+
 'n' means more than one in this context, with no upper limit.
 
 `0_n` means, that for each value of the `parent_key_column`, the number of corresponding records in the child table is unrestricted.
@@ -127,18 +134,19 @@ Subsequently, two further checks are made to determine the nature of the relatio
 
 ### Examples
 
+
 Given the following three data frames:
 
 ```{r}
-d1 <- tibble(a = 1:5)
-d2 <- tibble(c = c(1:5, 5))
-d3 <- tibble(c = 1:4)
-d4 <- tibble(a = c(2:5, 5))
+d1<-tibble(a=1:5)
+d2<-tibble(c=c(1:5, 5))
+d3<-tibble(c=1:4)
+d4<-tibble(a=c(2:5, 5))
 ```
 
 Here are some examples of how the cardinality testing functions can be used:
 
-```{r error=TRUE}
+```{r error=T}
 # This does not pass, `c` is not unique key of d2:
 check_cardinality_0_n(d2, c, d1, a)
 
@@ -168,6 +176,7 @@ examine_cardinality(d2, c, d1, a)
 ```
 
 
+
 ## Table surgery
 
 The relevant functions are:
@@ -179,12 +188,15 @@ The relevant functions are:
 The first function implements table normalization.
 An existing table is split into a parent table (i.e. a lookup table) and a child table (containing the observations), linked by a key column (here: `new_id_column`).
 Basically, a foreign key relation would be created, pointing from the  `new_id_column` of the child table to the parent table's corresponding column, which can be seen as the parent table's primary key column.
+
 The function `decompose_table()` does that, as can be seen in the following example:
 
+
 ```{r}
-mtcars_tibble <- tibble::as_tibble(mtcars)
+mtcars_tibble<-tibble::as_tibble(mtcars)
 mtcars_tibble
-decomposed_table <- decompose_table(mtcars_tibble, am_gear_carb_id, am, gear, carb)
+
+decomposed_table<-decompose_table(mtcars_tibble, am_gear_carb_id, am, gear, carb)
 decomposed_table
 ```
 
@@ -194,14 +206,14 @@ The functions that do the inverse operation, i.e. join a parent and a child tabl
 The former takes as arguments two tables and the unquoted name of the ID column, and the latter takes as arguments a list of two tables plus the unquoted name of the ID column:
 
 ```{r}
-parent_table <- decomposed_table$parent_table
-child_table <- decomposed_table$child_table
-reunite_parent_child(child_table, parent_table, id_column = am_gear_carb_id)
+parent_table<-decomposed_table$parent_table
+child_table<-decomposed_table$child_table
+reunite_parent_child(child_table, parent_table, id_column=am_gear_carb_id)
 ```
 
-```{r eval = FALSE}
+```{r eval=F}
 # Shortcut:
-reunite_parent_child_from_list(decomposed_table, id_column = am_gear_carb_id)
+reunite_parent_child_from_list(decomposed_table, id_column=am_gear_carb_id)
 ```
 
 Currently, these functions only exist as a low-level operation on tables.

@@ -19,156 +19,166 @@
 \alias{cross_join.dm_keyed_tbl}
 \title{\pkg{dplyr} join methods for zoomed dm objects}
 \usage{
+
 \method{left_join}{dm_zoomed}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  suffix = NULL,
-  ...,
-  keep = NULL,
-  na_matches = c("na", "never"),
-  multiple = "all",
-  unmatched = "drop",
-  relationship = NULL,
-  select = NULL
+ x,
+ y,
+ by = NULL,
+ copy = NULL,
+ suffix = NULL,
+ ...,
+ keep = NULL,
+ na_matches = c("na", "never"),
+ multiple = "all",
+ unmatched = "drop",
+ relationship = NULL,
+ select = NULL
 )
 
 \method{left_join}{dm_keyed_tbl}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  suffix = NULL,
-  ...,
-  keep = FALSE,
-  na_matches = c("na", "never"),
-  multiple = "all",
-  unmatched = "drop",
-  relationship = NULL
+ x,
+ y,
+ by = NULL,
+ copy = NULL,
+ suffix = NULL,
+ ...,
+ keep = FALSE,
+ na_matches = c("na", "never"),
+ multiple = "all",
+ unmatched = "drop",
+ relationship = NULL
 )
 
 \method{inner_join}{dm_zoomed}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  suffix = NULL,
-  ...,
-  keep = NULL,
-  na_matches = c("na", "never"),
-  multiple = "all",
-  unmatched = "drop",
-  relationship = NULL,
-  select = NULL
+ x,
+ y,
+ by = NULL,
+
+ copy = NULL,
+ suffix = NULL,
+ ...,
+ keep = NULL,
+ na_matches = c("na", "never"),
+ multiple = "all",
+ unmatched = "drop",
+ relationship = NULL,
+ select = NULL
 )
 
 \method{inner_join}{dm_keyed_tbl}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  suffix = NULL,
-  ...,
-  keep = FALSE,
-  na_matches = c("na", "never"),
-  multiple = "all",
-  unmatched = "drop",
-  relationship = NULL
+ x,
+ y,
+ by = NULL,
+ copy = NULL,
+ suffix = NULL,
+ ...,
+ keep = FALSE,
+ na_matches = c("na", "never"),
+ multiple = "all",
+ unmatched = "drop",
+
+ relationship = NULL
 )
 
 \method{full_join}{dm_zoomed}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  suffix = NULL,
-  ...,
-  keep = NULL,
-  na_matches = c("na", "never"),
-  multiple = "all",
-  relationship = NULL,
-  select = NULL
+ x,
+ y,
+ by = NULL,
+ copy = NULL,
+ suffix = NULL,
+
+ ...,
+ keep = NULL,
+ na_matches = c("na", "never"),
+ multiple = "all",
+ relationship = NULL,
+
+ select = NULL
 )
 
 \method{full_join}{dm_keyed_tbl}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  suffix = NULL,
-  ...,
-  keep = FALSE,
-  na_matches = c("na", "never"),
-  multiple = "all",
-  relationship = NULL
+ x,
+ y,
+ by = NULL,
+
+ copy = NULL,
+ suffix = NULL,
+ ...,
+ keep = FALSE,
+ na_matches = c("na", "never"),
+ multiple = "all",
+ relationship = NULL
 )
 
 \method{right_join}{dm_zoomed}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  suffix = NULL,
-  ...,
-  keep = NULL,
-  na_matches = c("na", "never"),
-  multiple = "all",
-  unmatched = "drop",
-  relationship = NULL,
-  select = NULL
+ x,
+ y,
+ by = NULL,
+ copy = NULL,
+ suffix = NULL,
+ ...,
+ keep = NULL,
+ na_matches = c("na", "never"),
+ multiple = "all",
+
+ unmatched = "drop",
+ relationship = NULL,
+ select = NULL
 )
 
 \method{right_join}{dm_keyed_tbl}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  suffix = NULL,
-  ...,
-  keep = FALSE,
-  na_matches = c("na", "never"),
-  multiple = "all",
-  unmatched = "drop",
-  relationship = NULL
+ x,
+ y,
+ by = NULL,
+ copy = NULL,
+ suffix = NULL,
+ ...,
+ keep = FALSE,
+ na_matches = c("na", "never"),
+ multiple = "all",
+ unmatched = "drop",
+ relationship = NULL
 )
 
 \method{semi_join}{dm_zoomed}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  ...,
-  na_matches = c("na", "never"),
-  suffix = NULL,
-  select = NULL
+ x,
+
+ y,
+ by = NULL,
+ copy = NULL,
+ ...,
+ na_matches = c("na", "never"),
+ suffix = NULL,
+ select = NULL
 )
 
 \method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"))
 
+
 \method{anti_join}{dm_zoomed}(
-  x,
-  y,
-  by = NULL,
-  copy = NULL,
-  ...,
-  na_matches = c("na", "never"),
-  suffix = NULL,
-  select = NULL
+ x,
+ y,
+ by = NULL,
+ copy = NULL,
+ ...,
+ na_matches = c("na", "never"),
+ suffix = NULL,
+ select = NULL
 )
+
 
 \method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"))
 
 \method{nest_join}{dm_zoomed}(
-  x,
-  y,
-  by = NULL,
-  copy = FALSE,
-  keep = NULL,
-  name = NULL,
-  ...,
-  na_matches = c("na", "never"),
-  unmatched = "drop"
+ x,
+ y,
+ by = NULL,
+ copy = FALSE,
+ keep = NULL,
+ name = NULL,
+ ...,
+ na_matches = c("na", "never"),
+ unmatched = "drop"
 )
 
 \method{cross_join}{dm_zoomed}(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
@@ -184,15 +194,18 @@ If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}
 
 \item{copy}{Disabled, since all tables in a \code{dm} are by definition on the same \code{src}.}
 
+
 \item{suffix}{Disabled, since columns are disambiguated automatically if necessary, changing the column names to \code{table_name.column_name}.}
 
 \item{...}{see \code{\link[dplyr:join]{dplyr::join}}}
+
 
 \item{keep}{Should the join keys from both \code{x} and \code{y} be preserved in the
 output?
 \itemize{
 \item If \code{NULL}, the default, joins on equality retain only the keys from \code{x},
 while joins on inequality retain the keys from both inputs.
+
 \item If \code{TRUE}, all keys from both inputs are retained.
 \item If \code{FALSE}, only keys from \code{x} are retained. For right and full joins,
 the data in key columns corresponding to rows that only exist in \code{y} are
@@ -204,6 +217,7 @@ inequality conditions.
 \itemize{
 \item \code{"na"}, the default, treats two \code{NA} or two \code{NaN} values as equal, like
 \code{\%in\%}, \code{\link[=match]{match()}}, and \code{\link[=merge]{merge()}}.
+
 \item \code{"never"} treats two \code{NA} or two \code{NaN} values as different, and will
 never match them together or to any other values. This is similar to joins
 for database sources and to \code{base::merge(incomparables = NA)}.
@@ -214,6 +228,7 @@ For each row of \code{x}:
 \itemize{
 \item \code{"all"}, the default, returns every match detected in \code{y}. This is the
 same behavior as SQL.
+
 \item \code{"any"} returns one match detected in \code{y}, with no guarantees on which
 match will be returned. It is often faster than \code{"first"} and \code{"last"}
 if you just need to detect if there is at least one match.
@@ -230,6 +245,7 @@ be handled?
 
 \code{unmatched} is intended to protect you from accidentally dropping rows
 during a join. It only checks for unmatched keys in the input that could
+
 potentially drop rows.
 \itemize{
 \item For left joins, it checks \code{y}.
@@ -243,8 +259,10 @@ for \code{x} and \code{y} independently.
 \code{x} and \code{y}. If the expectations chosen from the list below are
 invalidated, an error is thrown.
 \itemize{
+
 \item \code{NULL}, the default, doesn't expect there to be any relationship between
 \code{x} and \code{y}. However, for equality joins it will check for a many-to-many
+
 relationship (which is typically unexpected) and will warn if one occurs,
 encouraging you to either take a closer look at your inputs or make this
 relationship explicit by specifying \code{"many-to-many"}.
@@ -268,6 +286,7 @@ to allow you to be explicit about this relationship if you know it
 exists.
 }
 
+
 \code{relationship} doesn't handle cases where there are zero matches. For that,
 see \code{unmatched}.}
 
@@ -285,10 +304,10 @@ Use these methods without the '.dm_zoomed' suffix (see examples).
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 flights_dm <- dm_nycflights13()
 dm_zoom_to(flights_dm, flights) \%>\%
-  left_join(airports, select = c(faa, name))
+ left_join(airports, select = c(faa, name))
 
 # this should illustrate that tables don't necessarily need to be connected
 dm_zoom_to(flights_dm, airports) \%>\%
-  semi_join(airlines, by = "name")
+ semi_join(airlines, by = "name")
 \dontshow{\}) # examplesIf}
 }

@@ -19,6 +19,7 @@ enum_fk_candidates(dm_zoomed, ref_table, ...)
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{dm_zoomed}{A \code{dm} with a zoomed table.}
+
 }
 \value{
 A tibble with the following columns:
@@ -53,6 +54,7 @@ The outcome of the join operation determines the value of the \code{why} column 
 }
 \section{Life cycle}{
 
+
 These functions are marked "experimental" because we are not yet sure about
 the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
 variants.
@@ -63,17 +65,18 @@ most likely used interactively.
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_enum_fk_candidates(flights, airports)
+ dm_enum_fk_candidates(flights, airports)
 
 dm_nycflights13() \%>\%
-  dm_zoom_to(flights) \%>\%
-  enum_fk_candidates(airports)
+ dm_zoom_to(flights) \%>\%
+ enum_fk_candidates(airports)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 Other foreign key functions:
 \code{\link[=dm_add_fk]{dm_add_fk()}},
 \code{\link[=dm_get_all_fks]{dm_get_all_fks()}},
+
 \code{\link[=dm_rm_fk]{dm_rm_fk()}}
 }
 \concept{foreign key functions}

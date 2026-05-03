@@ -13,12 +13,13 @@ dm_pixarfilms(..., color = TRUE, consistent = FALSE, version = "v1")
 have colors assigned to different tables for visualization with
 \code{dm_draw()}.}
 
-\item{consistent}{Boolean, In the original \code{dm}  the  \code{film} column in
+\item{consistent}{Boolean, In the original \code{dm} the \code{film} column in
 \code{pixar_films} contains missing values so cannot be made a proper primary key.
 Set to \code{TRUE} to remove those records.}
 
 \item{version}{The version of the data to use.
 \code{"v1"} (default) uses a vendored snapshot of \pkg{pixarfilms} 0.2.1.
+
 \code{"latest"} uses the data from the installed \pkg{pixarfilms} package.}
 }
 \value{
@@ -33,6 +34,6 @@ Creates an example \code{\link{dm}} object from the tables in
 \dontshow{if (rlang::is_installed("DiagrammeR")) withAutoprint(\{ # examplesIf}
 dm_pixarfilms()
 dm_pixarfilms() \%>\%
-  dm_draw()
+ dm_draw()
 \dontshow{\}) # examplesIf}
 }

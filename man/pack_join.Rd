@@ -20,6 +20,7 @@ variables in common across \code{x} and \code{y}. A message lists the variables 
 that you can check they're correct; suppress the message by supplying \code{by}
 explicitly.
 
+
 To join on different variables between \code{x} and \code{y}, use a \code{\link[dplyr:join_by]{join_by()}}
 specification. For example, \code{join_by(a == b)} will match \code{x$a} to \code{y$b}.
 
@@ -45,13 +46,14 @@ To perform a cross-join, generating all combinations of \code{x} and \code{y}, s
 
 \item{copy}{If \code{x} and \code{y} are not from the same data source,
 and \code{copy} is \code{TRUE}, then \code{y} will be copied into the
-same src as \code{x}.  This allows you to join tables across srcs, but
+same src as \code{x}. This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.}
 
 \item{keep}{Should the new list-column contain join keys? The default
 will preserve the join keys for inequality joins.}
 
 \item{name}{The name of the list-column created by the join. If \code{NULL},
+
 the default, the name of \code{y} is used.}
 }
 \description{

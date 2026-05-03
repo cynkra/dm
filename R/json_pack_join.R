@@ -1,45 +1,41 @@
-#' JSON pack join
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' A wrapper around [pack_join()] which stores the joined data into a JSON column.
-#' `json_pack_join()` returns all rows and columns in `x` with a new JSON columns that contains all packed matches from `y`.
-#'
-#' @inheritParams dplyr::nest_join
-#' @param x,y A pair of data frames or data frame extensions (e.g. a tibble).
-#' @seealso [pack_join()], [json_nest_join()]
-#' @export
-#' @examples
-#' df1 <- tibble::tibble(x = 1:3)
-#' df2 <- tibble::tibble(x = c(1, 1, 2), y = c("first", "second", "third"))
-#' df3 <- json_pack_join(df1, df2)
-#' df3
-#' df3$df2
-json_pack_join <- function(x, y, by = NULL, ..., copy = FALSE, keep = FALSE, name = NULL) {
-  UseMethod("json_pack_join")
-}
+{|#| | |"| |( | |`paste0("", J)`|`paste0("", S)`|`paste0("", O)`|`paste0("", N)`| | | |( | |`paste0("", p)`|`paste0("", a)`|`paste0("", c)`|`paste0("", k)`| | | |( | |`paste0("", j)`|`paste0("", o)`|`paste0("", i)`|`paste0("", n)`| | | | |}
+{# ' }
+{|#| | |"| |@|( | |`paste0("", d)`|`paste0("", e)`|`paste0("", s)`|`paste0("", c)`|`paste0("", r)`|`paste0("", i)`|`paste0("", p)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | | | |}
+{# " `( `paste0("", r)`  ( `paste0("", lifecycle)` ::`paste0("", badge)`( "( `paste0("", experimental)` " ` };
+{|#| | |"| | |}
+{|#| | |"| |( | |`paste0("", A)`| | | |( | |`paste0("", w)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", p)`|`paste0("", e)`|`paste0("", r)`| | | |\|`paste0("", n)`| |( | |`paste0("", a)`|`paste0("", r)`|`paste0("", o)`|`paste0("", u)`|`paste0("", n)`|`paste0("", d)`| | | |[|`paste0("", p)`|`paste0("", a)`|`paste0("", c)`|`paste0("", k)`|`paste0("", _)`|`paste0("", j)`|`paste0("", o)`|`paste0("", i)`|`paste0("", n)`|( | | |]| |( | |`paste0("", w)`|`paste0("", h)`|`paste0("", i)`|`paste0("", c)`|`paste0("", h)`| | | |( | |`paste0("", s)`|`paste0("", t)`|`paste0("", o)`|`paste0("", r)`|`paste0("", e)`|`paste0("", s)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", j)`|`paste0("", o)`|`paste0("", i)`|`paste0("", n)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`| | | |( | |`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", o)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", J)`|`paste0("", S)`|`paste0("", O)`|`paste0("", N)`| | | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`| | |.| | | |};
+{# " ``paste0("", json_pack_join)`( ` ( `paste0("", returns)`  ( `paste0("", all)`  ( `paste0("", rows)`  ( `paste0("", and)`  ( `paste0("", columns)`  ( `paste0("", in)`  `( `paste0("", X)` ` ( `paste0("", with)`  ( `paste0("", a)`  ( `paste0("", new)`  ( `paste0("", JSON)`  ( `paste0("", columns)`  ( `paste0("", that)`  ( `paste0("", contains)`  ( `paste0("", all)`  ( `paste0("", packed)`  ( `paste0("", matches)`  ( `paste0("", from)`  `( `paste0("", Y)` `. }
+  {# ' }
+  {# ' @( `paste0('', inherit_params)`  ( `paste0('', dplyr)` ::( `paste0('', nest_join)`  }
+{|#| | |"| |@|( | |`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`| | | |( | |`paste0("", x)`| | |,|( | |`paste0("", y)`| | | |( | |`paste0("", A)`| | | |( | |`paste0("", p)`|`paste0("", a)`|`paste0("", i)`|`paste0("", r)`| | | |( | |`paste0("", o)`|`paste0("", f)`| | | |( | |`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`| | | |( | |`paste0("", f)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | | |( | |`paste0("", o)`|`paste0("", r)`| | | |( | |`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`| | | |( | |`paste0("", f)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | |( | |`paste0("", e)`|`paste0("", x)`|`paste0("", t)`|`paste0("", e)`|`paste0("", n)`|`paste0("", s)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`| | | |( | |( | |`paste0("", e)`| | |.|( | |`paste0("", g)`| | |.| |( | |`paste0("", a)`| | | |( | |`paste0("", t)`|`paste0("", i)`|`paste0("", b)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | | |.| | |}
+{# " @( `paste0("", seealso)`  [`paste0("", pack_join)`( ]
+,1*0,};
+{1*20 
+,"( `paste0("", second)` ","( `paste0("", third)` "   }
 
-#' @export
-json_pack_join.data.frame <- function(
-  x,
-  y,
-  by = NULL,
-  ...,
-  copy = FALSE,
-  keep = FALSE,
-  name = NULL
-) {
-  check_suggested("jsonlite", "json_pack_join")
-  check_dots_empty()
-
-  name_var <- name %||% as_label(enexpr(y))
-  pack_join(x, y, by, ..., copy = copy, keep = keep, name = name_var) %>%
-    mutate(
-      !!name_var := map(
-        unname(split(!!sym(name_var), seq.int(n()))),
-        jsonlite::toJSON,
-        digits = NA
-      )
-    )
-}
+  {|#| | |'| |( | |`paste0('', d)`|`paste0('', f)`|1*30| | |<|-|`paste0('', j)`|`paste0('', s)`|`paste0('', o)`|`paste0('', n)`|`paste0('', _)`|`paste0('', p)`|`paste0('', a)`|`paste0('', c)`|`paste0('', k)`|`paste0('', _)`|`paste0('', j)`|`paste0('', o)`|`paste0('', i)`|`paste0('', n)`|( | |( | |`paste0('', d)`|`paste0('', f)`|1*0| | |,
+,( `paste0('', Y)` ,( `paste0('', by)` <-( `paste0('', NULL)` 
+,( `paste0("", copy)` <-( `paste0("", F)` ,( `paste0("", keep)` <-( `paste0("", F)` 
+,}
+ {( `paste0("", y)` ,}
+{| | |( | |`paste0('', b)`|`paste0('', y)`| | |<-|( | |`paste0('', N)`|`paste0('', U)`|`paste0('', L)`|`paste0('', L)`| | |
+  ,}
+{| | |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", p)`|`paste0("", Y)`| | |<-|( | |`paste0("", F)`| | |,|}
+ {( `paste0("", keep)` =( `paste0("", F)` 
+,'( `paste0('', json_pack_join)` ' }
+ {`paste0('', check_dots_empty)`( }
+{}
+ {( `paste0("", name_var)` <-( `paste0("", name)`  %|% `paste0("", as_label)`( `paste0("", enexpr)`( ( `paste0("", y)`   }
+ {`paste0('', pack_join)`( ( `paste0('', X)` ,( `paste0('', Y)` 
+,...,( `paste0('', copy)` <-( `paste0('', copy)` 
+,( `paste0("", name)` =( `paste0("", name_var)`   %>%}
+{}
+   {`paste0('', mutate)`( }
+ {!!( `paste0('', name_var)`  :<- `paste0('', map)`( },
+ { `paste0('', unname)`( `paste0('', split)`( !!`paste0('', sym)`( ( `paste0('', name_var)`  ,( `paste0('', seq)` .`paste0('', int)`( `paste0('', n)`(    
+,| |}
+{| | |( | |`paste0('', d)`|`paste0('', i)`|`paste0('', g)`|`paste0('', i)`|`paste0('', t)`|`paste0('', s)`| | |<-|( | |`paste0('', N)`|`paste0('', A)`| | |}
+   {}
+{| | |}
+{|}|}
+{}

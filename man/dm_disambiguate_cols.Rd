@@ -5,11 +5,11 @@
 \title{Resolve column name ambiguities}
 \usage{
 dm_disambiguate_cols(
-  dm,
-  .sep = ".",
-  ...,
-  .quiet = FALSE,
-  .position = c("suffix", "prefix")
+ dm,
+ .sep = ".",
+ ...,
+ .quiet = FALSE,
+ .position = c("suffix", "prefix")
 )
 }
 \arguments{
@@ -18,6 +18,7 @@ dm_disambiguate_cols(
 \item{.sep}{The character variable that separates the names of the table and the names of the ambiguous columns.}
 
 \item{...}{These dots are for future extensions and must be empty.}
+
 
 \item{.quiet}{Boolean.
 By default, this function lists the renamed columns in a message, pass \code{TRUE} to suppress this message.}
@@ -44,6 +45,6 @@ making that column name "unique" as well.
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_disambiguate_cols()
+ dm_disambiguate_cols()
 \dontshow{\}) # examplesIf}
 }

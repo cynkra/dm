@@ -19,6 +19,7 @@ This allows using dplyr workflows on those tables and later reconstruct them
 into a \code{dm} object.
 See \code{\link[=dm_deconstruct]{dm_deconstruct()}} for a function that generates corresponding code
 for an existing dm object, and \code{vignette("tech-dm-keyed")} for details.}
+
 }
 \value{
 A named list with the tables (data frames or lazy tables)
@@ -30,14 +31,14 @@ of a \code{dm} object.
 }
 \examples{
 dm_nycflights13() \%>\%
-  dm_get_tables()
+ dm_get_tables()
 
 dm_nycflights13() \%>\%
-  dm_get_tables(keyed = TRUE)
+ dm_get_tables(keyed = TRUE)
 
 dm_nycflights13() \%>\%
-  dm_get_tables(keyed = TRUE) \%>\%
-  new_dm()
+ dm_get_tables(keyed = TRUE) \%>\%
+ new_dm()
 }
 \seealso{
 \code{\link[=dm]{dm()}} and \code{\link[=new_dm]{new_dm()}} for constructing a \code{dm} object from tables.

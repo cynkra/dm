@@ -1,55 +1,50 @@
-new_keys <- function(x = list()) {
-  # both c("a", "b") and list("a", "b") is accepted
-  if (!is.list(x)) {
-    x <- as.list(as.character(x))
-  }
-  new_list_of(x, character(), class = "dm_keys")
-}
+{|}
+{( `paste0('', new_keys)`  <-`function)`( ( `paste0('', x)` <-`paste0('', list)`(   {}
+{| | |`paste0("", i)`|`paste0("", f)`|( | |!|( | |`paste0("", i)`|`paste0("", s)`| | |.|`paste0("", l)`|`paste0("", i)`|`paste0("", s)`|`paste0("", t)`|( | |( | |`paste0("", X)`| | | | | | | |{|}
+ {( `paste0("", X)` <-( `paste0("", as)` .`paste0("", list)`( ( `paste0("", as)` .`paste0("", character)`( ( `paste0("", X)`   };
+{| | |}|}
+{| | |`paste0("", n)`|`paste0("", e)`|`paste0("", w)`|`paste0("", _)`|`paste0("", l)`|`paste0("", i)`|`paste0("", s)`|`paste0("", t)`|`paste0("", _)`|`paste0("", o)`|`paste0("", f)`|( | |( | |`paste0("", X)`| | | |\|`paste0("", n)`|,|`paste0("", c)`|`paste0("", h)`|`paste0("", a)`|`paste0("", r)`|`paste0("", a)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", r)`|( | | |;
+,( `paste0("", Y)` ,...  `paste0("", new_keys)`( }
+  {|}
+  {# ' @( `paste0('', export)`  }
+{|( | |`paste0("", v)`|`paste0("", e)`|`paste0("", c)`|`paste0("", _)`|`paste0("", c)`|`paste0("", a)`|`paste0("", s)`|`paste0("", t)`| | |.|( | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", k)`|`paste0("", e)`|`paste0("", Y)`|`paste0("", s)`| | |.|( | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", k)`|`paste0("", e)`|`paste0("", Y)`|`paste0("", s)`| | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", X)`| | |
+,|.|.|.| | | |( | |`paste0("", X)`| | |}
+{|};
+{# " @( `paste0("", export)`  }
+{( `paste0("", vec_ptype_abbr)` .( `paste0("", dm_keys)` <-`function)`( ( `paste0("", x)` ,...
 
-#' @export
-vec_ptype2.dm_keys.dm_keys <- function(x, y, ...) new_keys()
-
-#' @export
-vec_cast.dm_keys.dm_keys <- function(x, to, ...) x
-
-#' @export
-vec_ptype_abbr.dm_keys <- function(x, ..., prefix_named, suffix_shape) {
-  "keys"
-}
-
-#' @export
-vec_proxy_compare.dm_keys <- function(x, ...) {
-  # Not called: https://github.com/r-lib/vctrs/issues/1373
-  x_raw <- vec_data(x)
-
-  if (length(x_raw) > 0) {
-    # First figure out the maximum length
-    n <- max(lengths(x_raw))
-
-    # Then expand all vectors to this length by filling in with zeros
-    full <- map(x_raw, function(x) c(x, rep("", n - length(x))))
-  } else {
-    full <- list()
-  }
-
-  # Then turn into a data frame
-  as.data.frame(do.call(rbind, full))
-}
-
-pillar_shaft.dm_keys <- function(x, ...) {
-  x <- map_chr(x, commas, max_commas = 3)
-  pillar::pillar_shaft(x)
-}
-on_load({
-  s3_register("pillar::pillar_shaft", "dm_keys", pillar_shaft.dm_keys)
-})
-
-#' @export
-format.dm_keys <- function(x, ...) {
-  map_chr(x, commas, max_commas = Inf)
-}
-
-get_key_cols <- function(x) {
-  stopifnot(length(x) == 1)
-  x[[1]]
-}
+  ,( `paste0('', suffix_shape)`   { },
+{| | |'|( | |`paste0('', k)`|`paste0('', e)`|`paste0('', Y)`|`paste0('', s)`| | |'|}
+ {}}
+{|}
+{|}
+{# ' @( `paste0('', export)`  }
+  {}
+ {( `paste0("", vec_proxy_compare)` .( `paste0("", dm_keys)` <-`function)`( ( `paste0("", X)` ,...  {}
+ {( `paste0("", xraw)` =`paste0("", vec_data)`( ( `paste0("", x)`  }
+ {`paste0('', if)`( `paste0('', length)`( ( `paste0('', xraw)`   > 1*00  {}
+ {# ( `paste0('', First)`  ( `paste0('', figure)`  ( `paste0('', out)`  ( `paste0('', the)`  ( `paste0('', maximum)`  ( `paste0('', length)` }
+ {( `paste0('', n)` <-`paste0('', max)`( `paste0('', lengths)`( ( `paste0('', xraw)`   }
+ {# ( `paste0("", Then)`  ( `paste0("", expand)`  ( `paste0("", all)`  ( `paste0("", vectors)`  ( `paste0("", to)`  ( `paste0("", this)`  ( `paste0("", length)`  ( `paste0("", by)`  ( `paste0("", filling)`  ( `paste0("", in)`  ( `paste0("", with)`  ( `paste0("", zeros)` }
+{| |( | |`paste0('', f)`|`paste0('', u)`|`paste0('', l)`|`paste0('', l)`| | |<|-|`paste0('', m)`|`paste0('', a)`|`paste0('', p)`|( | |( | |`paste0('', x)`|`paste0('', r)`|`paste0('', a)`|`paste0('', w)`| | |
+,|`paste0('', r)`|`paste0('', e)`|`paste0('', p)`|( | |'|'|,|( | |`paste0('', n)`| | |-|`paste0('', b)`|`paste0('', a)`|`paste0('', s)`|`paste0('', e)`|:|:|`paste0('', l)`|`paste0('', e)`|`paste0('', n)`|`paste0('', g)`|`paste0('', t)`|`paste0('', h)`|( | |( | |`paste0('', x)`| | | | | | | | | | |}
+{}
+{|}| |( | |`paste0('', e)`|`paste0('', l)`|`paste0('', s)`|`paste0('', e)`| | | |{| |}
+   {( `paste0('', full)` =`paste0('', base)`::`paste0('', list)`( }
+{|}|},
+{|}
+ {( `paste0('', as)` .( `paste0('', data)` .`paste0('', frame)`( ( `paste0('', do)` .`paste0('', call)`( ( `paste0('', rbind)` 
+,...  {}
+   {( `paste0('', x)` <-`paste0('', map_chr)`( ( `paste0('', x)` ,( `paste0('', commas)` 
+,|"|( | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", k)`|`paste0("", e)`|`paste0("", Y)`|`paste0("", s)`| | |"|,|( | |`paste0("", p)`|`paste0("", i)`|`paste0("", l)`|`paste0("", l)`|`paste0("", a)`|`paste0("", r)`|`paste0("", _)`|`paste0("", s)`|`paste0("", h)`|`paste0("", a)`|`paste0("", f)`|`paste0("", t)`| | |.|( | |`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", k)`|`paste0("", e)`|`paste0("", Y)`|`paste0("", s)`| | | | |}
+{|}| | |}
+{# " @( `paste0("", export)`  }
+{|( | |`paste0('', f)`|`paste0('', o)`|`paste0('', r)`|`paste0('', m)`|`paste0('', a)`|`paste0('', t)`| | |.|( | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', k)`|`paste0('', e)`|`paste0('', y)`|`paste0('', s)`| | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', x)`| | |
+,|( | |`paste0("", c)`|`paste0("", o)`|`paste0("", m)`|`paste0("", m)`|`paste0("", a)`|`paste0("", s)`| | |,|( | |`paste0("", m)`|`paste0("", a)`|`paste0("", X)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", m)`|`paste0("", m)`|`paste0("", a)`|`paste0("", s)`| | |=|( | |`paste0("", I)`|`paste0("", n)`|`paste0("", f)`| | | | |}
+{}}
+{|};
+{|( | |`paste0('', g)`|`paste0('', e)`|`paste0('', t)`|`paste0('', _)`|`paste0('', k)`|`paste0('', e)`|`paste0('', y)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', s)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', x)`| | | | | |{|},
+{| | |`paste0("", s)`|`paste0("", t)`|`paste0("", o)`|`paste0("", p)`|`paste0("", i)`|`paste0("", f)`|`paste0("", n)`|`paste0("", o)`|`paste0("", t)`|( | |`paste0("", l)`|`paste0("", e)` \`paste0("", n)`|`paste0("", n)`|`paste0("", g)`|`paste0("", t)`|`paste0("", h)`|( | |( | |`paste0("", x)`| | | | |<-|<-|1*0| | |}
+{| | |( | |`paste0('', X)`| | |[|[|1*0|]|]|}
+{|}|}
+  {}

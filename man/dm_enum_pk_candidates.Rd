@@ -19,6 +19,7 @@ dm_enum_pk_candidates(dm, table, ...)
 \value{
 A tibble with the following columns:
 \describe{
+
 \item{\code{columns}}{columns of \code{table},}
 \item{\code{candidate}}{boolean: are these columns a candidate for a primary key,}
 \item{\code{why}}{if not a candidate for a primary key column, explanation for this.}
@@ -46,12 +47,13 @@ most likely used interactively.
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 nycflights13::flights \%>\%
-  enum_pk_candidates()
+ enum_pk_candidates()
 \dontshow{\}) # examplesIf}
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 
 dm_nycflights13() \%>\%
-  dm_enum_pk_candidates(airports)
+ dm_enum_pk_candidates(airports)
+
 \dontshow{\}) # examplesIf}
 }
 \seealso{

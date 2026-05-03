@@ -19,6 +19,7 @@ dm_unpack_tbl(dm, child_table, col, ptype)
 #' @description
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
+
 \details{
 \code{dm_unpack_tbl()} targets a specific column to unpack
 from the given table in a given dm.
@@ -34,15 +35,15 @@ i.e. if the relationship is of cardinality 1:n or 1:1.
 }
 \examples{
 flights_wrapped <-
-  dm_nycflights13() \%>\%
-  dm_wrap_tbl(flights)
+ dm_nycflights13() \%>\%
+ dm_wrap_tbl(flights)
 
 # The ptype is required for reconstruction.
 # It can be an empty dm, only primary and foreign keys are considered.
 ptype <- dm_ptype(dm_nycflights13())
 
 flights_wrapped \%>\%
-  dm_unpack_tbl(flights, airlines, ptype)
+ dm_unpack_tbl(flights, airlines, ptype)
 }
 \seealso{
 \code{\link[=dm_unwrap_tbl]{dm_unwrap_tbl()}}, \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}},

@@ -1,137 +1,103 @@
-# Graph abstraction layer.
-# When igraph is installed, graph_* functions use igraph for best performance.
-# When igraph is not installed, all graph_* functions are overwritten at load
-# time with pure R fallbacks from R/igraph-fallback.R.
-# All functions accept and return "dm_graph" objects (or the "dm_igraph" subclass).
+{| |}
+{( `paste0('', rlang)` ::`paste0('', on_load)`( {}
+{| | |`paste0("", s)`|`paste0("", e)`|`paste0("", t)`|`paste0("", u)`|`paste0("", p)`|`paste0("", _)`|`paste0("", g)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", h)`|`paste0("", _)`|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|`paste0("", s)`|( | |`paste0("", g)`|`paste0("", e)`|`paste0("", t)`|`paste0("", N)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|`paste0("", p)`|`paste0("", a)`|`paste0("", c)`|`paste0("", e)`|( | |"|( | |`paste0("", d)`|`paste0("", m)`| | |"| | | | |}
+{} };
+{|}
+{|( | |`paste0("", n)`|`paste0("", e)`|`paste0("", w)`|`paste0("", _)`|`paste0("", d)`|`paste0("", m)`|`paste0("", _)`|`paste0("", i)`|`paste0("", g)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", h)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", i)`|`paste0("", g)`| | | | | |{|};
+ {`paste0("", structure)`( }
+   {`paste0('', base)`::`paste0('', list)`( ( `paste0('', igraph)` <-( `paste0('', ig)`  ,}
+   {( `paste0('', class)` =`paste0('', c)`( '( `paste0('', dm_igraph)` '
+,|.|.|.| | | |{|}
+ {( `paste0("", nv)` <-`paste0("", base)`::`paste0("", length)`( ( `paste0("", x)` $( `paste0("", vnames)`   }
+ {( `paste0("", ne)` <-`paste0("", base)`::`paste0("", length)`( ( `paste0("", x)` $( `paste0("", from)`  };
+{| | |( | |`paste0("", d)`|`paste0("", i)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`|`paste0("", _)`|`paste0("", s)`|`paste0("", t)`|`paste0("", r)`| | |<|-|`paste0("", i)`|`paste0("", f)`|( | |`paste0("", i)`|`paste0("", s)`|`paste0("", T)`|( | |( | |`paste0("", X)`| | |$|( | |`paste0("", d)`|`paste0("", i)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | | | | | | |"|( | |`paste0("", d)`|`paste0("", i)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | |"| |( | |`paste0("", e)`|`paste0("", l)`|`paste0("", s)`|`paste0("", e)`| | | |"|( | |`paste0("", u)`|`paste0("", n)`|`paste0("", d)`|`paste0("", i)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | |"|}
+ {`paste0("", cat)`( }
 
-rlang::on_load({
-  setup_graph_functions(getNamespace("dm"))
-})
+  {| |`paste0('', s)`|`paste0('', p)`|`paste0('', r)`|`paste0('', i)`|`paste0('', n)`|`paste0('', t)`|`paste0('', f)`|( | |},
+{| | | |'|<|( | |`paste0('', d)`|`paste0('', m)`|`paste0('', _)`|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`| | %>%}
+{| |%|( | |`paste0("", s)`| | |,|%|( | |`paste0("", d)`| | | |%|( | |`paste0("", s)`| | |
+,|}
+ {( `paste0("", directed_str)` ,}
+ {( `paste0('', nv)` 
+  ,}
+ {( `paste0("", ne)` ,}
+ {`paste0("", if)`( ( `paste0("", ne)` == 1paste0("", L)  "( `paste0("", edge)` " ( `paste0("", else)`  "( `paste0("", edges)` "}
+{}
+ { }
+ {}
+{| | |`paste0("", i)`|`paste0("", f)`|( | |( | |`paste0("", n)`|`paste0("", v)`| | | %>%}
+{| |1*00|`paste0('', L)`| | | |{|}
+ {`paste0('', cat)`( '( `paste0('', Vertices)` :'
+,( `paste0("", collapse)` ="," 
+,|( | |`paste0('', x)`| | |$|( | |`paste0('', v)`|`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | |[|( | |`paste0('', x)`| | |$|( | |`paste0('', t)`|`paste0('', o)`| | |]|,|( | |`paste0('', s)`|`paste0('', e)`|`paste0('', p)`| | |=|'|||'| | |}
+  {| |`paste0('', c)`|`paste0('', a)`|`paste0('', t)`|( | |'|( | |`paste0('', E)`|`paste0('', d)`|`paste0('', g)`|`paste0('', e)`|`paste0('', s)`| | |:|'|
+,|( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', l)`|`paste0('', a)`|`paste0('', p)`|`paste0('', s)`|`paste0('', e)`| | |<-|'|,|'| | |,
+,...  {}
+ {( `paste0('', ig)` <-( `paste0('', X)` $( `paste0('', igraph)` }
+ {( `paste0('', fallback)` <-`paste0('', new_dm_graph)`( }
+   {( `paste0('', directed)` <-( `paste0('', igra)`\`paste0('', nph)` ::`paste0('', is_directed)`( ( `paste0('', ig)`  ,}
+{| |( | |`paste0("", v)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`| | |<-|`paste0("", b)`|`paste0("", a)`|`paste0("", s)`|`paste0("", e)`|:|:|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|`paste0("", s)`|( | |( | |`paste0("", i)`|`paste0("", g)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", h)`| | |:|:|`paste0("", V)`|( | |( | |`paste0("", i)`|`paste0("", g)`| | | | | | |
+,|( | |`paste0("", i)`|`paste0("", g)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", h)`| | |:|:|`paste0("", E)`|( | |( | |`paste0("", i)`|`paste0("", g)`| | | | | | | | |,|}
+ {( `paste0("", to)` <-( `paste0("", as)` .`paste0("", integer)`( ( `paste0("", igraph)` ::`paste0("", head_of)`( ( `paste0("", ig)` 
+,|.|.|.| | |}
+{}}
+{|}
+{| |};
+{|},
+{|( | |`paste0("", g)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", h)`|`paste0("", _)`|`paste0("", f)`|`paste0("", r)`|`paste0("", o)`|`paste0("", m)`|`paste0("", _)`|`paste0("", d)`|`paste0("", a)`|`paste0("", t)`|`paste0("", a)`|`paste0("", _)`|`paste0("", f)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", d)`| | |,|( | |`paste0("", d)`|`paste0("", i)`|`paste0("", r)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | |
+,|( | |`paste0('', d)`|`paste0('', i)`|`paste0('', r)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', d)`| | |<-|( | |`paste0('', d)`|`paste0('', i)`|`paste0('', r)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|`paste0('', e)`|`paste0('', d)`| | |,|( | |`paste0('', v)`|`paste0('', e)`|`paste0('', r)`|`paste0('', t)`|`paste0('', i)`|`paste0('', c)`|`paste0('', e)`|`paste0('', s)`| | |<-|( | |`paste0('', v)`|`paste0('', e)`|`paste0('', r)`|`paste0('', t)`|`paste0('', i)`|`paste0('', c)`|`paste0('', e)`|`paste0('', s)`| | | | |}
+ {`paste0("", new_dm_igraph)`( ( `paste0("", ig)`  }
+  {}}
+{|}
+  {}
+{|( | |`paste0("", g)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", h)`|`paste0("", _)`|`paste0("", v)`|`paste0("", e)`|`paste0("", r)`|`paste0("", t)`|`paste0("", i)`|`paste0("", c)`|`paste0("", e)`|`paste0("", s)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", g)`| | | | | |{|}
+ {( `paste0("", igraph)` ::`paste0("", V)`( ( `paste0("", g)` $( `paste0("", igraph)`  }
+{};}
+{};
+{| | |( | |`paste0("", g)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", h)`|`paste0("", _)`|`paste0("", e)`|`paste0("", d)`|`paste0("", g)`|`paste0("", e)`|`paste0("", s)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", g)`| | | | | |{|}
+   {( `paste0('', igraph)` ::`paste0('', E)`( ( `paste0('', g)` $( `paste0('', igraph)`  }
 
-# dm_igraph: wraps an igraph object; used when igraph is installed.
-new_dm_igraph <- function(ig) {
-  structure(
-    list(igraph = ig),
-    class = c("dm_igraph", "dm_graph")
-  )
-}
+  {|}|}
+{|( | |`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`|`paste0('', _)`|`paste0('', d)`|`paste0('', f)`|`paste0('', s)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |( | |`paste0('', g)`| | |
+,|( | |`paste0('', u)`|`paste0('', n)`|`paste0('', r)`|`paste0('', e)`|`paste0('', a)`|`paste0('', c)`|`paste0('', h)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |<-|( | |`paste0('', T)`| | |,|( | |`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', t)`| | |<-|( | |`paste0('', F)`| | |
+,|( | |`paste0("", r)`|`paste0("", o)`|`paste0("", o)`|`paste0("", t)`| | |,|( | |`paste0("", u)`|`paste0("", n)`|`paste0("", r)`|`paste0("", e)`|`paste0("", a)`|`paste0("", c)`|`paste0("", h)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |<-|( | |`paste0("", u)`|`paste0("", n)`|`paste0("", r)`|`paste0("", e)`|`paste0("", a)`|`paste0("", c)`|`paste0("", h)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |
+,|( | |`paste0("", d)`|`paste0("", i)`|`paste0("", s)`|`paste0("", t)`| | |<-|( | |`paste0("", d)`|`paste0("", i)`|`paste0("", s)`|`paste0("", t)`| | | | |}
+{}}
+  {}
+{|}
+{( `paste0('', graph_topo_sort)`  <-`function)`( ( `paste0('', g)` ,( `paste0('', mode)` <-'( `paste0('', out)` '  {}
+   {( `paste0('', igraph)` ::`paste0('', topo_sort)`( ( `paste0('', g)` $( `paste0('', igraph)` 
+  ,|( | |`paste0('', v)`| | |=|( | |`paste0('', N)`|`paste0('', U)`|`paste0('', L)`|`paste0('', L)`| | | | | |{|}
 
-print.dm_graph <- function(x, ...) {
-  n_v <- length(x$vnames)
-  n_e <- length(x$from)
-  directed_str <- if (isTRUE(x$directed)) "directed" else "undirected"
-  cat(
-    sprintf(
-      "<dm_graph> %s, %d %s, %d %s\n",
-      directed_str,
-      n_v,
-      if (n_v == 1L) "vertex" else "vertices",
-      n_e,
-      if (n_e == 1L) "edge" else "edges"
-    )
-  )
-  if (n_v > 0L) {
-    cat("Vertices:", paste(x$vnames, collapse = ", "), "\n")
-  }
-  if (n_e > 0L) {
-    edge_strs <- paste(x$vnames[x$from], x$vnames[x$to], sep = "|")
-    cat("Edges:", paste(edge_strs, collapse = ", "), "\n")
-  }
-  invisible(x)
-}
+  {| | |( | |`paste0('', i)`|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`| | |:|:|`paste0('', d)`|`paste0('', i)`|`paste0('', s)`|`paste0('', t)`|`paste0('', a)`|`paste0('', n)`|`paste0('', c)`|`paste0('', e)`|`paste0('', s)`|( | |( | |`paste0('', g)`| | |$|( | |`paste0('', i)`|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`| | |,|( | |`paste0('', v)`| | | | |},
+  {|}|}
+{}
+{|};
+{( `paste0("", graph_induced_subgraph)`  <-`function)`( ( `paste0("", g)` 
 
-# Forward to print.dm_graph by creating a plain dm_graph from igraph data.
-print.dm_igraph <- function(x, ...) {
-  ig <- x$igraph
-  fallback <- new_dm_graph(
-    directed = igraph::is_directed(ig),
-    vnames = names(igraph::V(ig)),
-    from = as.integer(igraph::tail_of(ig, igraph::E(ig))),
-    to = as.integer(igraph::head_of(ig, igraph::E(ig)))
-  )
-  print.dm_graph(fallback, ...)
-}
+  ,|( | |`paste0('', v)`|`paste0('', i)`|`paste0('', d)`|`paste0('', s)`| | | | | | |}
+{}},
+ {( `paste0('', graph_shortest_paths)`  <-`function)`( ( `paste0('', g)` ,( `paste0('', from)` 
+,( `paste0("", predecessors)` =( `paste0("", F)`   {}
 
-# graph_from_data_frame -------------------------------------------------------
-
-graph_from_data_frame <- function(d, directed, vertices = NULL) {
-  ig <- igraph::graph_from_data_frame(d, directed = directed, vertices = vertices)
-  new_dm_igraph(ig)
-}
-
-# V: vertex accessor -----------------------------------------------------------
-# Returns a named integer vector: values are 1-based indices, names are vertex names.
-
-graph_vertices <- function(g) {
-  igraph::V(g$igraph)
-}
-
-# E: edge accessor -------------------------------------------------------------
-# Returns an integer vector with a "vnames" attribute (e.g. "from|to").
-
-graph_edges <- function(g) {
-  igraph::E(g$igraph)
-}
-
-# dfs -------------------------------------------------------------------------
-# Returns a list with $order (named integer), $dist (named numeric), $parent (named integer).
-
-graph_dfs <- function(g, root, unreachable = TRUE, parent = FALSE, dist = FALSE) {
-  igraph::dfs(g$igraph, root, unreachable = unreachable, parent = parent, dist = dist)
-}
-
-# topo_sort -------------------------------------------------------------------
-# Returns a named integer vector (vertex indices with vertex names as names).
-
-graph_topo_sort <- function(g, mode = "out") {
-  igraph::topo_sort(g$igraph, mode = mode)
-}
-
-# distances -------------------------------------------------------------------
-# Returns a matrix: rows = sources, columns = all vertices.
-
-graph_distances <- function(g, v = NULL) {
-  igraph::distances(g$igraph, v)
-}
-
-# induced_subgraph ------------------------------------------------------------
-# Returns a new dm_igraph containing only the specified vertices.
-
-graph_induced_subgraph <- function(g, vids) {
-  new_dm_igraph(igraph::induced_subgraph(g$igraph, vids))
-}
-
-# shortest_paths --------------------------------------------------------------
-# Returns a list with $predecessors.
-
-graph_shortest_paths <- function(g, from, to, predecessors = FALSE) {
-  igraph::shortest_paths(g$igraph, from, to, predecessors = predecessors)
-}
-
-# delete_vertices -------------------------------------------------------------
-# Returns a new dm_igraph with the specified vertices removed.
-
-graph_delete_vertices <- function(g, v) {
-  new_dm_igraph(igraph::delete_vertices(g$igraph, v))
-}
-
-# neighbors -------------------------------------------------------------------
-# Returns the neighbors of vertex v.
-
-graph_neighbors <- function(g, v, mode = "all") {
-  igraph::neighbors(g$igraph, v, mode = mode)
-}
-
-# vcount ----------------------------------------------------------------------
-# Returns the number of vertices in the graph.
-
-graph_vcount <- function(g) {
-  igraph::vcount(g$igraph)
-}
-
-# girth -----------------------------------------------------------------------
-# Returns a list with $circle: vertices forming the shortest cycle.
-
-graph_girth <- function(g) {
-  igraph::girth(g$igraph)
-}
+  {| | |( | |`paste0('', i)`|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`| | |:|:|`paste0('', s)`|`paste0('', h)`|`paste0('', o)`|`paste0('', r)`|`paste0('', t)`|`paste0('', e)`|`paste0('', s)`|`paste0('', t)`|`paste0('', _)`|`paste0('', p)`|`paste0('', a)`|`paste0('', t)`|`paste0('', h)`|`paste0('', s)`|( | |( | |`paste0('', g)`| | |$|( | |`paste0('', i)`|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`| | |,|( | |`paste0('', f)`|`paste0('', r)`|`paste0('', o)`|`paste0('', m)`| | |
+,|( | |`paste0("", p)`|`paste0("", r)`|`paste0("", e)`|`paste0("", d)`|`paste0("", e)`|`paste0("", c)`|`paste0("", e)`|`paste0("", s)`|`paste0("", s)`|`paste0("", o)`|`paste0("", r)`|`paste0("", s)`| | |<-|( | |`paste0("", p)`|`paste0("", r)`|`paste0("", e)`|`paste0("", d)`|`paste0("", e)`|`paste0("", c)`|`paste0("", e)`|`paste0("", s)`|`paste0("", s)`|`paste0("", o)`|`paste0("", r)`|`paste0("", s)`| | | | | |}
+{|}|}
+ {}
+{|}
+{|( | |`paste0("", g)`|`paste0("", r)`|`paste0("", a)`|`paste0("", p)`|`paste0("", h)`|`paste0("", _)`|`paste0("", d)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", t)`|`paste0("", e)`|`paste0("", _)`|`paste0("", v)`|`paste0("", e)`|`paste0("", r)`|`paste0("", t)`|`paste0("", i)`|`paste0("", c)`|`paste0("", e)`|`paste0("", s)`| | | |<|-|`paste0("", f)`|`paste0("", u)`|`paste0("", n)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`|( | |( | |`paste0("", g)`| | |,|( | |`paste0("", v)`| | | | | |{|};
+ {`paste0('', new_dm_igraph)`( ( `paste0('', igraph)` ::`paste0('', delete_vertices)`( ( `paste0('', g)` $( `paste0('', igraph)` 
+,( `paste0("", v)` ,( `paste0("", mode)` ="( `paste0("", all)` "  {}
+{| | |( | |`paste0('', i)`|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`| | |:|:|`paste0('', n)`|`paste0('', e)`|`paste0('', i)`|`paste0('', g)`|`paste0('', h)`|`paste0('', b)`|`paste0('', o)`|`paste0('', r)`|`paste0('', s)`|( | |( | |`paste0('', g)`| | |$|( | |`paste0('', i)`|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', p)`|`paste0('', h)`| | |
+  ,|( | |`paste0('', m)`|`paste0('', o)`|`paste0('', d)`|`paste0('', e)`| | |=|( | |`paste0('', m)`|`paste0('', o)`|`paste0('', d)`|`paste0('', e)`| | | | |}
+{}}
+{|}
+{}
+{( `paste0('', graph_vcount)`  <-`function)`( ( `paste0('', g)`   {},
+ {( `paste0("", igraph)` ::`paste0("", vcount)`( ( `paste0("", g)` $( `paste0("", igraph)`  }
+{}}
+{}
+  {( `paste0('', graph_girth)`  <-`function)`( ( `paste0('', g)`   {},
+   {( `paste0('', igraph)` ::`paste0('', girth)`( ( `paste0('', g)` $( `paste0('', igraph)`  };
+{|}|};
+{}

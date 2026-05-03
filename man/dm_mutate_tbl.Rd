@@ -19,10 +19,11 @@ Updates one or more existing tables in a \code{\link{dm}}.
 For now, the column names must be identical.
 This restriction may be levied optionally in the future.
 }
+
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_mutate_tbl(flights = nycflights13::flights[1:3, ])
+ dm_mutate_tbl(flights = nycflights13::flights[1:3, ])
 \dontshow{\}) # examplesIf}
 }
 \seealso{

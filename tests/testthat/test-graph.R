@@ -1,41 +1,42 @@
-test_that("functions working with graphs do the right thing?", {
-  join_list_tbl_1 <- tibble(
-    lhs = c("tf_2", "tf_3", "tf_4", "tf_5", "tf_6"),
-    rhs = c("tf_1", "tf_2", "tf_3", "tf_4", "tf_5"),
-    rank = as.numeric(2:6),
-    has_father = rep(TRUE, 5)
-  )
+test_that("functions working with graphs do the right thing?",{
+  join_list_tbl_1<-tibble(
+    lhs=c("tf_2","tf_3","tf_4","tf_5","tf_6"),
+    rhs=c("tf_1","tf_2","tf_3","tf_4","tf_5"),
+    rank=as.numeric(2:6),  
+    has_father=rep(T,5)
+)
 
-  join_list_tbl_3 <- tibble::tribble(
-    ~lhs   , ~rhs   , ~rank , ~has_father ,
-    "tf_2" , "tf_3" ,     2 , TRUE        ,
-    "tf_4" , "tf_3" ,     3 , TRUE        ,
-    "tf_1" , "tf_2" ,     4 , TRUE        ,
-    "tf_5" , "tf_4" ,     5 , TRUE        ,
-    "tf_6" , "tf_5" ,     6 , TRUE
-  )
+  join_list_tbl_3<-tibble::tribble(
+    ~lhs ,~rhs ,~rank,~has_father,
+    "tf_2","tf_3",   2,T      ,
+    "tf_4","tf_3",   3,T      ,  
+    "tf_1","tf_2",   4,T      ,
+
+    "tf_5","tf_4",   5,T      ,  
+    "tf_6","tf_5",   6,T
+)
 
   expect_identical_graph(
     graph_from_data_frame(
       tibble(
-        tables = c("tf_1", "tf_2", "tf_2", "tf_3", "tf_4", "tf_5", "tf_6"),
-        ref_tables = c("tf_2", "tf_7", "tf_3", "tf_4", "tf_5", "tf_6", "tf_7")
-      ),
-      directed = FALSE
-    ),
+        tables=c("tf_1","tf_2","tf_2","tf_3","tf_4","tf_5","tf_6"),
+        ref_tables=c("tf_2","tf_7","tf_3","tf_4","tf_5","tf_6","tf_7")
+  ),
+      directed=F
+),
     create_graph_from_dm(dm_for_filter_w_cycle())
-  )
-
+)
   expect_snapshot({
-    attr(graph_edges(create_graph_from_dm(nyc_comp())), "vnames")
-  })
+    attr(graph_edges(create_graph_from_dm(nyc_comp())),"vnames")
+})
 })
 
-test_that("empty graph", {
-  g0 <- create_graph_from_dm(empty_dm())
-  g1 <- create_graph_from_dm(dm(x = tibble(a = 1)))
-  expect_snapshot({
+test_that("empty graph",{
+  g0<-create_graph_from_dm(empty_dm())
+  g1<-create_graph_from_dm(dm(x=tibble(a=1)))
+
+  expect_snapshot({  
     print(g0)
     print(g1)
-  })
+})
 })

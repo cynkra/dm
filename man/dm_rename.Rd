@@ -19,6 +19,7 @@ to select the ranges of variables.
 Use named arguments, e.g. \code{new_name = old_name}, to rename the selected variables.
 
 The arguments in ... are automatically quoted and evaluated in a context where
+
 column names represent column positions.
 They also support unquoting and splicing.
 See \code{vignette("programming", package = "dplyr")} for an introduction to those concepts.
@@ -37,6 +38,6 @@ If key columns are renamed, then the meta-information of the \code{dm} is update
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_rename(airports, code = faa, altitude = alt)
+ dm_rename(airports, code = faa, altitude = alt)
 \dontshow{\}) # examplesIf}
 }

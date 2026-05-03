@@ -19,6 +19,7 @@ The default \code{NULL} returns information for all tables.}
 \value{
 A tibble with the following columns:
 \describe{
+
 \item{\code{table}}{table name,}
 \item{\code{pk_col}}{column name(s) of primary key, as list of character vectors.}
 }
@@ -30,7 +31,7 @@ returns the tables and the respective primary key columns.
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_get_all_pks()
+ dm_get_all_pks()
 \dontshow{\}) # examplesIf}
 }
 \seealso{

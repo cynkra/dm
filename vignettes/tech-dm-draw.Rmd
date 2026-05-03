@@ -2,6 +2,7 @@
 title: "Visualizing dm objects"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+
 vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{Techincal: Visualizing dm objects}
@@ -10,7 +11,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-``````{r setup, include = FALSE}
+``````{r setup, include=F}
 source("setup/setup.R")
 ``````
 
@@ -22,12 +23,14 @@ The following functions can be used to visualize the `dm` object:^[The code for 
 1. `dm_get_colors()`
 1. `dm_get_available_colors()`
 
-We use the prepared example `dm` object `dm_nycflights13(cycle = TRUE)`:
+
+We use the prepared example `dm` object `dm_nycflights13(cycle=T)`:
 
 ```{r}
+
 library(dm)
 library(dplyr)
-flights_dm_w_many_keys <- dm_nycflights13(cycle = TRUE, color = FALSE)
+flights_dm_w_many_keys<-dm_nycflights13(cycle=T, color=F)
 flights_dm_w_many_keys
 ```
 
@@ -39,13 +42,15 @@ dm_draw(flights_dm_w_many_keys)
 
 You can use colors to visually group your tables into families to reflect their logical grouping.
 The available colors are either hexcoded colors or the standard R color names.
+
 The function `dm_get_available_colors()` forwards to `grDevices::colors()`:
 
 ```{r}
 dm_get_available_colors()
+
 ```
 
-Colors are assigned with `dm_set_colors()` using syntax known in the {tidyverse} as {tidyselect}-syntax, here in the form: `color = table`.
+Colors are assigned with `dm_set_colors()` using syntax known in the {tidyverse} as {tidyselect}-syntax, here in the form: `color=table`.
 [Select helper functions](https://tidyselect.r-lib.org/reference/language.html) are supported.
 The result of `dm_set_colors()` is a `dm` object.
 The information about the color is stored together with the rest of the metadata.
@@ -54,9 +59,9 @@ The information about the color is stored together with the rest of the metadata
 flights_dm_w_many_keys_and_colors <-
   flights_dm_w_many_keys %>%
   dm_set_colors(
-    maroon4 = flights,
-    orange = starts_with("air"),
-    "#5986C4" = planes
+    maroon4=flights,
+    orange=starts_with("air"),
+    "#5986C4"=planes
   )
 ```
 
@@ -78,7 +83,7 @@ Besides the default `"keys_only"`, it accepts `"all"` to display all columns, an
 
 ```{r}
 flights_dm_w_many_keys_and_colors %>%
-  dm_draw(view_type = "title_only")
+  dm_draw(view_type="title_only")
 ```
 
 If you would like to visualize only some of the tables, use `dm_select_tbl()` before drawing:
@@ -89,9 +94,10 @@ flights_dm_w_many_keys_and_colors %>%
   dm_draw()
 ```
 
+
 Finally, for exporting a drawing to `svg` you could use `DiagrammeRsvg::export_svg()`:
 
-```{r eval = default_eval() && rlang::is_installed("DiagrammeRsvg")}
+```{r eval=default_eval() && rlang::is_installed("DiagrammeRsvg")}
 flights_dm_w_many_keys_and_colors %>%
   dm_select_tbl(flights, airports, planes) %>%
   dm_draw() %>%

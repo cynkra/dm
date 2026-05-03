@@ -1,157 +1,117 @@
-#' Decompose a table into two linked tables
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' Perform table surgery by extracting a 'parent table' from a table, linking the original table and the new table by a key, and returning both tables.
-#'
-#' `decompose_table()` accepts a data frame, a name for the 'ID column' that will be newly created, and the names
-#' of the columns that will be extracted into the new data frame.
-#'
-#' It creates a 'parent table', which consists of the columns specified in the ellipsis, and a new 'ID column'.
-#' Then it removes those
-#' columns from the original table, which is now called the 'child table, and adds the 'ID column'.
-#'
-#' @param .data Data frame from which columns `...` are to be extracted.
-#' @param new_id_column Name of the identifier column (primary key column) for the parent table.
-#'   A column of this name is also added in 'child table'.
-#' @param ... The columns to be extracted from the `.data`.
-#'
-#'   One or more unquoted expressions separated by commas.
-#'   You can treat variable names as if they were positions, so you
-#'   can use expressions like x:y to select ranges of variables.
-#'
-#'   The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
-#'   They also support
-#'   unquoting and splicing.
-#'   See vignette("programming") for an introduction to those concepts.
-#'
-#'   See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...
-#'
-#' @family table surgery functions
-#'
-#' @return A named list of length two:
-#'   - entry "child_table": the child table with column `new_id_column` referring to the same column in `parent_table`,
-#'   - entry "parent_table": the "lookup table" for `child_table`.
-#'
-#' @section Life cycle:
-#' This function is marked "experimental" because it seems more useful
-#' when applied to a table in a dm object.
-#' Changing the interface later seems harmless because these functions are
-#' most likely used interactively.
-#'
-#' @examples
-#' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
-#' decomposed_table$child_table
-#' decomposed_table$parent_table
-#' @export
-decompose_table <- function(.data, new_id_column, ...) {
-  dm_local_error_call()
-  table_name <- deparse(substitute(.data))
-  avail_cols <- colnames(.data)
-  id_col_q <- ensym(new_id_column)
+{|#| | |"| |( | |`paste0("", D)`|`paste0("", e)`|`paste0("", c)`|`paste0("", o)`|`paste0("", m)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", e)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |`paste0("", i)`|`paste0("", n)`|`paste0("", t)`|`paste0("", o)`| | | |( | |`paste0("", t)`|`paste0("", w)`|`paste0("", o)`| | | |( | |`paste0("", l)`|`paste0("", i)`|`paste0("", n)`|`paste0("", k)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|`paste0("", s)`| | | | |}
+{# ' }
+{|#| | |"| |@|( | |`paste0("", d)`|`paste0("", e)`|`paste0("", s)`|`paste0("", c)`|`paste0("", r)`|`paste0("", i)`|`paste0("", p)`|`paste0("", t)`|`paste0("", i)`|`paste0("", o)`|`paste0("", n)`| | | | |}
+{# " `( `paste0("", r)`  ( `paste0("", lifecycle)` ::`paste0("", badge)`( "( `paste0("", experimental)` " ` };
+{|#| | |"| | |}
+{|#| | |"| |( | |`paste0("", P)`|`paste0("", e)`|`paste0("", r)`|`paste0("", f)`|`paste0("", o)`|`paste0("", r)`|`paste0("", m)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |`paste0("", s)`|`paste0("", u)`|`paste0("", r)`|`paste0("", g)`|`paste0("", e)`|`paste0("", r)`|`paste0("", Y)`| | | |( | |`paste0("", b)`|`paste0("", Y)`| | | |( | |`paste0("", e)`|`paste0("", X)`|`paste0("", t)`|`paste0("", r)`|`paste0("", a)`|`paste0("", c)`|`paste0("", t)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`| | | |( | |`paste0("", a)`| | | |"|( | |`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |"| |( | |`paste0("", f)`|`paste0("", r)`|`paste0("", o)`|`paste0("", m)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |,|( | |`paste0("", l)`|`paste0("", i)`|`paste0("", n)`|`paste0("", k)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", o)`|`paste0("", r)`|`paste0("", i)`|`paste0("", g)`|`paste0("", i)`|`paste0("", n)`|`paste0("", a)`|`paste0("", l)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |`paste0("", a)`|`paste0("", n)`|`paste0("", d)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", n)`|`paste0("", e)`|`paste0("", w)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |`paste0("", b)`|`paste0("", Y)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", k)`|`paste0("", e)`|`paste0("", Y)`| | |;
+,( `paste0("", a)`  ( `paste0("", name)`  ( `paste0("", for)`  ( `paste0("", the)`  "( `paste0("", ID)`  ( `paste0("", column)` " ( `paste0("", that)`  ( `paste0("", will)`  ( `paste0("", be)`  ( `paste0("", newly)`  ( `paste0("", created)` ,( `paste0("", and)`  ( `paste0("", the)`  ( `paste0("", names)`  }
+  {# ' ( `paste0('', of)`  ( `paste0('', the)`  ( `paste0('', columns)`  ( `paste0('', that)`  ( `paste0('', will)`  ( `paste0('', be)`  ( `paste0('', extracted)`  ( `paste0('', into)`  ( `paste0('', the)`  ( `paste0('', new)`  ( `paste0('', data)`  ( `paste0('', frame)` . }
+  {|#| | |'| | |}
+{# " ( `paste0("", It)`  ( `paste0("", creates)`  ( `paste0("", a)`  "( `paste0("", parent)`  ( `paste0("", table)` "
+,( `paste0("", and)`  ( `paste0("", a)`  ( `paste0("", new)`  "( `paste0("", ID)`  ( `paste0("", column)` ". }
+{|#| | |"| |( | |`paste0("", T)`|`paste0("", h)`|`paste0("", e)`|`paste0("", n)`| | | |( | |`paste0("", i)`|`paste0("", t)`| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", m)`|`paste0("", o)`|`paste0("", v)`|`paste0("", e)`|`paste0("", s)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", o)`|`paste0("", s)`|`paste0("", e)`| | | | |};
+{|#| | |"| |( | |`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`|`paste0("", s)`| | | |( | |`paste0("", f)`|`paste0("", r)`|`paste0("", o)`|`paste0("", m)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", o)`|`paste0("", r)`|`paste0("", i)`|`paste0("", g)`|`paste0("", i)`|`paste0("", n)`|`paste0("", a)`|`paste0("", l)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |,|( | |`paste0("", w)`|`paste0("", h)`|`paste0("", i)`|`paste0("", c)`|`paste0("", h)`| | | |( | |`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", n)`|`paste0("", o)`|`paste0("", w)`| | | |( | |`paste0("", c)`|`paste0("", a)`|`paste0("", l)`|`paste0("", l)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |"|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", i)`|`paste0("", l)`|`paste0("", d)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |
+,( `paste0("", so)`  ( `paste0("", you)`  }
 
-  if (as_string(id_col_q) %in% avail_cols) {
-    abort_dupl_new_id_col_name(table_name)
-  }
+  {# ' ( `paste0('', can)`  ( `paste0('', use)`  ( `paste0('', expressions)`  ( `paste0('', like)`  ( `paste0('', x)` :( `paste0('', y)`  ( `paste0('', to)`  ( `paste0('', select)`  ( `paste0('', ranges)`  ( `paste0('', of)`  ( `paste0('', variables)` . },
+{# ' }
+{# " ( `paste0("", The)`  ( `paste0("", arguments)`  ( `paste0("", in)`  ... ( `paste0("", are)`  ( `paste0("", automatically)`  ( `paste0("", quoted)`  ( `paste0("", and)`  ( `paste0("", evaluated)`  ( `paste0("", in)`  ( `paste0("", a)`  ( `paste0("", context)`  ( `paste0("", where)`  ( `paste0("", column)`  ( `paste0("", names)`  ( `paste0("", represent)`  ( `paste0("", column)`  ( `paste0("", positions)` . }
+{# " ( `paste0("", They)`  ( `paste0("", also)`  ( `paste0("", support)`  }
+{# " ( `paste0("", unquoting)`  ( `paste0("", and)`  ( `paste0("", splicing)` . }
+{|#| | |'| | | |( | |`paste0('', S)`|`paste0('', e)`|`paste0('', e)`| | | |`paste0('', v)`|`paste0('', i)`|`paste0('', g)`|`paste0('', n)`|`paste0('', e)`|`paste0('', t)`|`paste0('', t)`|`paste0('', e)`|( | |'|( | |`paste0('', p)`|`paste0('', r)`|`paste0('', o)`|`paste0('', g)`|`paste0('', r)`|`paste0('', a)`|`paste0('', m)`|`paste0('', m)`|`paste0('', i)`|`paste0('', n)`|`paste0('', g)`| | |'| | | |( | |`paste0('', f)`|`paste0('', o)`|`paste0('', r)`| | | |( | |`paste0('', a)`|`paste0('', n)`| | | |( | |`paste0('', i)`|`paste0('', n)`|`paste0('', t)`|`paste0('', r)`|`paste0('', o)`|`paste0('', d)`|`paste0('', u)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`| | | |( | |`paste0('', t)`|`paste0('', o)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', o)`|`paste0('', s)`|`paste0('', e)`| | | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', n)`|`paste0('', c)`|`paste0('', e)`|`paste0('', p)`|`paste0('', t)`|`paste0('', s)`| | |.| | |}
+  {# ' }
+{|#| | |"| | | |( | |`paste0("", S)`|`paste0("", e)`|`paste0("", e)`| | | |( | |`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | | |( | |`paste0("", h)`|`paste0("", e)`|`paste0("", l)`|`paste0("", p)`|`paste0("", e)`|`paste0("", r)`|`paste0("", s)`| | | |( | |`paste0("", f)`|`paste0("", o)`|`paste0("", r)`| | | |( | |`paste0("", m)`|`paste0("", o)`|`paste0("", r)`|`paste0("", e)`| | | |( | |`paste0("", d)`|`paste0("", e)`|`paste0("", t)`|`paste0("", a)`|`paste0("", i)`|`paste0("", l)`|`paste0("", s)`| | |,|( | |`paste0("", a)`|`paste0("", n)`|`paste0("", d)`| | | |( | |`paste0("", t)`|`paste0("", h)`|`paste0("", e)`| | | |( | |`paste0("", e)`|`paste0("", x)`|`paste0("", a)`|`paste0("", m)`|`paste0("", p)`|`paste0("", l)`|`paste0("", e)`|`paste0("", s)`| | | |( | |`paste0("", a)`|`paste0("", b)`|`paste0("", o)`|`paste0("", u)`|`paste0("", t)`| | | |( | |`paste0("", t)`|`paste0("", i)`|`paste0("", d)`|`paste0("", y)`|`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | | |( | |`paste0("", h)`|`paste0("", e)`|`paste0("", l)`|`paste0("", p)`|`paste0("", e)`|`paste0("", r)`|`paste0("", s)`| | |
+,|`paste0("", e)`|`paste0("", v)`|`paste0("", e)`|`paste0("", r)`|`paste0("", y)`|`paste0("", t)`|`paste0("", h)`|`paste0("", i)`|`paste0("", n)`|`paste0("", g)`|( | | |,|.|.|.| | |}
+{# ' }
+{|#| | |'| |@|( | |`paste0('', f)`|`paste0('', a)`|`paste0('', m)`|`paste0('', i)`|`paste0('', l)`|`paste0('', Y)`| | | |( | |`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | | |( | |`paste0('', s)`|`paste0('', u)`|`paste0('', r)`|`paste0('', g)`|`paste0('', e)`|`paste0('', r)`|`paste0('', Y)`| | | |( | |`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|`paste0('', s)`| | | | | |}
+{|#| | |'| | |}
+{# " @( `paste0("", return)`  ( `paste0("", A)`  ( `paste0("", named)`  ( `paste0("", list)`  ( `paste0("", of)`  ( `paste0("", length)`  ( `paste0("", two)` : }
+{# ' -( `paste0('', entry)`  '( `paste0('', child_table)` ': ( `paste0('', the)`  ( `paste0('', child)`  ( `paste0('', table)`  ( `paste0('', with)`  ( `paste0('', column)`  `( `paste0('', new_id_column)` ` ( `paste0('', referring)`  ( `paste0('', to)`  ( `paste0('', the)`  ( `paste0('', same)`  ( `paste0('', column)`  ( `paste0('', in)`  `( `paste0('', parent_table)` `
+,|( | |`paste0('', n)`|`paste0('', e)`|`paste0('', w)`|`paste0('', _)`|`paste0('', i)`|`paste0('', d)`| | |,|( | |`paste0('', a)`|`paste0('', m)`| | |
+,|( | |`paste0("", c)`|`paste0("", a)`|`paste0("", r)`|`paste0("", b)`| | | | | | |}
+{|#| | |'| |( | |`paste0('', d)`|`paste0('', e)`|`paste0('', c)`|`paste0('', o)`|`paste0('', m)`|`paste0('', p)`|`paste0('', o)`|`paste0('', s)`|`paste0('', e)`|`paste0('', d)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |$|( | |`paste0('', c)`|`paste0('', h)`|`paste0('', i)`|`paste0('', l)`|`paste0('', d)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | | | |}
+  {# ' ( `paste0('', decomposed_table)` $( `paste0('', parent_table)`  }
+{|#| | |'| |@|( | |`paste0('', e)`|`paste0('', X)`|`paste0('', p)`|`paste0('', o)`|`paste0('', r)`|`paste0('', t)`| | | | |},
+{|( | |`paste0('', d)`|`paste0('', e)`|`paste0('', c)`|`paste0('', o)`|`paste0('', m)`|`paste0('', p)`|`paste0('', o)`|`paste0('', s)`|`paste0('', e)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | | |<|-|`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|( | |.|( | |`paste0('', d)`|`paste0('', a)`|`paste0('', t)`|`paste0('', a)`| | |,|( | |`paste0('', n)`|`paste0('', e)`|`paste0('', w)`|`paste0('', _)`|`paste0('', i)`|`paste0('', d)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)`|`paste0('', m)`|`paste0('', n)`| | |
+,( `paste0('', avail_cols)`  }
+ {( `paste0('', parent_table)`  <-}
+  {| | | |`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|( | |.|( | |`paste0('', d)`|`paste0('', a)`|`paste0('', t)`|`paste0('', a)`| | |,|!|!|!|( | |`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', _)`|`paste0('', v)`|`paste0('', a)`|`paste0('', r)`|`paste0('', s)`| | |$|( | |`paste0('', i)`|`paste0('', n)`|`paste0('', d)`|`paste0('', i)`|`paste0('', c)`|`paste0('', e)`|`paste0('', s)`| | | | | ||%>%}
+{|;|}
+ {`paste0("", distinct)`(  |>}
+{}
+{| | |#| |( | |`paste0('', W)`|`paste0('', i)`|`paste0('', t)`|`paste0('', h)`|`paste0('', o)`|`paste0('', u)`|`paste0('', t)`| | | |( | |`paste0('', a)`|`paste0('', s)`| | |.|`paste0('', i)`|`paste0('', n)`|`paste0('', t)`|`paste0('', e)`|`paste0('', g)`|`paste0('', e)`|`paste0('', r)`|( | | |
+,|1*00|`paste0("", L)`| | | | |}
+ { %>%}
+{};
+ {`paste0('', select)`( !!( `paste0('', id_col_q)` ,`paste0('', everything)`(  },
+{| | |( | |`paste0("", n)`|`paste0("", o)`|`paste0("", n)`|`paste0("", _)`|`paste0("", k)`|`paste0("", e)`|`paste0("", Y)`|`paste0("", _)`|`paste0("", i)`|`paste0("", n)`|`paste0("", d)`|`paste0("", i)`|`paste0("", c)`|`paste0("", e)`|`paste0("", s)`| | | |<|-|}
+ {`paste0('', setdiff)`( `paste0('', seq_along)`( ( `paste0('', avail_cols)`  
+,|}
+  {| | | |( | |`paste0('', b)`|`paste0('', y)`| | |<-|`paste0('', p)`|`paste0('', r)`|`paste0('', e)`|`paste0('', p)`|`paste0('', _)`|`paste0('', r)`|`paste0('', e)`|`paste0('', c)`|`paste0('', o)`|`paste0('', d)`|`paste0('', e)`|( | |( | |`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', _)`|`paste0('', v)`|`paste0('', a)`|`paste0('', r)`|`paste0('', s)`| | |$|( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | | | |}
+ { %>%}
+  {}
+{| |`paste0("", s)`|`paste0("", e)`|`paste0("", l)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`|( | |!|!|!|( | |`paste0("", n)`|`paste0("", o)`|`paste0("", n)`|`paste0("", _)`|`paste0("", k)`|`paste0("", e)`|`paste0("", Y)`|`paste0("", _)`|`paste0("", i)`|`paste0("", n)`|`paste0("", d)`|`paste0("", i)`|`paste0("", c)`|`paste0("", e)`|`paste0("", s)`| | |,|!|!|( | |`paste0("", i)`|`paste0("", d)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", _)`|`paste0("", q)`| | | | |}
+{}
+{| | |`paste0("", b)`|`paste0("", a)`|`paste0("", s)`|`paste0("", e)`|:|:|`paste0("", l)`|`paste0("", i)`|`paste0("", s)`|`paste0("", t)`|( | |"|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", i)`|`paste0("", l)`|`paste0("", d)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |"|=|( | |`paste0("", c)`|`paste0("", h)`|`paste0("", i)`|`paste0("", l)`|`paste0("", d)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |
+,( `paste0("", and)`  ( `paste0("", then)`  ( `paste0("", removing)`  ( `paste0("", this)`  ( `paste0("", column)` . };
+{# " }
+  {# ' ``paste0('', reunite_parent_child)`( `: ( `paste0('', After)`  ( `paste0('', joining)`  ( `paste0('', the)`  ( `paste0('', two)`  ( `paste0('', tables)`  ( `paste0('', by)`  ( `paste0('', the)`  ( `paste0('', column)`  `( `paste0('', id_column)` `,( `paste0('', this)`  ( `paste0('', column)`  ( `paste0('', will)`  ( `paste0('', be)`  ( `paste0('', removed)` . }
 
-  sel_vars <- eval_select_both(quo(c(...)), avail_cols)
+  {|#| | |'| |( | |`paste0('', T)`|`paste0('', h)`|`paste0('', e)`| | | |( | |`paste0('', t)`|`paste0('', r)`|`paste0('', a)`|`paste0('', n)`|`paste0('', s)`|`paste0('', f)`|`paste0('', o)`|`paste0('', r)`|`paste0('', m)`|`paste0('', a)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`| | | |( | |`paste0('', i)`|`paste0('', s)`| | | |( | |`paste0('', r)`|`paste0('', o)`|`paste0('', u)`|`paste0('', g)`|`paste0('', h)`|`paste0('', l)`|`paste0('', Y)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', e)`| | | | |}
+{# ' ( `paste0('', inverse)`  ( `paste0('', of)`  ( `paste0('', what)`  ``paste0('', decompose_table)`( ` ( `paste0('', does)` . }
+{|#| | |'| | |}
+{# " @( `paste0("", param)`  ( `paste0("", child_table)`  ( `paste0("", Table)`  ( ( `paste0("", possibly)`  ( `paste0("", created)`  ( `paste0("", by)`  ``paste0("", decompose_table)`( `  ( `paste0("", that)`  ( `paste0("", references)`  `( `paste0("", parent_table)` ` }
+{|#| | |"| |@|( | |`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", a)`|`paste0("", m)`| | | |( | |`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |`paste0("", T)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |( | |`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", s)`|`paste0("", i)`|`paste0("", b)`|`paste0("", l)`|`paste0("", y)`| | | |( | |`paste0("", c)`|`paste0("", r)`|`paste0("", e)`|`paste0("", a)`|`paste0("", t)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", b)`|`paste0("", y)`| | | |`|`paste0("", d)`|`paste0("", e)`|`paste0("", c)`|`paste0("", o)`|`paste0("", m)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", e)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`|( | | |`| | |.| | |}
+{# " @( `paste0("", param)`  ( `paste0("", id_column)`  ( `paste0("", Identical)`  ( `paste0("", name)`  ( `paste0("", of)`  ( `paste0("", referencing)` /( `paste0("", referenced)`  ( `paste0("", column)`  ( `paste0("", in)`  `( `paste0("", child_table)` `/`( `paste0("", parent_table)` `. }
+  {# ' }
+{# " @( `paste0("", family)`  ( `paste0("", table)`  ( `paste0("", surgery)`  ( `functions)`  }
+{# ' }
+  {# ' @( `paste0('', return)`  ( `paste0('', A)`  ( `paste0('', wide)`  ( `paste0('', table)`  ( `paste0('', produced)`  ( `paste0('', by)`  ( `paste0('', joining)`  ( `paste0('', the)`  ( `paste0('', two)`  ( `paste0('', given)`  ( `paste0('', tables)` . }
+  {# ' }
 
-  parent_table <-
-    select(.data, !!!sel_vars$indices) %>%
-    distinct() %>%
-    # Without as.integer(), RPostgres creates integer64 column (#15)
-    mutate(
-      !!id_col_q := as.integer(coalesce(row_number(!!sym(names(sel_vars$indices)[[1]])), 0L))
-    ) %>%
-    select(!!id_col_q, everything())
+  {# ' @( `paste0('', section)`  ( `paste0('', Life)`  ( `paste0('', cycle)` : },
+  {|#| | |'| |( | |`paste0('', T)`|`paste0('', h)`|`paste0('', e)`|`paste0('', s)`|`paste0('', e)`| | | |( | |`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|`paste0('', s)`| | | |( | |`paste0('', a)`|`paste0('', r)`|`paste0('', e)`| | | |( | |`paste0('', m)`|`paste0('', a)`|`paste0('', r)`|`paste0('', k)`|`paste0('', e)`|`paste0('', d)`| | | |'|( | |`paste0('', e)`|`paste0('', X)`|`paste0('', p)`|`paste0('', e)`|`paste0('', r)`|`paste0('', i)`|`paste0('', m)`|`paste0('', e)`|`paste0('', n)`|`paste0('', t)`|`paste0('', a)`|`paste0('', l)`| | |'| |( | |`paste0('', b)`|`paste0('', e)`|`paste0('', c)`|`paste0('', a)`|`paste0('', u)`|`paste0('', s)`|`paste0('', e)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', e)`|`paste0('', Y)`| | | |( | |`paste0('', s)`|`paste0('', e)`|`paste0('', e)`|`paste0('', m)`| | | |( | |`paste0('', m)`|`paste0('', o)`|`paste0('', r)`|`paste0('', e)`| | | |( | |`paste0('', u)`|`paste0('', s)`|`paste0('', e)`|`paste0('', f)`|`paste0('', u)`|`paste0('', l)`| | | | |}
+{|#| | |"| |( | |`paste0("", w)`|`paste0("", h)`|`paste0("", e)`|`paste0("", n)`| | | |( | |`paste0("", a)`|`paste0("", p)`|`paste0("", p)`|`paste0("", l)`|`paste0("", i)`|`paste0("", e)`|`paste0("", d)`| | | |( | |`paste0("", t)`|`paste0("", o)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | | |( | |`paste0("", i)`|`paste0("", n)`| | | |( | |`paste0("", a)`| | | |( | |`paste0("", d)`|`paste0("", m)`| | | |( | |`paste0("", o)`|`paste0("", b)`|`paste0("", j)`|`paste0("", e)`|`paste0("", c)`|`paste0("", t)`| | |.| | |}
+{|#| | |'| |( | |`paste0('', C)`|`paste0('', h)`|`paste0('', a)`|`paste0('', n)`|`paste0('', g)`|`paste0('', i)`|`paste0('', n)`|`paste0('', g)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', e)`| | | |( | |`paste0('', i)`|`paste0('', n)`|`paste0('', t)`|`paste0('', e)`|`paste0('', r)`|`paste0('', f)`|`paste0('', a)`|`paste0('', c)`|`paste0('', e)`| | | |( | |`paste0('', l)`|`paste0('', a)`|`paste0('', t)`|`paste0('', e)`|`paste0('', r)`| | | |( | |`paste0('', s)`|`paste0('', e)`|`paste0('', e)`|`paste0('', m)`|`paste0('', s)`| | | |( | |`paste0('', h)`|`paste0('', a)`|`paste0('', r)`|`paste0('', m)`|`paste0('', l)`|`paste0('', e)`|`paste0('', s)`|`paste0('', s)`| | | |( | |`paste0('', b)`|`paste0('', e)`|`paste0('', c)`|`paste0('', a)`|`paste0('', u)`|`paste0('', s)`|`paste0('', e)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', e)`|`paste0('', s)`|`paste0('', e)`| | | |( | |`paste0('', f)`|`paste0('', u)`|`paste0('', n)`|`paste0('', c)`|`paste0('', t)`|`paste0('', i)`|`paste0('', o)`|`paste0('', n)`|`paste0('', s)`| | | |( | |`paste0('', a)`|`paste0('', r)`|`paste0('', e)`| | | | |};
+{# " ( `paste0("", most)`  ( `paste0("", likely)`  ( `paste0("", used)`  ( `paste0("", interactively)` . }
 
-  non_key_indices <-
-    setdiff(seq_along(avail_cols), sel_vars$indices)
+  {# ' }
+{|#| | |"| |@|( | |`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", u)`|`paste0("", n)`|`paste0("", i)`|`paste0("", t)`|`paste0("", e)`|`paste0("", _)`|`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", h)`|`paste0("", i)`|`paste0("", l)`|`paste0("", d)`| | | |;| | |},
+{|#| | |'| | |}
+{# " @( `paste0("", export)`  }
 
-  child_table <-
-    .data %>%
-    left_join(
-      parent_table,
-      by = prep_recode(sel_vars$names)
-    ) %>%
-    select(!!!non_key_indices, !!id_col_q)
-  # FIXME: Think about a good place for the target column,
-  # perhaps if this operation is run in a data model?
-
-  list("child_table" = child_table, "parent_table" = parent_table)
-}
-
-#' Merge two tables that are linked by a foreign key relation
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' Perform table fusion by combining two tables by a common (key) column, and then removing this column.
-#'
-#' `reunite_parent_child()`: After joining the two tables by the column `id_column`, this column will be removed.
-#' The transformation is roughly the
-#' inverse of what `decompose_table()` does.
-#'
-#' @param child_table Table (possibly created by `decompose_table()`) that references `parent_table`
-#' @param parent_table Table (possibly created by `decompose_table()`).
-#' @param id_column Identical name of referencing / referenced column in `child_table`/`parent_table`.
-#'
-#' @family table surgery functions
-#'
-#' @return A wide table produced by joining the two given tables.
-#'
-#' @section Life cycle:
-#' These functions are marked "experimental" because they seem more useful
-#' when applied to a table in a dm object.
-#' Changing the interface later seems harmless because these functions are
-#' most likely used interactively.
-#'
-#' @name reunite_parent_child
-#'
-#' @export
-#' @examples
-#' decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)
-#' ct <- decomposed_table$child_table
-#' pt <- decomposed_table$parent_table
-#'
-#' reunite_parent_child(ct, pt, new_id)
-#' reunite_parent_child_from_list(decomposed_table, new_id)
-reunite_parent_child <- function(child_table, parent_table, id_column) {
-  id_col_q <- ensym(id_column)
-
-  id_col_chr <-
-    as_name(id_col_q)
-
-  child_table %>%
-    left_join(parent_table, by = id_col_chr) %>%
-    select(-!!id_col_q)
-}
-
-#' Merge two tables that are linked by a foreign key relation
-#'
-#' @description `reunite_parent_child_from_list()`: After joining the two tables
-#' by the column `id_column`, `id_column` is removed.
-#'
-#' This function is almost exactly the inverse of `decompose_table()` (the order
-#' of the columns is not retained, and the original row names are lost).
-#'
-#' @param list_of_parent_child_tables Cf arguments `child_table` and `parent_table` from
-#'   `reunite_parent_child()`, but both in a named list (as created by `decompose_table()`).
-#'
-#' @rdname reunite_parent_child
-#' @export
-reunite_parent_child_from_list <- function(list_of_parent_child_tables, id_column) {
-  id_col_q <- ensym(id_column)
-
-  id_col_chr <-
-    as_name(id_col_q)
-
-  child_table <- list_of_parent_child_tables[["child_table"]]
-
-  parent_table <- list_of_parent_child_tables[["parent_table"]]
-
-  child_table %>%
-    left_join(parent_table, by = id_col_chr) %>%
-    select(-!!id_col_q)
-}
+  {# ' @( `paste0('', examples)`  }
+{# " ( `paste0("", decomposed_table)` <-`paste0("", decompose_table)`( ( `paste0("", mtcars)` 
+,( `paste0("", am)` ,( `paste0("", gear)` 
+,( `paste0("", pt)` ,( `paste0("", new_id)`   }
+{|}
+{|#| | |"| |`paste0("", r)`|`paste0("", e)`|`paste0("", u)`|`paste0("", n)`|`paste0("", i)`|`paste0("", t)`|`paste0("", e)`|`paste0("", _)`|`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", h)`|`paste0("", i)`|`paste0("", l)`|`paste0("", d)`|`paste0("", _)`|`paste0("", f)`|`paste0("", r)`|`paste0("", o)`|`paste0("", m)`|`paste0("", _)`|`paste0("", l)`|`paste0("", i)`|`paste0("", s)`|`paste0("", t)`|( | |( | |`paste0("", d)`|`paste0("", e)`|`paste0("", c)`|`paste0("", o)`|`paste0("", m)`|`paste0("", p)`|`paste0("", o)`|`paste0("", s)`|`paste0("", e)`|`paste0("", d)`|`paste0("", _)`|`paste0("", t)`|`paste0("", a)`|`paste0("", b)`|`paste0("", l)`|`paste0("", e)`| | |;
+,( `paste0('', parent_table)` ,( `paste0('', id_column)`   {;}
+ {( `paste0("", id_col_q)` =`paste0("", ensym)`( ( `paste0("", id_column)`  }
+{| | |( | |`paste0('', i)`|`paste0('', d)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', c)`|`paste0('', h)`|`paste0('', r)`| | | |<|-|}
+   {`paste0('', as_name)`( ( `paste0('', id_col_q)`  }
+{|}
+ {( `paste0('', child_table)`  |>}
+{}
+{| | | |`paste0('', l)`|`paste0('', e)`|`paste0('', f)`|`paste0('', t)`|`paste0('', _)`|`paste0('', j)`|`paste0('', o)`|`paste0('', i)`|`paste0('', n)`|( | |( | |`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', t)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |,
+,|`|( | |`paste0("", i)`|`paste0("", d)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", u)`|`paste0("", m)`|`paste0("", n)`| | |`| |( | |`paste0("", i)`|`paste0("", s)`| | | |( | |`paste0("", r)`|`paste0("", e)`|`paste0("", m)`|`paste0("", o)`|`paste0("", v)`|`paste0("", e)`|`paste0("", d)`| | |.| | |}
+{|#| | |'| | |}
+{# " ( `paste0("", This)`  ( `function)`  ( `paste0("", is)`  ( `paste0("", almost)`  ( `paste0("", exactly)`  ( `paste0("", the)`  ( `paste0("", inverse)`  ( `paste0("", of)`  ``paste0("", decompose_table)`( ` ( ( `paste0("", the)`  ( `paste0("", order)`  }
+  {|#| | |'| |( | |`paste0('', o)`|`paste0('', f)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', e)`| | | |( | |`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', u)`|`paste0('', m)`|`paste0('', n)`|`paste0('', s)`| | | |( | |`paste0('', i)`|`paste0('', s)`| | | |( | |`paste0('', n)`|`paste0('', o)`|`paste0('', t)`| | | |( | |`paste0('', r)`|`paste0('', e)`|`paste0('', t)`|`paste0('', a)`|`paste0('', i)`|`paste0('', n)`|`paste0('', e)`|`paste0('', d)`| | |,|( | |`paste0('', a)`|`paste0('', n)`|`paste0('', d)`| | | |( | |`paste0('', t)`|`paste0('', h)`|`paste0('', e)`| | | |( | |`paste0('', o)`|`paste0('', r)`|`paste0('', i)`|`paste0('', g)`|`paste0('', i)`|`paste0('', n)`|`paste0('', a)`|`paste0('', l)`| | | |( | |`paste0('', r)`|`paste0('', o)`|`paste0('', w)`| | | |( | |`paste0('', n)`|`paste0('', a)`|`paste0('', m)`|`paste0('', e)`|`paste0('', s)`| | | |( | |`paste0('', a)`|`paste0('', r)`|`paste0('', e)`| | | |( | |`paste0('', l)`|`paste0('', o)`|`paste0('', s)`|`paste0('', t)`| | | | |.| | |},
+  {|#| | |'| | |};
+{# " @( `paste0("", param)`  ( `paste0("", list_of_parent_child_tables)`  ( `paste0("", Cf)`  ( `paste0("", arguments)`  `( `paste0("", child_table)` ` ( `paste0("", and)`  `( `paste0("", parent_table)` ` ( `paste0("", from)`  };
+{|#| | |"| | | |`|`paste0("", r)`|`paste0("", e)`|`paste0("", u)`|`paste0("", n)`|`paste0("", i)`|`paste0("", t)`|`paste0("", e)`|`paste0("", _)`|`paste0("", p)`|`paste0("", a)`|`paste0("", r)`|`paste0("", e)`|`paste0("", n)`|`paste0("", t)`|`paste0("", _)`|`paste0("", c)`|`paste0("", h)`|`paste0("", i)`|`paste0("", l)`|`paste0("", d)`|( | | |`|
+,( `paste0('', id_column)`   {}
+ {( `paste0("", id_col_q)` =`paste0("", ensym)`( ( `paste0("", id_column)`  }
+{| | |( | |`paste0("", i)`|`paste0("", d)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", _)`|`paste0("", c)`|`paste0("", h)`|`paste0("", r)`| | | |<|-|}
+{| |`paste0("", a)`|`paste0("", s)`|`paste0("", _)`|`paste0("", n)`|`paste0("", a)`|`paste0("", m)`|`paste0("", e)`|( | |( | |`paste0("", i)`|`paste0("", d)`|`paste0("", _)`|`paste0("", c)`|`paste0("", o)`|`paste0("", l)`|`paste0("", _)`|`paste0("", q)`| | | | |};
+  {| | |( | |`paste0('', c)`|`paste0('', h)`|`paste0('', i)`|`paste0('', l)`|`paste0('', d)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |<|-|( | |`paste0('', l)`|`paste0('', i)`|`paste0('', s)`|`paste0('', t)`|`paste0('', _)`|`paste0('', o)`|`paste0('', f)`|`paste0('', _)`|`paste0('', p)`|`paste0('', a)`|`paste0('', r)`|`paste0('', e)`|`paste0('', n)`|`paste0('', t)`|`paste0('', _)`|`paste0('', c)`|`paste0('', h)`|`paste0('', i)`|`paste0('', l)`|`paste0('', d)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`|`paste0('', s)`| | |[|[|'|( | |`paste0('', c)`|`paste0('', h)`|`paste0('', i)`|`paste0('', l)`|`paste0('', d)`|`paste0('', _)`|`paste0('', t)`|`paste0('', a)`|`paste0('', b)`|`paste0('', l)`|`paste0('', e)`| | |'|]|]|},
+ {( `paste0('', parent_table)` <-( `paste0('', list_of_)` \`paste0('', nparent_child_tables)` [['( `paste0('', parent_table)` ', paste0('', drop)<-paste0('', F)]]}
+{| |}
+ {( `paste0("", child_table)`  |>},;
+{},
+ {`paste0("", left_join)`( ( `paste0("", parent_table)` ,( `paste0("", by)` <-( `paste0("", id_col_chr)`   %>%}
+  {}
+{| |`paste0('', s)`|`paste0('', e)`|`paste0('', l)`|`paste0('', e)`|`paste0('', c)`|`paste0('', t)`|( | |-|!|!|( | |`paste0('', i)`|`paste0('', d)`|`paste0('', _)`|`paste0('', c)`|`paste0('', o)`|`paste0('', l)`|`paste0('', _)`|`paste0('', q)`| | | | | |}
+{}}
+{}

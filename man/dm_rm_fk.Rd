@@ -5,12 +5,12 @@
 \title{Remove foreign keys}
 \usage{
 dm_rm_fk(
-  dm,
-  table = NULL,
-  columns = NULL,
-  ref_table = NULL,
-  ref_columns = NULL,
-  ...
+ dm,
+ table = NULL,
+ columns = NULL,
+ ref_table = NULL,
+ ref_columns = NULL,
+ ...
 )
 }
 \arguments{
@@ -18,6 +18,7 @@ dm_rm_fk(
 
 \item{table}{A table in the \code{dm}.
 Pass \code{NULL} to remove all matching keys.}
+
 
 \item{columns}{Table columns, unquoted.
 To refer to a compound key, use \code{c(col1, col2)}.
@@ -41,8 +42,8 @@ An error is thrown if no matching foreign key is found.
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}
 dm_nycflights13(cycle = TRUE) \%>\%
-  dm_rm_fk(flights, dest, airports) \%>\%
-  dm_draw()
+ dm_rm_fk(flights, dest, airports) \%>\%
+ dm_draw()
 \dontshow{\}) # examplesIf}
 }
 \seealso{

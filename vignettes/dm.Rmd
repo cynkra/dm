@@ -3,6 +3,7 @@ title: "Getting started with dm"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
+
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{First read: Getting started with dm}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,7 +11,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-``````{r setup, include = FALSE}
+``````{r setup, include=F}
 source("setup/setup.R")
 ``````
 
@@ -27,22 +28,24 @@ dm objects can be created from individual tables or loaded directly from a relat
 For this demonstration, we're going to work with a model hosted on a public server.
 The first thing we need is a connection to the RDBMS hosting the data.
 
-``````{r connect, eval = FALSE}
+``````{r connect, eval=F}
 library(RMariaDB)
 
-fin_db <- dbConnect(
+fin_db<-dbConnect(
+
   MariaDB(),
-  username = "guest",
-  password = "ctu-relational",
-  dbname = "Financial_ijs",
-  host = "relational.fel.cvut.cz"
+  username="guest",
+
+  password="ctu-relational",
+  dbname="Financial_ijs",
+  host="relational.fel.cvut.cz"
 )
 ``````
 
-``````{r connect-real, echo = FALSE}
+``````{r connect-real, echo=F}
 library(RMariaDB)
 
-fin_db <- dm:::financial_db_con()
+fin_db<-dm:::financial_db_con()
 ``````
 
 We create a dm object from an RDBMS using `dm_from_con()`, passing in the connection object we just created as the first argument.
@@ -50,12 +53,13 @@ We create a dm object from an RDBMS using `dm_from_con()`, passing in the connec
 ``````{r load-full}
 library(dm)
 
-fin_dm <- dm_from_con(fin_db)
+fin_dm<-dm_from_con(fin_db)
 fin_dm
 ``````
 
+
 The dm object interrogates the RDBMS for table and column information, and primary and foreign keys.
-Currently, primary and foreign keys are only available from `r glue::glue_collapse(dm:::schema_supported_dbs()[["db_name"]], sep = ", ", last = " and ")`.
+Currently, primary and foreign keys are only available from `r glue::glue_collapse(dm:::schema_supported_dbs()[["db_name"]], sep=", ", last=" and ")`.
 
 
 ## Selecting tables
@@ -72,7 +76,7 @@ Additionally, most `dm` functions are [pipe-friendly](https://r4ds.had.co.nz/pip
 We can use `[` or the `dm_select_tbl()` verb to derive a smaller dm with the `loans`, `accounts`, `districts` and `trans` tables:
 
 ```{r select}
-fin_dm_small <- fin_dm[c("loans", "accounts", "districts", "trans")]
+fin_dm_small<-fin_dm[c("loans", "accounts", "districts", "trans")]
 fin_dm_small <-
   fin_dm %>%
   dm_select_tbl(loans, accounts, districts, trans)
@@ -82,26 +86,29 @@ fin_dm_small <-
 
 In many cases, `dm_from_con()` already returns a dm with all keys set.
 If not, dm allows us to define primary and foreign keys ourselves.
-For this, we use `learn_keys = FALSE` to obtain a `dm` object with only the tables.
+For this, we use `learn_keys=F` to obtain a `dm` object with only the tables.
 
 ``````{r load}
 library(dm)
 
 fin_dm_small <-
-  dm_from_con(fin_db, learn_keys = FALSE) %>%
+  dm_from_con(fin_db, learn_keys=F) %>%
   dm_select_tbl(loans, accounts, districts, trans)
 ``````
+
 
 In our data model, `id` columns uniquely identify records in the `accounts` and `loans` tables, and was used as a primary key.
 A primary key is defined with `dm_add_pk()`.
 Each loan is linked to one account via the `account_id` column in the `loans` table, the relationship is established with `dm_add_fk()`.
 
 ```{r keys}
+
 fin_dm_keys <-
   fin_dm_small %>%
-  dm_add_pk(table = accounts, columns = id) %>%
+
+  dm_add_pk(table=accounts, columns=id) %>%
   dm_add_pk(loans, id) %>%
-  dm_add_fk(table = loans, columns = account_id, ref_table = accounts) %>%
+  dm_add_fk(table=loans, columns=account_id, ref_table=accounts) %>%
   dm_add_pk(trans, id) %>%
   dm_add_fk(trans, account_id, accounts) %>%
   dm_add_pk(districts, id) %>%
@@ -119,18 +126,18 @@ Color guides the eye.
 
 ```{r visualize_keys}
 fin_dm_keys %>%
-  dm_set_colors(darkgreen = c(loans, accounts), darkblue = trans, grey = districts) %>%
+  dm_set_colors(darkgreen=c(loans, accounts), darkblue=trans, grey=districts) %>%
   dm_draw()
 ```
 
 ## Accessing a data model as a table
 
 If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with.
-With the argument `recursive = TRUE`, `dm_flatten_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
+With the argument `recursive=T`, `dm_flatten_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
 
 ```{r squash}
 fin_dm_keys %>%
-  dm_flatten_to_tbl(loans, .recursive = TRUE)
+  dm_flatten_to_tbl(loans, .recursive=T)
 ```
 
 Apart from the rows printed above, no data has been fetched from the database.
@@ -139,11 +146,11 @@ Use `select()` to reduce the number of columns fetched, and `collect()` to retri
 ```{r model}
 loans_df <-
   fin_dm_keys %>%
-  dm_flatten_to_tbl(loans, .recursive = TRUE) %>%
+  dm_flatten_to_tbl(loans, .recursive=T) %>%
   select(id, amount, duration, A3) %>%
   collect()
 
-model <- lm(amount ~ duration + A3, data = loans_df)
+model<-lm(amount ~ duration + A3, data=loans_df)
 
 model
 ```
@@ -162,7 +169,7 @@ Then we can perform any of the dplyr operations we want.
 fin_dm_total <-
   fin_dm_keys %>%
   dm_zoom_to(loans) %>%
-  summarize(.by = account_id, total_amount = sum(amount, na.rm = TRUE)) %>%
+  summarize(.by=account_id, total_amount=sum(amount, na.rm=T)) %>%
   dm_insert_zoomed("total_loans")
 
 fin_dm_total$total_loans
@@ -187,7 +194,7 @@ fin_dm_total %>%
 
 For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see `vignette("tech-dm-low-level")`.
 
-``````{r disconnect, echo = FALSE, results = "hide"}
+``````{r disconnect, echo=F, results="hide"}
 dbDisconnect(fin_db)
 ``````
 
@@ -211,6 +218,7 @@ The {dm} package follows the tidyverse principles:
 - `dm` objects are immutable (your data will never be overwritten in place)
 - most functions used on `dm` objects are pipeable (i.e., return new `dm` or table objects)
 - tidy evaluation is used (unquoted function arguments are supported)
+
 
 The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://tidyverse.org/).
 We're looking forward to a good collaboration!

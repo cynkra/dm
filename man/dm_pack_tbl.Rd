@@ -19,13 +19,14 @@ from the foreign keys unambiguously but useful to be explicit.}
 
 \code{dm_pack_tbl()} converts a parent table to a packed column in its child
 table.
+
 The parent table should not have parent tables itself (i.e. it needs to be a
 \emph{terminal parent table}).
 }
 \examples{
 dm_packed <-
-  dm_nycflights13() \%>\%
-  dm_pack_tbl(planes)
+ dm_nycflights13() \%>\%
+ dm_pack_tbl(planes)
 
 dm_packed
 

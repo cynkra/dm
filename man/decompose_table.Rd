@@ -19,6 +19,7 @@ You can treat variable names as if they were positions, so you
 can use expressions like x:y to select ranges of variables.
 
 The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
+
 They also support
 unquoting and splicing.
 See vignette("programming") for an introduction to those concepts.
@@ -51,6 +52,7 @@ when applied to a table in a dm object.
 Changing the interface later seems harmless because these functions are
 most likely used interactively.
 }
+
 
 \examples{
 decomposed_table <- decompose_table(mtcars, new_id, am, gear, carb)

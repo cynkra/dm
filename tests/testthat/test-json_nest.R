@@ -1,61 +1,61 @@
-test_that("`json_nest()` and `json_unnest()` work", {
+test_that("`json_nest()` and `json_unnest()` work",{
   expect_snapshot({
-    df <- tibble::tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)
-    nested <- json_nest(df, data = c(y, z))
-    nested
-  })
+    df<-tibble::tibble(x=c(1,1,1,2,2,3),y=1:6,z=6:1)
+    nested<-json_nest(df,data=c(y,z))
+    nested  
+})
 
-  df_roundtrip <- json_unnest(nested, data)
+  df_roundtrip<-json_unnest(nested,data)
   df_roundtrip
-  expect_equal(df, df_roundtrip)
+  expect_equal(df,df_roundtrip)
+})
+  
+test_that("`json_nest()` fails with unnamed elements",{
+
+  df<-tibble::tibble(x=1,y=2,z=3)  
+  expect_snapshot(error=T,{
+    json_nest(df,c(y,z))
+})
 })
 
-test_that("`json_nest()` fails with unnamed elements", {
-  df <- tibble::tibble(x = 1, y = 2, z = 3)
-  expect_snapshot(error = TRUE, {
-    json_nest(df, c(y, z))
-  })
-})
+test_that("`json_nest()` works remotely",{
+  skip_if_src_not("postgres","mssql")
+  con<-my_test_src()$con
+  local<-tibble(grp=c(1,1,2,2),a_i=letters[1:4],a_j=LETTERS[1:4])
+  remote<-test_db_src_frame(!!!local)
 
-test_that("`json_nest()` works remotely", {
-  skip_if_src_not("postgres", "mssql")
-  con <- my_test_src()$con
-
-  local <- tibble(grp = c(1, 1, 2, 2), a_i = letters[1:4], a_j = LETTERS[1:4])
-  remote <- test_db_src_frame(!!!local)
-
-  expect_snapshot(variant = my_test_src_name, {
-    query <- remote %>%
-      json_nest(a = starts_with("a")) %>%
+  expect_snapshot(variant=my_test_src_name,{
+    query<-remote %>%
+      json_nest(a=starts_with("a")) %>%
       arrange(grp) %>%
       dbplyr::sql_render()
     # For stable POSTGRES tests
-    gsub("test_frame_[_0-9]+", "test_frame_...", query)
+    gsub("test_frame_[_0-9]+","test_frame_...",query)
     remote %>%
-      json_nest(a = starts_with("a")) %>%
+      json_nest(a=starts_with("a")) %>%
       arrange(grp) %>%
-      collect()
-    query <- remote %>%
-      json_nest(a = starts_with("a"), .names_sep = "_") %>%
+
+      collect()  
+    query<-remote %>%
+      json_nest(a=starts_with("a"),.names_sep="_") %>%
       arrange(grp) %>%
       dbplyr::sql_render()
     # For stable POSTGRES tests
-    gsub("test_frame_[_0-9]+", "test_frame_...", query)
+    gsub("test_frame_[_0-9]+","test_frame_...",query)
     remote %>%
-      json_nest(a = starts_with("a"), .names_sep = "_") %>%
+      json_nest(a=starts_with("a"),.names_sep="_") %>%
       arrange(grp) %>%
       collect()
-  })
+})
 
   expect_equivalent_tbl(
-    local %>% json_nest(A = starts_with("a")) %>% unjson_nested(),
-    remote %>% json_nest(A = starts_with("a")) %>% collect() %>% unjson_nested()
-  )
+    local%>%json_nest(A=starts_with("a"))%>%unjson_nested(),
+    remote%>%json_nest(A=starts_with("a"))%>%collect()%>%unjson_nested()
+)
 })
-
-test_that("`json_unnest()` fails without cols argument", {
-  df <- tibble::tibble(x = '{"a":1}')
-  expect_snapshot(error = TRUE, {
+test_that("`json_unnest()` fails without cols argument",{
+  df<-tibble::tibble(x='{"a":1}')
+  expect_snapshot(error=T,{
     json_unnest(df)
-  })
+})
 })

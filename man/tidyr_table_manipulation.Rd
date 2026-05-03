@@ -13,27 +13,28 @@
 \method{unite}{dm_keyed_tbl}(data, col, ..., sep = "_", remove = TRUE, na.rm = FALSE)
 
 \method{separate}{dm_zoomed}(
-  data,
-  col,
-  into,
-  sep = "[^[:alnum:]]+",
-  remove = TRUE,
-  convert = FALSE,
-  extra = "warn",
-  fill = "warn",
-  ...
+ data,
+ col,
+ into,
+ sep = "[^[:alnum:]]+",
+ remove = TRUE,
+ convert = FALSE,
+
+ extra = "warn",
+ fill = "warn",
+ ...
 )
 
 \method{separate}{dm_keyed_tbl}(
-  data,
-  col,
-  into,
-  sep = "[^[:alnum:]]+",
-  remove = TRUE,
-  convert = FALSE,
-  extra = "warn",
-  fill = "warn",
-  ...
+ data,
+ col,
+ into,
+ sep = "[^[:alnum:]]+",
+ remove = TRUE,
+ convert = FALSE,
+ extra = "warn",
+ fill = "warn",
+ ...
 )
 }
 \arguments{
@@ -51,6 +52,7 @@ tidyverse; we support it here for backward compatibility).}
 \item{...}{For \code{unite.dm_zoomed}: see \code{\link[tidyr:unite]{tidyr::unite()}}
 
 For \code{separate.dm_zoomed}: see \code{\link[tidyr:separate]{tidyr::separate()}}}
+
 
 \item{sep}{Separator to use between values.}
 
@@ -74,6 +76,7 @@ happens when there are too many pieces. There are three valid options:
 \item \code{"warn"} (the default): emit a warning and drop extra values.
 \item \code{"drop"}: drop any extra values without a warning.
 \item \code{"merge"}: only splits at most \code{length(into)} times
+
 }}
 
 \item{fill}{If \code{sep} is a character vector, this controls what
@@ -83,18 +86,21 @@ happens when there are not enough pieces. There are three valid options:
 \item \code{"right"}: fill with missing values on the right
 \item \code{"left"}: fill with missing values on the left
 }}
+
 }
 \description{
 Use these methods without the '.dm_zoomed' suffix (see examples).
 }
 \examples{
+
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 zoom_united <- dm_nycflights13() \%>\%
-  dm_zoom_to(flights) \%>\%
-  select(year, month, day) \%>\%
-  unite("month_day", month, day)
+ dm_zoom_to(flights) \%>\%
+ select(year, month, day) \%>\%
+ unite("month_day", month, day)
 zoom_united
 zoom_united \%>\%
-  separate(month_day, c("month", "day"))
+
+ separate(month_day, c("month", "day"))
 \dontshow{\}) # examplesIf}
 }

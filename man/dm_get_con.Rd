@@ -19,12 +19,13 @@ is thrown.
 }
 \details{
 All lazy tables in a dm object must be stored on the same database server
+
 and accessed through the same connection, because a large part
 of the package's functionality relies on efficient joins.
 }
 \examples{
 \dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}
 dm_financial() \%>\%
-  dm_get_con()
+ dm_get_con()
 \dontshow{\}) # examplesIf}
 }

@@ -19,6 +19,7 @@ A tibble with the following columns:
 \describe{
 \item{\code{schema_name}}{the names of the schemas,}
 \item{\code{schema_owner}}{the schema owner names.}
+
 }
 }
 \description{

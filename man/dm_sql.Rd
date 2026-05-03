@@ -20,6 +20,7 @@ dm_ddl_post(dm, dest, table_names = NULL, temporary = TRUE)
 
 \item{dest}{Connection to database.}
 
+
 \item{table_names}{A named character vector or named vector of \link[DBI:Id]{DBI::Id},
 \link[DBI:SQL]{DBI::SQL} or dbplyr objects created with \code{\link[dbplyr:ident]{dbplyr::ident()}}, \code{\link[dbplyr:in_schema]{dbplyr::in_schema()}}
 or \code{\link[dbplyr:in_catalog]{dbplyr::in_catalog()}},
@@ -52,6 +53,7 @@ con <- DBI::dbConnect(RSQLite::SQLite())
 dm <- dm_nycflights13()
 s <- dm_sql(dm, con)
 s
+
 DBI::dbDisconnect(con)
 \dontshow{\}) # examplesIf}
 }

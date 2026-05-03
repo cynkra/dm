@@ -19,6 +19,7 @@ all objects it contains at once. Currently only supported for Postgres/Redshift.
 \value{
 \code{NULL} invisibly.
 }
+
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 

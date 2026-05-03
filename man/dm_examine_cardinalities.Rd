@@ -5,11 +5,11 @@
 \title{Learn about your data model}
 \usage{
 dm_examine_cardinalities(
-  .dm,
-  ...,
-  .progress = NA,
-  dm = deprecated(),
-  progress = deprecated()
+ .dm,
+ ...,
+ .progress = NA,
+ dm = deprecated(),
+ progress = deprecated()
 )
 }
 \arguments{
@@ -19,6 +19,7 @@ dm_examine_cardinalities(
 
 \item{.progress}{Whether to display a progress bar, if \code{NA} (the default)
 hide in non-interactive mode, show in interactive mode. Requires the
+
 'progress' package.}
 
 \item{dm, progress}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
@@ -47,11 +48,12 @@ Uses \code{\link[=examine_cardinality]{examine_cardinality()}} on each foreign k
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}
 dm_nycflights13() \%>\%
-  dm_examine_cardinalities()
+ dm_examine_cardinalities()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 Other cardinality functions:
+
 \code{\link[=examine_cardinality]{examine_cardinality()}}
 }
 \concept{cardinality functions}
