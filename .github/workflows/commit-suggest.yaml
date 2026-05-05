@@ -18,9 +18,7 @@ jobs:
     steps:
       - name: Show event payload
         run: |
-          cat << 'EOF'
-          ${{ toJson(github.event) }}
-          EOF | jq .
+          echo '${{ toJson(github.event) }}' | jq .
         shell: bash
 
       - name: Checkout PR
