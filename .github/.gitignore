@@ -1,2 +1,4 @@
-/pkg.lock
 *.html
+R-version
+depends.rds
+/pkg.lock
