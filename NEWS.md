@@ -1,5 +1,26 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.1.9006
+
+## Continuous integration
+
+- Only run fledge on pushes to main.
+
+- Tweak fledge workflow and ccache action.
+
+- Align.
+
+- Cosmetics.
+
+- Bump action versions.
+
+- Install clang-format-21.
+
+- Align fledge workflow.
+
+- Harmonize.
+
+
 # dm 1.1.1.9005
 
 ## Chore
