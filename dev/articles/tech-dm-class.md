@@ -39,6 +39,7 @@ Create a `dm` object directly by providing data frames to
 [`dm()`](https://dm.cynkra.com/dev/reference/dm.md):
 
 ``` r
+
 library(nycflights13)
 library(dm)
 dm(airlines, airports, flights, planes, weather)
@@ -60,6 +61,7 @@ Start with an empty `dm` object that has been created with
 to that object:
 
 ``` r
+
 library(nycflights13)
 library(dm)
 empty_dm <- dm()
@@ -82,6 +84,7 @@ Turn a named list of tables into a `dm` with
 [`as_dm()`](https://dm.cynkra.com/dev/reference/dm.md):
 
 ``` r
+
 as_dm(list(
   airlines = airlines,
   airports = airports,
@@ -106,6 +109,7 @@ Squeeze all (or a subset of) tables belonging to a `src` object into a
 [`dm_from_con()`](https://dm.cynkra.com/dev/reference/dm_from_con.md):
 
 ``` r
+
 sqlite_con <- dbplyr::nycflights13_sqlite()
 
 flights_dm <- dm_from_con(sqlite_con)
@@ -114,7 +118,7 @@ flights_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/RtmpeW7jfM/nycflights13.sqlite]
+#> src:  sqlite 3.52.0 [/tmp/RtmpVwBhs0/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -136,6 +140,7 @@ Another way of creating a `dm` object is calling
 `tbl` objects:
 
 ``` r
+
 base_dm <- new_dm(list(
   airlines = airlines,
   airports = airports,
@@ -160,6 +165,7 @@ checks. Use with caution, validate using
 necessary.
 
 ``` r
+
 dm_validate(base_dm)
 ```
 
@@ -173,12 +179,13 @@ and the `src` object with
 In order to pull a specific table from a `dm`, use:
 
 ``` r
+
 flights_dm[["airports"]]
 ```
 
 ``` fansi
 #> # Source:   table<`main`.`airports`> [?? x 8]
-#> # Database: sqlite 3.51.2 [/tmp/RtmpeW7jfM/nycflights13.sqlite]
+#> # Database: sqlite 3.52.0 [/tmp/RtmpVwBhs0/nycflights13.sqlite]
 #>    faa   name                            lat    lon   alt    tz dst   tzone
 #>    <chr> <chr>                         <dbl>  <dbl> <dbl> <dbl> <chr> <chr>
 #>  1 04G   Lansdowne Airport              41.1  -80.6  1044    -5 A     Amer…
@@ -213,6 +220,7 @@ set. So let’s add one.
 We use the `nycflights13` tables, i.e. `flights_dm` from above.
 
 ``` r
+
 dm_has_pk(flights_dm, airports)
 #> [1] FALSE
 flights_dm_with_key <- dm_add_pk(flights_dm, airports, faa)
@@ -221,7 +229,7 @@ flights_dm_with_key
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/RtmpeW7jfM/nycflights13.sqlite]
+#> src:  sqlite 3.52.0 [/tmp/RtmpVwBhs0/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -232,6 +240,7 @@ flights_dm_with_key
 The `dm` now has a primary key:
 
 ``` r
+
 dm_has_pk(flights_dm_with_key, airports)
 #> [1] TRUE
 ```
@@ -240,6 +249,7 @@ To get an overview over all tables with primary keys, use
 [`dm_get_all_pks()`](https://dm.cynkra.com/dev/reference/dm_get_all_pks.md):
 
 ``` r
+
 dm_get_all_pks(flights_dm_with_key)
 ```
 
@@ -253,6 +263,7 @@ dm_get_all_pks(flights_dm_with_key)
 Remove a primary key:
 
 ``` r
+
 dm_rm_pk(flights_dm_with_key, airports) %>%
   dm_has_pk(airports)
 #> [1] FALSE
@@ -265,6 +276,7 @@ function in order to get information about which columns of the table
 are unique keys:
 
 ``` r
+
 dm_enum_pk_candidates(flights_dm_with_key, airports)
 ```
 
@@ -285,6 +297,7 @@ dm_enum_pk_candidates(flights_dm_with_key, airports)
 The `flights` table does not have any one-column primary key candidates:
 
 ``` r
+
 dm_enum_pk_candidates(flights_dm_with_key, flights) %>% dplyr::count(candidate)
 ```
 
@@ -302,6 +315,7 @@ default is `check = FALSE`. See also \[dm_examine_constraints()\] for
 checking all constraints in a `dm`.
 
 ``` r
+
 try(
   dm_add_pk(flights_dm, airports, tzone, check = TRUE)
 )
@@ -336,12 +350,13 @@ find the primary key column of the referenced table by itself and make
 the indicated column of the child table point to it.
 
 ``` r
+
 flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 ```
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 [/tmp/RtmpeW7jfM/nycflights13.sqlite]
+#> src:  sqlite 3.52.0 [/tmp/RtmpVwBhs0/nycflights13.sqlite]
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
@@ -352,6 +367,7 @@ flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
 This will throw an error:
 
 ``` r
+
 try(
   flights_dm %>% dm_add_fk(flights, origin, airports)
 )
@@ -368,6 +384,7 @@ Let’s create a `dm` object with a foreign key relation to work with
 later on:
 
 ``` r
+
 flights_dm_with_fk <- dm_add_fk(flights_dm_with_key, flights, origin, airports)
 ```
 
@@ -376,6 +393,7 @@ What if we tried to add another foreign key relation from `flights` to
 contains airport codes:
 
 ``` r
+
 try(
   flights_dm_with_fk %>% dm_add_fk(flights, dest, airports, check = TRUE)
 )
@@ -396,6 +414,7 @@ Get an overview of all foreign key relations
 with[`dm_get_all_fks()`](https://dm.cynkra.com/dev/reference/dm_get_all_fks.md):
 
 ``` r
+
 dm_get_all_fks(dm_nycflights13(cycle = TRUE))
 ```
 
@@ -416,6 +435,7 @@ Remove foreign key relations with
 with a message):
 
 ``` r
+
 try(
   flights_dm_with_fk %>%
     dm_rm_fk(table = flights, column = dest, ref_table = airports) %>%
@@ -430,6 +450,7 @@ try(
 
 ``` r
 
+
 flights_dm_with_fk %>%
   dm_rm_fk(flights, origin, airports) %>%
   dm_get_all_fks(c(flights, airports))
@@ -442,6 +463,7 @@ flights_dm_with_fk %>%
 ```
 
 ``` r
+
 
 flights_dm_with_fk %>%
   dm_rm_fk(flights, columns = NULL, airports) %>%
@@ -467,6 +489,7 @@ Use it to get an overview over foreign key candidates that point from
 one table to another:
 
 ``` r
+
 dm_enum_fk_candidates(flights_dm_with_key, weather, airports)
 ```
 

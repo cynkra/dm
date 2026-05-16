@@ -13,6 +13,7 @@ contains five inter-linked tables.
 First, we will load the packages that we need:
 
 ``` r
+
 library(nycflights13)
 library(dm)
 ```
@@ -49,6 +50,7 @@ example data, you can use the
 for details.
 
 ``` r
+
 dm <- dm_nycflights13()
 ```
 
@@ -56,6 +58,7 @@ The console output of the ’dm\` object shows its data and metadata, and
 is colored for clarity:
 
 ``` r
+
 dm
 ```
 
@@ -72,6 +75,7 @@ they connected? These relations are best displayed as a visualization of
 the entity-relationship model:
 
 ``` r
+
 dm_draw(dm)
 ```
 
@@ -81,6 +85,7 @@ You can look at a single table with `tbl`. To print the `airports`
 table, call
 
 ``` r
+
 tbl(dm, "airports")
 #> Warning: `tbl.dm()` was deprecated in dm 0.2.0.
 #> ℹ Use `dm[[table_name]]` instead to access a specific table.
@@ -144,6 +149,7 @@ Let’s see filtering in action:
 Airport.**
 
 ``` r
+
 filtered_dm <-
   dm %>%
   dm_filter(airports = (name == "John F Kennedy Intl"))
@@ -162,6 +168,7 @@ You can get the numbers of rows of each table with
 [`dm_nrow()`](https://dm.cynkra.com/dev/reference/dm_nrow.md).
 
 ``` r
+
 rows_per_table <-
   filtered_dm %>%
   dm_nrow()
@@ -173,6 +180,7 @@ sum(rows_per_table)
 ```
 
 ``` r
+
 sum_nrow <- sum(dm_nrow(dm))
 sum_nrow_filtered <- sum(dm_nrow(dm_apply_filters(filtered_dm)))
 #> Warning: `dm_apply_filters()` was deprecated in dm 1.0.0.
@@ -192,6 +200,7 @@ Dulles International Airport in Washington D.C., abbreviated with
 `IAD`.**
 
 ``` r
+
 dm %>%
   dm_filter(flights = (dest == "IAD")) %>%
   dm_nrow()
@@ -207,6 +216,7 @@ An example:
 from John F. Kennedy International Airport.**
 
 ``` r
+
 dm_delta_may <-
   dm %>%
   dm_filter(
@@ -226,6 +236,7 @@ dm_delta_may
 ```
 
 ``` r
+
 dm_delta_may %>%
   dm_nrow()
 #> airlines airports  flights   planes  weather 
@@ -237,6 +248,7 @@ You can inspect the filtered tables by subsetting them.
 In the `airlines` table, Delta is the only remaining carrier:
 
 ``` r
+
 dm_delta_may$airlines
 ```
 
@@ -250,6 +262,7 @@ dm_delta_may$airlines
 Which planes were used to service these flights?
 
 ``` r
+
 dm_delta_may$planes
 ```
 
@@ -273,6 +286,7 @@ dm_delta_may$planes
 And indeed, all included flights departed in January (`month == 1`):
 
 ``` r
+
 dm_delta_may$flights %>%
   dplyr::count(month)
 ```
@@ -288,6 +302,7 @@ For comparison, let’s review the equivalent manual query for `flights`
 in `dplyr` syntax:
 
 ``` r
+
 airlines_filtered <- filter(airlines, name == "Delta Air Lines Inc.")
 airports_filtered <- filter(airports, name != "John F Kennedy Intl")
 flights %>%
@@ -350,6 +365,7 @@ Then we filter the data, and print the corresponding SQL statement with
 [`dbplyr::sql_render()`](https://dbplyr.tidyverse.org/reference/sql_build.html).
 
 ``` r
+
 dm %>%
   dm_select_tbl(flights, airlines, airports) %>%
   copy_dm_to(dbplyr::src_memdb(), .) %>%

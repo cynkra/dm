@@ -52,6 +52,7 @@ Formerly you would access the “filtered” tables using the following
 syntax:
 
 ``` r
+
 library(dm)
 flights_dm <- dm_nycflights13()
 tbl(flights_dm, "airports")
@@ -80,6 +81,7 @@ tbl(flights_dm, "airports")
 ```
 
 ``` r
+
 flights_dm$planes
 ```
 
@@ -101,6 +103,7 @@ flights_dm$planes
 ```
 
 ``` r
+
 flights_dm[["weather"]]
 ```
 
@@ -127,6 +130,7 @@ After the update the same result is achieved by this type of function
 call:
 
 ``` r
+
 dm_apply_filters_to_tbl(flights_dm, airlines)
 #> Warning: `dm_apply_filters_to_tbl()` was deprecated in dm 1.0.0.
 #> ℹ Access tables directly after `dm_filter()`.

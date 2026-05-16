@@ -19,6 +19,7 @@ Models”](https://dm.cynkra.com/articles/howto-dm-theory).
 First, we load the packages that we need:
 
 ``` r
+
 library(dm)
 ```
 
@@ -45,6 +46,7 @@ If you would like to create a `dm` from other tables, please look at
 [`new_dm()`](https://dm.cynkra.com/dev/reference/dm.md).
 
 ``` r
+
 dm <- dm_nycflights13()
 ```
 
@@ -70,6 +72,7 @@ The existing links can be inspected in two ways:
     [`dm_draw()`](https://dm.cynkra.com/dev/reference/dm_draw.md)
 
 ``` r
+
 dm %>%
   dm_draw()
 ```
@@ -83,6 +86,7 @@ columns.
     [`dm_get_all_fks()`](https://dm.cynkra.com/dev/reference/dm_get_all_fks.md)
 
 ``` r
+
 dm %>%
   dm_get_all_fks()
 ```
@@ -105,6 +109,7 @@ Let’s look at some examples:
 `flights` table.**
 
 ``` r
+
 dm_joined <-
   dm %>%
   dm_flatten_to_tbl(flights, airlines, .join = left_join)
@@ -137,6 +142,7 @@ than the `flights` table. The difference is the `name` column from the
 `airlines` table.
 
 ``` r
+
 dm$flights %>%
   names()
 #>  [1] "year"           "month"          "day"            "dep_time"      
@@ -161,6 +167,7 @@ dm_joined %>%
 The result is not a `dm` object anymore, but a (tibble) data frame:
 
 ``` r
+
 dm_joined %>%
   class()
 #> [1] "tbl_df"     "tbl"        "data.frame"
@@ -175,6 +182,7 @@ well organized, so no flights should remain. You can check this with an
 `anti_join`:
 
 ``` r
+
 dm %>%
   dm_flatten_to_tbl(flights, airlines, .join = anti_join)
 ```
@@ -195,6 +203,7 @@ John F. Kennedy International Airport in - and join all the airports
 data into the `flights` table.**
 
 ``` r
+
 dm_nycflights13(subset = FALSE) %>%
   dm_filter(
     airlines = (name == "Delta Air Lines Inc."),
@@ -242,6 +251,7 @@ wide table. All you have to do is to specify the starting table. The
 following joins are determined by the foreign key links.
 
 ``` r
+
 dm_nycflights13() %>%
   dm_select_tbl(-weather) %>%
   dm_flatten_to_tbl(.start = flights)
@@ -295,6 +305,7 @@ with [`pull_tbl()`](https://dm.cynkra.com/dev/reference/pull_tbl.md)
 instead:
 
 ``` r
+
 dm_nycflights13() %>%
   dm_wrap_tbl(root = flights) %>%
   pull_tbl(flights)

@@ -47,14 +47,14 @@ Each method has its own requirements in order to maintain database
 consistency. These involve constraints on primary key values that
 uniquely identify rows.
 
-| Method                                                               | Requirements                                                                                                                                  |
-|----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| [`dm_rows_insert()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Records with existing primary keys are silently ignored (via `dplyr::rows_insert(conflict = "ignore")`).                                      |
+| Method | Requirements |
+|----|----|
+| [`dm_rows_insert()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Records with existing primary keys are silently ignored (via `dplyr::rows_insert(conflict = "ignore")`). |
 | [`dm_rows_append()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | All records are inserted, the underlying database might check for uniqueness of primary keys (and fail the operation) if a constraint is set. |
-| [`dm_rows_update()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Primary keys must match for all records to be updated.                                                                                        |
-| [`dm_rows_patch()`](https://dm.cynkra.com/dev/reference/rows-dm.md)  | Updates missing values in existing records. Primary keys must match for all records to be patched.                                            |
-| [`dm_rows_upsert()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Updates existing records and adds new records, based on the primary key.                                                                      |
-| [`dm_rows_delete()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Removes matching records based on the primary key. Primary keys must match for all records to be deleted.                                     |
+| [`dm_rows_update()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Primary keys must match for all records to be updated. |
+| [`dm_rows_patch()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Updates missing values in existing records. Primary keys must match for all records to be patched. |
+| [`dm_rows_upsert()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Updates existing records and adds new records, based on the primary key. |
+| [`dm_rows_delete()`](https://dm.cynkra.com/dev/reference/rows-dm.md) | Removes matching records based on the primary key. Primary keys must match for all records to be deleted. |
 
 To ensure the integrity of all relations during the process, all methods
 automatically determine the correct processing order for the tables
@@ -76,6 +76,7 @@ a simple `dm` object with two tables linked by a foreign key. Note that
 the `child` table has a foreign key missing (`NA`).
 
 ``` r
+
 library(dm)
 parent <- tibble(value = c("A", "B", "C"), pk = 1:3)
 parent
@@ -91,6 +92,7 @@ parent
 ```
 
 ``` r
+
 child <- tibble(value = c("a", "b", "c"), pk = 1:3, fk = c(1, 1, NA))
 child
 ```
@@ -105,6 +107,7 @@ child
 ```
 
 ``` r
+
 demo_dm <-
   dm(parent = parent, child = child) %>%
   dm_add_pk(parent, pk) %>%
@@ -118,9 +121,10 @@ demo_dm %>%
 ![](data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUycHQiIGhlaWdodD0iOTBwdCIgdmlld2JveD0iMC4wMCAwLjAwIDE1Mi4wMCA5MC4wMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgaWQ9ImdyYXBoMCIgY2xhc3M9ImdyYXBoIiB0cmFuc2Zvcm09InNjYWxlKDEgMSkgcm90YXRlKDApIHRyYW5zbGF0ZSg0IDg2KSI+PHRpdGxlPiUwPC90aXRsZT4KPGcgaWQ9ImFfZ3JhcGgwIj48YSB4bGluazp0aXRsZT0iRGF0YSBNb2RlbCI+Cjxwb2x5Z29uIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iLTQsNCAtNCwtODYgMTQ4LC04NiAxNDgsNCAtNCw0Ij48L3BvbHlnb24+PC9hPgo8L2c+PCEtLSBjaGlsZCAtLT48ZyBpZD0iY2hpbGQiIGNsYXNzPSJub2RlIj48dGl0bGU+Y2hpbGQ8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSIjZWZlYmRkIiBzdHJva2U9InRyYW5zcGFyZW50IiBwb2ludHM9IjEwLC02MSAxMCwtODEgNDQsLTgxIDQ0LC02MSAxMCwtNjEiPjwvcG9seWdvbj48dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjEzLjAwMjEiIHk9Ii02Ni40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiMwMDAwMDAiPmNoaWxkPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMTAsLTQxIDEwLC02MSA0NCwtNjEgNDQsLTQxIDEwLC00MSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTEuODQwMSIgeT0iLTQ2LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCIgZmlsbD0iIzQ0NDQ0NCI+dmFsdWU8L3RleHQ+PHBvbHlnb24gZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgcG9pbnRzPSIxMCwtMjEgMTAsLTQxIDQ0LC00MSA0NCwtMjEgMTAsLTIxIj48L3BvbHlnb24+PHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMiIgeT0iLTI3LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgdGV4dC1kZWNvcmF0aW9uPSJ1bmRlcmxpbmUiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPnBrPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iMTAsLTEgMTAsLTIxIDQ0LC0yMSA0NCwtMSAxMCwtMSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTIiIHk9Ii02LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCIgZmlsbD0iIzQ0NDQ0NCI+Zms8L3RleHQ+PHBvbHlnb24gZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTU1NTU1IiBwb2ludHM9IjksMCA5LC04MiA0NSwtODIgNDUsMCA5LDAiPjwvcG9seWdvbj48L2c+PCEtLSBwYXJlbnQgLS0+PGcgaWQ9InBhcmVudCIgY2xhc3M9Im5vZGUiPjx0aXRsZT5wYXJlbnQ8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSIjZWZlYmRkIiBzdHJva2U9InRyYW5zcGFyZW50IiBwb2ludHM9Ijk4LC00MSA5OCwtNjEgMTM2LC02MSAxMzYsLTQxIDk4LC00MSI+PC9wb2x5Z29uPjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iOTkuNTA5OCIgeT0iLTQ2LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCIgZmlsbD0iIzAwMDAwMCI+cGFyZW50PC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iOTgsLTIxIDk4LC00MSAxMzYsLTQxIDEzNiwtMjEgOTgsLTIxIj48L3BvbHlnb24+PHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMDAiIHk9Ii0yNi40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPnZhbHVlPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHBvaW50cz0iOTgsLTEgOTgsLTIxIDEzNiwtMjEgMTM2LC0xIDk4LC0xIj48L3BvbHlnb24+PHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMDAiIHk9Ii03LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgdGV4dC1kZWNvcmF0aW9uPSJ1bmRlcmxpbmUiIGZvbnQtc2l6ZT0iMTQuMDAiIGZpbGw9IiM0NDQ0NDQiPnBrPC90ZXh0Pjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU1NTU1NSIgcG9pbnRzPSI5NywwIDk3LC02MiAxMzcsLTYyIDEzNywwIDk3LDAiPjwvcG9seWdvbj48L2c+PCEtLSBjaGlsZCYjNDU7Jmd0O3BhcmVudCAtLT48ZyBpZD0iY2hpbGRfMSIgY2xhc3M9ImVkZ2UiPjx0aXRsZT5jaGlsZDpmay0mZ3Q7cGFyZW50OnBrPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTU1NTU1IiBkPSJNNDQsLTExQzY0LjI1LC0xMSA3MS42ODU1LC0xMSA4Ny45MzEsLTExIiAvPjxwb2x5Z29uIGZpbGw9IiM1NTU1NTUiIHN0cm9rZT0iIzU1NTU1NSIgcG9pbnRzPSI4OCwtMTQuNTAwMSA5OCwtMTEgODgsLTcuNTAwMSA4OCwtMTQuNTAwMSI+PC9wb2x5Z29uPjwvZz48L2c+PC9zdmc+)
 
 {dm} doesn’t check your key values when you create a dm, we add this
-check:[¹](#fn1)
+check:[^1]
 
 ``` r
+
 dm_examine_constraints(demo_dm)
 ```
 
@@ -137,6 +141,7 @@ the argument `temporary = FALSE` is used to make this distinction
 apparent.
 
 ``` r
+
 library(DBI)
 sqlite_db <- DBI::dbConnect(RSQLite::SQLite())
 demo_sql <- copy_dm_to(sqlite_db, demo_dm, temporary = FALSE)
@@ -145,7 +150,7 @@ demo_sql
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 []
+#> src:  sqlite 3.52.0 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `parent`, `child`
 #> Columns: 5
@@ -174,6 +179,7 @@ The code below adds `parent` and `child` table entries for the letter
 database:
 
 ``` r
+
 new_parent <- tibble(value = "D", pk = 4)
 new_parent
 ```
@@ -186,6 +192,7 @@ new_parent
 ```
 
 ``` r
+
 new_child <- tibble(value = "d", pk = 4, fk = 4)
 new_child
 ```
@@ -198,6 +205,7 @@ new_child
 ```
 
 ``` r
+
 dm_insert_in <-
   dm(parent = new_parent, child = new_child) %>%
   copy_dm_to(sqlite_db, ., temporary = TRUE)
@@ -207,6 +215,7 @@ The changeset dm is then used as an argument to
 [`dm_rows_insert()`](https://dm.cynkra.com/dev/reference/rows-dm.md).
 
 ``` r
+
 dm_insert_out <-
   demo_sql %>%
   dm_rows_insert(dm_insert_in)
@@ -225,12 +234,13 @@ temporary). Inspecting the `child` table of the resulting
 underlying database has not changed.
 
 ``` r
+
 dm_insert_out$child
 ```
 
 ``` fansi
 #> # Source:   SQL [?? x 3]
-#> # Database: sqlite 3.51.2 []
+#> # Database: sqlite 3.52.0 []
 #>   value    pk    fk
 #>   <chr> <dbl> <dbl>
 #> 1 a         1     1
@@ -240,12 +250,13 @@ dm_insert_out$child
 ```
 
 ``` r
+
 demo_sql$child
 ```
 
 ``` fansi
 #> # Source:   table<`child`> [?? x 3]
-#> # Database: sqlite 3.51.2 []
+#> # Database: sqlite 3.52.0 []
 #>   value    pk    fk
 #>   <chr> <int> <dbl>
 #> 1 a         1     1
@@ -257,6 +268,7 @@ We repeat the operation, this time with the argument `in_place = TRUE`
 and the changes now persist in `demo_sql`.
 
 ``` r
+
 dm_insert_out <-
   demo_sql %>%
   dm_rows_insert(dm_insert_in, in_place = TRUE)
@@ -266,7 +278,7 @@ demo_sql$child
 
 ``` fansi
 #> # Source:   table<`child`> [?? x 3]
-#> # Database: sqlite 3.51.2 []
+#> # Database: sqlite 3.52.0 []
 #>   value    pk    fk
 #>   <chr> <int> <dbl>
 #> 1 a         1     1
@@ -286,6 +298,7 @@ Here we will change the foreign key for the row in `child` containing
 changes.
 
 ``` r
+
 updated_child <- tibble(value = "b", pk = 2, fk = 2)
 updated_child
 ```
@@ -298,6 +311,7 @@ updated_child
 ```
 
 ``` r
+
 dm_update_in <-
   dm(child = updated_child) %>%
   copy_dm_to(sqlite_db, ., temporary = TRUE)
@@ -311,7 +325,7 @@ demo_sql$child
 
 ``` fansi
 #> # Source:   table<`child`> [?? x 3]
-#> # Database: sqlite 3.51.2 []
+#> # Database: sqlite 3.52.0 []
 #>   value    pk    fk
 #>   <chr> <int> <dbl>
 #> 1 a         1     1
@@ -332,6 +346,7 @@ concern for *local* `dm` objects. Every operation returns a new dm
 object containing the changes made.
 
 ``` r
+
 local_dm <- collect(demo_sql)
 
 local_dm$parent
@@ -348,6 +363,7 @@ local_dm$parent
 ```
 
 ``` r
+
 local_dm$child
 ```
 
@@ -362,6 +378,7 @@ local_dm$child
 ```
 
 ``` r
+
 dm_deleted <-
   dm(parent = new_parent, child = new_child) %>%
   dm_rows_delete(local_dm, .)
@@ -376,6 +393,7 @@ dm_deleted <-
 ```
 
 ``` r
+
 
 dm_deleted$child
 ```
@@ -396,6 +414,7 @@ updates missing values in existing records. We use it here to fix the
 missing foreign key in the `child` table.
 
 ``` r
+
 patched_child <- tibble(value = "c", pk = 3, fk = 3)
 patched_child
 ```
@@ -408,6 +427,7 @@ patched_child
 ```
 
 ``` r
+
 dm_patched <-
   dm(child = patched_child) %>%
   dm_rows_patch(dm_deleted, .)
@@ -420,6 +440,7 @@ dm_patched <-
 ```
 
 ``` r
+
 
 dm_patched$child
 ```
@@ -441,6 +462,7 @@ values as new rows if they don’t. In this example we add the letter “D”
 back to our dm, and update the foreign key for “b”.
 
 ``` r
+
 upserted_parent <- tibble(value = "D", pk = 4)
 upserted_parent
 ```
@@ -453,6 +475,7 @@ upserted_parent
 ```
 
 ``` r
+
 upserted_child <- tibble(value = c("b", "d"), pk = c(2, 4), fk = c(3, 4))
 upserted_child
 ```
@@ -466,6 +489,7 @@ upserted_child
 ```
 
 ``` r
+
 dm_upserted <-
   dm(parent = upserted_parent, child = upserted_child) %>%
   dm_rows_upsert(dm_patched, .)
@@ -478,6 +502,7 @@ dm_upserted <-
 ```
 
 ``` r
+
 
 dm_upserted$parent
 ```
@@ -493,6 +518,7 @@ dm_upserted$parent
 ```
 
 ``` r
+
 dm_upserted$child
 ```
 
@@ -509,6 +535,7 @@ dm_upserted$child
 When done, do not forget to disconnect:
 
 ``` r
+
 DBI::dbDisconnect(sqlite_db)
 ```
 
@@ -547,9 +574,7 @@ or
 [`vignette("tech-dm-zoom")`](https://dm.cynkra.com/dev/articles/tech-dm-zoom.md)
 is a good next step.
 
-------------------------------------------------------------------------
-
-1.  Be aware that when using
+[^1]: Be aware that when using
     [`dm_examine_constraints()`](https://dm.cynkra.com/dev/reference/dm_examine_constraints.md),
     missing (denoted by `NULL` in SQL, while `NA` in R) foreign keys are
     allowed and will be counted as a match. In some cases this doesn’t

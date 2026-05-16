@@ -34,5 +34,5 @@ the package's functionality relies on efficient joins.
 dm_financial() %>%
   dm_get_con()
 #> <MariaDBConnection>
-#>   Connection: guest@relational.fel.cvut.cz<Financial_ijs>[927354] via TCP/IP
+#>   Connection: guest@relational.fel.cvut.cz<Financial_ijs>[999390] via TCP/IP
 ```

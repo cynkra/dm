@@ -39,6 +39,7 @@ glimpse(x, width = NULL, ...)
 ## Examples
 
 ``` r
+
 dm_nycflights13() %>% glimpse()
 #> dm of 5 tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> 

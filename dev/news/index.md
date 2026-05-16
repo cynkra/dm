@@ -1,5 +1,13 @@
 # Changelog
 
+## dm 1.1.1.9005
+
+### Chore
+
+- Ensure exported dm functions call `check_dm()` first
+  ([\#2441](https://github.com/cynkra/dm/issues/2441),
+  [\#2442](https://github.com/cynkra/dm/issues/2442)).
+
 ## dm 1.1.1.9004
 
 ### Chore
@@ -56,6 +64,7 @@ CRAN release: 2026-02-25
 - Aligned with dplyr 1.2.0, all new verbs and arguments are supported.
 
   ``` r
+
   dm_nycflights13() |>
     dm_zoom_to(flights) |>
     summarize(.by = origin, mean(dep_delay, na.rm = TRUE))
@@ -71,6 +80,7 @@ CRAN release: 2026-02-25
   Supports `recursive`, `allow_deep`, and any dplyr join type.
 
   ``` r
+
   dm_nycflights13() |>
     dm_select_tbl(-weather) |>
     dm_flatten(flights, recursive = TRUE)
@@ -86,6 +96,7 @@ CRAN release: 2026-02-25
   `backend_opts`.
 
   ``` r
+
   dm_nycflights13() |>
     dm_draw(backend_opts = list(column_arrow = FALSE))
   ```
@@ -98,6 +109,7 @@ CRAN release: 2026-02-25
   `6`; use `.max_value = Inf` to report all violations.
 
   ``` r
+
   dm_nycflights13() |>
     dm_examine_constraints(.max_value = Inf)
   ```
@@ -109,6 +121,7 @@ CRAN release: 2026-02-25
   in pipelines.
 
   ``` r
+
   my_data |>
     check_key(id) |>
     dplyr::filter(value > 0)
@@ -148,6 +161,7 @@ CRAN release: 2026-02-25
   startup message.
 
   ``` r
+
   library(dplyr) # or library(tidyverse)
   library(dm)
   ```
@@ -166,6 +180,7 @@ CRAN release: 2026-02-25
   [\#664](https://github.com/cynkra/dm/issues/664)).
 
   ``` r
+
   con <- DBI::dbConnect(duckdb::duckdb())
   dm_financial() |>
     copy_dm_to(con, ., temporary = FALSE, set_key_constraints = TRUE)

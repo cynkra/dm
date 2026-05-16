@@ -19,6 +19,7 @@ public server. The first thing we need is a connection to the RDBMS
 hosting the data.
 
 ``` r
+
 library(RMariaDB)
 
 fin_db <- dbConnect(
@@ -35,6 +36,7 @@ We create a dm object from an RDBMS using
 passing in the connection object we just created as the first argument.
 
 ``` r
+
 library(dm)
 
 fin_dm <- dm_from_con(fin_db)
@@ -47,6 +49,7 @@ fin_dm <- dm_from_con(fin_db)
 ```
 
 ``` r
+
 fin_dm
 ```
 
@@ -69,6 +72,7 @@ only available from SQL Server, Postgres and MariaDB.
 The dm object can be accessed like a named list of tables:
 
 ``` r
+
 names(fin_dm)
 #> [1] "accounts"  "cards"     "clients"   "disps"     "districts" "loans"    
 #> [7] "orders"    "tkeys"     "trans"
@@ -94,6 +98,7 @@ fin_dm$loans
 ```
 
 ``` r
+
 dplyr::count(fin_dm$trans)
 ```
 
@@ -114,6 +119,7 @@ verb to derive a smaller dm with the `loans`, `accounts`, `districts`
 and `trans` tables:
 
 ``` r
+
 fin_dm_small <- fin_dm[c("loans", "accounts", "districts", "trans")]
 fin_dm_small <-
   fin_dm %>%
@@ -129,6 +135,7 @@ primary and foreign keys ourselves. For this, we use
 `learn_keys = FALSE` to obtain a `dm` object with only the tables.
 
 ``` r
+
 library(dm)
 
 fin_dm_small <-
@@ -145,6 +152,7 @@ table, the relationship is established with
 [`dm_add_fk()`](https://dm.cynkra.com/dev/reference/dm_add_fk.md).
 
 ``` r
+
 fin_dm_keys <-
   fin_dm_small %>%
   dm_add_pk(table = accounts, columns = id) %>%
@@ -167,6 +175,7 @@ Visualizing the dm in its current state, we can see the keys we have
 created and how they link the tables together. Color guides the eye.
 
 ``` r
+
 fin_dm_keys %>%
   dm_set_colors(darkgreen = c(loans, accounts), darkblue = trans, grey = districts) %>%
   dm_draw()
@@ -184,6 +193,7 @@ will automatically follow foreign keys across tables to gather all the
 available columns into a single table.
 
 ``` r
+
 fin_dm_keys %>%
   dm_flatten_to_tbl(loans, .recursive = TRUE)
 #> Renaming ambiguous columns: %>%
@@ -221,6 +231,7 @@ reduce the number of columns fetched, and
 retrieve the entire result for local processing.
 
 ``` r
+
 loans_df <-
   fin_dm_keys %>%
   dm_flatten_to_tbl(loans, .recursive = TRUE) %>%
@@ -258,6 +269,7 @@ set the context to our chosen table. Then we can perform any of the
 dplyr operations we want.
 
 ``` r
+
 fin_dm_total <-
   fin_dm_keys %>%
   dm_zoom_to(loans) %>%
@@ -305,6 +317,7 @@ checks all primary and foreign keys and reports if they violate their
 expected constraints.
 
 ``` r
+
 fin_dm_total %>%
   dm_examine_constraints()
 ```

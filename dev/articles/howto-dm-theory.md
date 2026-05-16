@@ -84,6 +84,7 @@ calls to gradually merge the `flights` table to the `airlines`,
 frame.
 
 ``` r
+
 library(dm)
 library(nycflights13)
 
@@ -139,6 +140,7 @@ The `nycflights13` relations can be transferred into the following
 graphical representation:
 
 ``` r
+
 dm <- dm_nycflights13(cycle = TRUE)
 
 dm %>%
@@ -163,6 +165,7 @@ data models with multiple tables can save memory compared to storing
 data in single a data frame:
 
 ``` r
+
 object.size(dm)
 #> 476264 bytes
 
@@ -189,6 +192,7 @@ You can get all primary keys in a `dm` by calling
 [`dm_get_all_pks()`](https://dm.cynkra.com/dev/reference/dm_get_all_pks.md):
 
 ``` r
+
 dm %>%
   dm_get_all_pks()
 ```
@@ -207,6 +211,7 @@ dm %>%
 checks suitability of each column to serve as a simple primary key:
 
 ``` r
+
 dm %>%
   dm_enum_pk_candidates(airports)
 ```
@@ -248,6 +253,7 @@ You can find foreign key candidates for simple keys with the function
 they are marked with `TRUE` in the `candidate` column.
 
 ``` r
+
 dm %>%
   dm_enum_fk_candidates(flights, airlines)
 ```
@@ -282,6 +288,7 @@ relations present in a `dm` object using
 [`dm_get_all_fks()`](https://dm.cynkra.com/dev/reference/dm_get_all_fks.md):
 
 ``` r
+
 dm %>%
   dm_get_all_fks()
 ```
@@ -320,6 +327,7 @@ In the example data model, for a substantial share of the flights,
 detailed information for the corresponding airplane is not available:
 
 ``` r
+
 dm %>%
   dm_examine_constraints()
 ```
@@ -358,6 +366,7 @@ For example, if you want to change the name of one airport in the
 value. This principle is sometimes called the *single point of truth*.
 
 ``` r
+
 #  Update in one single location...
 airlines[airlines$carrier == "UA", "name"] <- "United broke my guitar"
 
@@ -373,6 +382,7 @@ airlines %>%
 ```
 
 ``` r
+
 
 # ...propagates to all related records
 flights %>%
@@ -417,6 +427,7 @@ This results in a `parent_table` and a `child_table` that differ
 massively in the number of rows:
 
 ``` r
+
 planes %>%
   decompose_table(model_id, model, manufacturer, type, engines, seats, speed)
 ```
@@ -485,6 +496,7 @@ For example, let’s create a local SQLite database and copy the `dm`
 object to it:
 
 ``` r
+
 con_sqlite <- DBI::dbConnect(RSQLite::SQLite())
 con_sqlite
 #> <SQLiteConnection>
@@ -506,6 +518,7 @@ Microsoft SQL Server and Postgres, but not for SQLite. Therefore, the
 `dm` contains the tables but not the keys:
 
 ``` r
+
 dm_from_con(con_sqlite)
 ```
 
@@ -515,7 +528,7 @@ dm_from_con(con_sqlite)
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 []
+#> src:  sqlite 3.52.0 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `airlines_1_20200828_071303_12345`, `airports_1_20200828_071303_12345`, `flights_1_20200828_071303_12345`, `planes_1_20200828_071303_12345`, `weather_1_20200828_071303_12345`
 #> Columns: 53
@@ -526,6 +539,7 @@ dm_from_con(con_sqlite)
 Remember to terminate the database connection:
 
 ``` r
+
 DBI::dbDisconnect(con_sqlite)
 ```
 

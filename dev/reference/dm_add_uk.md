@@ -82,6 +82,7 @@ Other primary key functions:
 ## Examples
 
 ``` r
+
 nycflights_dm <- dm(
   planes = nycflights13::planes,
   airports = nycflights13::airports,

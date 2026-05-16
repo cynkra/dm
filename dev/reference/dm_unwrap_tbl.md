@@ -46,6 +46,7 @@ A dm.
 ## Examples
 
 ``` r
+
 roundtrip <-
   dm_nycflights13() %>%
   dm_wrap_tbl(root = flights) %>%
