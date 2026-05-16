@@ -11,10 +11,10 @@ local_options(
 )
 
 if (rlang::is_installed("dbplyr")) {
-  local_mocked_bindings(
-    tbl_sum.tbl_sql = function(x, ...) c(),
-    tbl_format_header.tbl_sql = function(x, ...) invisible(),
-    .package = "dbplyr",
-    .env = teardown_env()
-  )
+  has_tbl_sum <- exists("tbl_sum.tbl_sql", envir = asNamespace("dbplyr"))
+  bindings <- compact(list(
+    tbl_sum.tbl_sql = if (has_tbl_sum) function(x, ...) c(),
+    tbl_format_header.tbl_sql = function(x, ...) invisible()
+  ))
+  local_mocked_bindings(!!!bindings, .package = "dbplyr", .env = teardown_env())
 }
