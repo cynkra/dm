@@ -128,4 +128,4 @@ Roxygen: list(
       markdown = TRUE,
       roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet")
     )
-RoxygenNote: 7.3.3.9000
+Config/roxygen2/version: 8.0.0.9000
