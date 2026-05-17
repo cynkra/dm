@@ -1,6 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.1.1.9006
+# dm 1.1.2
+
+## fledge
+
+- CRAN release v1.1.1 (#2428).
 
 ## Bug fixes
 
@@ -11,6 +15,16 @@
 - Auto-update from GitHub Actions (#2460).
 
 - Add ccache to `.gitignore` and `.Rbuildignore`.
+
+- Ensure exported dm functions call `check_dm()` first (#2441, #2442).
+
+- Auto-update from GitHub Actions (#2439).
+
+- Auto-update from GitHub Actions (#2434).
+
+- Auto-update from GitHub Actions (#2432).
+
+- Auto-update from GitHub Actions (#2430).
 
 ## Continuous integration
 
@@ -41,48 +55,6 @@
 ## Testing
 
 - Snapshot updates for rcc-smoke (null) (#2459).
-
-
-# dm 1.1.1.9005
-
-## Chore
-
-- Ensure exported dm functions call `check_dm()` first (#2441, #2442).
-
-
-# dm 1.1.1.9004
-
-## Chore
-
-- Auto-update from GitHub Actions (#2439).
-
-
-# dm 1.1.1.9003
-
-## Chore
-
-- Auto-update from GitHub Actions (#2434).
-
-
-# dm 1.1.1.9002
-
-## Chore
-
-- Auto-update from GitHub Actions (#2432).
-
-
-# dm 1.1.1.9001
-
-## Chore
-
-- Auto-update from GitHub Actions (#2430).
-
-
-# dm 1.1.1.9000
-
-## fledge
-
-- CRAN release v1.1.1 (#2428).
 
 
 # dm 1.1.1
