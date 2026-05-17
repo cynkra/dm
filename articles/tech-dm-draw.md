@@ -3,8 +3,7 @@
 Once you have all your primary keys set and all foreign key relations
 defined, a graphical representation of your data model offers a
 condensed view of the tables and the relationships between the tables.
-The following functions can be used to visualize the `dm`
-object:[¹](#fn1)
+The following functions can be used to visualize the `dm` object:[^1]
 
 1.  [`dm_draw()`](https://dm.cynkra.com/reference/dm_draw.md)
 2.  [`dm_set_colors()`](https://dm.cynkra.com/reference/dm_set_colors.md)
@@ -14,6 +13,7 @@ object:[¹](#fn1)
 We use the prepared example `dm` object `dm_nycflights13(cycle = TRUE)`:
 
 ``` r
+
 library(dm)
 library(dplyr)
 flights_dm_w_many_keys <- dm_nycflights13(cycle = TRUE, color = FALSE)
@@ -32,6 +32,7 @@ The schema is drawn with
 [`dm_draw()`](https://dm.cynkra.com/reference/dm_draw.md).
 
 ``` r
+
 dm_draw(flights_dm_w_many_keys)
 ```
 
@@ -45,6 +46,7 @@ forwards to
 [`grDevices::colors()`](https://rdrr.io/r/grDevices/colors.html):
 
 ``` r
+
 dm_get_available_colors()
 #>   [1] "default"              "white"                "aliceblue"           
 #>   [4] "antiquewhite"         "antiquewhite1"        "antiquewhite2"       
@@ -279,6 +281,7 @@ a `dm` object. The information about the color is stored together with
 the rest of the metadata.
 
 ``` r
+
 flights_dm_w_many_keys_and_colors <-
   flights_dm_w_many_keys %>%
   dm_set_colors(
@@ -292,6 +295,7 @@ Draw the schema with
 [`dm_draw()`](https://dm.cynkra.com/reference/dm_draw.md).
 
 ``` r
+
 dm_draw(flights_dm_w_many_keys_and_colors)
 ```
 
@@ -301,6 +305,7 @@ The colors can be queried with
 [`dm_get_colors()`](https://dm.cynkra.com/reference/dm_set_colors.md).
 
 ``` r
+
 dm_get_colors(flights_dm_w_many_keys_and_colors)
 #>  #FFA500FF  #FFA500FF  #8B1C62FF  #5986C4FF    default 
 #> "airlines" "airports"  "flights"   "planes"  "weather"
@@ -313,6 +318,7 @@ options. One important argument is `view_type`. Besides the default
 `"title_only"` to show only the title of the table.
 
 ``` r
+
 flights_dm_w_many_keys_and_colors %>%
   dm_draw(view_type = "title_only")
 ```
@@ -324,6 +330,7 @@ If you would like to visualize only some of the tables, use
 before drawing:
 
 ``` r
+
 flights_dm_w_many_keys_and_colors %>%
   dm_select_tbl(flights, airports, planes) %>%
   dm_draw()
@@ -335,6 +342,7 @@ Finally, for exporting a drawing to `svg` you could use
 [`DiagrammeRsvg::export_svg()`](https://rdrr.io/pkg/DiagrammeRsvg/man/export_svg.html):
 
 ``` r
+
 flights_dm_w_many_keys_and_colors %>%
   dm_select_tbl(flights, airports, planes) %>%
   dm_draw() %>%
@@ -342,7 +350,5 @@ flights_dm_w_many_keys_and_colors %>%
   write("flights_dm_w_many_keys_and_color.svg")
 ```
 
-------------------------------------------------------------------------
-
-1.  The code for the functions in this section is borrowed from the
+[^1]: The code for the functions in this section is borrowed from the
     [{datamodelr}](https://github.com/bergant/datamodelr) package.

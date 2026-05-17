@@ -53,6 +53,7 @@ with [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html).
 Let us do this step by step:
 
 ``` r
+
 library(dm)
 library(dplyr)
 
@@ -69,6 +70,7 @@ flights_dm
 ```
 
 ``` r
+
 flights_keyed <-
   flights_dm %>%
   dm_get_tables(keyed = TRUE)
@@ -101,6 +103,7 @@ flights_keyed$flights
 ```
 
 ``` r
+
 flights_tbl_mutate <-
   flights_keyed$flights %>%
   mutate(am_pm_dep = if_else(dep_time < 1200, "am", "pm"), .after = dep_time)
@@ -136,6 +139,7 @@ To update the original `dm` with a new `flights` table we use
 forthcoming release.
 
 ``` r
+
 updated_flights_dm <- dm(
   flights = flights_tbl_mutate,
   !!!flights_keyed[c("airlines", "airports", "planes", "weather")]
@@ -155,6 +159,7 @@ updated_flights_dm
 ```
 
 ``` r
+
 # The schematic view of the data model remains unchanged
 dm_draw(updated_flights_dm)
 ```
@@ -168,6 +173,7 @@ surrogate key for a table, a synthetic simple key that replaces a
 compound key. We can do this for the `weather` table.
 
 ``` r
+
 library(tidyr)
 
 flights_keyed$weather
@@ -195,6 +201,7 @@ flights_keyed$weather
 
 ``` r
 
+
 # Maybe there is some hidden candidate for a primary key that we overlooked?
 enum_pk_candidates(flights_keyed$weather)
 ```
@@ -221,6 +228,7 @@ enum_pk_candidates(flights_keyed$weather)
 ```
 
 ``` r
+
 # Seems we have to construct a column with unique values
 # This can be done by combining column `origin` with `time_hour`, if the latter
 # is converted to a single time zone first; all within the `dm`:
@@ -246,6 +254,7 @@ weather_tbl_mutate %>%
 ```
 
 ``` r
+
 # We apply the same transformation to create
 # the foreign key in the flights table:
 flights_tbl_mutate <-
@@ -284,6 +293,7 @@ duplicating the referred table. One way to do this in the {dm}-framework
 is as follows:
 
 ``` r
+
 disentangled_flights_dm <-
   dm(
     destination = flights_keyed$airports,
@@ -308,6 +318,7 @@ example shows an alternative approach of deconstruction reconstruction
 using [`pull_tbl()`](https://dm.cynkra.com/reference/pull_tbl.md).
 
 ``` r
+
 flights_derived <-
   flights_dm %>%
   pull_tbl(flights, keyed = TRUE) %>%
@@ -331,6 +342,7 @@ because they are safely inferred from the foreign keys stored in the
 `dm_keyed_tbl` objects. For the syntax, please see the example below.
 
 ``` r
+
 planes_for_join <-
   flights_keyed$planes %>%
   select(tailnum, plane_type = type)
@@ -371,6 +383,7 @@ joined_flights_dm$flights_plane_type
 ```
 
 ``` r
+
 # also here, the FK-relations are transferred to the new table
 joined_flights_dm %>%
   dm_draw()
@@ -387,6 +400,7 @@ function helps creating that boilerplate. For a `dm` object, it prints
 the code necessary to create local variables for all tables.
 
 ``` r
+
 dm <- dm_nycflights13()
 dm_deconstruct(dm)
 #> airlines <- pull_tbl(dm, "airlines", keyed = TRUE)

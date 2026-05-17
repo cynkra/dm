@@ -27,6 +27,7 @@ integrity checks across multiple tables.
 ### Installation and Dependencies
 
 ``` r
+
 # Install all dependencies
 pak::pak()
 # Install build dependencies

@@ -61,6 +61,7 @@ with [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html).
 Let us do this step by step:
 
 ``` r
+
 library(dm)
 library(dplyr)
 flights_dm <- dm_nycflights13()
@@ -76,6 +77,7 @@ flights_dm
 ```
 
 ``` r
+
 flights_zoomed <-
   flights_dm %>%
   dm_zoom_to(flights)
@@ -106,6 +108,7 @@ flights_zoomed
 ```
 
 ``` r
+
 
 flights_zoomed_mutate <-
   flights_zoomed %>%
@@ -140,6 +143,7 @@ flights_zoomed_mutate
 
 ``` r
 
+
 # To update the original `dm` with a new `flights` table we use `dm_update_zoomed()`:
 updated_flights_dm <-
   flights_zoomed_mutate %>%
@@ -157,6 +161,7 @@ updated_flights_dm
 ```
 
 ``` r
+
 # The schematic view of the data model remains unchanged
 dm_draw(updated_flights_dm)
 ```
@@ -170,6 +175,7 @@ surrogate key for a table, a synthetic simple key that replaces a
 compound key. We can do this for the `weather` table.
 
 ``` r
+
 library(tidyr)
 
 weather_zoomed <-
@@ -199,6 +205,7 @@ weather_zoomed
 ```
 
 ``` r
+
 # Maybe there is some hidden candidate for a primary key that we overlooked
 enum_pk_candidates(weather_zoomed)
 ```
@@ -225,6 +232,7 @@ enum_pk_candidates(weather_zoomed)
 ```
 
 ``` r
+
 # Seems we have to construct a column with unique values
 # This can be done by combining column `origin` with `time_hour`, if the latter
 # is converted to a single time zone first; all within the `dm`:
@@ -247,6 +255,7 @@ enum_pk_candidates(weather_zoomed_mutate) %>% filter(candidate)
 ```
 
 ``` r
+
 flights_upd_weather_dm <-
   weather_zoomed_mutate %>%
   dm_update_zoomed() %>%
@@ -263,6 +272,7 @@ flights_upd_weather_dm
 ```
 
 ``` r
+
 # creating the coveted FK relation between `flights` and `weather`
 extended_flights_dm <-
   flights_upd_weather_dm %>%
@@ -285,6 +295,7 @@ see that two columns of `flights` relate to one and the same table,
 for the arrival airport.
 
 ``` r
+
 dm_draw(dm_nycflights13(cycle = TRUE))
 ```
 
@@ -299,6 +310,7 @@ the `dm` by duplicating the referred table. One way to do this in the
 {dm}-framework is as follows:
 
 ``` r
+
 disentangled_flights_dm <-
   dm_nycflights13(cycle = TRUE) %>%
   # zooming and immediately inserting essentially creates a copy of the original table
@@ -325,6 +337,7 @@ Here is an example for adding a summary of a table as a new table to a
 `dm` (FK-relations are taken care of automatically):
 
 ``` r
+
 dm_with_summary <-
   flights_dm %>%
   dm_zoom_to(flights) %>%
@@ -345,6 +358,7 @@ RHS-table you want to be included in the join. For the syntax please see
 the example below. The LHS-table of a join is always the zoomed table.
 
 ``` r
+
 joined_flights_dm <-
   flights_dm %>%
   dm_zoom_to(flights) %>%
@@ -376,6 +390,7 @@ joined_flights_dm$flights_plane_type
 ```
 
 ``` r
+
 # also here, the FK-relations are transferred to the new table
 dm_draw(joined_flights_dm)
 ```
@@ -389,6 +404,7 @@ At each point, you can retrieve the zoomed table by calling
 `dm_zoomed`. To use our last example once more:
 
 ``` r
+
 flights_dm %>%
   dm_zoom_to(flights) %>%
   select(-dep_delay:-arr_delay, -air_time:-time_hour) %>%

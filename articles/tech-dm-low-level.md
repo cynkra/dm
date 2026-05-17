@@ -6,6 +6,7 @@ tables. We will also describe functions that can be used for splitting
 and uniting tables.
 
 ``` r
+
 library(dm)
 ```
 
@@ -24,6 +25,7 @@ the existing key relations between the tables. For example, if you have
 tables:
 
 ``` r
+
 data_1 <- tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))
 data_2 <- tibble(a = c(1, 2, 3), b = c(4, 5, 6), c = c(7, 8, 9))
 ```
@@ -33,6 +35,7 @@ the [`check_key()`](https://dm.cynkra.com/reference/check_key.md)
 function:
 
 ``` r
+
 check_key(data_1, a)
 #> Error in `check_key()`:
 #> ! (`a`) not a unique key of `data_1`.
@@ -43,6 +46,7 @@ Mind the error message when a test is not passed.
 For `data_2`, column `a` is a key:
 
 ``` r
+
 check_key(data_2, a)
 ```
 
@@ -52,6 +56,7 @@ present in another column of another table, the
 function can be used:
 
 ``` r
+
 check_subset(data_1, a, data_2, a)
 #> Warning: The `c1` argument of `check_subset()` is deprecated as of dm 1.0.0.
 #> ℹ Please use the `x_select` argument instead.
@@ -69,6 +74,7 @@ This function is important for determining if a column is a foreign key
 to some other table. What about the inverse relation?
 
 ``` r
+
 check_subset(data_2, a, data_1, a)
 ```
 
@@ -91,6 +97,7 @@ to a (parent) table `t2` with the corresponding column `c2`, the
 following method should be used:
 
 ``` r
+
 check_key(t2, c2)
 check_subset(t1, c1, t2, c2)
 ```
@@ -101,6 +108,7 @@ the function
 [`check_set_equality()`](https://dm.cynkra.com/reference/check_set_equality.md):
 
 ``` r
+
 check_set_equality(data_1, a, data_2, a)
 #> Warning: The `c1` argument of `check_set_equality()` is deprecated as of dm 1.0.0.
 #> ℹ Please use the `x_select` argument instead.
@@ -129,6 +137,7 @@ Introducing one more table enables us to show how it looks when the test
 is passed:
 
 ``` r
+
 data_3 <- tibble(a = c(2, 1, 2), b = c(4, 5, 6), c = c(7, 8, 9))
 
 check_set_equality(data_1, a, data_3, a)
@@ -198,6 +207,7 @@ columns.
 Given the following three data frames:
 
 ``` r
+
 d1 <- tibble(a = 1:5)
 d2 <- tibble(c = c(1:5, 5))
 d3 <- tibble(c = 1:4)
@@ -208,6 +218,7 @@ Here are some examples of how the cardinality testing functions can be
 used:
 
 ``` r
+
 # This does not pass, `c` is not unique key of d2:
 check_cardinality_0_n(d2, c, d1, a)
 #> Warning: The `pk_column` argument of `check_cardinality_0_n()` is deprecated as of
@@ -263,6 +274,7 @@ check_cardinality_0_1(d1, a, d3, c)
 returns the type of relation, e.g.:
 
 ``` r
+
 examine_cardinality(d1, a, d3, c)
 #> Warning: The `pk_column` argument of `examine_cardinality()` is deprecated as of dm
 #> 1.0.0.
@@ -288,6 +300,7 @@ Just like the underlying cardinality functions, it will also inform you
 if any restrictions on cardinality are violated:
 
 ``` r
+
 examine_cardinality(d2, c, d1, a)
 #> Column (`c`) not a unique key of `d2`.
 ```
@@ -311,6 +324,7 @@ primary key column. The function
 does that, as can be seen in the following example:
 
 ``` r
+
 mtcars_tibble <- tibble::as_tibble(mtcars)
 mtcars_tibble
 ```
@@ -333,6 +347,7 @@ mtcars_tibble
 ```
 
 ``` r
+
 decomposed_table <- decompose_table(mtcars_tibble, am_gear_carb_id, am, gear, carb)
 decomposed_table
 ```
@@ -386,6 +401,7 @@ column, and the latter takes as arguments a list of two tables plus the
 unquoted name of the ID column:
 
 ``` r
+
 parent_table <- decomposed_table$parent_table
 child_table <- decomposed_table$child_table
 reunite_parent_child(child_table, parent_table, id_column = am_gear_carb_id)
@@ -409,6 +425,7 @@ reunite_parent_child(child_table, parent_table, id_column = am_gear_carb_id)
 ```
 
 ``` r
+
 # Shortcut:
 reunite_parent_child_from_list(decomposed_table, id_column = am_gear_carb_id)
 ```

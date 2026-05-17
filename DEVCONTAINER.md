@@ -51,6 +51,7 @@ output. Always use the `filter` argument when running specific test
 files to avoid running all tests:
 
 ``` r
+
 # Run specific test files
 testthat::test_local(filter = "flatten", reporter = "summary")     # Example: Runs test-flatten.R
 

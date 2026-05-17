@@ -3,7 +3,7 @@
 This function returns a tibble with information about which key
 constraints are met (`is_key = TRUE`) or violated (`FALSE`). The
 printing for this object is special, use
-[`tibble::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+[`as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
 to print as a regular tibble.
 
 ## Usage

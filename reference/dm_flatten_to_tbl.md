@@ -91,6 +91,7 @@ Other flattening functions:
 ## Examples
 
 ``` r
+
 dm_financial() %>%
   dm_select_tbl(-loans) %>%
   dm_flatten_to_tbl(.start = cards)

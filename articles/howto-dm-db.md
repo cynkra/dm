@@ -29,6 +29,7 @@ want to read
 for further information.
 
 ``` r
+
 library(RMariaDB)
 
 my_db <- dbConnect(
@@ -45,6 +46,7 @@ Creating a dm object takes a single call to
 the DBI connection object as its argument.
 
 ``` r
+
 library(dm)
 
 my_dm <- dm_from_con(my_db)
@@ -57,6 +59,7 @@ my_dm <- dm_from_con(my_db)
 ```
 
 ``` r
+
 my_dm
 ```
 
@@ -89,6 +92,7 @@ Note that the tables arguments have to all be from the same source, in
 this case `my_db`.
 
 ``` r
+
 dbListTables(my_db)
 #> [1] "trans"     "districts" "clients"   "orders"    "cards"     "disps"    
 #> [7] "tkeys"     "accounts"  "loans"
@@ -129,6 +133,7 @@ primary and foreign keys ourselves. For this, we use
 `learn_keys = FALSE` to obtain a `dm` object with only the tables.
 
 ``` r
+
 library(dm)
 
 fin_dm <- dm_from_con(my_db, learn_keys = FALSE)
@@ -169,6 +174,7 @@ used. This process of key definition needs to be done manually for other
 databases.
 
 ``` r
+
 my_dm_keys <-
   my_manual_dm %>%
   dm_add_pk(accounts, id) %>%
@@ -187,6 +193,7 @@ to it. For tables from the original source for the dm, use
 [`dm()`](https://dm.cynkra.com/reference/dm.md)
 
 ``` r
+
 trans <- tbl(my_db, "trans")
 
 my_dm_keys %>%
@@ -210,6 +217,7 @@ is lost when the dm object is saved to disk, e.g., when saving the
 workspace in R or in Posit Workbench, or when using knitr chunks:
 
 ``` r
+
 unserialize(serialize(my_dm_keys, NULL))
 ```
 
@@ -226,6 +234,7 @@ object your project uses, a function that recreates it using a new
 database connection:
 
 ``` r
+
 my_db_fun <- function() {
   dbConnect(
     MariaDB(),
@@ -260,6 +269,7 @@ Like other R objects, a dm is immutable and all operations performed on
 it are transient unless stored in a new variable.
 
 ``` r
+
 my_dm_keys
 ```
 
@@ -274,6 +284,7 @@ my_dm_keys
 ```
 
 ``` r
+
 
 my_dm_trans <-
   my_dm_keys %>%
@@ -296,6 +307,7 @@ And, like {dbplyr}, results are never written to a database unless
 explicitly requested.
 
 ``` r
+
 my_dm_keys %>%
   dm_flatten_to_tbl(loans)
 #> Renaming ambiguous columns: %>%
@@ -323,6 +335,7 @@ my_dm_keys %>%
 ```
 
 ``` r
+
 
 my_dm_keys %>%
   dm_flatten_to_tbl(loans) %>%
@@ -363,6 +376,7 @@ a new object, `my_dm_total`. This is a new dm object, derived from
 `accounts` table.
 
 ``` r
+
 my_dm_total <-
   my_dm_keys %>%
   dm_zoom_to(loans) %>%
@@ -391,6 +405,7 @@ variable `account_id` is a primary key, the new derived table is
 automatically linked to the `accounts` table.
 
 ``` r
+
 my_dm_total %>%
   dm_set_colors(violet = total_loans) %>%
   dm_draw()
@@ -402,6 +417,7 @@ The resulting table `total_loans` can be accessed like any other table
 in the dm object.
 
 ``` r
+
 my_dm_total$total_loans
 ```
 
@@ -429,6 +445,7 @@ materialized; instead, an SQL query is built and executed each time the
 data is requested.
 
 ``` r
+
 my_dm_total$total_loans %>%
   sql_render()
 #> <SQL> SELECT `account_id`, SUM(`amount`) AS `total_amount`
@@ -455,6 +472,7 @@ of results. The resulting tables are transferred from the RDBMS and
 stored as local tibbles.
 
 ``` r
+
 my_dm_local <-
   my_dm_total %>%
   collect()
@@ -485,6 +503,7 @@ dataset you will be downloading, you can call
 for the row count of your data model’s tables.
 
 ``` r
+
 my_dm_total %>%
   dm_nrow()
 #>       loans    accounts total_loans 
@@ -503,6 +522,7 @@ below, a local SQLite database is used to demonstrate it, but {dm} is
 designed to work with any RDBMS supported by {DBI}.
 
 ``` r
+
 destination_db <- DBI::dbConnect(RSQLite::SQLite())
 
 deployed_dm <- copy_dm_to(destination_db, my_dm_local)
@@ -512,7 +532,7 @@ deployed_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.51.2 []
+#> src:  sqlite 3.52.0 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `loans`, `accounts`, `total_loans`
 #> Columns: 13
@@ -521,6 +541,7 @@ deployed_dm
 ```
 
 ``` r
+
 my_dm_local
 ```
 
@@ -542,6 +563,7 @@ Persisting tables are covered in more detail in
 When done, do not forget to disconnect:
 
 ``` r
+
 DBI::dbDisconnect(destination_db)
 DBI::dbDisconnect(my_db)
 ```

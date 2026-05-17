@@ -2,8 +2,8 @@
 
 `dm_from_con()` creates a [dm](https://dm.cynkra.com/reference/dm.md)
 from some or all tables in a
-[dplyr::src](https://dplyr.tidyverse.org/reference/src.html) (a database
-or an environment) or which are accessible via a DBI-Connection. For
+[src](https://dplyr.tidyverse.org/reference/src.html) (a database or an
+environment) or which are accessible via a DBI-Connection. For
 Postgres/Redshift and SQL Server databases, primary and foreign keys are
 imported from the database.
 

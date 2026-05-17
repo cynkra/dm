@@ -53,12 +53,14 @@ The latest stable version of the {dm} package can be obtained from
 [CRAN](https://CRAN.R-project.org/package=dm) with the command
 
 ``` r
+
 install.packages("dm")
 ```
 
 The latest development version of {dm} can be installed from R-universe:
 
 ``` r
+
 # Enable repository from cynkra
 options(
   repos = c(
@@ -73,6 +75,7 @@ install.packages('dm')
 or from GitHub:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("cynkra/dm")
 ```
@@ -83,6 +86,7 @@ Create a dm object (see [Getting
 started](https://dm.cynkra.com/articles/dm.html) for details).
 
 ``` r
+
 library(dm)
 dm <- dm_nycflights13(table_description = TRUE)
 dm
@@ -96,6 +100,7 @@ dm
 dm is a named list of tables:
 
 ``` r
+
 names(dm)
 #> [1] "airlines" "airports" "flights"  "planes"   "weather"
 nrow(dm$airports)
@@ -113,6 +118,7 @@ dm$flights %>%
 Visualize relationships at any time:
 
 ``` r
+
 dm %>%
   dm_draw()
 ```
@@ -122,6 +128,7 @@ dm %>%
 Simple joins:
 
 ``` r
+
 dm %>%
   dm_flatten_to_tbl(flights)
 #> Renaming ambiguous columns: %>%
@@ -166,6 +173,7 @@ dm %>%
 Check consistency:
 
 ``` r
+
 dm %>%
   dm_examine_constraints()
 #> ! Unsatisfied constraints:
