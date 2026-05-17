@@ -1,88 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# dm 1.1.1.9006
+# dm 1.1.2
 
 ## Bug fixes
 
 - Fix for upcoming dbplyr 2.6.0 release (@hadley, #2454).
-
-## Chore
-
-- Auto-update from GitHub Actions (#2460).
-
-- Add ccache to `.gitignore` and `.Rbuildignore`.
-
-## Continuous integration
-
-- Bump action version.
-
-- Create snapshot update PR against correct branch.
-
-- Add reference to `/apply-patch` workflow in commit message.
-
-- Clarify rationale for not deploying on schedule.
-
-- Only run fledge on pushes to main.
-
-- Tweak fledge workflow and ccache action.
-
-- Align.
-
-- Cosmetics.
-
-- Bump action versions.
-
-- Install clang-format-21.
-
-- Align fledge workflow.
-
-- Harmonize.
-
-## Testing
-
-- Snapshot updates for rcc-smoke (null) (#2459).
-
-
-# dm 1.1.1.9005
-
-## Chore
-
-- Ensure exported dm functions call `check_dm()` first (#2441, #2442).
-
-
-# dm 1.1.1.9004
-
-## Chore
-
-- Auto-update from GitHub Actions (#2439).
-
-
-# dm 1.1.1.9003
-
-## Chore
-
-- Auto-update from GitHub Actions (#2434).
-
-
-# dm 1.1.1.9002
-
-## Chore
-
-- Auto-update from GitHub Actions (#2432).
-
-
-# dm 1.1.1.9001
-
-## Chore
-
-- Auto-update from GitHub Actions (#2430).
-
-
-# dm 1.1.1.9000
-
-## fledge
-
-- CRAN release v1.1.1 (#2428).
 
 
 # dm 1.1.1
