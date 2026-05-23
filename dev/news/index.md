@@ -1,47 +1,18 @@
 # Changelog
 
-## dm 1.1.1.9005
+## dm 1.1.2.9000
 
-### Chore
+- Switching to development version.
 
-- Ensure exported dm functions call `check_dm()` first
-  ([\#2441](https://github.com/cynkra/dm/issues/2441),
-  [\#2442](https://github.com/cynkra/dm/issues/2442)).
+## dm 1.1.2
 
-## dm 1.1.1.9004
+CRAN release: 2026-05-17
 
-### Chore
+### Bug fixes
 
-- Auto-update from GitHub Actions
-  ([\#2439](https://github.com/cynkra/dm/issues/2439)).
-
-## dm 1.1.1.9003
-
-### Chore
-
-- Auto-update from GitHub Actions
-  ([\#2434](https://github.com/cynkra/dm/issues/2434)).
-
-## dm 1.1.1.9002
-
-### Chore
-
-- Auto-update from GitHub Actions
-  ([\#2432](https://github.com/cynkra/dm/issues/2432)).
-
-## dm 1.1.1.9001
-
-### Chore
-
-- Auto-update from GitHub Actions
-  ([\#2430](https://github.com/cynkra/dm/issues/2430)).
-
-## dm 1.1.1.9000
-
-### fledge
-
-- CRAN release v1.1.1
-  ([\#2428](https://github.com/cynkra/dm/issues/2428)).
+- Fix for upcoming dbplyr 2.6.0 release
+  ([@hadley](https://github.com/hadley),
+  [\#2454](https://github.com/cynkra/dm/issues/2454)).
 
 ## dm 1.1.1
 
