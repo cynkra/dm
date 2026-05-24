@@ -94,7 +94,7 @@
           (8, 'H'),
           (9, 'I'),
           (10, 'J')
-      ) values_table
+      ) AS values_table
       
       $load$tf_3
       <SQL> INSERT INTO tf_3 (f, f1, g)
@@ -119,7 +119,7 @@
           ('I', 7, 'eight'),
           ('J', 10, 'nine'),
           ('K', 11, 'ten')
-      ) values_table
+      ) AS values_table
       
       $load$tf_6
       <SQL> INSERT INTO tf_6 (zz, n, o)
@@ -139,7 +139,7 @@
           (1, 'hill', 'g'),
           (1, 'streetlamp', 'h'),
           (1, 'garden', 'i')
-      ) values_table
+      ) AS values_table
       
       $load$tf_2
       <SQL> INSERT INTO tf_2 (c, d, e, e1)
@@ -161,7 +161,7 @@
           ('worm', 5, 'G', 7),
           ('dog', 6, 'E', 5),
           ('cat', 7, 'F', 6)
-      ) values_table
+      ) AS values_table
       
       $load$tf_4
       <SQL> INSERT INTO tf_4 (h, i, j, j1)
@@ -182,7 +182,7 @@
           ('c', 'five', 'E', 5),
           ('d', 'six', 'F', 6),
           ('e', 'seven', 'F', 6)
-      ) values_table
+      ) AS values_table
       
       $load$tf_5
       <SQL> INSERT INTO tf_5 (ww, k, l, m)
@@ -202,7 +202,7 @@
           (2, 2, 'c', 'tree'),
           (2, 3, 'd', 'streetlamp'),
           (2, 4, 'e', 'streetlamp')
-      ) values_table
+      ) AS values_table
       
       
       $post
