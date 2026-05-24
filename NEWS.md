@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9001
+
+## Continuous integration
+
+- Update ccache-action reference.
+
+
 # dm 1.1.2.9000
 
 - Switching to development version.
