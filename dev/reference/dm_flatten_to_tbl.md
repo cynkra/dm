@@ -98,7 +98,7 @@ dm_financial() %>%
 #> Renaming ambiguous columns: %>%
 #>   dm_rename(cards, type.cards = type) %>%
 #>   dm_rename(disps, type.disps = type)
-#> # Source:   SQL [?? x 7]
+#> # A query:  ?? x 7
 #> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
 #>       id disp_id type.cards issued     client_id account_id type.disps
 #>    <int>   <int> <chr>      <date>         <int>      <int> <chr>     
@@ -122,7 +122,7 @@ dm_financial() %>%
 #>   dm_rename(disps, type.disps = type) %>%
 #>   dm_rename(clients, district_id.clients = district_id) %>%
 #>   dm_rename(accounts, district_id.accounts = district_id)
-#> # Source:   SQL [?? x 28]
+#> # A query:  ?? x 28
 #> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
 #>       id disp_id type.cards issued     client_id account_id type.disps
 #>    <int>   <int> <chr>      <date>         <int>      <int> <chr>     

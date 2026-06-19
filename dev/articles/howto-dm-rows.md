@@ -150,7 +150,7 @@ demo_sql
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.52.0 []
+#> src:  sqlite 3.53.2 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `parent`, `child`
 #> Columns: 5
@@ -239,8 +239,8 @@ dm_insert_out$child
 ```
 
 ``` fansi
-#> # Source:   SQL [?? x 3]
-#> # Database: sqlite 3.52.0 []
+#> # A query:  ?? x 3
+#> # Database: sqlite 3.53.2 []
 #>   value    pk    fk
 #>   <chr> <dbl> <dbl>
 #> 1 a         1     1
@@ -255,8 +255,8 @@ demo_sql$child
 ```
 
 ``` fansi
-#> # Source:   table<`child`> [?? x 3]
-#> # Database: sqlite 3.52.0 []
+#> # A query:  ?? x 3
+#> # Database: sqlite 3.53.2 []
 #>   value    pk    fk
 #>   <chr> <int> <dbl>
 #> 1 a         1     1
@@ -277,8 +277,8 @@ demo_sql$child
 ```
 
 ``` fansi
-#> # Source:   table<`child`> [?? x 3]
-#> # Database: sqlite 3.52.0 []
+#> # A query:  ?? x 3
+#> # Database: sqlite 3.53.2 []
 #>   value    pk    fk
 #>   <chr> <int> <dbl>
 #> 1 a         1     1
@@ -324,8 +324,8 @@ demo_sql$child
 ```
 
 ``` fansi
-#> # Source:   table<`child`> [?? x 3]
-#> # Database: sqlite 3.52.0 []
+#> # A query:  ?? x 3
+#> # Database: sqlite 3.53.2 []
 #>   value    pk    fk
 #>   <chr> <int> <dbl>
 #> 1 a         1     1

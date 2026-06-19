@@ -29,7 +29,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,7 +88,7 @@
                         <h4 data-toc-skip class="author">James
 Wondrasek, Kirill Müller</h4>
             
-            <h4 data-toc-skip class="date">2026-05-23</h4>
+            <h4 data-toc-skip class="date">2026-06-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/main/vignettes/howto-dm-copy.Rmd" class="external-link"><code>vignettes/howto-dm-copy.Rmd</code></a></small>
       <div class="d-none name"><code>howto-dm-copy.Rmd</code></div>
@@ -176,7 +176,7 @@ full results in a table on the RDBMS.</p>
 <span><span class="va">my_dm_total_computed</span><span class="op">$</span><span class="va">total_loans</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SQL&gt; SELECT *</span></span>
-<span><span class="co">#&gt; FROM `dbplyr_b4eYrKPRds`</span></span></code></pre></div>
+<span><span class="co">#&gt; FROM `dbplyr_tmp_b4eYrKPRds`</span></span></code></pre></div>
 <p>Note the differences in queries returned by
 <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">sql_render()</a></code>. <code>my_dm_total$total_loans</code> is still
 being lazily evaluated and the full query constructed from the chain of
@@ -312,8 +312,8 @@ relational model. For more information on key creation, see
 <pre class="fansi fansi-message"><code><span><span class="co">#&gt; ℹ All constraints satisfied.</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dm_sqlite_resid</span><span class="op">$</span><span class="va">loans_residuals</span></span></code></pre></div>
-<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # Source:   table&lt;`loans_residuals_1_20200828_071303_12345`&gt; [?? x 2]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.52.0 []</span></span>
+<pre class="fansi fansi-output"><code><span><span class="co">#&gt; # A query:  ?? x 2</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.53.2 []</span></span>
 <span><span class="co">#&gt;       id   resid</span></span>
 <span><span class="co">#&gt;    &lt;int&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt;  1  4959 -31912.</span></span>
@@ -371,7 +371,7 @@ RDBMS.</p>
 <span></span>
 <span><span class="va">deployed_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.52.0 []</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.53.2 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `districts`, `clients`, `orders`, `cards`, `disps`, … (8 total)</span></span>
 <span><span class="co">#&gt; Columns: 47</span></span>
@@ -402,7 +402,7 @@ prefix to the table names to provide uniqueness.</p>
 <span></span>
 <span><span class="va">dup_dm</span></span></code></pre></div>
 <pre class="fansi fansi-output"><code><span><span class="co">#&gt; ── Table source ───────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; src:  sqlite 3.52.0 []</span></span>
+<span><span class="co">#&gt; src:  sqlite 3.53.2 []</span></span>
 <span><span class="co">#&gt; ── Metadata ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; Tables: `districts`, `clients`, `orders`, `cards`, `disps`, … (8 total)</span></span>
 <span><span class="co">#&gt; Columns: 47</span></span>

@@ -316,7 +316,7 @@ my_dm_keys %>%
 ```
 
 ``` fansi
-#> # Source:   SQL [?? x 10]
+#> # A query:  ?? x 10
 #> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
 #>       id account_id date.loans amount duration payments status district_id
 #>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr>        <int>
@@ -422,7 +422,7 @@ my_dm_total$total_loans
 ```
 
 ``` fansi
-#> # Source:   SQL [?? x 2]
+#> # A query:  ?? x 2
 #> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
 #>    account_id total_amount
 #>         <int>        <dbl>
@@ -532,7 +532,7 @@ deployed_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.52.0 []
+#> src:  sqlite 3.53.2 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `loans`, `accounts`, `total_loans`
 #> Columns: 13

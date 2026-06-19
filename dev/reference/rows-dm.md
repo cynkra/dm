@@ -148,7 +148,7 @@ dm_rows_append(flights_sqlite, flights_jan_sqlite)
 #> Result is returned as a dm object with lazy tables. Use `in_place = FALSE` to
 #> mute this message, or `in_place = TRUE` to write to the underlying tables.
 #> ── Table source ────────────────────────────────────────────────────────────────
-#> src:  sqlite 3.52.0 []
+#> src:  sqlite 3.53.2 []
 #> ── Metadata ────────────────────────────────────────────────────────────────────
 #> Tables: `airlines`, `airports`, `flights`, `planes`, `weather`
 #> Columns: 53
