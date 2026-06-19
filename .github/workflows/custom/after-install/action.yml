@@ -53,3 +53,19 @@ runs:
         # FIXME: Slow examples in dm?
         echo "_R_CHECK_EXAMPLE_TIMING_THRESHOLD_=15" | tee -a $GITHUB_ENV
       shell: bash
+
+    # Instrumented-validation matrix entry (DM_VALIDATE=true): uncomment the
+    # code guarded by "# INSTRUMENT: validate" so the assertions are compiled
+    # in. The matrix entry runs with covr: true, so the standard covr step then
+    # builds and tests these instrumented sources.
+    - name: Instrument R code for validation
+      if: env.DM_VALIDATE != ''
+      run: |
+        if [ $(git status --porcelain | wc -l) -gt 0 ]; then
+          echo "Fatal: git working copy not clean"
+        fi
+        sed -i -r '/INSTRUMENT: validate/ s/^( +)# /\1/g' R/*
+        if [ $(git status --porcelain | wc -l) -eq 0 ]; then
+          echo "Fatal: substitution did not change anything"
+        fi
+      shell: bash
