@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9002
+
+## Continuous integration
+
+- Move validate logic into custom hooks driven by a matrix entry (#2470).
+
+## Testing
+
+- Snapshot updates for rcc-smoke (null) (#2468).
+
+
 # dm 1.1.2.9001
 
 ## Continuous integration
