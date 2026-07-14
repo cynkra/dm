@@ -354,7 +354,7 @@ print.dm <- function(x, ...) {
 
 #' @export
 print.dm_zoomed <- function(x, ..., n = NULL, width = NULL, n_extra = NULL) {
-  format(x, ..., n = NULL, width = NULL, n_extra = NULL)
+  format(x, ..., n = n, width = width, n_extra = n_extra)
 }
 
 show_dm <- function(x) {

@@ -34,6 +34,11 @@ test_that("print() and format() methods for subclass `dm_zoomed` work", {
   expect_snapshot(
     dm_for_filter() %>% dm_zoom_to(tf_2) %>% as_dm_zoomed_df() %>% tbl_sum()
   )
+
+  # `n` is passed on to `format()` (#2474)
+  expect_snapshot(
+    dm_for_filter() %>% dm_zoom_to(tf_2) %>% print(n = 2)
+  )
 })
 
 
