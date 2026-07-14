@@ -1,5 +1,24 @@
 # Changelog
 
+## dm 1.1.2.9003
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#2472](https://github.com/cynkra/dm/issues/2472)).
+
+## dm 1.1.2.9002
+
+### Continuous integration
+
+- Move validate logic into custom hooks driven by a matrix entry
+  ([\#2470](https://github.com/cynkra/dm/issues/2470)).
+
+### Testing
+
+- Snapshot updates for rcc-smoke (null)
+  ([\#2468](https://github.com/cynkra/dm/issues/2468)).
+
 ## dm 1.1.2.9001
 
 ### Continuous integration
