@@ -14,6 +14,19 @@
       Zoomed table     A tibble 
             "tf_2"      "6 x 4" 
 
+---
+
+    Code
+      dm_for_filter() %>% dm_zoom_to(tf_2) %>% print(n = 2)
+    Output
+      # Zoomed table: tf_2
+      # A tibble:     6 x 4
+        c            d e        e1
+        <chr>    <int> <chr> <int>
+      1 elephant     2 D         4
+      2 lion         3 E         5
+      # i 4 more rows
+
 # zoom output for compound keys
 
     Code
