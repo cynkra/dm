@@ -118,7 +118,14 @@ jobs:
         with:
           cache-version: rcc-dev-${{ matrix.package }}-1
           needs: build, check
-          extra-packages: "any::rcmdcheck r-lib/remotes@f-618-universe ."
+          # cpp11 is a LinkingTo (header-only) dependency of several tidyverse
+          # packages (e.g. tidyr, dplyr).
+          # When r-universe has no ready binary and serves the dev package as
+          # source, it must be compiled, which fails unless cpp11 is present in
+          # the library.
+          # pak does not install LinkingTo dependencies of binary deps, so we
+          # request cpp11 explicitly here.
+          extra-packages: "any::rcmdcheck any::cpp11 r-lib/remotes@f-618-universe ."
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dev version of ${{ matrix.package }}
