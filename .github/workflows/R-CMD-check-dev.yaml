@@ -118,21 +118,49 @@ jobs:
         with:
           cache-version: rcc-dev-${{ matrix.package }}-1
           needs: build, check
-          # cpp11 is a LinkingTo (header-only) dependency of several tidyverse
-          # packages (e.g. tidyr, dplyr).
-          # When r-universe has no ready binary and serves the dev package as
-          # source, it must be compiled, which fails unless cpp11 is present in
-          # the library.
-          # pak does not install LinkingTo dependencies of binary deps, so we
-          # request cpp11 explicitly here.
-          extra-packages: "any::rcmdcheck any::cpp11 r-lib/remotes@f-618-universe ."
+          extra-packages: "any::rcmdcheck r-lib/remotes@f-618-universe ."
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dev version of ${{ matrix.package }}
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          remotes::install_runiverse("${{ matrix.package }}", linux_distro = "noble")
+          pkg <- "${{ matrix.package }}"
+
+          # P3M (Posit Package Manager) binary repo, used for released deps in step 2.
+          p3m <- Sys.getenv("RSPM")
+          if (!nzchar(p3m)) p3m <- "https://packagemanager.posit.co/cran/__linux__/noble/latest"
+
+          # 1. Install ONLY the dev package from its r-universe repo, WITHOUT
+          #    dependencies. `linux_distro = "noble"` is kept so we pull a fast
+          #    *binary* build from r-universe rather than compiling from source.
+          #    CAVEAT: r-universe has renamed its Linux binary distro from
+          #    "noble" to "resolute", so this hardcoded value can start returning
+          #    404 for some packages (it already broke a dev `tidyr` install).
+          #    Kept for now to preserve binary installs; update or drop
+          #    `linux_distro` once it 404s.
+          remotes::install_runiverse(pkg, dependencies = FALSE, linux_distro = "noble")
+
+          # 2. The dev package may declare NEW hard dependencies that its released
+          #    version (installed earlier from P3M by the pak step) lacks -- e.g.
+          #    dev DBItest added `purrr`, dev `tidyr` links to `cpp11`. Read them
+          #    off the freshly installed dev package and install the missing ones
+          #    from P3M, so dependencies come in as *released* binaries instead of
+          #    dragging dev versions of the whole tree from r-universe. Set repos
+          #    explicitly because step 1 may have pointed them at r-universe.
+          deps <- tools::package_dependencies(
+            pkg,
+            db = installed.packages(),
+            which = c("Depends", "Imports", "LinkingTo")
+          )[[pkg]]
+          deps <- setdiff(deps, rownames(installed.packages()))
+          if (length(deps)) install.packages(deps, repos = p3m)
+
+          # 3. Re-install the dev package from r-universe with dependencies = TRUE.
+          #    Its hard deps are now satisfied from P3M, so this only ensures the
+          #    dev package itself is in place and fills any residual gaps, without
+          #    pulling the entire dependency tree from r-universe.
+          remotes::install_runiverse(pkg, dependencies = TRUE, linux_distro = "noble")
         shell: Rscript {0}
 
       - name: Session info
