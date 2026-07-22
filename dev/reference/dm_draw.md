@@ -142,6 +142,10 @@ for adding details to one or more tables in the diagram
 ``` r
 dm_nycflights13() %>%
   dm_draw()
+
+
+
+
 %0
 
 
@@ -157,6 +161,10 @@ weatherorigin, time_hourflights:origin, time_hour->weather:origin, time_hour
 
 dm_nycflights13(cycle = TRUE) %>%
   dm_draw(view_type = "title_only")
+
+
+
+
 %0
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## dm 1.1.2.9004
+
+- Merge pull request [\#2475](https://github.com/cynkra/dm/issues/2475)
+  from cynkra/claude/github-issue-2474-jnreaw.
+
+  Fix print() method for dm_zoomed to pass through n parameter
+
 ## dm 1.1.2.9003
 
 ### Chore

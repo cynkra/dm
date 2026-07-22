@@ -27,6 +27,10 @@ A `dm` object.
 ``` r
 dm_financial() %>%
   dm_draw()
+
+
+
+
 %0
 
 

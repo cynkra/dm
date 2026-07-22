@@ -58,6 +58,10 @@ by_origin
 #> 3 LGA             0.523
 dm(airlines, airports, flights, planes, weather, by_origin) %>%
   dm_draw()
+
+
+
+
 %0
 
 

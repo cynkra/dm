@@ -60,6 +60,10 @@ dm_nycflights13(color = FALSE) %>%
     "#5986C4" = flights
   ) %>%
   dm_draw()
+
+
+
+
 %0
 
 
@@ -84,6 +88,10 @@ nyc_cols
 dm_nycflights13(color = FALSE) %>%
   dm_set_colors(!!!nyc_cols) %>%
   dm_draw()
+
+
+
+
 %0
 
 

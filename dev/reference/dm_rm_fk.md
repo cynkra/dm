@@ -65,6 +65,10 @@ Other foreign key functions:
 dm_nycflights13(cycle = TRUE) %>%
   dm_rm_fk(flights, dest, airports) %>%
   dm_draw()
+
+
+
+
 %0
 
 

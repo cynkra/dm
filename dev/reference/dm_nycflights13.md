@@ -70,6 +70,10 @@ and foreign keys and optionally colored.
 ``` r
 dm_nycflights13() %>%
   dm_draw()
+
+
+
+
 %0
 
 

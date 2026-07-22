@@ -49,6 +49,10 @@ dm_pixarfilms()
 #> Foreign keys: 5
 dm_pixarfilms() %>%
   dm_draw()
+
+
+
+
 %0
 
 

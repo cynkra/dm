@@ -7,7 +7,7 @@
 ## Common Commands for Copilot Chat
 
 - Load for development:
-  [`pkgload::load_all()`](https://pkgload.r-lib.org/reference/load_all.html)
+  [`pkgload::load_all()`](https://rdrr.io/pkg/pkgload/man/load_all.html)
 - Run tests: `testthat::test_local(reporter = "check")`
 - Format code: `air format .`
 - Update documentation: `devtools::document()`

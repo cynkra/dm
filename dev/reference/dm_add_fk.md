@@ -111,6 +111,10 @@ nycflights_dm <- dm(
 
 nycflights_dm %>%
   dm_draw()
+
+
+
+
 %0
 
 
@@ -125,6 +129,10 @@ nycflights_dm %>%
   dm_add_pk(weather, c(origin, time_hour)) %>%
   dm_add_fk(flights, c(origin, time_hour), weather) %>%
   dm_draw()
+
+
+
+
 %0
 
 
