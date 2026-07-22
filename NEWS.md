@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9005
+
+## Continuous integration
+
+- Run on Ubuntu 26.04.
+
+- Align workflows with template.
+
+
 # dm 1.1.2.9004
 
 - Merge pull request #2475 from cynkra/claude/github-issue-2474-jnreaw.
