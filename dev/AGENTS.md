@@ -19,7 +19,7 @@ integrity checks across multiple tables.
 - **Code Formatting**: air (R formatting tool)
 - **Build System**: R CMD, devtools
 - **Code Generation**: During
-  [`pkgload::load_all()`](https://rdrr.io/pkg/pkgload/man/load_all.html),
+  [`pkgload::load_all()`](https://pkgload.r-lib.org/reference/load_all.html),
   in `helper-sync.R`
 
 ## Development Setup
@@ -46,7 +46,7 @@ pak::pak(dependencies = "Config/Needs/build")
 ### Building and Testing
 
 - Load package for development:
-  [`pkgload::load_all()`](https://rdrr.io/pkg/pkgload/man/load_all.html)
+  [`pkgload::load_all()`](https://pkgload.r-lib.org/reference/load_all.html)
 - Run tests: `testthat::test_local(reporter = "check")`
 - Run tests for a single file `test-foo.R`:
   `testthat::test_local(filter = "foo", reporter = "check")`
@@ -80,7 +80,7 @@ pak::pak(dependencies = "Config/Needs/build")
   the [tidyverse design guide](https://design.tidyverse.org)
 - Use `snake_case` for new functions
 - Use explicit package prefixes (e.g.,
-  [`withr::local_db_connection()`](https://rdrr.io/pkg/withr/man/with_db_connection.html))
+  [`withr::local_db_connection()`](https://withr.r-lib.org/reference/with_db_connection.html))
   for clarity
 - Maintain consistent indentation (2 spaces) and spacing patterns
 - Use meaningful variable names that reflect context

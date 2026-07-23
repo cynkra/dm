@@ -1,5 +1,13 @@
 # Changelog
 
+## dm 1.1.2.9005
+
+### Continuous integration
+
+- Run on Ubuntu 26.04.
+
+- Align workflows with template.
+
 ## dm 1.1.2.9004
 
 - Merge pull request [\#2475](https://github.com/cynkra/dm/issues/2475)
