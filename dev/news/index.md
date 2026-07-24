@@ -1,5 +1,18 @@
 # Changelog
 
+## dm 1.1.2.9006
+
+### Bug fixes
+
+#### ci
+
+- Emit empty package matrix when there are no (rev)deps.
+
+### Uncategorized
+
+- Ci: Harden `format-suggest` against `pull_request_target` pwn requests
+  ([\#93](https://github.com/cynkra/dm/issues/93)).
+
 ## dm 1.1.2.9005
 
 ### Continuous integration
