@@ -107,14 +107,7 @@ duckdb_test_src %<--%
       testthat::skip("duckdb failing for R < 4.0")
     }
     testthat::skip_if_not_installed("duckdb")
-    # duckdb >= 1.5.5 announces its storage location on driver creation
-    # (condition class "duckdb_storage_location") with a session-specific path;
-    # muffle it so it cannot leak into snapshots.
-    con <- suppressMessages(
-      DBI::dbConnect(duckdb::duckdb()),
-      classes = "duckdb_storage_location"
-    )
-    dbplyr::src_dbi(con, auto_disconnect = TRUE)
+    dbplyr::src_dbi(DBI::dbConnect(duckdb::duckdb()), auto_disconnect = TRUE)
   }
 
 my_db_test_src <- function() {
