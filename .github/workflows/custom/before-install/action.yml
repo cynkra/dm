@@ -29,3 +29,34 @@ runs:
       run: |
         brew install unixodbc
       shell: bash
+
+    # The duckdb test source connects with a bare `duckdb::duckdb()`,
+    # which leaves it to the package to pick where downloaded extensions
+    # and stored secrets live.
+    # Whenever the package picks by itself it announces the location:
+    # a missing `~/.duckdb` draws the long "temporary directory" notice,
+    # and a bare `~/.duckdb` still draws a shorter "storing under ~/.duckdb" one
+    # (see `?duckdb_storage`).
+    # Both are noise in CI, and both can leak into test output.
+    #
+    # So create the shared home -- the same directory the duckdb repo creates in
+    # its own CI -- and additionally point `DUCKDB_R_HOME` at it.
+    # The environment variable counts as an explicit choice,
+    # so duckdb resolves to that directory without announcing anything,
+    # while the directory itself keeps extensions in one place for the whole run.
+    # duckdb derives the home from `USERPROFILE` on Windows and `HOME` elsewhere,
+    # so match that here rather than relying on shell `~` expansion.
+    - name: Create the shared DuckDB home (~/.duckdb)
+      run: |
+        if [ "${RUNNER_OS}" = "Windows" ]; then
+          home="$(cygpath -u "${USERPROFILE}")"
+        else
+          home="${HOME}"
+        fi
+        mkdir -p "${home}/.duckdb"
+        duckdb_home="${home}/.duckdb"
+        if [ "${RUNNER_OS}" = "Windows" ]; then
+          duckdb_home="$(cygpath -w "${duckdb_home}")"
+        fi
+        echo "DUCKDB_R_HOME=${duckdb_home}" | tee -a "$GITHUB_ENV"
+      shell: bash
