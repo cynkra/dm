@@ -1,5 +1,11 @@
 # Changelog
 
+## dm 1.1.2.9007
+
+### Continuous integration
+
+- Lock down `format-suggest` egress (audit → block).
+
 ## dm 1.1.2.9006
 
 ### Bug fixes
