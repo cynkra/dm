@@ -1,5 +1,20 @@
 # Changelog
 
+## dm 1.1.2.9008
+
+### Continuous integration
+
+- Restore database backend runs via the generic matrix `env` field
+  ([\#2486](https://github.com/cynkra/dm/issues/2486)).
+
+- Create `~/.duckdb` and set `DUCKDB_R_HOME` for the duckdb tests
+  ([\#2487](https://github.com/cynkra/dm/issues/2487)).
+
+### Uncategorized
+
+- Ci: Apply matrix `env` vars in the workflow, not in custom actions
+  ([\#95](https://github.com/cynkra/dm/issues/95)).
+
 ## dm 1.1.2.9007
 
 ### Continuous integration
