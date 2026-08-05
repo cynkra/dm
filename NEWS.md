@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9009
+
+## Chore
+
+- Auto-update from GitHub Actions (#2489).
+
+## Continuous integration
+
+- Remove unused pr-commands workflow.
+
+
 # dm 1.1.2.9008
 
 ## Continuous integration
