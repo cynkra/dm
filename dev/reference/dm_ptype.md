@@ -20,12 +20,19 @@ dm_ptype(dm)
 ## Examples
 
 ``` r
-if (FALSE) { # dm:::dm_has_financial()
 dm_financial() %>%
   dm_ptype()
+#> ── Metadata ────────────────────────────────────────────────────────────────────
+#> Tables: `trans`, `districts`, `clients`, `orders`, `cards`, … (9 total)
+#> Columns: 57
+#> Primary keys: 8
+#> Foreign keys: 7
 
 dm_financial() %>%
   dm_ptype() %>%
   dm_nrow()
-}
+#>     trans districts   clients    orders     cards     disps     tkeys  accounts 
+#>         0         0         0         0         0         0         0         0 
+#>     loans 
+#>         0 
 ```

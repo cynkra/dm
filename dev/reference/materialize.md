@@ -57,23 +57,24 @@ use
 ## Examples
 
 ``` r
-if (FALSE) { # dm:::dm_has_financial() && rlang::is_installed("RSQLite")
 financial <- dm_financial_sqlite()
 
 financial %>%
   pull_tbl(districts) %>%
   dbplyr::remote_name()
+#> [1] "districts"
 
 # compute() copies the data to new tables:
 financial %>%
   compute() %>%
   pull_tbl(districts) %>%
   dbplyr::remote_name()
+#> [1] "dbplyr_tmp_hIAmtaLLu2"
 
 # collect() returns a local dm:
 financial %>%
   collect() %>%
   pull_tbl(districts) %>%
   class()
-}
+#> [1] "tbl_df"     "tbl"        "data.frame"
 ```
