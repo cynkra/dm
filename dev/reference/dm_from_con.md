@@ -84,7 +84,9 @@ A `dm` object.
 ## Examples
 
 ``` r
+if (FALSE) { # dm:::dm_has_financial()
 con <- dm_get_con(dm_financial())
 
 # Avoid DBI::dbDisconnect() here, because we don't own the connection
+}
 ```
