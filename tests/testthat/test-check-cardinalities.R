@@ -436,7 +436,7 @@ test_that("check_card_api() compatibility", {
 })
 
 test_that("check_cardinality_...() API errors", {
-  skip_if_src_not("df")
+  skip_if_src_not(c("df", "duckplyr"))
 
   expect_snapshot({
     check_card_api(data_mcard_1(), a, data_mcard_2(), b)
