@@ -1,5 +1,11 @@
 # Changelog
 
+## dm 1.1.2.9010
+
+### Continuous integration
+
+- Add sharded `revdep2` workflow.
+
 ## dm 1.1.2.9009
 
 ### Chore
