@@ -7,7 +7,7 @@ list(
   # updater, which would otherwise run the test suite a second time against
   # the backend and accept backend-specific snapshots.
   data.frame(
-    os = "ubuntu-22.04",
+    os = "ubuntu-26.04",
     r = "release",
     env = paste0(
       "DM_TEST_SRC=",
@@ -36,7 +36,7 @@ list(
   # and tests the instrumented sources. SKIP_UPDATE_SNAPSHOTS opts out of the
   # snapshot updater, which would otherwise run the instrumented tests twice.
   data.frame(
-    os = "ubuntu-22.04",
+    os = "ubuntu-26.04",
     r = "release",
     env = "DM_VALIDATE=true\nSKIP_UPDATE_SNAPSHOTS=true",
     covr = "true",
