@@ -116,13 +116,20 @@ Config/Needs/website:
     xml2
 Config/Needs/check: anthonynorth/roxyglobals
 Config/gha/extra-packages:
+    odbc=?ignore-build-errors,
     duckdb=?ignore-build-errors,
     duckplyr=?ignore-build-errors
-Config/comment/gha/extra-packages: duckdb bundles the DuckDB C++ engine,
-    and duckplyr depends on it; building either from source is expensive,
-    and Posit Package Manager does not publish a binary for every arm64
-    runner in the matrix (windows-11-arm has none at all). Same lever as
-    duckdb/duckdb-r, explained in its
+Config/comment/gha/extra-packages: Posit Package Manager publishes no
+    aarch64 Windows binaries, so windows-11-arm builds every dependency
+    from source: odbc's vendored nanodbc does not compile against the
+    aarch64 Rtools45, and duckdb bundles the whole DuckDB C++ engine
+    (duckplyr needs it). The parameter demotes a failed source build of
+    that one package to a warning and drops it from the plan; it is keyed
+    on the build failing, not on the platform, so every runner that has a
+    binary still checks against these. Safe because the check is written
+    for it: tests guard with skip_if_not_installed(), and rcc downgrades
+    RCMDCHECK_ERROR_ON to warning when a declared dependency is missing.
+    Same lever as duckdb/duckdb-r, explained in its
     handbook/operations/ci/matrix/README.md.
 VignetteBuilder:
     knitr
