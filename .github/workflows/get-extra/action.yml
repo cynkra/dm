@@ -8,9 +8,12 @@ runs:
   using: "composite"
   steps:
     - name: Get extra packages
+      # DCF values wrap onto indented continuation lines, which a plain
+      # `grep | cut` cannot see past the first line of; read.dcf() is
+      # DCF-aware and folds continuation lines back into the value.
       id: get-extra
       run: |
-        set -x
-        packages=$( ( grep Config/gha/extra-packages DESCRIPTION || true ) | cut -d " " -f 2)
-        echo packages=$packages >> $GITHUB_OUTPUT
-      shell: bash
+        x <- read.dcf("DESCRIPTION", fields = "Config/gha/extra-packages")[1, 1]
+        packages <- if (is.na(x)) "" else gsub("[[:space:]]+", " ", trimws(x))
+        cat("packages=", packages, "\n", sep = "", file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+      shell: Rscript {0}

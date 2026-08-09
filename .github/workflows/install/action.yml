@@ -133,10 +133,10 @@ runs:
       # back into the value.
       id: get-extra
       run: |
-        set -x
-        packages=$(Rscript -e 'x <- read.dcf("DESCRIPTION", fields = "Config/gha/extra-packages")[1, 1]; if (!is.na(x)) cat(gsub("[[:space:]]+", " ", trimws(x)))')
-        echo "packages=$packages" >> $GITHUB_OUTPUT
-      shell: bash
+        x <- read.dcf("DESCRIPTION", fields = "Config/gha/extra-packages")[1, 1]
+        packages <- if (is.na(x)) "" else gsub("[[:space:]]+", " ", trimws(x))
+        cat("packages=", packages, "\n", sep = "", file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+      shell: Rscript {0}
 
     - name: Let sudo keep R library env vars (ubuntu-26.04 forbids `sudo -E`)
       # r-lib/actions/setup-r-dependencies installs pak with
