@@ -125,18 +125,8 @@ runs:
         use-public-rspm: true
 
     - name: Read `Config/gha/extra-packages` from DESCRIPTION
-      # A plain `grep | cut` only ever sees the field's first line, which is
-      # blank whenever the value wraps onto indented continuation lines (as
-      # DESCRIPTION values normally do), so it silently produced an empty
-      # string here and every `=?ignore-build-errors` reference in this field
-      # went unread. read.dcf() is DCF-aware and folds the continuation lines
-      # back into the value.
       id: get-extra
-      run: |
-        x <- read.dcf("DESCRIPTION", fields = "Config/gha/extra-packages")[1, 1]
-        packages <- if (is.na(x)) "" else gsub("[[:space:]]+", " ", trimws(x))
-        cat("packages=", packages, "\n", sep = "", file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
-      shell: Rscript {0}
+      uses: ./.github/workflows/get-extra
 
     - name: Let sudo keep R library env vars (ubuntu-26.04 forbids `sudo -E`)
       # r-lib/actions/setup-r-dependencies installs pak with

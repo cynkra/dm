@@ -8,9 +8,13 @@ runs:
   using: "composite"
   steps:
     - name: Get extra packages
-      # DCF values wrap onto indented continuation lines, which a plain
-      # `grep | cut` cannot see past the first line of; read.dcf() is
-      # DCF-aware and folds continuation lines back into the value.
+      # Read with read.dcf(), not `grep | cut`: a DCF value may wrap onto
+      # indented continuation lines, and `grep` only ever returns the first
+      # line -- which is blank exactly when the field wraps, as a multi-package
+      # value normally does. That silently yielded an empty string, so every
+      # reference in this field went unread, including the
+      # `=?ignore-build-errors` parameters that keep a dependency which cannot
+      # be built from source on some runner from failing the whole check.
       id: get-extra
       run: |
         x <- read.dcf("DESCRIPTION", fields = "Config/gha/extra-packages")[1, 1]
