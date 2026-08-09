@@ -126,11 +126,7 @@ runs:
 
     - name: Read `Config/gha/extra-packages` from DESCRIPTION
       id: get-extra
-      run: |
-        set -x
-        packages=$( ( grep Config/gha/extra-packages DESCRIPTION || true ) | cut -d " " -f 2-)
-        echo packages=$packages >> $GITHUB_OUTPUT
-      shell: bash
+      uses: ./.github/workflows/get-extra
 
     - name: Let sudo keep R library env vars (ubuntu-26.04 forbids `sudo -E`)
       # r-lib/actions/setup-r-dependencies installs pak with
