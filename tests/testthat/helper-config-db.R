@@ -2,6 +2,11 @@ test_src_df <- function() {
   NULL
 }
 
+test_src_duckplyr <- function() {
+  testthat::skip_if_not_installed("duckplyr")
+  NULL
+}
+
 test_src_sqlite <- function() {
   testthat::skip_if_not_installed("DBI")
   testthat::skip_if_not_installed("dbplyr")
