@@ -2,6 +2,15 @@
 
     Code
       dm_for_filter() %>% dm_sql(test_src_duckdb()$con)
+    Message
+      duckdb keeps downloaded extensions and secrets in a temporary directory:
+      i /tmp/RtmpIBHBJO/duckdb
+      This is removed when the R session ends.
+      * Extensions are re-downloaded each session.
+      * Secrets are lost.
+      i Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
+      i Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+      i See ?duckdb_storage for details and alternatives.
     Condition
       Warning:
       Autoincrementing columns not yet supported for DuckDB, these won't be set in the remote database but are preserved in the `dm`
