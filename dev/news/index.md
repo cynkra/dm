@@ -1,5 +1,15 @@
 # Changelog
 
+## dm 1.1.2.9012
+
+### Bug fixes
+
+#### ci
+
+- Ignore duckdb/duckplyr build failures on arm64, bump auxiliary
+  workflows to ubuntu-26.04
+  ([\#2493](https://github.com/cynkra/dm/issues/2493)).
+
 ## dm 1.1.2.9011
 
 ### Continuous integration
