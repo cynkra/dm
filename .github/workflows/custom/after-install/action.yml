@@ -14,10 +14,21 @@ runs:
 
     # Must happen after installing system dependencies,
     # https://github.com/ankane/setup-mariadb/issues/2
+    #
+    # The version has to be one MariaDB publishes for the runner's Ubuntu.
+    # `ubuntu-26.04` is Resolute, and the 10.11 line stops before it:
+    # `apt-get update` then fails the whole step with
+    # "The repository '.../mariadb-server/10.11/repo/ubuntu resolute Release'
+    # does not have a Release file".
+    # The action itself needs no help with a new codename -- it reads
+    # `lsb_release -cs` -- and its own CI matrix marks the boundary:
+    # `ubuntu-26.04` is tested with 12.3 and 11.8, 11.4 and 10.11 only up to
+    # `ubuntu-24.04`. 12.3 is the current LTS, what the download page serves for
+    # Resolute, and the action's own default.
     - uses: ankane/setup-mariadb@v1
       if: env.DM_TEST_SRC == 'test-maria'
       with:
-        mariadb-version: 10.11
+        mariadb-version: "12.3"
 
     - uses: ankane/setup-mysql@v1
       if: env.DM_TEST_SRC == 'test-mysql-maria'
@@ -26,8 +37,13 @@ runs:
 
     - name: Create database (MariaDB), set it to UTF-8, add time zone info
       if: env.DM_TEST_SRC == 'test-maria' || env.DM_TEST_SRC == 'test-mysql-maria'
+      # MariaDB renamed its client binaries to `mariadb*` in 11.0 and keeps the
+      # `mysql*` names as deprecated symlinks, so prefer the name the server
+      # actually ships. The MySQL entry of the matrix has no `mariadb` binary
+      # and lands on the fallback, which is the name it wants anyway.
       run: |
-        mysql -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
+        client="$(command -v mariadb || command -v mysql)"
+        "${client}" -e "CREATE DATABASE IF NOT EXISTS test; ALTER DATABASE test CHARACTER SET 'utf8'; FLUSH PRIVILEGES;"
       shell: bash
 
     - uses: ankane/setup-sqlserver@v1
