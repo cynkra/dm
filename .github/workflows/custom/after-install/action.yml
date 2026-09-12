@@ -59,8 +59,13 @@ runs:
 
     - name: Create database (SQL Server)
       if: env.DM_TEST_SRC == 'test-mssql'
+      # `-C` trusts the server certificate, for the same reason
+      # `.github/odbc/odbc.ini` sets `TrustServerCertificate`: the `sqlcmd` that
+      # comes with SQL Server 2025 is the `mssql-tools18` build, which encrypts
+      # by default and then rejects the self-signed certificate a freshly
+      # provisioned local server presents.
       run: |
-        sqlcmd -U SA -P 'YourStrong!Passw0rd' -Q 'CREATE DATABASE test;'
+        sqlcmd -C -U SA -P 'YourStrong!Passw0rd' -Q 'CREATE DATABASE test;'
       shell: bash
 
     - name: Set ODBCSYSINI (SQL Server)
