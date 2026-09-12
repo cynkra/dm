@@ -30,10 +30,16 @@ runs:
       with:
         mariadb-version: "12.3"
 
+    # Same story as MariaDB above, one release line further along: Oracle
+    # publishes no `resolute` suite for the 8.0 line, so `mysql-apt-config`
+    # leaves the action nothing to install. 8.4 is the current LTS and the
+    # version the action itself defaults to on this image -- which also means
+    # it is the one already on the runner, so the action starts the preinstalled
+    # server instead of fetching a second one.
     - uses: ankane/setup-mysql@v1
       if: env.DM_TEST_SRC == 'test-mysql-maria'
       with:
-        mysql-version: "8.0"
+        mysql-version: "8.4"
 
     - name: Create database (MariaDB), set it to UTF-8, add time zone info
       if: env.DM_TEST_SRC == 'test-maria' || env.DM_TEST_SRC == 'test-mysql-maria'
@@ -59,8 +65,14 @@ runs:
 
     - name: Set ODBCSYSINI (SQL Server)
       if: env.DM_TEST_SRC == 'test-mssql'
+      # The driver generation follows the server: on the only image Microsoft
+      # still serves a repository for, the action installs SQL Server 2025 and
+      # with it `mssql-tools18`, which carries `msodbcsql18`. The package ships
+      # the library under its full version, so link the plain name that
+      # `.github/odbc/odbcinst.ini` points at; `-f` because a future package may
+      # ship that link itself, and a second run must not fail on it.
       run: |
-        ln -s /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.*.so.* /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so
+        ln -sf /opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.*.so.* /opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.so
         echo "ODBCSYSINI=${{ github.workspace }}/.github/odbc" | tee -a $GITHUB_ENV
       shell: bash
 
