@@ -117,8 +117,7 @@ install.packages('dm')
 or from GitHub:
 
 ```r
-# install.packages("devtools")
-devtools::install_github("cynkra/dm")
+pak::pak("cynkra/dm")
 ```
 
 ## Usage
