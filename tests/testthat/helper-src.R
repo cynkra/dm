@@ -34,13 +34,30 @@ defer_assign <- function(lhs, rhs, env) {
   invisible(value)
 }
 
+maybe_as_duckplyr <- function(x) {
+  if (my_test_src_name != "duckplyr") {
+    return(x)
+  }
+  if (is_dm(x)) {
+    def <- dm_get_def(x)
+    def$data <- lapply(def$data, duckplyr::as_duckdb_tibble, prudence = "stingy")
+    dm_from_def(def)
+  } else if (inherits(x, "data.frame")) {
+    duckplyr::as_duckdb_tibble(x, prudence = "stingy")
+  } else if (is.list(x)) {
+    lapply(x, maybe_as_duckplyr)
+  } else {
+    x
+  }
+}
+
 copy_to_my_test_src <- function(rhs, lhs) {
   name <- as_name(ensym(lhs))
   # message("Evaluating ", name)
 
   src <- my_test_src()
   if (is.null(src)) {
-    rhs
+    maybe_as_duckplyr(rhs)
   } else if (is_dm(rhs)) {
     # We want all dm operations to work with key constraints on the database
     # (except for bad_dm)
@@ -67,7 +84,7 @@ my_test_src_name <- {
 }
 
 is_db_test_src <- function() {
-  my_test_src_name != "df"
+  !(my_test_src_name %in% c("df", "duckplyr"))
 }
 
 my_test_src_fun %<--%
@@ -129,7 +146,7 @@ test_src_frame <- function(..., .temporary = TRUE, .env = parent.frame(), .uniqu
 
   df <- tibble(...)
   if (is.null(src)) {
-    return(df)
+    return(maybe_as_duckplyr(df))
   }
 
   if (!.temporary) {

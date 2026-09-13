@@ -235,7 +235,7 @@ test_that("validator speaks up (sqlite())", {
 })
 
 test_that("validator accepts tbl_sql which is not tbl_dbi (from copy_inline())", {
-  skip_if_src("df")
+  skip_if_src("df", "duckplyr")
 
   con <- my_test_con()
   test_table <- dbplyr::copy_inline(con, tibble(a = 1:3))
