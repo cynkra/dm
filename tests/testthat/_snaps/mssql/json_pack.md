@@ -5,7 +5,7 @@
       gsub("test_frame_[_0-9]+", "test_frame_...", query)
     Output
       <SQL> SELECT "grp", (SELECT value FROM OPENJSON((SELECT "a_i", "a_j" FOR JSON PATH))) AS "a" FROM (SELECT *
-      FROM "#test_frame_...") "*tmp*"
+      FROM [#test_frame_...]) "*tmp*"
     Code
       json_pack(remote, a = starts_with("a"))
     Output
@@ -20,7 +20,7 @@
       gsub("test_frame_[_0-9]+", "test_frame_...", query)
     Output
       <SQL> SELECT "grp", (SELECT value FROM OPENJSON((SELECT "a_i" "i", "a_j" "j" FOR JSON PATH))) AS "a" FROM (SELECT *
-      FROM "#test_frame_...") "*tmp*"
+      FROM [#test_frame_...]) "*tmp*"
     Code
       json_pack(remote, a = starts_with("a"), .names_sep = "_")
     Output

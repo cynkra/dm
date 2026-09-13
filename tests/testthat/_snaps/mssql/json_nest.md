@@ -5,13 +5,13 @@
         dbplyr::sql_render()
       gsub("test_frame_[_0-9]+", "test_frame_...", query)
     Output
-      <SQL> SELECT "q01".*
+      <SQL> SELECT *
       FROM (
       SELECT "grp", (SELECT "a_i", "a_j" FROM (SELECT *
-      FROM "#test_frame_...") "*tmp_a*" WHERE ("grp" = "*tmp*"."grp") FOR JSON PATH) AS "a" FROM (SELECT *
-      FROM "#test_frame_...") "*tmp*" GROUP BY "grp"
-      ) "q01"
-      ORDER BY "grp"
+      FROM [#test_frame_...]) "*tmp_a*" WHERE ("grp" = "*tmp*"."grp") FOR JSON PATH) AS "a" FROM (SELECT *
+      FROM [#test_frame_...]) "*tmp*" GROUP BY "grp"
+      ) AS [q01]
+      ORDER BY [grp]
     Code
       remote %>% json_nest(a = starts_with("a")) %>% arrange(grp) %>% collect()
     Output
@@ -25,13 +25,13 @@
         arrange(grp) %>% dbplyr::sql_render()
       gsub("test_frame_[_0-9]+", "test_frame_...", query)
     Output
-      <SQL> SELECT "q01".*
+      <SQL> SELECT *
       FROM (
       SELECT "grp", (SELECT "a_i" "i", "a_j" "j" FROM (SELECT *
-      FROM "#test_frame_...") "*tmp_a*" WHERE ("grp" = "*tmp*"."grp") FOR JSON PATH) AS "a" FROM (SELECT *
-      FROM "#test_frame_...") "*tmp*" GROUP BY "grp"
-      ) "q01"
-      ORDER BY "grp"
+      FROM [#test_frame_...]) "*tmp_a*" WHERE ("grp" = "*tmp*"."grp") FOR JSON PATH) AS "a" FROM (SELECT *
+      FROM [#test_frame_...]) "*tmp*" GROUP BY "grp"
+      ) AS [q01]
+      ORDER BY [grp]
     Code
       remote %>% json_nest(a = starts_with("a"), .names_sep = "_") %>% arrange(grp) %>%
         collect()
