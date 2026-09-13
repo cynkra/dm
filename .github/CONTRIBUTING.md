@@ -37,8 +37,6 @@ If you’ve found a bug, please file an issue that illustrates the bug with a mi
 
 *  We use [roxygen2](https://cran.r-project.org/package=roxygen2), with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), for documentation.  
 
-* We use a specific [branch of downlit](https://github.com/r-lib/downlit/tree/f-readme-document) for knitting the README.
-
 ### Testing
   
 * We use {testthat}.
