@@ -69,7 +69,7 @@ Suggests:
     colourpicker,
     covr,
     DBI (>= 1.2.0),
-    dbplyr (>= 2.3.4),
+    dbplyr (>= 2.6.0),
     DiagrammeR,
     DiagrammeRsvg,
     digest,

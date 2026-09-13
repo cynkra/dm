@@ -383,7 +383,7 @@ test_that("default_local_src() works", {
 
 test_that("dm_squash_to_tbl() deprecation warning is correct", {
   # Test that the deprecation warning shows the correct parameter name .recursive
-  expect_snapshot({
+  expect_snapshot(variant = my_test_src_name, {
     dm_squash_to_tbl(dm_for_flatten(), fact)
   })
 })

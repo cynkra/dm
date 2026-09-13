@@ -958,6 +958,9 @@ test_that("basic test: 'filter_out()'-methods work", {
 })
 
 test_that("basic test: 'reframe()'-methods work", {
+  # dbplyr gives an informative error for `reframe()` on a lazy table (#1148)
+  skip_if_remote_src()
+
   expect_equivalent_tbl(
     dm_zoomed() %>%
       group_by(e) %>%
@@ -1220,6 +1223,9 @@ test_that(".by works with keyed summarise()", {
 })
 
 test_that(".by works with zoomed reframe()", {
+  # dbplyr gives an informative error for `reframe()` on a lazy table (#1148)
+  skip_if_remote_src()
+
   expect_equivalent_tbl(
     dm_zoomed() %>%
       reframe(d_mean = mean(d, na.rm = TRUE), .by = e) %>%
