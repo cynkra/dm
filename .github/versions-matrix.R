@@ -17,8 +17,7 @@ list(
         "test-mysql-maria",
         "test-duckdb",
         "test-sqlite"
-      ),
-      "\nSKIP_UPDATE_SNAPSHOTS=true"
+      )
     ),
     covr = "true",
     desc = c(
@@ -48,7 +47,7 @@ list(
   data.frame(
     os = "ubuntu-24.04",
     r = "release",
-    env = "DM_TEST_SRC=test-mssql\nSKIP_UPDATE_SNAPSHOTS=true",
+    env = "DM_TEST_SRC=test-mssql",
     covr = "true",
     desc = "SQL Server with covr"
   ),
