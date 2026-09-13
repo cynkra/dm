@@ -38,16 +38,7 @@
        8          8 H          j              
        9          9 I          k              
       10         10 J          l              
-      11         11 K          m              
-      12         12 L          n              
-      13         13 M          o              
-      14         14 N          p              
-      15         15 O          q              
-      16         16 P          r              
-      17         17 Q          s              
-      18         18 R          t              
-      19         19 S          u              
-      20         20 T          v              
+      # i more rows
       
       $dim_2
          dim_2_pk something.dim_2
@@ -62,16 +53,7 @@
        8 h        L              
        9 i        M              
       10 j        N              
-      11 k        O              
-      12 l        P              
-      13 m        Q              
-      14 n        R              
-      15 o        S              
-      16 p        T              
-      17 q        U              
-      18 r        V              
-      19 s        W              
-      20 t        X              
+      # i more rows
       
       $dim_3
          dim_3_pk something.dim_3
@@ -86,16 +68,7 @@
        8 L                     10
        9 M                     11
       10 N                     12
-      11 O                     13
-      12 P                     14
-      13 Q                     15
-      14 R                     16
-      15 S                     17
-      16 T                     18
-      17 U                     19
-      18 V                     20
-      19 W                     21
-      20 X                     22
+      # i more rows
       
       $dim_4
          dim_4_pk something.dim_4
@@ -110,9 +83,7 @@
        8       12              26
        9       11              27
       10       10              28
-      11        9              29
-      12        8              30
-      13        7              31
+      # i more rows
       
     Code
       dm_flatten_to_tbl(dm_for_flatten(), fact)
@@ -126,16 +97,16 @@
     Output
          fact     dim_1_key_1 dim_1_key_2 dim_2_key dim_3_key dim_4_key something.fact
          <chr>          <int> <chr>       <chr>     <chr>         <int>          <int>
-       1 jitter             5 E           l         O                16             10
-       2 ill-adv~           6 F           k         P                15              9
-       3 halo               7 G           j         Q                14              8
-       4 gorgeous           8 H           i         R                13              7
-       5 fantasy            9 I           h         S                12              6
-       6 elysium           10 J           g         T                11              5
-       7 depth             11 K           f         U                10              4
-       8 cindere~          12 L           e         V                 9              3
-       9 blubber           13 M           d         W                 8              2
-      10 acorn             14 N           c         X                 7              1
+       1 acorn             14 N           c         X                 7              1
+       2 blubber           13 M           d         W                 8              2
+       3 cindere~          12 L           e         V                 9              3
+       4 depth             11 K           f         U                10              4
+       5 elysium           10 J           g         T                11              5
+       6 fantasy            9 I           h         S                12              6
+       7 gorgeous           8 H           i         R                13              7
+       8 halo               7 G           j         Q                14              8
+       9 ill-adv~           6 F           k         P                15              9
+      10 jitter             5 E           l         O                16             10
       # i 4 more variables: something.dim_1 <chr>, something.dim_2 <chr>,
       #   something.dim_3 <int>, something.dim_4 <int>
     Code
@@ -143,16 +114,16 @@
     Output
          fact     dim_1_key_1 dim_1_key_2 dim_2_key dim_3_key dim_4_key something.fact
          <chr>          <int> <chr>       <chr>     <chr>         <int>          <int>
-       1 jitter             5 E           l         O                16             10
-       2 ill-adv~           6 F           k         P                15              9
-       3 halo               7 G           j         Q                14              8
-       4 gorgeous           8 H           i         R                13              7
-       5 fantasy            9 I           h         S                12              6
-       6 elysium           10 J           g         T                11              5
-       7 depth             11 K           f         U                10              4
-       8 cindere~          12 L           e         V                 9              3
-       9 blubber           13 M           d         W                 8              2
-      10 acorn             14 N           c         X                 7              1
+       1 acorn             14 N           c         X                 7              1
+       2 blubber           13 M           d         W                 8              2
+       3 cindere~          12 L           e         V                 9              3
+       4 depth             11 K           f         U                10              4
+       5 elysium           10 J           g         T                11              5
+       6 fantasy            9 I           h         S                12              6
+       7 gorgeous           8 H           i         R                13              7
+       8 halo               7 G           j         Q                14              8
+       9 ill-adv~           6 F           k         P                15              9
+      10 jitter             5 E           l         O                16             10
       # i 4 more variables: something.dim_1 <chr>, something.dim_2 <chr>,
       #   something.dim_3 <int>, something.dim_4 <int>
 

@@ -6,6 +6,10 @@
       Warning:
       The `table` argument of `dm_filter()` is deprecated as of dm 1.0.0.
       i `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
+      Warning:
+      Autoincrementing columns not yet supported for DuckDB, these won't be set in the remote database but are preserved in the `dm`
+      Warning:
+      Autoincrementing columns not yet supported for DuckDB, these won't be set in the remote database but are preserved in the `dm`
     Output
       -- Table source ----------------------------------------------------------------
       src:  DuckDB 1.5.5 [unknown@Linux 6.18.44-fc-v24:R 4.5.3/:memory:]
