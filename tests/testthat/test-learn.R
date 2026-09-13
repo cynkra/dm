@@ -491,47 +491,55 @@ test_that("dm_meta() contents", {
       arrange(!!!syms(names))
   }
 
-  expect_snapshot({
-    meta %>%
-      dm_select_tbl(-schemata) %>%
-      dm_zoom_to(table_constraints) %>%
-      filter(constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY")) %>%
-      dm_update_zoomed() %>%
-      dm_get_tables() %>%
-      map(select, -any_of("column_default"), -contains("catalog"), -contains("schema")) %>%
-      map(collect) %>%
-      map(arrange_all_but_constraint_name) %>%
-      map(
-        ~ if ("constraint_name" %in% colnames(.x)) {
-          .x %>% mutate(constraint_name = as.integer(forcats::fct_inorder(constraint_name)))
-        } else {
-          .x
-        }
-      ) %>%
-      imap(
-        ~ if (is_mariadb(con_db) && .y == "columns") {
-          # mariadb output on autoincrement column is integer
-          # transform this to boolean
-          mutate(.x, is_autoincrement = as.logical(is_autoincrement))
-        } else {
-          .x
-        }
-      ) %>%
-      imap(
-        ~ if (is_mariadb(con_db) && .y == "table_constraints") {
-          # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
-          # https://mariadb.com/kb/en/foreign-keys/#constraints
-          mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION", delete_rule))
-        } else {
-          .x
-        }
-      ) %>%
-      map(arrange_all) %>%
-      jsonlite::toJSON(pretty = TRUE) %>%
-      gsub(schema_name, "schema_name", .) %>%
-      gsub('(_catalog": ")[^"]*(")', "\\1catalog\\2", .) %>%
-      writeLines()
-  })
+  # `dm_meta()` reads the backend's own constraint metadata, and MariaDB names
+  # and enumerates its foreign keys differently from Postgres and MSSQL, which
+  # `constraint_name = fct_inorder()` then renumbers differently again.
+  # The normalizations below absorb the value-level differences but not that,
+  # so the snapshot is per-backend.
+  expect_snapshot(
+    variant = my_test_src_name,
+    {
+      meta %>%
+        dm_select_tbl(-schemata) %>%
+        dm_zoom_to(table_constraints) %>%
+        filter(constraint_type %in% c("PRIMARY KEY", "FOREIGN KEY")) %>%
+        dm_update_zoomed() %>%
+        dm_get_tables() %>%
+        map(select, -any_of("column_default"), -contains("catalog"), -contains("schema")) %>%
+        map(collect) %>%
+        map(arrange_all_but_constraint_name) %>%
+        map(
+          ~ if ("constraint_name" %in% colnames(.x)) {
+            .x %>% mutate(constraint_name = as.integer(forcats::fct_inorder(constraint_name)))
+          } else {
+            .x
+          }
+        ) %>%
+        imap(
+          ~ if (is_mariadb(con_db) && .y == "columns") {
+            # mariadb output on autoincrement column is integer
+            # transform this to boolean
+            mutate(.x, is_autoincrement = as.logical(is_autoincrement))
+          } else {
+            .x
+          }
+        ) %>%
+        imap(
+          ~ if (is_mariadb(con_db) && .y == "table_constraints") {
+            # mariadb default action for delete_rule is RESTRICT (synonym for NO ACTION)
+            # https://mariadb.com/kb/en/foreign-keys/#constraints
+            mutate(.x, delete_rule = if_else(delete_rule == "RESTRICT", "NO ACTION", delete_rule))
+          } else {
+            .x
+          }
+        ) %>%
+        map(arrange_all) %>%
+        jsonlite::toJSON(pretty = TRUE) %>%
+        gsub(schema_name, "schema_name", .) %>%
+        gsub('(_catalog": ")[^"]*(")', "\\1catalog\\2", .) %>%
+        writeLines()
+    }
+  )
 })
 
 test_that("dm_from_con() with mariaDB", {
