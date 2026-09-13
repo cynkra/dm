@@ -1,8 +1,7 @@
 
 <!-- README.md and index.md are generated from README.Rmd.
-     Edit that file and render it the usual way: rmarkdown::render(),
-     devtools::build_readme(), or the Knit button. The cynkratemplate
-     package must be installed; it supplies the output format. -->
+     Edit that file and render it the usual way: rmarkdown::render(), devtools::build_readme(), or the Knit button.
+     The cynkratemplate package must be installed; it supplies the output format. -->
 
 # [dm](https://dm.cynkra.com/)
 

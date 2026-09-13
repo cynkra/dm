@@ -103,19 +103,22 @@ build_copy_queries <- function(
       }
 
       # MariaDB:
-      # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
+      # Doesn't have a special data type.
+      # Uses `AUTO_INCREMENT` attribute instead.
       # Ref: https://mariadb.com/kb/en/auto_increment/
       if (is_mariadb(dest)) {
         autoincrement_attribute <- " AUTO_INCREMENT"
       }
 
       # DuckDB:
-      # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
+      # Doesn't have a special data type.
+      # Uses `CREATE SEQUENCE` instead.
       # Ref: https://duckdb.org/docs/sql/statements/create_sequence
 
       # SQLite:
-      # For a primary key, autoincrementing works by default, and it is almost never
-      # necessary to use the `AUTOINCREMENT` keyword. So nothing we need to do here.
+      # For a primary key, autoincrementing works by default,
+      # and it is almost never necessary to use the `AUTOINCREMENT` keyword.
+      # So nothing we need to do here.
       # Ref: https://www.sqlite.org/autoinc.html
     }
     df_col_types <-

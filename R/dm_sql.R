@@ -384,14 +384,16 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
       }
 
       # MariaDB:
-      # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
+      # Doesn't have a special data type.
+      # Uses `AUTO_INCREMENT` attribute instead.
       # Ref: https://mariadb.com/kb/en/auto_increment/
       if (is_mariadb(con)) {
         types[pk_col_name] <- paste0(types[pk_col_name], " AUTO_INCREMENT")
       }
 
       # DuckDB:
-      # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
+      # Doesn't have a special data type.
+      # Uses `CREATE SEQUENCE` instead.
       # Ref: https://duckdb.org/docs/sql/statements/create_sequence
       # https://stackoverflow.com/a/72883259/946850
       if (is_duckdb(con)) {
@@ -404,8 +406,9 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
       }
 
       # SQLite:
-      # For a primary key, autoincrementing works by default, and it is almost never
-      # necessary to use the `AUTOINCREMENT` keyword. So nothing we need to do here.
+      # For a primary key, autoincrementing works by default,
+      # and it is almost never necessary to use the `AUTOINCREMENT` keyword.
+      # So nothing we need to do here.
       # Ref: https://www.sqlite.org/autoinc.html
     }
 
