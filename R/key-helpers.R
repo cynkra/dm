@@ -104,7 +104,7 @@ is_unique_key_se <- function(.data, colname, max_value = MAX_COMMAS) {
     mutate(any_na = if_else(!!any_value_na_expr, 1L, 0L)) %>%
     filter(n != 1 | any_na != 0L) %>%
     arrange(desc(n), !!!syms(val_names)) %>%
-    utils::head(max_value + 1) %>%
+    head_at_most(max_value + 1) %>%
     collect()
 
   res_tbl[val_names] <- map(res_tbl[val_names], format, trim = TRUE, justify = "none")
