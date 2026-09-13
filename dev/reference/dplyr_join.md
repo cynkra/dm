@@ -14,7 +14,7 @@ left_join(
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -30,7 +30,7 @@ left_join(
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -45,7 +45,7 @@ inner_join(
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -61,7 +61,7 @@ inner_join(
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -76,7 +76,7 @@ full_join(
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   relationship = NULL,
   select = NULL
@@ -91,7 +91,7 @@ full_join(
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   relationship = NULL
 )
@@ -105,7 +105,7 @@ right_join(
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -121,7 +121,7 @@ right_join(
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -134,13 +134,13 @@ semi_join(
   by = NULL,
   copy = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   suffix = NULL,
   select = NULL
 )
 
 # S3 method for class 'dm_keyed_tbl'
-semi_join(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"))
+semi_join(x, y, by = NULL, copy = NULL, ..., na_matches = NULL)
 
 # S3 method for class 'dm_zoomed'
 anti_join(
@@ -149,13 +149,13 @@ anti_join(
   by = NULL,
   copy = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   suffix = NULL,
   select = NULL
 )
 
 # S3 method for class 'dm_keyed_tbl'
-anti_join(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"))
+anti_join(x, y, by = NULL, copy = NULL, ..., na_matches = NULL)
 
 # S3 method for class 'dm_zoomed'
 nest_join(
@@ -166,7 +166,7 @@ nest_join(
   keep = NULL,
   name = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   unmatched = "drop"
 )
 
