@@ -1,5 +1,44 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9015
+
+## Bug fixes
+
+- Let the backend decide how joins match `NA`, with `na_matches = NULL` (#2522).
+
+- Stop asking SQL Server for `TOP Inf` when `.max_value` is infinite (#2518).
+
+- Build the constraint identifier for MariaDB and MySQL, so `dm_meta()` keys hold (#2516).
+
+- Stop calling `dplyr::src_tbls()`, deprecated in dbplyr 2.6.0 (#2504).
+
+- Silence the table identifier warning when appending autoincrement rows (#2502).
+
+## Chore
+
+- Remove Copilot setup steps.
+
+## Testing
+
+- Record the DuckDB `dm_filter()` snapshot from a full run (#2525).
+
+- Scrub the `src:` line out of the `dm_filter()` snapshot (#2524).
+
+- Compare identifier quoting by dm's own route, not DBI's (#2523).
+
+- Refresh the DuckDB `dm_sql()` snapshots for dbplyr 2.6.0 (#2515).
+
+- Record the backend snapshot variants, and refresh what dbplyr 2.6.0 changed (#2512).
+
+- Give the `dm_meta()` snapshot a backend variant, so MariaDB stops fighting it (#2514).
+
+- Give backend-sensitive snapshots a variant, raise the dbplyr floor (#2501).
+
+## Uncategorized
+
+- Fix(fledge): Push the bump to the default branch wherever that is allowed (cynkra/cynkratemplate#117).
+
+
 # dm 1.1.2.9014
 
 ## Bug fixes
