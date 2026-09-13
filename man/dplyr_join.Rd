@@ -27,7 +27,7 @@
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -42,7 +42,7 @@
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -56,7 +56,7 @@
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -71,7 +71,7 @@
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -85,7 +85,7 @@
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   relationship = NULL,
   select = NULL
@@ -99,7 +99,7 @@
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   relationship = NULL
 )
@@ -112,7 +112,7 @@
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -127,7 +127,7 @@
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -139,12 +139,12 @@
   by = NULL,
   copy = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   suffix = NULL,
   select = NULL
 )
 
-\method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"))
+\method{semi_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ..., na_matches = NULL)
 
 \method{anti_join}{dm_zoomed}(
   x,
@@ -152,12 +152,12 @@
   by = NULL,
   copy = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   suffix = NULL,
   select = NULL
 )
 
-\method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ..., na_matches = c("na", "never"))
+\method{anti_join}{dm_keyed_tbl}(x, y, by = NULL, copy = NULL, ..., na_matches = NULL)
 
 \method{nest_join}{dm_zoomed}(
   x,
@@ -167,7 +167,7 @@
   keep = NULL,
   name = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   unmatched = "drop"
 )
 

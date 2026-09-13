@@ -655,6 +655,22 @@ compute.dm_zoomed <- function(x, ...) {
 #'   semi_join(airlines, by = "name")
 NULL
 
+# `na_matches` has no one right default.
+# `dplyr::*_join()` on a data frame matches `NA` to `NA`,
+# and `dbplyr::*_join()` on a lazy table does not,
+# because the `IS NOT DISTINCT FROM` that `"na"` compiles to
+# is not a condition every database can join on --
+# Postgres refuses to plan a `FULL JOIN` with it at all.
+# `NULL` therefore means "whatever this table's own backend does",
+# so a join through a `dm` renders the same as the same join written directly.
+resolve_na_matches <- function(na_matches, tbl) {
+  if (!is.null(na_matches)) {
+    return(na_matches)
+  }
+
+  if (inherits(tbl, "tbl_lazy")) "never" else "na"
+}
+
 #' @export
 left_join.dm <- function(
   x,
@@ -664,7 +680,7 @@ left_join.dm <- function(
   suffix = c(".x", ".y"),
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -682,7 +698,7 @@ left_join.dm_zoomed <- function(
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -697,7 +713,7 @@ left_join.dm_zoomed <- function(
     copy = FALSE,
     ...,
     keep = keep,
-    na_matches = na_matches,
+    na_matches = resolve_na_matches(na_matches, join_data$x_tbl),
     multiple = multiple,
     unmatched = unmatched,
     relationship = relationship
@@ -715,7 +731,7 @@ left_join.dm_keyed_tbl <- function(
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -732,7 +748,7 @@ left_join.dm_keyed_tbl <- function(
     copy = copy,
     suffix = join_spec$suffix,
     keep = keep,
-    na_matches = na_matches,
+    na_matches = resolve_na_matches(na_matches, join_spec$x_tbl),
     multiple = multiple,
     unmatched = unmatched,
     relationship = relationship,
@@ -758,7 +774,7 @@ inner_join.dm <- function(
   suffix = c(".x", ".y"),
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -776,7 +792,7 @@ inner_join.dm_zoomed <- function(
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -791,7 +807,7 @@ inner_join.dm_zoomed <- function(
     copy = FALSE,
     ...,
     keep = keep,
-    na_matches = na_matches,
+    na_matches = resolve_na_matches(na_matches, join_data$x_tbl),
     multiple = multiple,
     unmatched = unmatched,
     relationship = relationship
@@ -809,7 +825,7 @@ inner_join.dm_keyed_tbl <- function(
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -826,7 +842,7 @@ inner_join.dm_keyed_tbl <- function(
     copy = copy,
     suffix = join_spec$suffix,
     keep = keep,
-    na_matches = na_matches,
+    na_matches = resolve_na_matches(na_matches, join_spec$x_tbl),
     multiple = multiple,
     unmatched = unmatched,
     relationship = relationship,
@@ -852,7 +868,7 @@ full_join.dm <- function(
   suffix = c(".x", ".y"),
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   relationship = NULL
 ) {
@@ -869,7 +885,7 @@ full_join.dm_zoomed <- function(
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   relationship = NULL,
   select = NULL
@@ -883,7 +899,7 @@ full_join.dm_zoomed <- function(
     copy = FALSE,
     ...,
     keep = keep,
-    na_matches = na_matches,
+    na_matches = resolve_na_matches(na_matches, join_data$x_tbl),
     multiple = multiple,
     relationship = relationship
   )
@@ -900,7 +916,7 @@ full_join.dm_keyed_tbl <- function(
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   relationship = NULL
 ) {
@@ -916,7 +932,7 @@ full_join.dm_keyed_tbl <- function(
     copy = copy,
     suffix = join_spec$suffix,
     keep = keep,
-    na_matches = na_matches,
+    na_matches = resolve_na_matches(na_matches, join_spec$x_tbl),
     multiple = multiple,
     relationship = relationship,
     ...
@@ -941,7 +957,7 @@ right_join.dm <- function(
   suffix = c(".x", ".y"),
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -959,7 +975,7 @@ right_join.dm_zoomed <- function(
   suffix = NULL,
   ...,
   keep = NULL,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL,
@@ -974,7 +990,7 @@ right_join.dm_zoomed <- function(
     copy = FALSE,
     ...,
     keep = keep,
-    na_matches = na_matches,
+    na_matches = resolve_na_matches(na_matches, join_data$x_tbl),
     multiple = multiple,
     unmatched = unmatched,
     relationship = relationship
@@ -992,7 +1008,7 @@ right_join.dm_keyed_tbl <- function(
   suffix = NULL,
   ...,
   keep = FALSE,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   multiple = "all",
   unmatched = "drop",
   relationship = NULL
@@ -1009,7 +1025,7 @@ right_join.dm_keyed_tbl <- function(
     copy = copy,
     suffix = join_spec$suffix,
     keep = keep,
-    na_matches = na_matches,
+    na_matches = resolve_na_matches(na_matches, join_spec$x_tbl),
     multiple = multiple,
     unmatched = unmatched,
     relationship = relationship,
@@ -1027,7 +1043,7 @@ right_join.dm_keyed_tbl <- function(
 }
 
 #' @export
-semi_join.dm <- function(x, y, by = NULL, copy = FALSE, ..., na_matches = c("na", "never")) {
+semi_join.dm <- function(x, y, by = NULL, copy = FALSE, ..., na_matches = NULL) {
   check_zoomed(x)
 }
 
@@ -1039,7 +1055,7 @@ semi_join.dm_zoomed <- function(
   by = NULL,
   copy = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   suffix = NULL,
   select = NULL
 ) {
@@ -1051,7 +1067,7 @@ semi_join.dm_zoomed <- function(
     join_data$by,
     copy = FALSE,
     ...,
-    na_matches = na_matches
+    na_matches = resolve_na_matches(na_matches, join_data$x_tbl)
   )
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
@@ -1064,7 +1080,7 @@ semi_join.dm_keyed_tbl <- function(
   by = NULL,
   copy = NULL,
   ...,
-  na_matches = c("na", "never")
+  na_matches = NULL
 ) {
   if (!is_dm_keyed_tbl(y)) {
     return(NextMethod())
@@ -1086,7 +1102,7 @@ semi_join.dm_keyed_tbl <- function(
 }
 
 #' @export
-anti_join.dm <- function(x, y, by = NULL, copy = FALSE, ..., na_matches = c("na", "never")) {
+anti_join.dm <- function(x, y, by = NULL, copy = FALSE, ..., na_matches = NULL) {
   check_zoomed(x)
 }
 
@@ -1098,7 +1114,7 @@ anti_join.dm_zoomed <- function(
   by = NULL,
   copy = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   suffix = NULL,
   select = NULL
 ) {
@@ -1110,7 +1126,7 @@ anti_join.dm_zoomed <- function(
     join_data$by,
     copy = FALSE,
     ...,
-    na_matches = na_matches
+    na_matches = resolve_na_matches(na_matches, join_data$x_tbl)
   )
   replace_zoomed_tbl(x, joined_tbl, join_data$new_col_names)
 }
@@ -1123,7 +1139,7 @@ anti_join.dm_keyed_tbl <- function(
   by = NULL,
   copy = NULL,
   ...,
-  na_matches = c("na", "never")
+  na_matches = NULL
 ) {
   if (!is_dm_keyed_tbl(y)) {
     return(NextMethod())
@@ -1153,7 +1169,7 @@ nest_join.dm <- function(
   keep = NULL,
   name = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   unmatched = "drop"
 ) {
   check_zoomed(x)
@@ -1170,7 +1186,7 @@ nest_join.dm_zoomed <- function(
   keep = NULL,
   name = NULL,
   ...,
-  na_matches = c("na", "never"),
+  na_matches = NULL,
   unmatched = "drop"
 ) {
   y_name <- as_string(enexpr(y))
