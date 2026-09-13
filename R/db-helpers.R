@@ -147,15 +147,17 @@ find_name_clashes <- function(old, new) {
 get_src_tbl_names <- function(src, schema = NULL, dbname = NULL, names_pattern = "{.table}") {
   schema <- check_schema(src, schema)
 
+  con <- con_from_src_or_con(src)
+
   if (!is_mssql(src) && !is_postgres(src) && !is_redshift(src) && !is_mariadb(src)) {
     warn_if_arg_not(dbname, only_on = "MSSQL")
-    tables <- src_tbls(src)
+    # `dplyr::src_tbls()` is deprecated in dbplyr 2.6.0,
+    # and its method for a SQL source is this call.
+    tables <- DBI::dbListTables(con)
     out <- purrr::map(tables, ~ DBI::Id(table = .x))
 
     return(set_names(out, tables))
   }
-
-  con <- con_from_src_or_con(src)
 
   if (is_mssql(src)) {
     # MSSQL
