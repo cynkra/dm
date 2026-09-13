@@ -51,3 +51,15 @@ remote_name_qual <- function(x) {
     dbplyr::remote_name(x)
   }
 }
+
+# `dbplyr::remote_table()` returns pre-quoted SQL from dbplyr 2.6.0 on,
+# and the `table` argument of `dbplyr::sql_query_append()` warns when it has to read SQL as a table identifier.
+# `I()` states that the identifier is quoted already, which is what we hand it, and yields the same table path.
+remote_table_arg <- function(x) {
+  table <- dbplyr::remote_table(x)
+  if (dbplyr::is.sql(table)) {
+    I(unclass(table))
+  } else {
+    table
+  }
+}
