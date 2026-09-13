@@ -18,18 +18,14 @@ dm_gui(..., dm = NULL, select_tables = TRUE, debug = FALSE)
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-This function starts a Shiny application that allows to define \code{dm} objects
-from a database or from local data frames.
-The application generates R code that can be inserted or copy-pasted
-into an R script or function.
+This function starts a Shiny application that allows to define \code{dm} objects from a database or from local data frames.
+The application generates R code that can be inserted or copy-pasted into an R script or function.
 }
 \details{
-In a future release, the app will also allow composing \code{dm} objects directly
-from database connections or data frames.
+In a future release, the app will also allow composing \code{dm} objects directly from database connections or data frames.
 
 The signature of this function is subject to change without notice.
-This should not pose too many problems, because it will usually be run
-interactively.
+This should not pose too many problems, because it will usually be run interactively.
 }
 \examples{
 \dontrun{

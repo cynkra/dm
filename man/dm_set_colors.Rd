@@ -39,8 +39,7 @@ the bottom of
 \code{dm_get_colors()} returns the colors defined for a data model.
 
 \code{dm_get_available_colors()} returns an overview of the names of the available colors
-These are the standard colors also returned by \code{\link[grDevices:colors]{grDevices::colors()}} plus a default
-table color with the name "default".
+These are the standard colors also returned by \code{\link[grDevices:colors]{grDevices::colors()}} plus a default table color with the name "default".
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}

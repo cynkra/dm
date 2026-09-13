@@ -9,8 +9,8 @@ check_key(x, ..., .data = deprecated())
 \arguments{
 \item{x}{The data frame whose columns should be tested for key properties.}
 
-\item{...}{The names of the columns to be checked, processed with
-\code{\link[dplyr:select]{dplyr::select()}}. If omitted, all columns will be checked.}
+\item{...}{The names of the columns to be checked, processed with \code{\link[dplyr:select]{dplyr::select()}}.
+If omitted, all columns will be checked.}
 
 \item{.data}{Deprecated.}
 }

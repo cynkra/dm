@@ -15,12 +15,11 @@ dm_paste(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL)
 
 \item{tab_width}{Indentation width for code from the second line onwards}
 
-\item{options}{Formatting options. A character vector containing some of:
+\item{options}{Formatting options.
+A character vector containing some of:
 \itemize{
-\item \code{"tables"}: \code{\link[=tibble]{tibble()}} calls for empty table definitions
-derived from \code{\link[=dm_ptype]{dm_ptype()}}, overrides \code{"select"}.
-\item \code{"select"}: \code{\link[=dm_select]{dm_select()}} statements for columns that are part
-of the dm.
+\item \code{"tables"}: \code{\link[=tibble]{tibble()}} calls for empty table definitions derived from \code{\link[=dm_ptype]{dm_ptype()}}, overrides \code{"select"}.
+\item \code{"select"}: \code{\link[=dm_select]{dm_select()}} statements for columns that are part of the dm.
 \item \code{"keys"}: \code{\link[=dm_add_pk]{dm_add_pk()}}, \code{\link[=dm_add_fk]{dm_add_fk()}} and \code{\link[=dm_add_uk]{dm_add_uk()}} statements for adding keys.
 \item \code{"color"}: \code{\link[=dm_set_colors]{dm_set_colors()}} statements to set color.
 \item \code{"all"}: All options above except \code{"select"}

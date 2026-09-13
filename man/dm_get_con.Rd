@@ -14,13 +14,11 @@ The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object for a \code
 }
 \description{
 \code{dm_get_con()} returns the DBI connection for a \code{dm} object.
-This works only if the tables are stored on a database, otherwise an error
-is thrown.
+This works only if the tables are stored on a database, otherwise an error is thrown.
 }
 \details{
 All lazy tables in a dm object must be stored on the same database server
-and accessed through the same connection, because a large part
-of the package's functionality relies on efficient joins.
+and accessed through the same connection, because a large part of the package's functionality relies on efficient joins.
 }
 \examples{
 \dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}

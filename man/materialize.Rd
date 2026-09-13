@@ -17,16 +17,14 @@
 
 \item{temporary}{Must remain \code{TRUE}.}
 
-\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
-hide in non-interactive mode, show in interactive mode. Requires the
-'progress' package.}
+\item{progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
+Requires the 'progress' package.}
 }
 \value{
 A \code{dm} object of the same structure as the input.
 }
 \description{
-\code{compute()} materializes all tables in a \code{dm} to new temporary
-tables on the database.
+\code{compute()} materializes all tables in a \code{dm} to new temporary tables on the database.
 
 \code{collect()} downloads the tables in a \code{dm} object as local \link{tibble}s.
 }

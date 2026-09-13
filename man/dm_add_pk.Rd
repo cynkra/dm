@@ -25,13 +25,11 @@ To define a compound key, use \code{c(col1, col2)}.}
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{autoincrement}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-If \code{TRUE}, the  column specified in \code{columns} will be populated
-automatically with a sequence of integers.}
+If \code{TRUE}, the column specified in \code{columns} will be populated automatically with a sequence of integers.}
 
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
-\item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
-set for this table.
+\item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 }
 \value{
@@ -39,10 +37,8 @@ An updated \code{dm} with an additional primary key.
 }
 \description{
 \code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
-If \code{check == TRUE}, then it will first check if
-the given combination of columns is a unique key of the table.
-If \code{force == TRUE}, the function will replace an already
-set key, without altering foreign keys previously pointing to that primary key.
+If \code{check == TRUE}, then it will first check if the given combination of columns is a unique key of the table.
+If \code{force == TRUE}, the function will replace an already set key, without altering foreign keys previously pointing to that primary key.
 }
 \details{
 There can be only one primary key per table in a \code{\link{dm}}.

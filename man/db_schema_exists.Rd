@@ -26,8 +26,8 @@ Methods are not available for all DBMS.
 
 Additional arguments are:
 \itemize{
-\item \code{dbname}: supported for MSSQL. Check if a schema exists on a different
-database on the connected MSSQL-server; default: database addressed by \code{con}.
+\item \code{dbname}: supported for MSSQL.
+Check if a schema exists on a different database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{

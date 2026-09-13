@@ -61,11 +61,9 @@ examine_cardinality(
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{x_select, y_select}{Key columns to restrict the check, processed with
-\code{\link[dplyr:select]{dplyr::select()}}.}
+\item{x_select, y_select}{Key columns to restrict the check, processed with \code{\link[dplyr:select]{dplyr::select()}}.}
 
-\item{by_position}{Set to \code{TRUE} to ignore column names and match
-by position instead.
+\item{by_position}{Set to \code{TRUE} to ignore column names and match by position instead.
 The default means matching by name, use \code{x_select} and/or \code{y_select}
 to align the names.}
 }
@@ -83,8 +81,7 @@ All \code{check_cardinality_...()} functions test the following conditions:
 \item Are the rows in \code{y} a subset of the rows in \code{x}?
 \item Does the relation between \code{x} and \code{y} meet the cardinality requirements?
 One row from \code{x} must correspond to the requested number of rows in \code{y},
-e.g. \verb{_0_1} means that there must be zero or one rows in \code{y} for each
-row in \code{x}.
+e.g. \verb{_0_1} means that there must be zero or one rows in \code{y} for each row in \code{x}.
 }
 
 \code{examine_cardinality()} also checks the first two points and subsequently determines the type of cardinality.
@@ -94,46 +91,37 @@ to a set of key columns without affecting the return value.
 }
 \details{
 All cardinality functions accept a parent and a child table (\code{x} and \code{y}).
-All rows in \code{x} must be unique, and all rows in \code{y} must be a subset of the
-rows in \code{x}.
+All rows in \code{x} must be unique, and all rows in \code{y} must be a subset of the rows in \code{x}.
 The \code{x_select} and \code{y_select} arguments allow restricting the check
 to a set of key columns without affecting the return value.
 If given, both arguments must refer to the same number of key columns.
 
 The cardinality specifications "0_n", "1_n", "0_1", "1_1" refer to the expected relation that the child table has with the parent table.
-"0", "1" and "n" refer to the occurrences of value combinations
-in \code{y} that correspond to each combination in the
-columns of the parent table.
+"0", "1" and "n" refer to the occurrences of value combinations in \code{y}
+that correspond to each combination in the columns of the parent table.
 "n" means "more than one" in this context, with no upper limit.
 
-\strong{"0_n"}: no restrictions, each row in \code{x} has at least 0 and at most
-n corresponding occurrences in \code{y}.
+\strong{"0_n"}: no restrictions, each row in \code{x} has at least 0 and at most n corresponding occurrences in \code{y}.
 
-\strong{"1_n"}: each row in \code{x} has at least 1 and at most
-n corresponding occurrences in \code{y}.
+\strong{"1_n"}: each row in \code{x} has at least 1 and at most n corresponding occurrences in \code{y}.
 This means that there is a "surjective" mapping from the child table
-to the parent table, i.e. each parent table row exists at least once in the
-child table.
+to the parent table, i.e. each parent table row exists at least once in the child table.
 
-\strong{"0_1"}: each row in \code{x} has at least 0 and at most
-1 corresponding occurrence in \code{y}.
+\strong{"0_1"}: each row in \code{x} has at least 0 and at most 1 corresponding occurrence in \code{y}.
 This means that there is a "injective" mapping from the child table
-to the parent table, i.e. no combination of values in the
-parent table columns is addressed multiple times.
+to the parent table, i.e. no combination of values in the parent table columns is addressed multiple times.
 But not all parent table rows have to be referred to.
 
 \strong{"1_1"}: each row in \code{x} occurs exactly once in \code{y}.
-This means that there is a "bijective" ("injective" AND "surjective") mapping
-between the child table and the parent table, i.e. the
-sets of rows are identical.
+This means that there is a "bijective" ("injective" AND "surjective") mapping between the child table and the parent table,
+i.e. the sets of rows are identical.
 
 Finally, \code{examine_cardinality()} tests for and returns the nature of the relationship
 (injective, surjective, bijective, or none of these)
 between the two given sets of columns.
 If either \code{x} is not unique or there are rows in \code{y} that are missing from \code{x},
 the requirements for a cardinality test is not fulfilled.
-No error will be thrown, but
-the result will contain the information which prerequisite was violated.
+No error will be thrown, but the result will contain the information which prerequisite was violated.
 }
 \examples{
 d1 <- tibble::tibble(a = 1:5)

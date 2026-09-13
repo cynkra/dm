@@ -23,17 +23,17 @@ An updated \code{dm} with an additional unqiue key.
 }
 \description{
 \code{dm_add_uk()} marks the specified columns as a unique key of the specified table.
-If \code{check == TRUE}, then it will first check if
-the given combination of columns is a unique key of the table.
+If \code{check == TRUE}, then it will first check if the given combination of columns is a unique key of the table.
 }
 \details{
 The difference between a primary key (PK) and a unique key (UK) consists in the following:
 \itemize{
-\item When a local \code{dm} is copied to a database (DB) with \code{copy_dm_to()}, a PK will be set on the DB by default, whereas a UK is being ignored.
+\item When a local \code{dm} is copied to a database (DB) with \code{copy_dm_to()},
+a PK will be set on the DB by default, whereas a UK is being ignored.
 \item A PK can be set as an \code{autoincrement} key (also implemented on certain DBMS when the \code{dm} is transferred to the DB)
 \item There can be only one PK for each table, whereas there can be unlimited UKs
-\item A UK will be used, if the same table has an autoincrement PK in addition, to ensure that during delta load processes
-on the DB (cf. \code{\link[=dm_rows_append]{dm_rows_append()}}) the foreign keys are updated accordingly.
+\item A UK will be used, if the same table has an autoincrement PK in addition,
+to ensure that during delta load processes on the DB (cf. \code{\link[=dm_rows_append]{dm_rows_append()}}) the foreign keys are updated accordingly.
 If no UK is available, the insertion is done row-wise, which also ensures a correct matching, but can be much slower.
 \item A UK can generally enhance the data model by adding additional information
 \item There can also be implicit UKs, when the columns addressed by a foreign key are neither a PK nor a UK.

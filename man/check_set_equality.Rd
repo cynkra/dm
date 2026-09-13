@@ -18,11 +18,9 @@ check_set_equality(
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{x_select, y_select}{Key columns to restrict the check, processed with
-\code{\link[dplyr:select]{dplyr::select()}}.}
+\item{x_select, y_select}{Key columns to restrict the check, processed with \code{\link[dplyr:select]{dplyr::select()}}.}
 
-\item{by_position}{Set to \code{TRUE} to ignore column names and match
-by position instead.
+\item{by_position}{Set to \code{TRUE} to ignore column names and match by position instead.
 The default means matching by name, use \code{x_select} and/or \code{y_select}
 to align the names.}
 }

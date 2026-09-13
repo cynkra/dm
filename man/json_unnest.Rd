@@ -7,8 +7,7 @@
 json_unnest(data, cols, ..., names_sep = NULL, names_repair = "check_unique")
 }
 \arguments{
-\item{data}{A data frame, a data frame extension (e.g. a tibble), or  a lazy
-data frame (e.g. from dbplyr or dtplyr).}
+\item{data}{A data frame, a data frame extension (e.g. a tibble), or a lazy data frame (e.g. from dbplyr or dtplyr).}
 
 \item{cols}{<\code{\link[tidyr:tidyr_tidy_select]{tidy-select}}> List-columns to unnest.
 

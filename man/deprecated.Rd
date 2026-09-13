@@ -231,8 +231,7 @@ dm_rows_truncate(x, y, ..., in_place = NULL, progress = NA)
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key
-set for this table.
+\item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key set for this table.
 If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 
 \item{dm}{A \code{\link{dm}} object.}
@@ -257,30 +256,24 @@ These functions are deprecated in favor of better alternatives.
 Most functions with the \code{cdm_} prefix have an identical alternative
 with a \code{dm_} prefix.
 
-\verb{sql_schema_*()} functions have been replaced with the corresponding
-\verb{db_schema_*()} functions.
+\verb{sql_schema_*()} functions have been replaced with the corresponding \verb{db_schema_*()} functions.
 
 \code{dm_join_to_tbl()} is deprecated in favor of \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}}.
 
-\code{dm_is_referenced()} is soft-deprecated, use the information returned from
-\code{\link[=dm_get_all_fks]{dm_get_all_fks()}} instead.
+\code{dm_is_referenced()} is soft-deprecated, use the information returned from \code{\link[=dm_get_all_fks]{dm_get_all_fks()}} instead.
 
-\code{dm_get_referencing_tables()} is soft-deprecated, use the information
-returned from \code{\link[=dm_get_all_fks]{dm_get_all_fks()}} instead.
+\code{dm_get_referencing_tables()} is soft-deprecated, use the information returned from \code{\link[=dm_get_all_fks]{dm_get_all_fks()}} instead.
 
 \code{validate_dm()} has been replaced by \code{\link[=dm_validate]{dm_validate()}} for consistency.
 
-\code{dm_add_tbl} is deprecated as of dm 1.0.0, because the same functionality
-is offered by \code{\link[=dm]{dm()}} with \code{.name_repair = "unique"}.
+\code{dm_add_tbl} is deprecated as of dm 1.0.0, because the same functionality is offered by \code{\link[=dm]{dm()}} with \code{.name_repair = "unique"}.
 
-\code{dm_bind()}  is deprecated as of dm 1.0.0, because the same functionality
-is offered by \code{\link[=dm]{dm()}}.
+\code{dm_bind()} is deprecated as of dm 1.0.0, because the same functionality is offered by \code{\link[=dm]{dm()}}.
 
-\code{dm_squash_to_tbl()}  is deprecated as of dm 1.0.0, because the same functionality
-is offered by \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}} with \code{.recursive = TRUE}.
+\code{dm_squash_to_tbl()} is deprecated as of dm 1.0.0,
+because the same functionality is offered by \code{\link[=dm_flatten_to_tbl]{dm_flatten_to_tbl()}} with \code{.recursive = TRUE}.
 
 \code{rows_truncate()} is deprecated as of dm 1.0.0, because it's a DDL operation
-and requires different permissions than the
-\code{\link[dplyr:rows_insert]{dplyr::rows_*()}} functions.
+and requires different permissions than the \code{\link[dplyr:rows_insert]{dplyr::rows_*()}} functions.
 }
 \keyword{internal}
