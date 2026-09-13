@@ -1,3 +1,13 @@
+# `remote_name_qual()` quotes through dbplyr, and from dbplyr 2.6.0 that means
+# `[name]` on SQL Server where `DBI::dbQuoteIdentifier()` gives `"name"`.
+# Both are valid there, so comparing the two routes tests whose quoting rules are whose,
+# not anything about dm.
+# Quoting the expectation the way dm quotes keeps the assertion on what it was always about:
+# that a learned table carries a quoted identifier rather than a bare one.
+quote_like_dm <- function(con, x) {
+  as.character(dbplyr::escape(dbplyr::ident(x), collapse = NULL, con = con))
+}
+
 test_that("table identifiers are quoted", {
   con_db <- my_db_test_con()
 
@@ -37,7 +47,7 @@ test_that("table identifiers are quoted", {
   # `gsub()`, cause schema names are part of the remote_names (also standard schemas "dbo" for MSSQL and "public" for Postgres).
   expect_setequal(
     gsub("^.*\\.", "", unname(remote_tbl_names_learned)),
-    unclass(DBI::dbQuoteIdentifier(con_db, names(dm)))
+    quote_like_dm(con_db, names(dm))
   )
 })
 
@@ -73,8 +83,8 @@ test_that("table identifiers are quoted with learn_keys = FALSE", {
 
   con <- dm_get_con(dm)
   expect_equal(
-    gsub("^.*\\.", "", DBI::SQL(unname(remote_names))),
-    DBI::dbQuoteIdentifier(con, names(dm))
+    gsub("^.*\\.", "", unname(remote_names)),
+    quote_like_dm(con, names(dm))
   )
 })
 
