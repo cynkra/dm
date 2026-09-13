@@ -44,7 +44,7 @@ test_that("dm_filter() legacy API", {
 test_that("dm_filter() deprecations", {
   local_options(lifecycle_verbosity = "warning")
 
-  expect_snapshot(variant = my_test_src_name, {
+  expect_snapshot(variant = my_test_src_name, transform = scrub_src, {
     dm_filter(dm_for_filter(), tf_1, a > 4)
     dm_filter(dm = dm_for_filter(), tf_1, a > 4)
     dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters()
