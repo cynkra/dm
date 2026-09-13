@@ -9,7 +9,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' Generate SQL scripts to create tables, load data and set constraints, keys and indices.
-#'  This function powers [copy_dm_to()] and is useful if you need more control over the process of copying a `dm` to a database.
+#' This function powers [copy_dm_to()] and is useful if you need more control over the process of copying a `dm` to a database.
 #'
 #' @param dm A `dm` object.
 #' @param dest Connection to database.

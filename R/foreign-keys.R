@@ -2,9 +2,9 @@
 #'
 #' @description
 #' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with respect to a key of table `ref_table`.
-#'  Usually the referenced columns are a primary key in `ref_table`.
-#'  However, it is also possible to specify other columns via the `ref_columns` argument.
-#'  If `check == TRUE`, then it will first check if the values in `columns` are a subset of the values of the key in table `ref_table`.
+#' Usually the referenced columns are a primary key in `ref_table`.
+#' However, it is also possible to specify other columns via the `ref_columns` argument.
+#' If `check == TRUE`, then it will first check if the values in `columns` are a subset of the values of the key in table `ref_table`.
 #'
 #' @inheritParams dm_add_pk
 #' @param columns The columns of `table` which are to become the foreign key columns that reference `ref_table`.
@@ -30,7 +30,7 @@
 #'
 #' @details
 #' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor explicit unique keys (UK).
-#'  This can happen
+#' This can happen
 #'   1. when a FK is added without a corresponding PK or UK being present in the parent table
 #'   1. when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`]) without first removing the associated FKs.
 #'
@@ -178,8 +178,8 @@ dm_add_fk_impl <- function(dm, table, column, ref_table, ref_column, on_delete) 
 #' `r lifecycle::badge("deprecated")`
 #'
 #' These functions are deprecated because of their limited use
-#'  since the introduction of foreign keys to arbitrary columns in dm 0.2.1.
-#'  Use [dm_get_all_fks()] with table manipulation functions instead.
+#' since the introduction of foreign keys to arbitrary columns in dm 0.2.1.
+#' Use [dm_get_all_fks()] with table manipulation functions instead.
 #'
 #' @inheritParams dm_add_fk
 #' @export
@@ -315,7 +315,7 @@ dm_get_all_fks_def_impl <- function(
 #'
 #' @description
 #' `dm_rm_fk()` can remove either one reference between two tables, or multiple references at once (with a message).
-#'  An error is thrown if no matching foreign key is found.
+#' An error is thrown if no matching foreign key is found.
 #'
 #' @family foreign key functions
 #'
@@ -508,18 +508,18 @@ dm_rm_fk_impl <- function(
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Determine which columns would be good candidates to be used as foreign keys of a table,
-#'  to reference the primary key column of another table of the [`dm`] object.
+#' to reference the primary key column of another table of the [`dm`] object.
 #'
 #' @inheritParams dm_add_fk
 #' @param table The table whose columns should be tested for suitability as foreign keys.
 #' @param ref_table A table with a primary key.
 #'
 #' @details `dm_enum_fk_candidates()` first checks if `ref_table` has a primary key set,
-#'  if not, an error is thrown.
+#' if not, an error is thrown.
 #'
 #' If `ref_table` does have a primary key, then a join operation will be tried using
-#'  that key as the `by` argument of join() to match it to each column of `table`.
-#'  Attempting to join incompatible columns triggers an error.
+#' that key as the `by` argument of join() to match it to each column of `table`.
+#' Attempting to join incompatible columns triggers an error.
 #'
 #' The outcome of the join operation determines the value of the `why` column in the result:
 #'
@@ -529,8 +529,8 @@ dm_rm_fk_impl <- function(
 #'
 #' @section Life cycle:
 #' These functions are marked "experimental" because we are not yet sure about the interface,
-#'  in particular if we need both `dm_enum...()` and `enum...()` variants.
-#'  Changing the interface later seems harmless because these functions are most likely used interactively.
+#' in particular if we need both `dm_enum...()` and `enum...()` variants.
+#' Changing the interface later seems harmless because these functions are most likely used interactively.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{

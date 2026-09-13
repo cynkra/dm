@@ -2,40 +2,40 @@
 #'
 #' @description
 #' Zooming to a table of a [`dm`] allows for the use of many `dplyr`-verbs directly on this table,
-#'  while retaining the context of the `dm` object.
+#' while retaining the context of the `dm` object.
 #'
 #' `dm_zoom_to()` zooms to the given table.
 #'
 #' `dm_update_zoomed()` overwrites the originally zoomed table with the manipulated table.
-#'  The filter conditions for the zoomed table are added to the original filter conditions.
+#' The filter conditions for the zoomed table are added to the original filter conditions.
 #'
 #' `dm_insert_zoomed()` adds a new table to the `dm`.
 #'
 #' `dm_discard_zoomed()` discards the zoomed table and returns the `dm` as it was before zooming.
 #'
 #' Please refer to `vignette("tech-db-zoom", package = "dm")`
-#'  for a more detailed introduction.
+#' for a more detailed introduction.
 #'
 #' @inheritParams dm_add_pk
 #' @inheritParams vctrs::vec_as_names
 #'
 #' @details
 #' Whenever possible, the key relations of the original table are transferred to the resulting table
-#'  when using `dm_insert_zoomed()` or `dm_update_zoomed()`.
+#' when using `dm_insert_zoomed()` or `dm_update_zoomed()`.
 #'
 #' Functions from `dplyr` that are supported for a `dm_zoomed`: [group_by()], [summarise()], [mutate()],
-#'  [transmute()], [filter()], [select()], [rename()] and [ungroup()].
-#'  You can use these functions just like you would
-#'  with a normal table.
+#' [transmute()], [filter()], [select()], [rename()] and [ungroup()].
+#' You can use these functions just like you would
+#' with a normal table.
 #'
 #' Calling [filter()] on a zoomed `dm` is different from calling [dm_filter()]:
-#'  only with the latter, the filter expression is added to the list of table filters stored in the dm.
+#' only with the latter, the filter expression is added to the list of table filters stored in the dm.
 #'
 #' Furthermore, different `join()`-variants from \pkg{dplyr} are also supported,
-#'  e.g. [left_join()] and [semi_join()].
-#'  (Support for [nest_join()] is planned.)
-#'  The join-methods for `dm_zoomed` infer the columns to join by from the primary and foreign keys,
-#'  and have an extra argument `select` that allows choosing the columns of the RHS table.
+#' e.g. [left_join()] and [semi_join()].
+#' (Support for [nest_join()] is planned.)
+#' The join-methods for `dm_zoomed` infer the columns to join by from the primary and foreign keys,
+#' and have an extra argument `select` that allows choosing the columns of the RHS table.
 #'
 #' And -- last but not least -- also the \pkg{tidyr}-functions [unite()] and [separate()] are supported for `dm_zoomed`.
 #'

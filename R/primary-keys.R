@@ -2,12 +2,12 @@
 #'
 #' @description
 #' `dm_add_pk()` marks the specified columns as the primary key of the specified table.
-#'  If `check == TRUE`, then it will first check if the given combination of columns is a unique key of the table.
-#'  If `force == TRUE`, the function will replace an already set key, without altering foreign keys previously pointing to that primary key.
+#' If `check == TRUE`, then it will first check if the given combination of columns is a unique key of the table.
+#' If `force == TRUE`, the function will replace an already set key, without altering foreign keys previously pointing to that primary key.
 #'
 #' @details There can be only one primary key per table in a [`dm`].
-#'  It's possible though to set an unlimited number of unique keys using [dm_add_uk()]
-#'  or adding foreign keys pointing to columns other than the primary key columns with [dm_add_fk()].
+#' It's possible though to set an unlimited number of unique keys using [dm_add_uk()]
+#' or adding foreign keys pointing to columns other than the primary key columns with [dm_add_fk()].
 #'
 #' @inheritParams rlang::args_dots_empty
 #' @param dm A `dm` object.
@@ -142,8 +142,8 @@ dm_has_pk_impl <- function(dm, table) {
 #' `r lifecycle::badge("deprecated")`
 #'
 #' This function is deprecated because of its limited use
-#'  and its unintuitive return value.
-#'  Use [dm_get_all_pks()] instead.
+#' and its unintuitive return value.
+#' Use [dm_get_all_pks()] instead.
 #'
 #' @export
 #' @keywords internal
@@ -227,10 +227,10 @@ dm_get_all_pks_def_impl <- function(def, table = NULL) {
 #'
 #' @description
 #' If a table name is provided, `dm_rm_pk()` removes the primary key from this table and leaves the [`dm`] object otherwise unaltered.
-#'  If no table is given, the `dm` is stripped of all primary keys at once.
-#'  An error is thrown if no primary key matches the selection criteria.
-#'  If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
-#'  Foreign keys are never removed.
+#' If no table is given, the `dm` is stripped of all primary keys at once.
+#' An error is thrown if no primary key matches the selection criteria.
+#' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
+#' Foreign keys are never removed.
 #'
 #' @inheritParams dm_add_pk
 #' @param table A table in the `dm`.
@@ -332,7 +332,7 @@ dm_rm_pk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
 #' `r lifecycle::badge("experimental")`
 #'
 #' `enum_pk_candidates()` checks for each column of a table if the column contains only unique values,
-#'  and is thus a suitable candidate for a primary key of the table.
+#' and is thus a suitable candidate for a primary key of the table.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -343,8 +343,8 @@ dm_rm_pk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
 #'
 #' @section Life cycle:
 #' These functions are marked "experimental" because we are not yet sure about the interface,
-#'  in particular if we need both `dm_enum...()` and `enum...()` variants.
-#'  Changing the interface later seems harmless because these functions are most likely used interactively.
+#' in particular if we need both `dm_enum...()` and `enum...()` variants.
+#' Changing the interface later seems harmless because these functions are most likely used interactively.
 #'
 #' @rdname dm_enum_pk_candidates
 #' @export
@@ -366,7 +366,7 @@ enum_pk_candidates <- function(table, ...) {
 }
 
 #' @description `dm_enum_pk_candidates()` performs these checks
-#'  for a table in a [dm] object.
+#' for a table in a [dm] object.
 #'
 #' @family primary key functions
 #'

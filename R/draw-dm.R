@@ -5,10 +5,10 @@
 #'
 #' @details
 #' Currently, \pkg{dm} uses \pkg{DiagrammeR} to draw diagrams.
-#'  Use [DiagrammeRsvg::export_svg()] to convert the diagram to an SVG file.
+#' Use [DiagrammeRsvg::export_svg()] to convert the diagram to an SVG file.
 #'
 #' The backend for drawing the diagrams might change in the future.
-#'  If you rely on DiagrammeR, pass an explicit value for the `backend` argument.
+#' If you rely on DiagrammeR, pass an explicit value for the `backend` argument.
 #'
 #' @param dm A [`dm`] object.
 #' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
@@ -46,9 +46,9 @@
 #' @export
 #'
 #' @return An object with a [print()] method, which,
-#'  when printed, produces the output seen in the viewer as a side effect.
-#'  Currently, this is an object of class `grViz` (see also
-#'  [DiagrammeR::grViz()]), but this is subject to change.
+#' when printed, produces the output seen in the viewer as a side effect.
+#' Currently, this is an object of class `grViz` (see also
+#' [DiagrammeR::grViz()]), but this is subject to change.
 #'
 #' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #' dm_nycflights13() %>%
@@ -313,15 +313,15 @@ dm_get_all_column_types <- function(x) {
 #'
 #' @description
 #' `dm_set_colors()` allows to define the colors that will be used to display the tables of the data model with [dm_draw()].
-#'  The colors can either be specified with hex color codes or using the names of the built-in R colors.
-#'  An overview of the colors corresponding to the standard color names can be found at
-#'  the bottom of
-#'  [https://rpubs.com/krlmlr/colors](https://rpubs.com/krlmlr/colors).
+#' The colors can either be specified with hex color codes or using the names of the built-in R colors.
+#' An overview of the colors corresponding to the standard color names can be found at
+#' the bottom of
+#' [https://rpubs.com/krlmlr/colors](https://rpubs.com/krlmlr/colors).
 #'
 #' @inheritParams dm_draw
 #' @param ... Colors to set in the form `color = table`.
-#'  Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
-#'  `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
+#' Allowed colors are all hex coded colors (quoted) and the color names from `dm_get_available_colors()`.
+#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #' @return For `dm_set_colors()`: the updated data model.
 #'
 #' @export
@@ -418,7 +418,7 @@ dm_get_colors <- function(dm) {
 #' dm_get_available_colors()
 #'
 #' `dm_get_available_colors()` returns an overview of the names of the available colors
-#'  These are the standard colors also returned by [grDevices::colors()] plus a default table color with the name "default".
+#' These are the standard colors also returned by [grDevices::colors()] plus a default table color with the name "default".
 #'
 #' @return For `dm_get_available_colors()`, a vector with the available colors.
 #'

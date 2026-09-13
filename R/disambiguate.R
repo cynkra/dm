@@ -5,11 +5,11 @@
 #'
 #' @details
 #' The function first checks if there are any column names that are not unique.
-#'  If there are, those columns will be assigned new, unique, names by prefixing their existing name
-#'  with the name of their table and a separator.
-#'  Columns that act as primary or foreign keys will not be renamed
-#'  because only the foreign key column will remain when two tables are joined,
-#'  making that column name "unique" as well.
+#' If there are, those columns will be assigned new, unique, names by prefixing their existing name
+#' with the name of their table and a separator.
+#' Columns that act as primary or foreign keys will not be renamed
+#' because only the foreign key column will remain when two tables are joined,
+#' making that column name "unique" as well.
 #'
 #' @inheritParams dm_add_pk
 #' @inheritParams rlang::args_dots_empty

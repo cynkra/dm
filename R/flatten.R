@@ -1,7 +1,7 @@
 #' Flatten a part of a `dm` into a wide table
 #'
 #' `dm_flatten_to_tbl()` gathers all information of interest in one place in a wide table.
-#'  It performs a disambiguation of column names and a cascade of joins.
+#' It performs a disambiguation of column names and a cascade of joins.
 #'
 #' @inheritParams dm_join_to_tbl
 #' @param .start The table from which all outgoing foreign key relations are considered
@@ -22,19 +22,19 @@
 #'
 #' @details
 #' With `...` left empty, this function will join together all the tables of your [`dm`] object that can be reached from the `.start` table,
-#'  in the direction of the foreign key relations (pointing from the child tables to the parent tables),
-#'  using the foreign key relations to determine the argument `by` for the necessary joins.
-#'  The result is one table with unique column names.
-#'  Use the `...` argument if you would like to control which tables should be joined to the `.start` table.
+#' in the direction of the foreign key relations (pointing from the child tables to the parent tables),
+#' using the foreign key relations to determine the argument `by` for the necessary joins.
+#' The result is one table with unique column names.
+#' Use the `...` argument if you would like to control which tables should be joined to the `.start` table.
 #'
 #' Mind that calling `dm_flatten_to_tbl()` with `.join = right_join`
-#'  and no table order determined in the `...` argument will not lead to a well-defined result
-#'  if two or more foreign tables are to be joined to `.start`.
-#'  The resulting table would depend on the order the tables that are listed in the `dm`.
-#'  Therefore, trying this will result in a warning.
+#' and no table order determined in the `...` argument will not lead to a well-defined result
+#' if two or more foreign tables are to be joined to `.start`.
+#' The resulting table would depend on the order the tables that are listed in the `dm`.
+#' Therefore, trying this will result in a warning.
 #'
 #' Since `.join = nest_join` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
-#'  each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
+#' each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 #'
 #' The difference between `.recursive = FALSE` and `.recursive = TRUE` is the following (see the examples):
 #'

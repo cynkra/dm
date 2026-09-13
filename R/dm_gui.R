@@ -4,13 +4,13 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' This function starts a Shiny application that allows to define `dm` objects from a database or from local data frames.
-#'  The application generates R code that can be inserted or copy-pasted into an R script or function.
+#' The application generates R code that can be inserted or copy-pasted into an R script or function.
 #'
 #' @details
 #' In a future release, the app will also allow composing `dm` objects directly from database connections or data frames.
 #'
 #' The signature of this function is subject to change without notice.
-#'  This should not pose too many problems, because it will usually be run interactively.
+#' This should not pose too many problems, because it will usually be run interactively.
 #'
 #' @inheritParams rlang::args_dots_empty
 #' @param dm An initial dm object, currently required.

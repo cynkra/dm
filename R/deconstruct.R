@@ -128,7 +128,7 @@ tbl_sum.dm_keyed_tbl <- function(x, ...) {
 #' @title Remove `"dm_keyed_tbl"` class
 #'
 #' @return If entered table has `"dm_keyed_tbl"` class, it will be removed.
-#'  All other classes will be preserved.
+#' All other classes will be preserved.
 #'
 #' @examples
 #' dm <- dm_nycflights13()

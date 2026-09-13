@@ -4,7 +4,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' `dm_flatten()` updates a table in-place by joining its parent tables into it,
-#'  and removes the now integrated parent tables from the dm.
+#' and removes the now integrated parent tables from the dm.
 #'
 #' @inheritParams dm_flatten_to_tbl
 #' @param table The table to flatten by joining its parent tables.
@@ -172,8 +172,8 @@ dm_flatten <- function(
 #' Flatten a start table by joining its direct parents
 #'
 #' Workhorse that performs joining of parent tables into a start table.
-#'  In recursive mode (`dfs_order` not `NULL`), first recursively flattens each direct parent's own ancestors via a loop,
-#'  then unconditionally joins the resulting direct parents into the start table.
+#' In recursive mode (`dfs_order` not `NULL`), first recursively flattens each direct parent's own ancestors via a loop,
+#' then unconditionally joins the resulting direct parents into the start table.
 #'
 #' @param dm A `dm` object.
 #' @param start Name of the table to flatten into.
@@ -239,8 +239,8 @@ dm_flatten_impl <- function(dm, start, list_of_pts, dfs_order, join) {
 #' Join parent tables into a start table and remove them
 #'
 #' Performs sequential `left_join()` operations to merge each parent table into the start table.
-#'  Conflicting column names are disambiguated by appending `.parent_name` as a suffix.
-#'  The parent tables are removed from the dm after joining.
+#' Conflicting column names are disambiguated by appending `.parent_name` as a suffix.
+#' The parent tables are removed from the dm after joining.
 #'
 #' @param dm A `dm` object.
 #' @param start Name of the table to join parents into.
@@ -332,7 +332,7 @@ dm_flatten_join <- function(dm, start, parents, join) {
 #' Report column renames to the user
 #'
 #' Formats and prints a message describing renamed columns,
-#'  using the same style as `dm_flatten_to_tbl()`.
+#' using the same style as `dm_flatten_to_tbl()`.
 #'
 #' @param all_renames List of rename entries, each with `table` and `renames` components.
 #'   `renames` is a named character vector mapping old names to new names.
@@ -370,8 +370,8 @@ dm_flatten_explain_renames <- function(all_renames) {
 #' Transfer foreign keys from absorbed parents to the flattened table
 #'
 #' When `allow_deep = TRUE`, parent tables that reference grandparent tables are absorbed into the start table.
-#'  This function re-points those FK relationships so that the start table now references the grandparent directly,
-#'  accounting for column renames and dropped join keys.
+#' This function re-points those FK relationships so that the start table now references the grandparent directly,
+#' accounting for column renames and dropped join keys.
 #'
 #' @param dm A `dm` object (after parents have been joined and removed).
 #' @param start Name of the flattened table.

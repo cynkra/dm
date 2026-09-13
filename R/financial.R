@@ -2,8 +2,8 @@
 #'
 #' @description
 #' `dm_financial()` creates an example [`dm`] object from the tables at https://relational.fel.cvut.cz/dataset/Financial.
-#'  The connection is established once per session,
-#'  subsequent calls return the same connection.
+#' The connection is established once per session,
+#' subsequent calls return the same connection.
 #'
 #' @return A `dm` object.
 #'
@@ -67,8 +67,8 @@ dm_has_financial <- function() {
 #' dm_financial_sqlite()
 #'
 #' `dm_financial_sqlite()` copies the data to a temporary SQLite database.
-#'  The data is downloaded once per session, subsequent calls return the same database.
-#'  The `trans` table is excluded due to its size.
+#' The data is downloaded once per session, subsequent calls return the same database.
+#' The `trans` table is excluded due to its size.
 #' @rdname dm_financial
 #' @export
 dm_financial_sqlite <- function() {

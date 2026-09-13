@@ -2,8 +2,8 @@
 #'
 #' @description
 #' The `dm` class holds a list of tables and their relationships.
-#'  It is inspired by [datamodelr](https://github.com/bergant/datamodelr),
-#'  and extends the idea by offering operations to access the data in the tables.
+#' It is inspired by [datamodelr](https://github.com/bergant/datamodelr),
+#' and extends the idea by offering operations to access the data in the tables.
 #'
 #' `dm()` creates a `dm` object from [tbl] objects (tibbles or lazy data objects).
 #'
@@ -672,10 +672,10 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #'
 #' @details
 #' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
-#'  Depending on the size of your data this may take a long time.
+#' Depending on the size of your data this may take a long time.
 #'
 #' To create permament tables, first create the database schema using [copy_dm_to()]
-#'  or [dm_sql()], and then use [dm_rows_append()].
+#' or [dm_sql()], and then use [dm_rows_append()].
 #'
 #' @inheritParams dm_get_tables
 #' @param ... Passed on to [compute()].
@@ -895,7 +895,7 @@ as.list.dm_zoomed <- function(x, ...) {
 #'
 #' @description
 #' `glimpse()` provides an overview (dimensions, column data types, primary keys, etc.) of all tables included in the `dm` object.
-#'  It will additionally print details about outgoing foreign keys for the child table.
+#' It will additionally print details about outgoing foreign keys for the child table.
 #'
 #' `glimpse()` is provided by the pillar package, and re-exported by \pkg{dm}.
 #'  See [pillar::glimpse()] for more details.

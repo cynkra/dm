@@ -4,12 +4,12 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' `dm_unnest_tbl()` target a specific column to unnest from the given table in a given dm.
-#'  A ptype or a set of keys should be given, not both.
+#' A ptype or a set of keys should be given, not both.
 #'
 #' @details
 #' [dm_nest_tbl()] is an inverse operation to `dm_unnest_tbl()`
-#'  if differences in row and column order are ignored.
-#'  The opposite is true if referential constraints between both tables are satisfied.
+#' if differences in row and column order are ignored.
+#' The opposite is true if referential constraints between both tables are satisfied.
 #'
 #' @inheritParams dm_unwrap_tbl
 #' @param parent_table A table in the dm with nested columns.
@@ -80,17 +80,17 @@ dm_unnest_tbl <- function(dm, parent_table, col, ptype) {
 #' Unpack columns from a wrapped table
 #'
 #' #' @description
-#'  `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("experimental")`
 #'
 #' `dm_unpack_tbl()` targets a specific column to unpack from the given table in a given dm.
-#'  A ptype or a set of keys should be given,
-#'  not both.
+#' A ptype or a set of keys should be given,
+#' not both.
 #'
 #' [dm_pack_tbl()] is an inverse operation to `dm_unpack_tbl()`
-#'  if differences in row and column order are ignored.
-#'  The opposite is true if referential constraints between both tables are satisfied
-#'  and if all rows in the parent table have at least one child row,
-#'  i.e. if the relationship is of cardinality 1:n or 1:1.
+#' if differences in row and column order are ignored.
+#' The opposite is true if referential constraints between both tables are satisfied
+#' and if all rows in the parent table have at least one child row,
+#' i.e. if the relationship is of cardinality 1:n or 1:1.
 #'
 #' @inheritParams dm_unwrap_tbl
 #' @param child_table A table in the dm with packed columns.

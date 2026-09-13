@@ -4,11 +4,11 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' `dm_zoom2_to()` zooms to the given table, returning a keyed table
-#'  that has the dm object as an attribute.
-#'  Key column tracking (primary and foreign) is the responsibility of the `dm_keyed_tbl` object.
+#' that has the dm object as an attribute.
+#' Key column tracking (primary and foreign) is the responsibility of the `dm_keyed_tbl` object.
 #'
 #' `dm_update_zoom2ed()` overwrites the originally zoomed table
-#'  with the manipulated table.
+#' with the manipulated table.
 #'
 #' `dm_insert_zoom2ed()` adds the manipulated table as a new table to the dm.
 #'

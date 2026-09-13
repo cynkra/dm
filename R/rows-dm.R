@@ -4,16 +4,16 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' These functions provide a framework for updating data in existing tables.
-#'  Unlike [compute()], [copy_to()] or [copy_dm_to()], no new tables are created on the database.
-#'  All operations expect that both existing and new data are presented in two compatible [dm] objects on the same data source.
+#' Unlike [compute()], [copy_to()] or [copy_dm_to()], no new tables are created on the database.
+#' All operations expect that both existing and new data are presented in two compatible [dm] objects on the same data source.
 #'
 #' The functions make sure that the tables in the target dm are processed in topological order
-#'  so that parent (dimension) tables receive insertions before child (fact) tables.
+#' so that parent (dimension) tables receive insertions before child (fact) tables.
 #'
 #' These operations, in contrast to all other operations,
-#'  may lead to irreversible changes to the underlying database.
-#'  Therefore, in-place operation must be requested explicitly with `in_place = TRUE`.
-#'  By default, an informative message is given.
+#' may lead to irreversible changes to the underlying database.
+#' Therefore, in-place operation must be requested explicitly with `in_place = TRUE`.
+#' By default, an informative message is given.
 #'
 #' @inheritParams rlang::args_dots_empty
 #' @inheritParams dplyr::rows_insert
@@ -106,9 +106,9 @@ NULL
 #' dm_rows_insert
 #'
 #' `dm_rows_insert()` adds new records via [rows_insert()] with `conflict = "ignore"`.
-#'  Duplicate records will be silently discarded.
-#'  This operation requires primary keys on all tables, use `dm_rows_append()`
-#'  to insert unconditionally.
+#' Duplicate records will be silently discarded.
+#' This operation requires primary keys on all tables, use `dm_rows_append()`
+#' to insert unconditionally.
 #' @rdname rows-dm
 #' @aliases dm_rows_...
 #' @export
@@ -122,9 +122,9 @@ dm_rows_insert <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' dm_rows_append
 #'
 #' `dm_rows_append()` adds new records via [rows_append()].
-#'  The primary keys must differ from existing records.
-#'  This must be ensured by the caller and might be checked by the underlying database.
-#'  Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
+#' The primary keys must differ from existing records.
+#' This must be ensured by the caller and might be checked by the underlying database.
+#' Use `in_place = FALSE` and apply [dm_examine_constraints()] to check beforehand.
 #' @rdname rows-dm
 #' @export
 dm_rows_append <- function(x, y, ..., in_place = NULL, progress = NA) {
@@ -137,7 +137,7 @@ dm_rows_append <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' dm_rows_update
 #'
 #' `dm_rows_update()` updates existing records via [rows_update()].
-#'  Primary keys must match for all records to be updated.
+#' Primary keys must match for all records to be updated.
 #'
 #' @rdname rows-dm
 #' @export
@@ -151,7 +151,7 @@ dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' dm_rows_patch
 #'
 #' `dm_rows_patch()` updates missing values in existing records via [rows_patch()].
-#'  Primary keys must match for all records to be patched.
+#' Primary keys must match for all records to be patched.
 #'
 #' @rdname rows-dm
 #' @export
@@ -165,7 +165,7 @@ dm_rows_patch <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' dm_rows_upsert
 #'
 #' `dm_rows_upsert()` updates existing records and adds new records,
-#'  based on the primary key, via [rows_upsert()].
+#' based on the primary key, via [rows_upsert()].
 #'
 #' @rdname rows-dm
 #' @export
@@ -179,8 +179,8 @@ dm_rows_upsert <- function(x, y, ..., in_place = NULL, progress = NA) {
 #' dm_rows_delete
 #'
 #' `dm_rows_delete()` removes matching records via [rows_delete()],
-#'  based on the primary key.
-#'  The order in which the tables are processed is reversed.
+#' based on the primary key.
+#' The order in which the tables are processed is reversed.
 #'
 #' @rdname rows-dm
 #' @export

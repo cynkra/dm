@@ -11,42 +11,42 @@
 #' `examine_cardinality()` also checks the first two points and subsequently determines the type of cardinality.
 #'
 #' For convenience, the `x_select` and `y_select` arguments allow restricting the check
-#'  to a set of key columns without affecting the return value.
+#' to a set of key columns without affecting the return value.
 #'
 #' @details
 #' All cardinality functions accept a parent and a child table (`x` and `y`).
-#'  All rows in `x` must be unique, and all rows in `y` must be a subset of the rows in `x`.
-#'  The `x_select` and `y_select` arguments allow restricting the check
-#'  to a set of key columns without affecting the return value.
-#'  If given, both arguments must refer to the same number of key columns.
+#' All rows in `x` must be unique, and all rows in `y` must be a subset of the rows in `x`.
+#' The `x_select` and `y_select` arguments allow restricting the check
+#' to a set of key columns without affecting the return value.
+#' If given, both arguments must refer to the same number of key columns.
 #'
 #' The cardinality specifications "0_n", "1_n", "0_1", "1_1" refer to the expected relation that the child table has with the parent table.
-#'  "0", "1" and "n" refer to the occurrences of value combinations in `y`
-#'  that correspond to each combination in the columns of the parent table.
-#'  "n" means "more than one" in this context, with no upper limit.
+#' "0", "1" and "n" refer to the occurrences of value combinations in `y`
+#' that correspond to each combination in the columns of the parent table.
+#' "n" means "more than one" in this context, with no upper limit.
 #'
 # FIXME: Should/do we check that there is at least one with 0, 1 or 2 matches?
 #' **"0_n"**: no restrictions, each row in `x` has at least 0 and at most n corresponding occurrences in `y`.
 #'
 #' **"1_n"**: each row in `x` has at least 1 and at most n corresponding occurrences in `y`.
-#'  This means that there is a "surjective" mapping from the child table
-#'  to the parent table, i.e. each parent table row exists at least once in the child table.
+#' This means that there is a "surjective" mapping from the child table
+#' to the parent table, i.e. each parent table row exists at least once in the child table.
 #'
 #' **"0_1"**: each row in `x` has at least 0 and at most 1 corresponding occurrence in `y`.
-#'  This means that there is a "injective" mapping from the child table
-#'  to the parent table, i.e. no combination of values in the parent table columns is addressed multiple times.
-#'  But not all parent table rows have to be referred to.
+#' This means that there is a "injective" mapping from the child table
+#' to the parent table, i.e. no combination of values in the parent table columns is addressed multiple times.
+#' But not all parent table rows have to be referred to.
 #'
 #' **"1_1"**: each row in `x` occurs exactly once in `y`.
-#'  This means that there is a "bijective" ("injective" AND "surjective") mapping between the child table and the parent table,
-#'  i.e. the sets of rows are identical.
+#' This means that there is a "bijective" ("injective" AND "surjective") mapping between the child table and the parent table,
+#' i.e. the sets of rows are identical.
 #'
 #' Finally, `examine_cardinality()` tests for and returns the nature of the relationship
-#'  (injective, surjective, bijective, or none of these)
-#'  between the two given sets of columns.
-#'  If either `x` is not unique or there are rows in `y` that are missing from `x`,
-#'  the requirements for a cardinality test is not fulfilled.
-#'  No error will be thrown, but the result will contain the information which prerequisite was violated.
+#' (injective, surjective, bijective, or none of these)
+#' between the two given sets of columns.
+#' If either `x` is not unique or there are rows in `y` that are missing from `x`,
+#' the requirements for a cardinality test is not fulfilled.
+#' No error will be thrown, but the result will contain the information which prerequisite was violated.
 #' @param x Parent table, data frame or lazy table.
 #' @param y Child table, data frame or lazy table.
 #' @inheritParams rlang::args_dots_empty
@@ -57,8 +57,8 @@
 #' @name examine_cardinality
 #'
 #' @return `check_cardinality_...()` return `x`, invisibly,
-#'  if the check is passed, to support pipes.
-#'  Otherwise an error is thrown and the reason for it is explained.
+#' if the check is passed, to support pipes.
+#' Otherwise an error is thrown and the reason for it is explained.
 #'
 #' `examine_cardinality()` returns a character variable specifying the type of relationship between the two columns.
 #'

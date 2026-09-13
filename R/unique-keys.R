@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `dm_add_uk()` marks the specified columns as a unique key of the specified table.
-#'  If `check == TRUE`, then it will first check if the given combination of columns is a unique key of the table.
+#' If `check == TRUE`, then it will first check if the given combination of columns is a unique key of the table.
 #'
 #' @inheritParams dm_add_pk
 #'
@@ -90,7 +90,7 @@ dm_add_uk_impl <- function(dm, table, column) {
 #'
 #' @description
 #' `dm_get_all_uks()` checks the `dm` object for unique keys (primary keys, explicit and implicit unique keys)
-#'  and returns the tables and the respective unique key columns.
+#' and returns the tables and the respective unique key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, unquoted,
@@ -180,9 +180,9 @@ dm_get_all_implicit_uks_def_impl <- function(def, table = NULL, all_explicit) {
 #'
 #' @description
 #' `dm_rm_uk()` removes one or more unique keys from a table and leaves the [`dm`] object otherwise unaltered.
-#'  An error is thrown if no unique key matches the selection criteria.
-#'  If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
-#'  Foreign keys are never removed.
+#' An error is thrown if no unique key matches the selection criteria.
+#' If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
+#' Foreign keys are never removed.
 #'
 #' @inheritParams dm_rm_pk
 #'

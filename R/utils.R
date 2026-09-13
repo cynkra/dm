@@ -14,8 +14,8 @@ head_at_most <- function(x, n) {
 #'
 #' @description
 #' Extract the first or last rows from a table.
-#'  Use these methods without the '.dm_zoomed' suffix (see examples).
-#'  The methods for regular `dm` objects extract the first or last tables.
+#' Use these methods without the '.dm_zoomed' suffix (see examples).
+#' The methods for regular `dm` objects extract the first or last tables.
 #'
 #' @param x object of class `dm_zoomed`
 #' @inheritParams utils::head

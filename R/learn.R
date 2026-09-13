@@ -1,7 +1,7 @@
 #' Create data model from database constraints
 #'
 #' @description If there are any permament tables on a DB, a new [`dm`] object can be created that contains those tables,
-#'  along with their primary and foreign key constraints.
+#' along with their primary and foreign key constraints.
 #'
 #' Currently this works for the following databases:
 #'
@@ -12,7 +12,7 @@
 #' - DuckDB
 #'
 #' The default database schema is used if `schema` is `NULL`:
-#'  `"dbo"` for MSSQL, `"public"` for Postgres/Redshift, and the current database for MariaDB/MySQL and for SQLite/DuckDB.
+#' `"dbo"` for MSSQL, `"public"` for Postgres/Redshift, and the current database for MariaDB/MySQL and for SQLite/DuckDB.
 #'
 #' @param dest A `src`-object on a DB or a connection to a DB.
 #'
