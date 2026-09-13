@@ -148,13 +148,6 @@ dm_meta_raw <- function(con, catalog) {
         table_schema = constraint_schema,
         .before = table_name
       ) %>%
-      mutate(
-        constraint_name = if_else(
-          constraint_type == "PRIMARY KEY",
-          paste0("pk_", table_name),
-          constraint_name
-        )
-      ) %>%
       left_join(
         tbl_lc(
           src,
@@ -165,12 +158,18 @@ dm_meta_raw <- function(con, catalog) {
             "constraint_name",
             # "unique_constraint_catalog", "unique_constraint_schema",
             # "unique_constraint_name", "match_option", "update_rule",
-            # "table_name", "referenced_table_name"
+            # "referenced_table_name"
+            "table_name",
             "delete_rule"
           )
         ),
-        by = c("constraint_catalog", "constraint_schema", "constraint_name")
-      )
+        # `table_name` belongs in the join because a constraint name alone does not
+        # identify a constraint here, see `maria_constraint_name()`.
+        # Without it a name shared by two tables matches both rows and fans the join out,
+        # which is how a foreign key ends up reporting another one's `delete_rule`.
+        by = c("constraint_catalog", "constraint_schema", "constraint_name", "table_name")
+      ) %>%
+      mutate(constraint_name = !!maria_constraint_name())
   } else {
     table_constraints <- tbl_lc(
       src,
@@ -256,37 +255,31 @@ dm_meta_raw <- function(con, catalog) {
   } else if (is_mssql(src)) {
     constraint_column_usage <- mssql_constraint_column_usage(src, table_constraints, catalog)
   } else {
-    # Alternate constraint names for uniqueness
+    # Alternate constraint names for uniqueness, see `maria_constraint_name()`.
+    # `referenced_table_name` only comes along to tell the kinds of constraint apart.
     key_column_usage <-
-      key_column_usage %>%
-      left_join(
-        tbl_lc(
-          src,
-          "information_schema.table_constraints",
-          vars = vec_c(
-            "constraint_catalog",
-            "constraint_schema",
-            "constraint_name",
-            "table_name",
-            "constraint_type"
-          )
-        ),
-        by = vec_c(
+      tbl_lc(
+        src,
+        "information_schema.key_column_usage",
+        vars = vec_c(
           "constraint_catalog",
           "constraint_schema",
           "constraint_name",
+          "table_catalog",
+          "table_schema",
           "table_name",
+          "column_name",
+          "ordinal_position",
+          "referenced_table_name",
         )
       ) %>%
-      mutate(
-        constraint_name = if_else(
-          constraint_type == "PRIMARY KEY",
-          paste0("pk_", table_name),
-          constraint_name
-        )
-      ) %>%
-      select(-constraint_type)
+      mutate(constraint_type = !!maria_constraint_type()) %>%
+      mutate(constraint_name = !!maria_constraint_name()) %>%
+      select(-constraint_type, -referenced_table_name)
 
+    # Every row here describes a foreign key, and `table_name` is the table it constrains,
+    # which is the one its name is scoped to.
+    # The referenced table takes over that name once the constraint name is qualified.
     constraint_column_usage <-
       tbl_lc(
         src,
@@ -299,10 +292,14 @@ dm_meta_raw <- function(con, catalog) {
           "constraint_catalog",
           "constraint_schema",
           "constraint_name",
-          "ordinal_position"
+          "ordinal_position",
+          "table_name"
         )
       ) %>%
       filter(!is.na(referenced_table_name)) %>%
+      mutate(constraint_type = "FOREIGN KEY") %>%
+      mutate(constraint_name = !!maria_constraint_name()) %>%
+      select(-constraint_type, -table_name) %>%
       rename(
         table_schema = referenced_table_schema,
         table_name = referenced_table_name,
@@ -312,6 +309,37 @@ dm_meta_raw <- function(con, catalog) {
 
   dm(schemata, tables, columns, table_constraints, key_column_usage, constraint_column_usage) %>%
     dm_meta_add_keys()
+}
+
+# MariaDB and MySQL scope a constraint name to its table and kind rather than to the schema:
+# every primary key is called `PRIMARY`, and a unique or foreign key carries a name
+# that only has to be unique among its own table's constraints.
+# `dm_meta()` keys `table_constraints` on the constraint name alone,
+# and joins `key_column_usage` and `constraint_column_usage` to it by that name,
+# so a name that two tables share breaks all three.
+# Qualifying it here is what makes those keys hold, whatever the server reports.
+#' @autoglobal
+maria_constraint_name <- function() {
+  expr(
+    if_else(
+      constraint_type == "PRIMARY KEY",
+      paste0("pk_", table_name),
+      paste0(table_name, ".", constraint_type, ".", constraint_name)
+    )
+  )
+}
+
+# `key_column_usage` carries no constraint type, yet it tells the kinds apart all the same:
+# a foreign key is the only kind that references a table, and a primary key is always `PRIMARY`.
+#' @autoglobal
+maria_constraint_type <- function() {
+  expr(
+    if_else(
+      !is.na(referenced_table_name),
+      "FOREIGN KEY",
+      if_else(constraint_name == "PRIMARY", "PRIMARY KEY", "UNIQUE")
+    )
+  )
 }
 
 #' @autoglobal

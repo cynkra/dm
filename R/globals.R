@@ -166,10 +166,14 @@ utils::globalVariables(c(
   "constraint_schema", # <dm_meta_raw>
   "table_name", # <dm_meta_raw>
   "constraint_type", # <dm_meta_raw>
-  "constraint_name", # <dm_meta_raw>
   "referenced_table_name", # <dm_meta_raw>
   "referenced_table_schema", # <dm_meta_raw>
   "referenced_column_name", # <dm_meta_raw>
+  "constraint_type", # <maria_constraint_name>
+  "table_name", # <maria_constraint_name>
+  "constraint_name", # <maria_constraint_name>
+  "referenced_table_name", # <maria_constraint_type>
+  "constraint_name", # <maria_constraint_type>
   "table_constraints", # <dm_meta_add_keys>
   "constraint_catalog", # <dm_meta_add_keys>
   "constraint_schema", # <dm_meta_add_keys>
