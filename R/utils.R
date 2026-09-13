@@ -1,3 +1,15 @@
+# `max_value = Inf` asks for every problematic value, and `head(Inf)` is how that reached the query.
+# dbplyr 2.6.0 rejects it on SQL Server, where the limit becomes `TOP`:
+# "`top` must be a whole number or `NULL`, not `Inf`".
+# Not limiting at all is the same request, in SQL that every backend accepts.
+head_at_most <- function(x, n) {
+  if (is.infinite(n)) {
+    x
+  } else {
+    utils::head(x, n)
+  }
+}
+
 #' \pkg{utils} table manipulation methods for `dm_zoomed` objects
 #'
 #' @description
