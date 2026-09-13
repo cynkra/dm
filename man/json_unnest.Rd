@@ -40,7 +40,7 @@ An object of the same type as \code{data}
 }
 \description{
 A wrapper around \code{\link[tidyr:unnest]{tidyr::unnest()}} that extracts its data from a JSON column.
-The inverse of \code{\link[=json_nest]{json_nest()}}.
+ The inverse of \code{\link[=json_nest]{json_nest()}}.
 }
 \examples{
 tibble(a = 1, b = '[{ "c": 2 }, { "c": 3 }]') \%>\%

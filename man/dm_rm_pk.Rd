@@ -10,11 +10,11 @@ dm_rm_pk(dm, table = NULL, columns = NULL, ..., fail_fk = NULL)
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.
-Pass \code{NULL} to remove all matching keys.}
+ Pass \code{NULL} to remove all matching keys.}
 
 \item{columns}{Table columns, unquoted.
-To refer to a compound key, use \code{c(col1, col2)}.
-Pass \code{NULL} (the default) to remove all matching keys.}
+ To refer to a compound key, use \code{c(col1, col2)}.
+ Pass \code{NULL} (the default) to remove all matching keys.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -25,10 +25,10 @@ An updated \code{dm} without the indicated primary key(s).
 }
 \description{
 If a table name is provided, \code{dm_rm_pk()} removes the primary key from this table and leaves the \code{\link{dm}} object otherwise unaltered.
-If no table is given, the \code{dm} is stripped of all primary keys at once.
-An error is thrown if no primary key matches the selection criteria.
-If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
-Foreign keys are never removed.
+ If no table is given, the \code{dm} is stripped of all primary keys at once.
+ An error is thrown if no primary key matches the selection criteria.
+ If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
+ Foreign keys are never removed.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}

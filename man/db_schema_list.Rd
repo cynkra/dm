@@ -31,7 +31,7 @@ Methods are not available for all DBMS.
 Additional arguments are:
 \itemize{
 \item \code{dbname}: supported for MSSQL.
-List schemas on a different database on the connected MSSQL-server; default: database addressed by \code{con}.
+ List schemas on a different database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{

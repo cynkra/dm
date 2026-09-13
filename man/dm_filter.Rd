@@ -10,12 +10,12 @@ dm_filter(.dm, ...)
 \item{.dm}{A \code{dm} object.}
 
 \item{...}{Named logical predicates.
-The names correspond to tables in the \code{dm} object.
-The predicates are defined in terms of the variables in the corresponding table,
+ The names correspond to tables in the \code{dm} object.
+ The predicates are defined in terms of the variables in the corresponding table,
 they are passed on to \code{\link[dplyr:filter]{dplyr::filter()}}.
 
 Multiple conditions are combined with \code{&}.
-Only the rows where the condition evaluates
+ Only the rows where the condition evaluates
 to \code{TRUE} are kept.}
 }
 \value{
@@ -25,14 +25,14 @@ An updated \code{dm} object with filters executed across all tables.
 Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it directly or indirectly via foreign key relations.
 
 \code{dm_filter()} can be used to define filter conditions for tables using syntax that is similar to \code{\link[dplyr:filter]{dplyr::filter()}}.
-The filters work across related tables:
+ The filters work across related tables:
 The resulting \code{dm} object only contains rows that are related (directly or indirectly) to rows
 that remain after applying the filters on all tables.
 }
 \details{
 As of dm 1.0.0, these conditions are no longer stored in the \code{dm} object,
 instead they are applied to all tables during the call to \code{dm_filter()}.
-Calling \code{dm_apply_filters()} or \code{dm_apply_filters_to_tbl()} is no longer necessary.
+ Calling \code{dm_apply_filters()} or \code{dm_apply_filters_to_tbl()} is no longer necessary.
 
 Use \code{\link[=dm_zoom_to]{dm_zoom_to()}} and \code{\link[dplyr:filter]{dplyr::filter()}} to filter rows without affecting related tables.
 }

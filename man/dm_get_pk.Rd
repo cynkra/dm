@@ -11,6 +11,6 @@ dm_get_pk(dm, table, ...)
 
 This function is deprecated because of its limited use
 and its unintuitive return value.
-Use \code{\link[=dm_get_all_pks]{dm_get_all_pks()}} instead.
+ Use \code{\link[=dm_get_all_pks]{dm_get_all_pks()}} instead.
 }
 \keyword{internal}

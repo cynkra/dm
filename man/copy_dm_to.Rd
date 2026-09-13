@@ -27,10 +27,10 @@ copy_dm_to(
 \item{set_key_constraints}{If \code{TRUE} will mirror the primary, foreign, and unique key constraints
 and create indexes for foreign key constraints
 for the primary and foreign keys in the \code{dm} object.
-Set to \code{FALSE} if your data model currently does not satisfy primary or foreign key constraints.}
+ Set to \code{FALSE} if your data model currently does not satisfy primary or foreign key constraints.}
 
 \item{table_names}{Desired names for the tables on \code{dest}; the names within the \code{dm} remain unchanged.
-Can be \code{NULL}, a named character vector, or a vector of \code{\link[DBI:Id]{DBI::Id}} objects.
+ Can be \code{NULL}, a named character vector, or a vector of \code{\link[DBI:Id]{DBI::Id}} objects.
 
 If left \code{NULL} (default), the names will be determined automatically depending on the \code{temporary} argument:
 \enumerate{
@@ -40,21 +40,21 @@ If left \code{NULL} (default), the names will be determined automatically depend
 
 If a function or one-sided formula, \code{table_names} is converted to a function
 using \code{\link[rlang:as_function]{rlang::as_function()}}.
-This function is called with the unquoted table names of the \code{dm} object
+ This function is called with the unquoted table names of the \code{dm} object
 as the only argument.
-The output of this function is processed by \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}},
+ The output of this function is processed by \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}},
 that result should be a vector of identifiers of the same length
 as the original table names.
 
 Use a variant of \code{table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))}
 to specify the same schema for all tables.
-Use \code{table_names = identity} with \code{temporary = TRUE}
+ Use \code{table_names = identity} with \code{temporary = TRUE}
 to avoid giving temporary tables unique names.
 
 If a named character vector,
 the names of this vector need to correspond to the table names in the \code{dm},
 and its values are the desired names on \code{dest}.
-The value is processed by \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}},
+ The value is processed by \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}},
 that result should be a vector of identifiers of the same length
 as the original table names.
 
@@ -62,15 +62,15 @@ Use qualified names corresponding to your database's syntax
 to specify e.g. database and schema for your tables.}
 
 \item{temporary}{If \code{TRUE}, only temporary tables will be created.
-These tables will vanish when disconnecting from the database.}
+ These tables will vanish when disconnecting from the database.}
 
 \item{schema}{Name of schema to copy the \code{dm} to.
-If \code{schema} is provided, an error will be thrown if \code{temporary = FALSE} or \code{table_names} is not \code{NULL}.
+ If \code{schema} is provided, an error will be thrown if \code{temporary = FALSE} or \code{table_names} is not \code{NULL}.
 
 Not all DBMS are supported.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
-Requires the 'progress' package.}
+ Requires the 'progress' package.}
 
 \item{unique_table_names, copy_to}{Must be \code{NULL}.}
 }
@@ -81,9 +81,9 @@ as the input \code{dm}.
 \description{
 \code{copy_dm_to()} takes a \code{\link[dbplyr:src_dbi]{dbplyr::src_dbi}} object or a \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object as its first argument
 and a \code{\link{dm}} object as its second argument.
-The latter is copied to the former.
-The default is to create temporary tables, set \code{temporary = FALSE} to create permanent tables.
-Unless \code{set_key_constraints} is \code{FALSE}, primary key, foreign key,
+ The latter is copied to the former.
+ The default is to create temporary tables, set \code{temporary = FALSE} to create permanent tables.
+ Unless \code{set_key_constraints} is \code{FALSE}, primary key, foreign key,
 and unique constraints are set, and indexes for foreign keys are created, on all databases.
 }
 \examples{

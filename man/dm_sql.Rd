@@ -24,10 +24,10 @@ dm_ddl_post(dm, dest, table_names = NULL, temporary = TRUE)
 \link[DBI:SQL]{DBI::SQL} or dbplyr objects created with \code{\link[dbplyr:ident]{dbplyr::ident()}}, \code{\link[dbplyr:in_schema]{dbplyr::in_schema()}}
 or \code{\link[dbplyr:in_catalog]{dbplyr::in_catalog()}},
 with one unique element for each table in \code{dm}.
-The default, \code{NULL}, means to use the original table names.}
+ The default, \code{NULL}, means to use the original table names.}
 
 \item{temporary}{Should the tables be marked as \emph{temporary}?
-Defaults to \code{TRUE}.}
+ Defaults to \code{TRUE}.}
 }
 \value{
 Nested list of SQL statements.
@@ -36,7 +36,7 @@ Nested list of SQL statements.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Generate SQL scripts to create tables, load data and set constraints, keys and indices.
-This function powers \code{\link[=copy_dm_to]{copy_dm_to()}} and is useful if you need more control over the process of copying a \code{dm} to a database.
+ This function powers \code{\link[=copy_dm_to]{copy_dm_to()}} and is useful if you need more control over the process of copying a \code{dm} to a database.
 }
 \details{
 \itemize{

@@ -21,12 +21,12 @@ dm_unpack_tbl(dm, child_table, col, ptype)
 }
 \details{
 \code{dm_unpack_tbl()} targets a specific column to unpack from the given table in a given dm.
-A ptype or a set of keys should be given,
+ A ptype or a set of keys should be given,
 not both.
 
 \code{\link[=dm_pack_tbl]{dm_pack_tbl()}} is an inverse operation to \code{dm_unpack_tbl()}
 if differences in row and column order are ignored.
-The opposite is true if referential constraints between both tables are satisfied
+ The opposite is true if referential constraints between both tables are satisfied
 and if all rows in the parent table have at least one child row,
 i.e. if the relationship is of cardinality 1:n or 1:1.
 }

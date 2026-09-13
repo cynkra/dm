@@ -17,17 +17,17 @@ dm_rm_fk(
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.
-Pass \code{NULL} to remove all matching keys.}
+ Pass \code{NULL} to remove all matching keys.}
 
 \item{columns}{Table columns, unquoted.
-To refer to a compound key, use \code{c(col1, col2)}.
-Pass \code{NULL} (the default) to remove all matching keys.}
+ To refer to a compound key, use \code{c(col1, col2)}.
+ Pass \code{NULL} (the default) to remove all matching keys.}
 
 \item{ref_table}{The table referenced by the \code{table} argument.
-Pass \code{NULL} to remove all matching keys.}
+ Pass \code{NULL} to remove all matching keys.}
 
 \item{ref_columns}{The columns of \code{table} that should no longer be referencing the primary key of \code{ref_table}.
-To refer to a compound key, use \code{c(col1, col2)}.}
+ To refer to a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }
@@ -36,7 +36,7 @@ An updated \code{dm} without the matching foreign key relation(s).
 }
 \description{
 \code{dm_rm_fk()} can remove either one reference between two tables, or multiple references at once (with a message).
-An error is thrown if no matching foreign key is found.
+ An error is thrown if no matching foreign key is found.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}

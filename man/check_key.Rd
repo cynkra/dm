@@ -10,19 +10,19 @@ check_key(x, ..., .data = deprecated())
 \item{x}{The data frame whose columns should be tested for key properties.}
 
 \item{...}{The names of the columns to be checked, processed with \code{\link[dplyr:select]{dplyr::select()}}.
-If omitted, all columns will be checked.}
+ If omitted, all columns will be checked.}
 
 \item{.data}{Deprecated.}
 }
 \value{
 Returns \code{x}, invisibly, if the check is passed.
-Otherwise an error is thrown and the reason for it is explained.
+ Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
 \code{check_key()} accepts a data frame and, optionally, columns.
-It throws an error
+ It throws an error
 if the specified columns are NOT a unique key of the data frame.
-If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
+ If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 }
 \examples{
 data <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))

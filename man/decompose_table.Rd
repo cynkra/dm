@@ -10,16 +10,16 @@ decompose_table(.data, new_id_column, ...)
 \item{.data}{Data frame from which columns \code{...} are to be extracted.}
 
 \item{new_id_column}{Name of the identifier column (primary key column) for the parent table.
-A column of this name is also added in 'child table'.}
+ A column of this name is also added in 'child table'.}
 
 \item{...}{The columns to be extracted from the \code{.data}.
 
 One or more unquoted expressions separated by commas.
-You can treat variable names as if they were positions, so you can use expressions like x:y to select ranges of variables.
+ You can treat variable names as if they were positions, so you can use expressions like x:y to select ranges of variables.
 
 The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
-They also support unquoting and splicing.
-See vignette("programming") for an introduction to those concepts.
+ They also support unquoting and splicing.
+ See vignette("programming") for an introduction to those concepts.
 
 See select helpers for more details, and the examples about tidyselect helpers, such as starts_with(), everything(), ...}
 }
@@ -40,13 +40,13 @@ linking the original table and the new table by a key, and returning both tables
 and the names of the columns that will be extracted into the new data frame.
 
 It creates a 'parent table', which consists of the columns specified in the ellipsis, and a new 'ID column'.
-Then it removes those columns from the original table, which is now called the 'child table, and adds the 'ID column'.
+ Then it removes those columns from the original table, which is now called the 'child table, and adds the 'ID column'.
 }
 \section{Life cycle}{
 
 This function is marked "experimental" because it seems more useful
 when applied to a table in a dm object.
-Changing the interface later seems harmless because these functions are most likely used interactively.
+ Changing the interface later seems harmless because these functions are most likely used interactively.
 }
 
 \examples{

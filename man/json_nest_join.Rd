@@ -55,7 +55,7 @@ the default, the name of \code{y} is used.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 A wrapper around \code{\link[dplyr:nest_join]{dplyr::nest_join()}} which stores the joined data into a JSON column.
-\code{json_nest_join()} returns all rows and columns in \code{x} with a new JSON columns that contains all nested matches from \code{y}.
+ \code{json_nest_join()} returns all rows and columns in \code{x} with a new JSON columns that contains all nested matches from \code{y}.
 }
 \examples{
 df1 <- tibble::tibble(x = 1:3)

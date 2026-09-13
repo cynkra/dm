@@ -18,7 +18,7 @@ dm_examine_cardinalities(
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{.progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
-Requires the 'progress' package.}
+ Requires the 'progress' package.}
 
 \item{dm, progress}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
@@ -36,7 +36,7 @@ A tibble with the following columns:
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 This function returns a tibble with information about the cardinality of the FK constraints.
-The printing for this object is special, use \code{\link[tibble:as_tibble]{as_tibble()}}
+ The printing for this object is special, use \code{\link[tibble:as_tibble]{as_tibble()}}
 to print as a regular tibble.
 }
 \details{

@@ -30,8 +30,8 @@ A \code{dm_zoomed} object.
 }
 \description{
 Extract the first or last rows from a table.
-Use these methods without the '.dm_zoomed' suffix (see examples).
-The methods for regular \code{dm} objects extract the first or last tables.
+ Use these methods without the '.dm_zoomed' suffix (see examples).
+ The methods for regular \code{dm} objects extract the first or last tables.
 }
 \details{
 see manual for the corresponding functions in \pkg{utils}.
