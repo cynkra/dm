@@ -166,11 +166,10 @@ create_figure(
 ::: {.important-div}
 ### <i class="cheatsheet-icon fa-solid fa-circle-info"></i> dm objects: relational data models
 
-The dm package provides a **grammar of relational data models**. 
+The dm package provides a **grammar of relational data models**.
 It helps maintain **referential integrity**.
 
-A dm behaves like a list of tables (data frames or lazy tables) capturing
-**relationships** between the tables.
+A dm behaves like a list of tables (data frames or lazy tables) capturing **relationships** between the tables.
 :::
 
 ::: {.alert .alert-primary role="alert" style="display:grid;place-items:center;"}
@@ -226,7 +225,7 @@ create_figure(
 
 ### Filter rows: `dm_filter(dm1, table = (pred))`
 
-Filter rows in the table where the condition is defined, 
+Filter rows in the table where the condition is defined,
 but also all directly/indirectly connected tables.
 
 ```{r, results='asis'}
@@ -464,8 +463,7 @@ create_figure(
 )
 ```
 
-3. `dm_update_zoomed()` (replace) /
-    `dm_insert_zoomed()`
+3. `dm_update_zoomed()` (replace) / `dm_insert_zoomed()`
 
 ```{r, results='asis'}
 create_figure(

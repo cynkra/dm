@@ -19,9 +19,12 @@ source("setup/setup.R")
 The {dm} package offers functions to work with relational data models in R.
 A common task for multiple, separated tables that have a shared attribute is merging the data.
 
-This document introduces you to the joining functions of {dm} and shows how to apply them using data from the [{nycflights13}](https://github.com/tidyverse/nycflights13) package.
+This document introduces you to the joining functions of {dm}
+and shows how to apply them using data from the [{nycflights13}](https://github.com/tidyverse/nycflights13) package.
 
-[Relational data models](https://dm.cynkra.com/articles/howto-dm-theory#model) consist of multiple tables that are linked with [foreign keys](https://dm.cynkra.com/articles/howto-dm-theory#fk). They are the building blocks for joining tables.
+[Relational data models](https://dm.cynkra.com/articles/howto-dm-theory#model) consist of multiple tables
+that are linked with [foreign keys](https://dm.cynkra.com/articles/howto-dm-theory#fk).
+They are the building blocks for joining tables.
 Read more about relational data models in the vignette ["Introduction to Relational Data Models"](https://dm.cynkra.com/articles/howto-dm-theory).
 
 First, we load the packages that we need:
@@ -34,7 +37,8 @@ library(dm)
 
 To explore filtering with {dm}, we'll use the {nycflights13} data with its tables `flights`, `planes`, `airlines` and `airports`.
 
-This dataset contains information about the 336,776 flights that departed from New York City in 2013, with 3,322 different planes and 1,458 airports involved.
+This dataset contains information about the 336,776 flights that departed from New York City in 2013,
+with 3,322 different planes and 1,458 airports involved.
 The data comes from the US Bureau of Transportation Statistics, and is documented in `?nycflights13`.
 
 First, we have to create a `dm` object from the {nycflights13} data.
@@ -50,14 +54,16 @@ dm <- dm_nycflights13()
 
 ## Joining a `dm` object {#join}
 
-{dm} allows you to join two tables of a `dm` object based on a shared column. You can use all join functions that you know from the {dplyr} package.
+{dm} allows you to join two tables of a `dm` object based on a shared column.
+You can use all join functions that you know from the {dplyr} package.
 Currently {dplyr} supports four types of mutating joins, two types of filtering joins, and a nesting join.
 See `?dplyr::join` for details.
 
 ### How it works
 
 A join is the combination of two tables based on shared information.
-In technical terms, we merge the tables that need to be directly connected by a [foreign key relation](https://dm.cynkra.com/articles/howto-dm-theory#fk).
+In technical terms, we merge the tables
+that need to be directly connected by a [foreign key relation](https://dm.cynkra.com/articles/howto-dm-theory#fk).
 
 The existing links can be inspected in two ways:
 
@@ -125,7 +131,8 @@ dm %>%
 
 An example with filtering on a `dm` and then merging:
 
-**Get all May 2013 flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in - and join all the airports data into the `flights` table.**
+**Get all May 2013 flights from Delta Air Lines which didn't depart from John F. Kennedy International Airport in -
+and join all the airports data into the `flights` table.**
 
 ```{r}
 dm_nycflights13(subset = FALSE) %>%
@@ -159,7 +166,8 @@ To be more precise, `dm_flatten_to_tbl()` will join all tables from one level of
 If you want to cover tables from all levels of hierarchy, use the argument `recursive = TRUE` for `dm_flatten_to_tbl()` instead.
 
 Also, be aware that all column names need to be unique.
-The `dm_flatten_to_tbl()` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed, e.g. `dm_rename(airlines, airlines.name = name)`.
+The `dm_flatten_to_tbl()` takes care of this by automatically renaming the relevant columns and informs the user if any names were changed,
+e.g. `dm_rename(airlines, airlines.name = name)`.
 
 If you want to merge all tables, but get a nested table in return, use `dm_wrap_tbl()` with `pull_tbl()` instead:
 

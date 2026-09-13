@@ -30,7 +30,8 @@ For individual researchers, it broadens the scope of datasets they can work with
 For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.
 
 dm objects encapsulate relational data models constructed from local data frames or lazy tables connected to an RDBMS.
-dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking.
+dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing
+and verifying relational data models, including key selection, key creation, and rigorous constraint checking.
 Once a data model is complete, dm provides methods for deploying it to an RDBMS.
 This allows it to scale from datasets that fit in memory to databases with billions of rows.
 
@@ -42,7 +43,8 @@ The dm interface and behavior is modeled after dplyr, so you may already be fami
 dm also offers:
 
 - visualization to help you understand relationships between entities represented by the tables
-- simpler joins that "know" how tables are related, including a "flatten" operation that automatically follows keys and performs column name disambiguation
+- simpler joins that "know" how tables are related,
+  including a "flatten" operation that automatically follows keys and performs column name disambiguation
 - consistency and constraint checks to help you understand (and fix) the limitations of your data
 
 That's just the tip of the iceberg.

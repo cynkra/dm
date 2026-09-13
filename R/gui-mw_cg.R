@@ -14,23 +14,17 @@ new_mw_cg <- function(dm) {
 
 #' Run a command for the code-generation middleware
 #'
-#' @param mw_cg A state object as created by [new_mw_cg()] or a previous
-#'   `mw_cg_run()` call.
-#' @param op_name An operation name as string, see `mw_cg_make()` for the
-#'   supported ones.
-#' @param ... Named arguments as required by the individual `mw_cg_make_...()`
-#'   functions.
+#' @param mw_cg A state object as created by [new_mw_cg()] or a previous `mw_cg_run()` call.
+#' @param op_name An operation name as string, see `mw_cg_make()` for the supported ones.
+#' @param ... Named arguments as required by the individual `mw_cg_make_...()` functions.
 #' @param confirmation_function A function or function-like with one argument
 #'   that contains a confirmation message to show.
-#'   This function is called whenever the middleware requests confirmation
-#'   from the user.
-#'   This function must return a scalar logical that indicates whether to
-#'   proceed.
+#'   This function is called whenever the middleware requests confirmation from the user.
+#'   This function must return a scalar logical that indicates whether to proceed.
 #'   Processed with [rlang::as_function()].
 #' @param abort_function A function or function-like with one argument
 #'   that contains an error message to show.
-#'   This function is called whenever the middleware encounters a failure and
-#'   must abort the operation.
+#'   This function is called whenever the middleware encounters a failure and must abort the operation.
 #'   Processed with [rlang::as_function()].
 #' @noRd
 mw_cg_run <- function(

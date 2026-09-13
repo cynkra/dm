@@ -15,14 +15,16 @@ source("setup/setup.R")
 ``````
 
 
-In this article, we're going show you how easy it is to move from connecting to the database holding your data to producing the results you need.
+In this article, we're going show you how easy it is
+to move from connecting to the database holding your data to producing the results you need.
 It's meant to be a quick and friendly introduction to {dm}, so it is low on details and caveats.
 Links to detailed documentation are provided at the end.
 (If your data is in data frames instead of a database and you're in a hurry, jump over to `vignette("howto-dm-df")`.)
 
 ## Creating a dm object
 
-dm objects can be created from individual tables or loaded directly from a relational data model on an RDBMS (relational database management system).
+dm objects can be created from individual tables
+or loaded directly from a relational data model on an RDBMS (relational database management system).
 
 For this demonstration, we're going to work with a model hosted on a public server.
 The first thing we need is a connection to the RDBMS hosting the data.
@@ -68,7 +70,8 @@ fin_dm$loans
 dplyr::count(fin_dm$trans)
 ```
 
-Additionally, most `dm` functions are [pipe-friendly](https://r4ds.had.co.nz/pipes.html) and support [tidy evaluation](https://adv-r.hadley.nz/metaprogramming.html).
+Additionally, most `dm` functions are [pipe-friendly](https://r4ds.had.co.nz/pipes.html)
+and support [tidy evaluation](https://adv-r.hadley.nz/metaprogramming.html).
 We can use `[` or the `dm_select_tbl()` verb to derive a smaller dm with the `loans`, `accounts`, `districts` and `trans` tables:
 
 ```{r select}
@@ -125,8 +128,10 @@ fin_dm_keys %>%
 
 ## Accessing a data model as a table
 
-If we want to perform modeling or analysis on this relational model, we need to transform it into a tabular format that R functions can work with.
-With the argument `recursive = TRUE`, `dm_flatten_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
+If we want to perform modeling or analysis on this relational model,
+we need to transform it into a tabular format that R functions can work with.
+With the argument `recursive = TRUE`,
+`dm_flatten_to_tbl()` will automatically follow foreign keys across tables to gather all the available columns into a single table.
 
 ```{r squash}
 fin_dm_keys %>%
@@ -170,7 +175,8 @@ fin_dm_total$total_loans
 
 Note that, in the above example, we use `dm_insert_zoomed()` to add the results as a new table to our data model.
 This table is temporary and will be deleted when our session ends.
-If you want to make permanent changes to your data model on an RDBMS, please see the "Persisting results" section in `vignette("howto-dm-db")`.
+If you want to make permanent changes to your data model on an RDBMS,
+please see the "Persisting results" section in `vignette("howto-dm-db")`.
 
 
 ## Checking constraints
@@ -185,7 +191,8 @@ fin_dm_total %>%
   dm_examine_constraints()
 ```
 
-For more on constraint checking, including cardinality, finding candidate columns for keys, and normalization, see `vignette("tech-dm-low-level")`.
+For more on constraint checking, including cardinality,
+finding candidate columns for keys, and normalization, see `vignette("tech-dm-low-level")`.
 
 ``````{r disconnect, echo = FALSE, results = "hide"}
 dbDisconnect(fin_db)
@@ -193,15 +200,18 @@ dbDisconnect(fin_db)
 
 ## Next Steps
 
-Now that you have been introduced to the basic operation of dm, the next step is to learn more about the dm methods that your particular use case requires.
+Now that you have been introduced to the basic operation of dm,
+the next step is to learn more about the dm methods that your particular use case requires.
 
-Is your data in an RDBMS? Then move on to `vignette("howto-dm-db")` for a more detailed look at working with an existing relational data model.
+Is your data in an RDBMS?
+Then move on to `vignette("howto-dm-db")` for a more detailed look at working with an existing relational data model.
 
 If your data is in data frames, then you want to read `vignette("howto-dm-df")` next.
 
 If you would like to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
-If you're familiar with relational data models, but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
+If you're familiar with relational data models, but want to know how to work with them in dm,
+then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
 
 
 ## Standing on the shoulders of giants
@@ -212,15 +222,21 @@ The {dm} package follows the tidyverse principles:
 - most functions used on `dm` objects are pipeable (i.e., return new `dm` or table objects)
 - tidy evaluation is used (unquoted function arguments are supported)
 
-The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr), and upon the [tidyverse](https://tidyverse.org/).
+The {dm} package builds heavily upon the [{datamodelr} package](https://github.com/bergant/datamodelr),
+and upon the [tidyverse](https://tidyverse.org/).
 We're looking forward to a good collaboration!
 
 The [{polyply} package](https://github.com/russHyde/polyply) has a similar intent with a slightly different interface.
 
 The [{data.cube} package](https://github.com/jangorecki/data.cube) has quite the same intent using `array`-like interface.
 
-Articles in the [{rquery} package](https://github.com/WinVector/rquery) discuss [join controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md) and [join dependency sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md), with the intent to move the declaration of table relationships from code to data.
+Articles in the [{rquery} package](https://github.com/WinVector/rquery) discuss [join controllers](https://github.com/WinVector/rquery/blob/master/extras/JoinController.md)
+and [join dependency sorting](https://github.com/WinVector/rquery/blob/master/extras/DependencySorting.md),
+with the intent to move the declaration of table relationships from code to data.
 
-The [{tidygraph} package](https://github.com/thomasp85/tidygraph) stores a network as two related tables of `nodes` and `edges`, compatible with {dplyr} workflows.
+The [{tidygraph} package](https://github.com/thomasp85/tidygraph) stores a network as two related tables of `nodes` and `edges`,
+compatible with {dplyr} workflows.
 
-In object-oriented programming languages, [object-relational mapping](https://en.wikipedia.org/wiki/Object-relational_mapping) is a similar concept that attempts to map a set of related tables to a class hierarchy.
+In object-oriented programming languages,
+[object-relational mapping](https://en.wikipedia.org/wiki/Object-relational_mapping) is a similar concept
+that attempts to map a set of related tables to a class hierarchy.

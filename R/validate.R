@@ -5,8 +5,7 @@ boilerplate <- new_dm_def()
 #'
 #' `dm_validate()` checks the internal consistency of a `dm` object.
 #'
-#' In theory, with the exception of [new_dm()], all `dm` objects
-#' created or modified by functions in this package should be valid,
+#' In theory, with the exception of [new_dm()], all `dm` objects created or modified by functions in this package should be valid,
 #' and this function should not be needed.
 #' Please file an issue if any dm operation creates an invalid object.
 #'

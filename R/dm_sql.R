@@ -9,8 +9,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' Generate SQL scripts to create tables, load data and set constraints, keys and indices.
-#' This function powers [copy_dm_to()] and is useful if you need more control
-#' over the process of copying a `dm` to a database.
+#' This function powers [copy_dm_to()] and is useful if you need more control over the process of copying a `dm` to a database.
 #'
 #' @param dm A `dm` object.
 #' @param dest Connection to database.
@@ -19,7 +18,8 @@
 #'   or [dbplyr::in_catalog()],
 #'   with one unique element for each table in `dm`.
 #'   The default, `NULL`, means to use the original table names.
-#' @param temporary Should the tables be marked as \emph{temporary}? Defaults to `TRUE`.
+#' @param temporary Should the tables be marked as \emph{temporary}?
+#'   Defaults to `TRUE`.
 #'
 #' @details
 #' \itemize{

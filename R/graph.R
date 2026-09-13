@@ -1,7 +1,6 @@
 #' Check foreign key reference
 #'
-#' `dm_is_referenced()` is soft-deprecated, use the information returned from
-#' [dm_get_all_fks()] instead.
+#' `dm_is_referenced()` is soft-deprecated, use the information returned from [dm_get_all_fks()] instead.
 #'
 #' @inheritParams dm_add_pk
 #'
@@ -16,8 +15,7 @@ dm_is_referenced <- function(dm, table) {
 
 #' Get the names of referencing tables
 #'
-#' `dm_get_referencing_tables()` is soft-deprecated, use the information
-#' returned from [dm_get_all_fks()] instead.
+#' `dm_get_referencing_tables()` is soft-deprecated, use the information returned from [dm_get_all_fks()] instead.
 #'
 #' @inheritParams dm_is_referenced
 #' @rdname deprecated
