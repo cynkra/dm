@@ -37,7 +37,7 @@ for a table in a \link{dm} object.
 
 These functions are marked "experimental" because we are not yet sure about the interface,
 in particular if we need both \code{dm_enum...()} and \code{enum...()} variants.
-Changing the interface later seems harmless because these functions are most likely used interactively.
+ Changing the interface later seems harmless because these functions are most likely used interactively.
 }
 
 \examples{

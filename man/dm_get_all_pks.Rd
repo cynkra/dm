@@ -11,8 +11,8 @@ dm_get_all_pks(dm, table = NULL, ...)
 
 \item{table}{One or more table names, unquoted,
 to return primary key information for.
-If given, primary keys are returned in that order.
-The default \code{NULL} returns information for all tables.}
+ If given, primary keys are returned in that order.
+ The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }

@@ -10,11 +10,11 @@ dm_rm_uk(dm, table = NULL, columns = NULL, ...)
 \item{dm}{A \code{dm} object.}
 
 \item{table}{A table in the \code{dm}.
-Pass \code{NULL} to remove all matching keys.}
+ Pass \code{NULL} to remove all matching keys.}
 
 \item{columns}{Table columns, unquoted.
-To refer to a compound key, use \code{c(col1, col2)}.
-Pass \code{NULL} (the default) to remove all matching keys.}
+ To refer to a compound key, use \code{c(col1, col2)}.
+ Pass \code{NULL} (the default) to remove all matching keys.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }
@@ -23,9 +23,9 @@ An updated \code{dm} without the indicated unique key(s).
 }
 \description{
 \code{dm_rm_uk()} removes one or more unique keys from a table and leaves the \code{\link{dm}} object otherwise unaltered.
-An error is thrown if no unique key matches the selection criteria.
-If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
-Foreign keys are never removed.
+ An error is thrown if no unique key matches the selection criteria.
+ If the selection criteria are ambiguous, a message with unambiguous replacement code is shown.
+ Foreign keys are never removed.
 }
 \seealso{
 Other primary key functions:

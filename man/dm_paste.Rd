@@ -16,7 +16,7 @@ dm_paste(dm, select = NULL, ..., tab_width = 2, options = NULL, path = NULL)
 \item{tab_width}{Indentation width for code from the second line onwards}
 
 \item{options}{Formatting options.
-A character vector containing some of:
+ A character vector containing some of:
 \itemize{
 \item \code{"tables"}: \code{\link[=tibble]{tibble()}} calls for empty table definitions derived from \code{\link[=dm_ptype]{dm_ptype()}}, overrides \code{"select"}.
 \item \code{"select"}: \code{\link[=dm_select]{dm_select()}} statements for columns that are part of the dm.
@@ -37,9 +37,9 @@ Code for producing the prototype of the given \code{dm}.
 }
 \details{
 The code emitted by the function reproduces the structure of the \code{dm} object.
-The \code{options} argument controls the level of detail: keys, colors,
+ The \code{options} argument controls the level of detail: keys, colors,
 table definitions.
-Data in the tables is never included, see \code{\link[=dm_ptype]{dm_ptype()}} for the underlying logic.
+ Data in the tables is never included, see \code{\link[=dm_ptype]{dm_ptype()}} for the underlying logic.
 }
 \examples{
 dm() \%>\%

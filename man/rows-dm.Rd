@@ -37,50 +37,50 @@ When \code{TRUE}, a modified version of \code{x} is returned invisibly;
 when \code{FALSE}, a new object representing the resulting changes is returned.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
-Requires the 'progress' package.}
+ Requires the 'progress' package.}
 }
 \value{
 A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{x}.
-If \code{in_place = TRUE}, the underlying data is updated as a side effect,
+ If \code{in_place = TRUE}, the underlying data is updated as a side effect,
 and \code{x} is returned, invisibly.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 These functions provide a framework for updating data in existing tables.
-Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created on the database.
-All operations expect that both existing and new data are presented in two compatible \link{dm} objects on the same data source.
+ Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created on the database.
+ All operations expect that both existing and new data are presented in two compatible \link{dm} objects on the same data source.
 
 The functions make sure that the tables in the target dm are processed in topological order
 so that parent (dimension) tables receive insertions before child (fact) tables.
 
 These operations, in contrast to all other operations,
 may lead to irreversible changes to the underlying database.
-Therefore, in-place operation must be requested explicitly with \code{in_place = TRUE}.
-By default, an informative message is given.
+ Therefore, in-place operation must be requested explicitly with \code{in_place = TRUE}.
+ By default, an informative message is given.
 
 \code{dm_rows_insert()} adds new records via \code{\link[=rows_insert]{rows_insert()}} with \code{conflict = "ignore"}.
-Duplicate records will be silently discarded.
-This operation requires primary keys on all tables, use \code{dm_rows_append()}
+ Duplicate records will be silently discarded.
+ This operation requires primary keys on all tables, use \code{dm_rows_append()}
 to insert unconditionally.
 
 \code{dm_rows_append()} adds new records via \code{\link[=rows_append]{rows_append()}}.
-The primary keys must differ from existing records.
-This must be ensured by the caller and might be checked by the underlying database.
-Use \code{in_place = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.
+ The primary keys must differ from existing records.
+ This must be ensured by the caller and might be checked by the underlying database.
+ Use \code{in_place = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_examine_constraints()}} to check beforehand.
 
 \code{dm_rows_update()} updates existing records via \code{\link[=rows_update]{rows_update()}}.
-Primary keys must match for all records to be updated.
+ Primary keys must match for all records to be updated.
 
 \code{dm_rows_patch()} updates missing values in existing records via \code{\link[=rows_patch]{rows_patch()}}.
-Primary keys must match for all records to be patched.
+ Primary keys must match for all records to be patched.
 
 \code{dm_rows_upsert()} updates existing records and adds new records,
 based on the primary key, via \code{\link[=rows_upsert]{rows_upsert()}}.
 
 \code{dm_rows_delete()} removes matching records via \code{\link[=rows_delete]{rows_delete()}},
 based on the primary key.
-The order in which the tables are processed is reversed.
+ The order in which the tables are processed is reversed.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("RSQLite", "nycflights13", "dbplyr"))) withAutoprint(\{ # examplesIf}

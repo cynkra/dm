@@ -28,7 +28,7 @@ A wide table produced by joining the two given tables.
 Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 
 \code{reunite_parent_child()}: After joining the two tables by the column \code{id_column}, this column will be removed.
-The transformation is roughly the inverse of what \code{decompose_table()} does.
+ The transformation is roughly the inverse of what \code{decompose_table()} does.
 
 \code{reunite_parent_child_from_list()}: After joining the two tables by the column \code{id_column}, \code{id_column} is removed.
 
@@ -39,7 +39,7 @@ and the original row names are lost).
 
 These functions are marked "experimental" because they seem more useful
 when applied to a table in a dm object.
-Changing the interface later seems harmless because these functions are most likely used interactively.
+ Changing the interface later seems harmless because these functions are most likely used interactively.
 }
 
 \examples{

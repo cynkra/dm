@@ -177,12 +177,12 @@
 }
 \arguments{
 \item{x, y}{tbls to join.
-\code{x} is the \code{dm_zoomed} and \code{y} is another table in the \code{dm}.}
+ \code{x} is the \code{dm_zoomed} and \code{y} is another table in the \code{dm}.}
 
 \item{by}{If left \code{NULL} (default),
 the join will be performed by via the foreign key relation that exists between the originally zoomed table (now \code{x})
 and the other table (\code{y}).
-If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}), you can also join tables that are not connected in the \code{dm}.}
+ If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}), you can also join tables that are not connected in the \code{dm}.}
 
 \item{copy}{Disabled, since all tables in a \code{dm} are by definition on the same \code{src}.}
 
@@ -276,8 +276,8 @@ see \code{unmatched}.}
 
 \item{select}{Select a subset of the \strong{RHS-table}'s columns,
 the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
-This argument is specific for the \code{join}-methods for \code{dm_zoomed}.
-The table's \code{by} column(s) are automatically added if missing in the selection.}
+ This argument is specific for the \code{join}-methods for \code{dm_zoomed}.
+ The table's \code{by} column(s) are automatically added if missing in the selection.}
 
 \item{name}{The name of the list-column created by the join. If \code{NULL},
 the default, the name of \code{y} is used.}

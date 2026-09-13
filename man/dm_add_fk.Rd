@@ -21,13 +21,13 @@ dm_add_fk(
 \item{table}{A table in the \code{dm}.}
 
 \item{columns}{The columns of \code{table} which are to become the foreign key columns that reference \code{ref_table}.
-To define a compound key, use \code{c(col1, col2)}.}
+ To define a compound key, use \code{c(col1, col2)}.}
 
 \item{ref_table}{The table which \code{table} will be referencing.}
 
 \item{ref_columns}{The column(s) of \code{table} which are to become the referenced column(s) in \code{ref_table}.
-By default, the primary key is used.
-To define a compound key, use \code{c(col1, col2)}.}
+ By default, the primary key is used.
+ To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -37,7 +37,7 @@ a check will be performed to determine if the values of \code{columns} are a sub
 \item{on_delete}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Defines behavior if a row in the parent table is deleted.
-- \code{"no_action"}, the default, means that no action is taken
+ - \code{"no_action"}, the default, means that no action is taken
 and the operation is aborted if child rows exist
 - \code{"cascade"} means that the child row is also deleted
 This setting is picked up by \code{\link[=copy_dm_to]{copy_dm_to()}} with \code{set_key_constraints = TRUE},
@@ -49,13 +49,13 @@ An updated \code{dm} with an additional foreign key relation.
 }
 \description{
 \code{dm_add_fk()} marks the specified \code{columns} as the foreign key of table \code{table} with respect to a key of table \code{ref_table}.
-Usually the referenced columns are a primary key in \code{ref_table}.
-However, it is also possible to specify other columns via the \code{ref_columns} argument.
-If \code{check == TRUE}, then it will first check if the values in \code{columns} are a subset of the values of the key in table \code{ref_table}.
+ Usually the referenced columns are a primary key in \code{ref_table}.
+ However, it is also possible to specify other columns via the \code{ref_columns} argument.
+ If \code{check == TRUE}, then it will first check if the values in \code{columns} are a subset of the values of the key in table \code{ref_table}.
 }
 \details{
 It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor explicit unique keys (UK).
-This can happen
+ This can happen
 \enumerate{
 \item when a FK is added without a corresponding PK or UK being present in the parent table
 \item when the PK or UK is removed (\code{\link[=dm_rm_pk]{dm_rm_pk()}}/\code{\link[=dm_rm_uk]{dm_rm_uk()}}) without first removing the associated FKs.

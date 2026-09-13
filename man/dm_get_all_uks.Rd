@@ -11,7 +11,7 @@ dm_get_all_uks(dm, table = NULL, ...)
 
 \item{table}{One or more table names, unquoted,
 to return unique key information for.
-The default \code{NULL} returns information for all tables.}
+ The default \code{NULL} returns information for all tables.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }

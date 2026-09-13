@@ -20,7 +20,7 @@ dm_add_pk(
 \item{table}{A table in the \code{dm}.}
 
 \item{columns}{Table columns, unquoted.
-To define a compound key, use \code{c(col1, col2)}.}
+ To define a compound key, use \code{c(col1, col2)}.}
 
 \item{...}{These dots are for future extensions and must be empty.}
 
@@ -30,19 +30,19 @@ If \code{TRUE}, the column specified in \code{columns} will be populated automat
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key set for this table.
-If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
+ If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 }
 \value{
 An updated \code{dm} with an additional primary key.
 }
 \description{
 \code{dm_add_pk()} marks the specified columns as the primary key of the specified table.
-If \code{check == TRUE}, then it will first check if the given combination of columns is a unique key of the table.
-If \code{force == TRUE}, the function will replace an already set key, without altering foreign keys previously pointing to that primary key.
+ If \code{check == TRUE}, then it will first check if the given combination of columns is a unique key of the table.
+ If \code{force == TRUE}, the function will replace an already set key, without altering foreign keys previously pointing to that primary key.
 }
 \details{
 There can be only one primary key per table in a \code{\link{dm}}.
-It's possible though to set an unlimited number of unique keys using \code{\link[=dm_add_uk]{dm_add_uk()}}
+ It's possible though to set an unlimited number of unique keys using \code{\link[=dm_add_uk]{dm_add_uk()}}
 or adding foreign keys pointing to columns other than the primary key columns with \code{\link[=dm_add_fk]{dm_add_fk()}}.
 }
 \examples{

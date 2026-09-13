@@ -18,7 +18,7 @@
 \item{temporary}{Must remain \code{TRUE}.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
-Requires the 'progress' package.}
+ Requires the 'progress' package.}
 }
 \value{
 A \code{dm} object of the same structure as the input.
@@ -30,7 +30,7 @@ A \code{dm} object of the same structure as the input.
 }
 \details{
 Called on a \code{dm} object, these methods create a copy of all tables in the \code{dm}.
-Depending on the size of your data this may take a long time.
+ Depending on the size of your data this may take a long time.
 
 To create permament tables, first create the database schema using \code{\link[=copy_dm_to]{copy_dm_to()}}
 or \code{\link[=dm_sql]{dm_sql()}}, and then use \code{\link[=dm_rows_append]{dm_rows_append()}}.

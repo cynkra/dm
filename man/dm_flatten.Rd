@@ -18,7 +18,7 @@ dm_flatten(
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{table}{The table to flatten by joining its parent tables.
-An interesting choice could be
+ An interesting choice could be
 for example a fact table in a star schema.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -26,30 +26,30 @@ for example a fact table in a star schema.}
 \item{parent_tables}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Unquoted names of the parent tables to be joined into \code{table}.
-The order of the tables here determines the order of the joins.
-If \code{NULL} (the default), all direct parent tables are joined in non-recursive mode,
+ The order of the tables here determines the order of the joins.
+ If \code{NULL} (the default), all direct parent tables are joined in non-recursive mode,
 or all reachable ancestor tables in recursive mode.
-\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
+ \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
 \item{recursive}{Logical, defaults to \code{FALSE}.
-If \code{TRUE}, recursively flatten parent tables before joining them into \code{table}.
-Uses simple recursion: recursively flattening the parents
+ If \code{TRUE}, recursively flatten parent tables before joining them into \code{table}.
+ Uses simple recursion: recursively flattening the parents
 and then doing a join in order.
-If \code{FALSE}, fails if a parent table has further parents
+ If \code{FALSE}, fails if a parent table has further parents
 (unless \code{allow_deep} is \code{TRUE}).
-Cannot be \code{TRUE} when \code{allow_deep} is \code{TRUE}.}
+ Cannot be \code{TRUE} when \code{allow_deep} is \code{TRUE}.}
 
 \item{allow_deep}{Logical, defaults to \code{FALSE}.
-Only relevant if \code{recursive = FALSE}.
-If \code{TRUE}, parent tables with further parents are allowed
+ Only relevant if \code{recursive = FALSE}.
+ If \code{TRUE}, parent tables with further parents are allowed
 and will remain in the result with a foreign-key relationship to the flattened table.
-Cannot be \code{TRUE} when \code{recursive} is \code{TRUE}.}
+ Cannot be \code{TRUE} when \code{recursive} is \code{TRUE}.}
 
 \item{join}{The type of join to use when combining parent tables,
 see \code{\link[dplyr:join]{dplyr::join()}}.
-Defaults to \code{\link[dplyr:left_join]{dplyr::left_join()}}.
-\code{nest_join} is not supported.
-When \code{recursive = TRUE}, only \code{\link[dplyr:left_join]{dplyr::left_join()}},
+ Defaults to \code{\link[dplyr:left_join]{dplyr::left_join()}}.
+ \code{nest_join} is not supported.
+ When \code{recursive = TRUE}, only \code{\link[dplyr:left_join]{dplyr::left_join()}},
 \code{\link[dplyr:inner_join]{dplyr::inner_join()}}, and \code{\link[dplyr:full_join]{dplyr::full_join()}} are supported.}
 }
 \value{

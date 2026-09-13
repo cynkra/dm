@@ -40,7 +40,7 @@ if not, an error is thrown.
 
 If \code{ref_table} does have a primary key, then a join operation will be tried using
 that key as the \code{by} argument of join() to match it to each column of \code{table}.
-Attempting to join incompatible columns triggers an error.
+ Attempting to join incompatible columns triggers an error.
 
 The outcome of the join operation determines the value of the \code{why} column in the result:
 \itemize{
@@ -55,7 +55,7 @@ The outcome of the join operation determines the value of the \code{why} column 
 
 These functions are marked "experimental" because we are not yet sure about the interface,
 in particular if we need both \code{dm_enum...()} and \code{enum...()} variants.
-Changing the interface later seems harmless because these functions are most likely used interactively.
+ Changing the interface later seems harmless because these functions are most likely used interactively.
 }
 
 \examples{
