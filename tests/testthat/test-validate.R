@@ -234,12 +234,13 @@ test_that("validator speaks up (sqlite())", {
   )
 })
 
-test_that("validator accepts tbl_sql which is not tbl_dbi (from copy_inline())", {
+test_that("validator accepts the tbl from copy_inline()", {
   skip_if_src("df")
 
   con <- my_test_con()
   test_table <- dbplyr::copy_inline(con, tibble(a = 1:3))
-  # as of dbplyr v2.2.1, `copy_inline()` creates an object that's `tbl_sql`, but not `tbl_dbi`
-  testthat::expect_false(inherits(test_table, "tbl_dbi"))
+  # dbplyr returned a `tbl_sql` that was not a `tbl_dbi` from v2.2.1 to v2.5.1,
+  # and a proper `tbl_dbi` from v2.6.0 on.
+  # The validator has to accept it either way, which is what this checks.
   expect_silent(dm_validate(dm(test_table)))
 })

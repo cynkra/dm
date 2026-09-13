@@ -28,15 +28,18 @@ test_that("dm_discard_zoomed() works", {
 
 test_that("print() and format() methods for subclass `dm_zoomed` work", {
   expect_snapshot(
+    variant = my_test_src_name,
     dm_for_filter() %>% dm_zoom_to(tf_5) %>% as_dm_zoomed_df() %>% tbl_sum()
   )
 
   expect_snapshot(
+    variant = my_test_src_name,
     dm_for_filter() %>% dm_zoom_to(tf_2) %>% as_dm_zoomed_df() %>% tbl_sum()
   )
 
   # `n` is passed on to `format()` (#2474)
   expect_snapshot(
+    variant = my_test_src_name,
     dm_for_filter() %>% dm_zoom_to(tf_2) %>% print(n = 2)
   )
 })

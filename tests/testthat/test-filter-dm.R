@@ -44,7 +44,7 @@ test_that("dm_filter() legacy API", {
 test_that("dm_filter() deprecations", {
   local_options(lifecycle_verbosity = "warning")
 
-  expect_snapshot({
+  expect_snapshot(variant = my_test_src_name, {
     dm_filter(dm_for_filter(), tf_1, a > 4)
     dm_filter(dm = dm_for_filter(), tf_1, a > 4)
     dm_filter(dm_for_filter(), tf_1, a > 4) %>% dm_apply_filters()
@@ -176,7 +176,7 @@ test_that("we get filtered/unfiltered tables with respective funs", {
 })
 
 test_that("dm_filter() works as intended for reversed dm", {
-  expect_snapshot({
+  expect_snapshot(variant = my_test_src_name, {
     dm_for_filter_rev() %>%
       dm_filter(tf_1 = a < 8 & a > 3) %>%
       dm_get_tables() %>%

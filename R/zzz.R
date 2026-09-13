@@ -23,7 +23,7 @@
     "2.2.8",
     "to use the {.code returning} argument in {.code rows_*()}."
   )
-  check_version_on_load("dbplyr", "2.2.0", "to use the {.code rows_*()} functions.")
+  check_version_on_load("dbplyr", "2.6.0", "to use dm with a database backend.")
 
   # rigg(enum_pk_candidates_impl)
   # rigg(build_copy_data)
