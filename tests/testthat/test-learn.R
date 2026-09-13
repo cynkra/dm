@@ -542,6 +542,46 @@ test_that("dm_meta() contents", {
   )
 })
 
+# MariaDB and MySQL scope a constraint name to its table, so two tables in one schema
+# can each carry a constraint of the same name.
+# `dm_meta()` keys its tables on the constraint name, and has to hold up even then.
+test_that("dm_meta() keys hold when two tables share a constraint name", {
+  skip_if_src_not("maria")
+
+  con_db <- my_test_con()
+
+  schema_name <- paste0(sample(letters, 10, replace = TRUE), collapse = "")
+  schema_name_q <- DBI::dbQuoteIdentifier(con_db, schema_name)
+
+  DBI::dbExecute(con_db, paste0("CREATE SCHEMA ", schema_name_q))
+  withr::defer(try(DBI::dbExecute(con_db, paste0("DROP SCHEMA ", schema_name_q))))
+
+  # `u1` names an index, and an index name only has to be unique within its table.
+  DBI::dbExecute(
+    con_db,
+    paste0(
+      "CREATE TABLE ",
+      schema_name_q,
+      ".parent (a INT NOT NULL PRIMARY KEY, b INT NOT NULL, UNIQUE KEY u1 (b))"
+    )
+  )
+  DBI::dbExecute(
+    con_db,
+    paste0(
+      "CREATE TABLE ",
+      schema_name_q,
+      ".child (x INT NOT NULL PRIMARY KEY, y INT NOT NULL, UNIQUE KEY u1 (y),",
+      " FOREIGN KEY (y) REFERENCES ",
+      schema_name_q,
+      ".parent (b))"
+    )
+  )
+
+  meta <- dm_meta(con_db, schema = schema_name)
+  constraints <- dm_examine_constraints(meta, .progress = FALSE)
+  expect_true(all(constraints$is_key))
+})
+
 test_that("dm_from_con() with mariaDB", {
   skip_if_offline()
   skip_if_not(dm_has_financial())
