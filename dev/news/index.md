@@ -1,5 +1,41 @@
 # Changelog
 
+## dm 1.1.2.9014
+
+### Bug fixes
+
+#### ci
+
+- Trust the SQL Server certificate when creating the test database
+  ([\#2498](https://github.com/cynkra/dm/issues/2498)).
+
+#### ci
+
+- Run SQL Server on Noble, and MySQL on 8.4
+  ([\#2497](https://github.com/cynkra/dm/issues/2497)).
+
+#### ci
+
+- Run MariaDB 12.3, the line that reaches Resolute
+  ([\#2496](https://github.com/cynkra/dm/issues/2496)).
+
+### Features
+
+#### ci
+
+- Align the `revdep2`, `revdep4` and `revdepx` subsystems with
+  `rigraph`.
+
+### Uncategorized
+
+- Perf(revdepx): Compile the revdeps’ checks through ccache.
+
+- Fix(ci): Survive an archived CRAN package, and install it from where
+  it still lives.
+
+- Ci: Fail the roxygenize step on roxygen2 warnings
+  ([\#111](https://github.com/cynkra/dm/issues/111)).
+
 ## dm 1.1.2.9013
 
 ### Bug fixes
