@@ -233,11 +233,77 @@
             "constraint_name": 2,
             "table_name": "tf_2",
             "constraint_type": "FOREIGN KEY",
+            "delete_rule": "CASCADE"
+          },
+          {
+            "constraint_name": 2,
+            "table_name": "tf_2",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
+          },
+          {
+            "constraint_name": 2,
+            "table_name": "tf_2",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
+          },
+          {
+            "constraint_name": 2,
+            "table_name": "tf_4",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "CASCADE"
+          },
+          {
+            "constraint_name": 2,
+            "table_name": "tf_4",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
+          },
+          {
+            "constraint_name": 2,
+            "table_name": "tf_4",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
+          },
+          {
+            "constraint_name": 2,
+            "table_name": "tf_5",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "CASCADE"
+          },
+          {
+            "constraint_name": 2,
+            "table_name": "tf_5",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
+          },
+          {
+            "constraint_name": 2,
+            "table_name": "tf_5",
+            "constraint_type": "FOREIGN KEY",
             "delete_rule": "NO ACTION"
           },
           {
             "constraint_name": 3,
             "table_name": "tf_2",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
+          },
+          {
+            "constraint_name": 3,
+            "table_name": "tf_2",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
+          },
+          {
+            "constraint_name": 3,
+            "table_name": "tf_5",
+            "constraint_type": "FOREIGN KEY",
+            "delete_rule": "NO ACTION"
+          },
+          {
+            "constraint_name": 3,
+            "table_name": "tf_5",
             "constraint_type": "FOREIGN KEY",
             "delete_rule": "NO ACTION"
           },
@@ -254,33 +320,15 @@
           {
             "constraint_name": 6,
             "table_name": "tf_4",
-            "constraint_type": "FOREIGN KEY",
-            "delete_rule": "NO ACTION"
+            "constraint_type": "PRIMARY KEY"
           },
           {
             "constraint_name": 7,
-            "table_name": "tf_4",
+            "table_name": "tf_5",
             "constraint_type": "PRIMARY KEY"
           },
           {
             "constraint_name": 8,
-            "table_name": "tf_5",
-            "constraint_type": "FOREIGN KEY",
-            "delete_rule": "CASCADE"
-          },
-          {
-            "constraint_name": 9,
-            "table_name": "tf_5",
-            "constraint_type": "FOREIGN KEY",
-            "delete_rule": "NO ACTION"
-          },
-          {
-            "constraint_name": 10,
-            "table_name": "tf_5",
-            "constraint_type": "PRIMARY KEY"
-          },
-          {
-            "constraint_name": 11,
             "table_name": "tf_6",
             "constraint_type": "PRIMARY KEY"
           }
@@ -317,6 +365,24 @@
             "ordinal_position": 1
           },
           {
+            "constraint_name": 5,
+            "table_name": "tf_4",
+            "column_name": "j",
+            "ordinal_position": 1
+          },
+          {
+            "constraint_name": 5,
+            "table_name": "tf_4",
+            "column_name": "j1",
+            "ordinal_position": 2
+          },
+          {
+            "constraint_name": 5,
+            "table_name": "tf_5",
+            "column_name": "l",
+            "ordinal_position": 1
+          },
+          {
             "constraint_name": 6,
             "table_name": "tf_2",
             "column_name": "e",
@@ -327,6 +393,12 @@
             "table_name": "tf_2",
             "column_name": "e1",
             "ordinal_position": 2
+          },
+          {
+            "constraint_name": 6,
+            "table_name": "tf_5",
+            "column_name": "m",
+            "ordinal_position": 1
           },
           {
             "constraint_name": 7,
@@ -372,15 +444,9 @@
           },
           {
             "constraint_name": 12,
-            "table_name": "tf_4",
-            "column_name": "j",
+            "table_name": "tf_5",
+            "column_name": "k",
             "ordinal_position": 1
-          },
-          {
-            "constraint_name": 12,
-            "table_name": "tf_4",
-            "column_name": "j1",
-            "ordinal_position": 2
           },
           {
             "constraint_name": 13,
@@ -390,36 +456,18 @@
           },
           {
             "constraint_name": 14,
-            "table_name": "tf_5",
-            "column_name": "k",
-            "ordinal_position": 1
-          },
-          {
-            "constraint_name": 15,
-            "table_name": "tf_5",
-            "column_name": "l",
-            "ordinal_position": 1
-          },
-          {
-            "constraint_name": 16,
-            "table_name": "tf_5",
-            "column_name": "m",
-            "ordinal_position": 1
-          },
-          {
-            "constraint_name": 17,
             "table_name": "tf_6",
             "column_name": "n",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 18,
+            "constraint_name": 15,
             "table_name": "tf_6",
             "column_name": "o",
             "ordinal_position": 1
           },
           {
-            "constraint_name": 19,
+            "constraint_name": 16,
             "table_name": "tf_6",
             "column_name": "o",
             "ordinal_position": 1
@@ -435,14 +483,20 @@
           {
             "table_name": "tf_3",
             "column_name": "f",
-            "constraint_name": 2,
+            "constraint_name": 1,
             "ordinal_position": 1
           },
           {
             "table_name": "tf_3",
             "column_name": "f",
-            "constraint_name": 3,
+            "constraint_name": 2,
             "ordinal_position": 1
+          },
+          {
+            "table_name": "tf_3",
+            "column_name": "f1",
+            "constraint_name": 1,
+            "ordinal_position": 2
           },
           {
             "table_name": "tf_3",
@@ -451,21 +505,15 @@
             "ordinal_position": 2
           },
           {
-            "table_name": "tf_3",
-            "column_name": "f1",
-            "constraint_name": 3,
-            "ordinal_position": 2
-          },
-          {
             "table_name": "tf_4",
             "column_name": "h",
-            "constraint_name": 4,
+            "constraint_name": 1,
             "ordinal_position": 1
           },
           {
             "table_name": "tf_6",
             "column_name": "n",
-            "constraint_name": 5,
+            "constraint_name": 2,
             "ordinal_position": 1
           }
         ]
