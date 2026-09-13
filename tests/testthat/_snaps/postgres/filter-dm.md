@@ -8,7 +8,7 @@
       i `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
       -- Table source ----------------------------------------------------------------
-      src:  postgres  [runner@/var/run/postgresql:5432/runner]
+      src:  <src>
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
@@ -27,7 +27,7 @@
       i `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
       -- Table source ----------------------------------------------------------------
-      src:  postgres  [runner@/var/run/postgresql:5432/runner]
+      src:  <src>
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
@@ -43,7 +43,7 @@
       i `dm_filter()` now takes named filter expressions, the names correspond to the tables to be filtered. You no longer need to call `dm_apply_filters()` to materialize the filters.
     Output
       -- Table source ----------------------------------------------------------------
-      src:  postgres  [runner@/var/run/postgresql:5432/runner]
+      src:  <src>
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
@@ -57,7 +57,7 @@
       i Calling `dm_apply_filters()` after `dm_filter()` is no longer necessary.
     Output
       -- Table source ----------------------------------------------------------------
-      src:  postgres  [runner@/var/run/postgresql:5432/runner]
+      src:  <src>
       -- Metadata --------------------------------------------------------------------
       Tables: `tf_1`, `tf_2`, `tf_3`, `tf_4`, `tf_5`, `tf_6`
       Columns: 20
