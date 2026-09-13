@@ -4,14 +4,14 @@
 #' Filtering a table of a [`dm`] object may affect other tables that are connected to it directly or indirectly via foreign key relations.
 #'
 #' `dm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
-#' The filters work across related tables:
-#' The resulting `dm` object only contains rows that are related (directly or indirectly) to rows
-#' that remain after applying the filters on all tables.
+#'  The filters work across related tables:
+#'  The resulting `dm` object only contains rows that are related (directly or indirectly) to rows
+#'  that remain after applying the filters on all tables.
 #'
 #' @details
 #' As of dm 1.0.0, these conditions are no longer stored in the `dm` object,
-#' instead they are applied to all tables during the call to `dm_filter()`.
-#' Calling `dm_apply_filters()` or `dm_apply_filters_to_tbl()` is no longer necessary.
+#'  instead they are applied to all tables during the call to `dm_filter()`.
+#'  Calling `dm_apply_filters()` or `dm_apply_filters_to_tbl()` is no longer necessary.
 #'
 #' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without affecting related tables.
 #'
@@ -262,17 +262,17 @@ dm_get_filtered_table <- function(dm, from) {
 #' Get filter expressions
 #'
 #' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
-#' These filter expressions are not intended for evaluation, only for information.
+#'  These filter expressions are not intended for evaluation, only for information.
 #'
 #' @section Life cycle:
 #' This function is marked "questioning" because it seems wrong
-#' to tightly couple filtering with the data model.
-#' On the one hand, an overview of active filters is useful
-#' when specifying the base data set for an analysis in terms of column selections
-#' and row filters.
-#' However, these filter condition should be only of informative nature
-#' and never affect the results of other operations.
-#' We are working on formalizing the semantics of the underlying operations in order to present them in a cleaner interface.
+#'  to tightly couple filtering with the data model.
+#'  On the one hand, an overview of active filters is useful
+#'  when specifying the base data set for an analysis in terms of column selections
+#'  and row filters.
+#'  However, these filter condition should be only of informative nature
+#'  and never affect the results of other operations.
+#'  We are working on formalizing the semantics of the underlying operations in order to present them in a cleaner interface.
 #'
 #' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering the filter.
 #'

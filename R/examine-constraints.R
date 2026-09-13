@@ -2,9 +2,9 @@
 #'
 #' @description
 #' This function returns a tibble with information about
-#' which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
-#' The printing for this object is special, use [as_tibble()]
-#' to print as a regular tibble.
+#'  which key constraints are met (`is_key = TRUE`) or violated (`FALSE`).
+#'  The printing for this object is special, use [as_tibble()]
+#'  to print as a regular tibble.
 #'
 #' @param .dm A `dm` object.
 #' @inheritParams rlang::args_dots_empty
@@ -25,8 +25,8 @@
 #'   }
 #'
 #' @details For the primary key constraints, it is tested if the values in the respective columns are all unique.
-#' For the foreign key constraints, the tests check if for each foreign key constraint,
-#' the values of the foreign key column form a subset of the values of the referenced column.
+#'  For the foreign key constraints, the tests check if for each foreign key constraint,
+#'  the values of the foreign key column form a subset of the values of the referenced column.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")

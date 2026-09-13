@@ -1,7 +1,7 @@
 #' Unnest a JSON column
 #'
 #' A wrapper around [tidyr::unnest()] that extracts its data from a JSON column.
-#' The inverse of [json_nest()].
+#'  The inverse of [json_nest()].
 #'
 #' @param data A data frame, a data frame extension (e.g. a tibble), or a lazy data frame (e.g. from dbplyr or dtplyr).
 #' @inheritParams rlang::args_dots_used

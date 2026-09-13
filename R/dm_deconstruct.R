@@ -4,10 +4,10 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' Emits code that assigns each table in the dm to a variable,
-#' using [pull_tbl()] with `keyed = TRUE`.
-#' These tables retain information about primary and foreign keys,
-#' even after data transformations,
-#' and can be converted back to a dm object with [dm()].
+#'  using [pull_tbl()] with `keyed = TRUE`.
+#'  These tables retain information about primary and foreign keys,
+#'  even after data transformations,
+#'  and can be converted back to a dm object with [dm()].
 #'
 #' @inheritParams dm_add_pk
 #' @param dm_name The code to use to access the dm object,

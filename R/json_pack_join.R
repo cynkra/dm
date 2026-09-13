@@ -4,7 +4,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' A wrapper around [pack_join()] which stores the joined data into a JSON column.
-#' `json_pack_join()` returns all rows and columns in `x` with a new JSON columns that contains all packed matches from `y`.
+#'  `json_pack_join()` returns all rows and columns in `x` with a new JSON columns that contains all packed matches from `y`.
 #'
 #' @inheritParams dplyr::nest_join
 #' @param x,y A pair of data frames or data frame extensions (e.g. a tibble).

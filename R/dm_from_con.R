@@ -2,8 +2,8 @@
 #'
 #' @description
 #' `dm_from_con()` creates a [dm] from some or all tables in a [src] (a database or an environment)
-#' or which are accessible via a DBI-Connection.
-#' For Postgres/Redshift and SQL Server databases, primary and foreign keys are imported from the database.
+#'  or which are accessible via a DBI-Connection.
+#'  For Postgres/Redshift and SQL Server databases, primary and foreign keys are imported from the database.
 #'
 #' @param con A [`DBI::DBIConnection-class`] or a `Pool` object.
 #' @param table_names

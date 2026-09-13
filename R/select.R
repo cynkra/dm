@@ -43,7 +43,7 @@ dm_rename <- function(dm, table, ...) {
 #'
 #' @inheritParams dm_rename
 #' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
-#' If key columns are removed, then all related relations are dropped as well.
+#'  If key columns are removed, then all related relations are dropped as well.
 #'
 #' @return An updated `dm` with the columns of `table` reduced and/or renamed.
 #'

@@ -4,8 +4,8 @@
 #' `r lifecycle::badge("deprecated")`
 #'
 #' These methods are deprecated because of their limited use,
-#' and because the notion of a "source" seems to be getting phased out from dplyr.
-#' Use other ways to access the tables in a `dm`.
+#'  and because the notion of a "source" seems to be getting phased out from dplyr.
+#'  Use other ways to access the tables in a `dm`.
 #'
 #' @details
 #' Use [dm_get_con()] instead of `dm_get_src()` to get the DBI connetion for a `dm` object
@@ -47,7 +47,7 @@ tbl.dm <- function(src, from, ...) {
 
 #' @details
 #' Get the names from [dm_get_tables()] instead of calling `dm_get_src()`
-#' to list the table names in a `dm` object.
+#'  to list the table names in a `dm` object.
 #' @rdname dplyr_src
 #' @keywords internal
 #' @export
@@ -66,7 +66,7 @@ src_tbls.dm <- function(x, ...) {
 #' @param name For `copy_to.dm()`: See [dplyr::copy_to()]
 #' @param overwrite For `copy_to.dm()`: See [dplyr::copy_to()]; `TRUE` leads to an error
 #' @param temporary For `copy_to.dm()`: If the `dm` is on a DB, the copied version of `df` will only be written temporarily to the DB.
-#' After the connection is reset it will no longer be available.
+#'  After the connection is reset it will no longer be available.
 #' @param repair,quiet Name repair options; cf. [vctrs::vec_as_names()]
 #' @export
 #' @rdname dplyr_src

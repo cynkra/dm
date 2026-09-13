@@ -2,9 +2,9 @@
 #'
 #' @description
 #' `check_key()` accepts a data frame and, optionally, columns.
-#' It throws an error
-#' if the specified columns are NOT a unique key of the data frame.
-#' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
+#'  It throws an error
+#'  if the specified columns are NOT a unique key of the data frame.
+#'  If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 #'
 #' @param x The data frame whose columns should be tested for key properties.
 #' @param ... The names of the columns to be checked, processed with [dplyr::select()].
@@ -130,7 +130,7 @@ is_unique_key_se <- function(.data, colname, max_value = MAX_COMMAS) {
 #' `check_set_equality()` is a wrapper of [check_subset()].
 #'
 #' It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
-#' If not, it throws an error.
+#'  If not, it throws an error.
 #'
 #' @param x,y A data frame or lazy table.
 #' @inheritParams rlang::args_dots_empty
@@ -196,8 +196,8 @@ check_set_equality_impl0 <- function(x, y, x_label, y_label) {
 #'
 #' @description
 #' `check_subset()` tests if `x` is a subset of `y`.
-#' For convenience, the `x_select` and `y_select` arguments allow restricting the check
-#' to a set of key columns without affecting the return value.
+#'  For convenience, the `x_select` and `y_select` arguments allow restricting the check
+#'  to a set of key columns without affecting the return value.
 #'
 #' @inheritParams check_set_equality
 #'

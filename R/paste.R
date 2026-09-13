@@ -21,9 +21,9 @@
 #'
 #' @details
 #' The code emitted by the function reproduces the structure of the `dm` object.
-#' The `options` argument controls the level of detail: keys, colors,
-#' table definitions.
-#' Data in the tables is never included, see [dm_ptype()] for the underlying logic.
+#'  The `options` argument controls the level of detail: keys, colors,
+#'  table definitions.
+#'  Data in the tables is never included, see [dm_ptype()] for the underlying logic.
 #'
 #' @return Code for producing the prototype of the given `dm`.
 #'

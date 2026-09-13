@@ -2,11 +2,11 @@
 #'
 #' @description
 #' `copy_dm_to()` takes a [`dbplyr::src_dbi`] object or a [`DBI::DBIConnection-class`] object as its first argument
-#' and a [`dm`] object as its second argument.
-#' The latter is copied to the former.
-#' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
-#' Unless `set_key_constraints` is `FALSE`, primary key, foreign key,
-#' and unique constraints are set, and indexes for foreign keys are created, on all databases.
+#'  and a [`dm`] object as its second argument.
+#'  The latter is copied to the former.
+#'  The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
+#'  Unless `set_key_constraints` is `FALSE`, primary key, foreign key,
+#'  and unique constraints are set, and indexes for foreign keys are created, on all databases.
 #'
 #' @inheritParams dm_examine_constraints
 #'

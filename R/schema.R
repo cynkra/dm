@@ -178,8 +178,8 @@ db_schema_exists.SQLiteConnection <- function(con, schema, ...) {
 #' An error is thrown if a schema of that name already exists.
 #'
 #' The argument `schema` (and `dbname` for MSSQL) can be provided as `SQL` objects.
-#' Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers
-#' using [DBI::dbQuoteIdentifier()].
+#'  Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers
+#'  using [DBI::dbQuoteIdentifier()].
 #'
 #' Additional arguments are:
 #'
@@ -316,19 +316,19 @@ sql_schema_table_list_postgres <- function(con, schema = NULL) {
 #' `r lifecycle::badge("experimental")`
 #'
 #' `db_schema_drop()` deletes a schema from the database.
-#' For certain DBMS it is possible to force the removal of a non-empty schema, see below.
+#'  For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 #'
 #' @inheritParams db_schema_create
 #' @param force Boolean, default `FALSE`.
-#' Set to `TRUE` to drop a schema and all objects it contains at once.
-#' Currently only supported for Postgres/Redshift.
+#'  Set to `TRUE` to drop a schema and all objects it contains at once.
+#'  Currently only supported for Postgres/Redshift.
 #'
 #' @details Methods are not available for all DBMS.
 #'
 #' An error is thrown if no schema of that name exists.
 #'
 #' The argument `schema` (and `dbname` for MSSQL) can be provided as `SQL` objects.
-#' Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers.
+#'  Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers.
 #'
 #' Additional arguments are:
 #'

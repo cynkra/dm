@@ -4,7 +4,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' `dm_nest_tbl()` converts a child table to a nested column in its parent table.
-#' The child table should not have children itself (i.e. it needs to be a *terminal child table*).
+#'  The child table should not have children itself (i.e. it needs to be a *terminal child table*).
 #'
 #' @param dm A dm.
 #' @param child_table A terminal table with one parent table.
@@ -101,7 +101,7 @@ dm_nest_tbl <- function(dm, child_table, into = NULL) {
 #' `r lifecycle::badge("experimental")`
 #'
 #' `dm_pack_tbl()` converts a parent table to a packed column in its child table.
-#' The parent table should not have parent tables itself (i.e. it needs to be a *terminal parent table*).
+#'  The parent table should not have parent tables itself (i.e. it needs to be a *terminal parent table*).
 #'
 #' @param dm A dm.
 #' @param parent_table A terminal table with one child table.

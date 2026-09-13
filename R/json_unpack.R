@@ -1,7 +1,7 @@
 #' Unpack a JSON column
 #'
 #' A wrapper around [tidyr::unpack()] that extracts its data from a JSON column.
-#' The inverse of [json_pack()].
+#'  The inverse of [json_pack()].
 #'
 #' @param data A data frame, a data frame extension (e.g. a tibble), or a lazy data frame (e.g. from dbplyr or dtplyr).
 #' @inheritParams rlang::args_dots_used

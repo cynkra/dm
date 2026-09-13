@@ -285,9 +285,9 @@ slice.dm <- function(.data, ..., .by = NULL, .preserve = FALSE) {
 
 #' @rdname dplyr_table_manipulation
 #' @param .keep_pk For `slice.dm_zoomed`: Logical, if `TRUE`, the primary key will be retained during this transformation.
-#' If `FALSE`, it will be dropped.
-#' By default, the value is `NULL`, which causes the function to issue a message in case a primary key is available for the zoomed table.
-#' This argument is specific for the `slice.dm_zoomed()` method.
+#'  If `FALSE`, it will be dropped.
+#'  By default, the value is `NULL`, which causes the function to issue a message in case a primary key is available for the zoomed table.
+#'  This argument is specific for the `slice.dm_zoomed()` method.
 #' @export
 slice.dm_zoomed <- function(.data, ..., .by = NULL, .preserve = FALSE, .keep_pk = NULL) {
   sliced_tbl <- slice(tbl_zoomed(.data), ..., .by = {{ .by }}, .preserve = .preserve)
@@ -638,16 +638,16 @@ compute.dm_zoomed <- function(x, ...) {
 #' @param x,y tbls to join.
 #'   `x` is the `dm_zoomed` and `y` is another table in the `dm`.
 #' @param by If left `NULL` (default),
-#' the join will be performed by via the foreign key relation that exists between the originally zoomed table (now `x`)
-#' and the other table (`y`).
-#' If you provide a value (for the syntax see [`dplyr::join`]), you can also join tables that are not connected in the `dm`.
+#'  the join will be performed by via the foreign key relation that exists between the originally zoomed table (now `x`)
+#'  and the other table (`y`).
+#'  If you provide a value (for the syntax see [`dplyr::join`]), you can also join tables that are not connected in the `dm`.
 #' @param copy Disabled, since all tables in a `dm` are by definition on the same `src`.
 #' @param suffix Disabled, since columns are disambiguated automatically if necessary,
 #'   changing the column names to `table_name.column_name`.
 #' @param select Select a subset of the \strong{RHS-table}'s columns,
-#' the syntax being `select = c(col_1, col_2, col_3)` (unquoted or quoted).
-#' This argument is specific for the `join`-methods for `dm_zoomed`.
-#' The table's `by` column(s) are automatically added if missing in the selection.
+#'  the syntax being `select = c(col_1, col_2, col_3)` (unquoted or quoted).
+#'  This argument is specific for the `join`-methods for `dm_zoomed`.
+#'  The table's `by` column(s) are automatically added if missing in the selection.
 #' @param ... see [`dplyr::join`]
 #' @inheritParams dplyr::left_join
 #' @examplesIf rlang::is_installed("nycflights13")

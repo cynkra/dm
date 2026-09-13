@@ -6,15 +6,15 @@
 #' @inheritParams dm_draw
 #' @param ...
 #' For `dm_set_table_description()`: Descriptions for tables to set in the form `description = table`.
-#' `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
+#'  `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
 #'
 #' For `dm_get_table_description()` and `dm_reset_table_description()`: These dots are for future extensions and must be empty.
 #'
 #' @details
 #' Multi-line descriptions can be achieved using the newline symbol `\n`.
-#' Descriptions are set with `dm_set_table_description()`.
-#' The currently set descriptions can be checked using `dm_get_table_description()`.
-#' Descriptions can be removed using `dm_reset_table_description()`.
+#'  Descriptions are set with `dm_set_table_description()`.
+#'  The currently set descriptions can be checked using `dm_get_table_description()`.
+#'  Descriptions can be removed using `dm_reset_table_description()`.
 #'
 #' @return For `dm_set_table_description()`: A `dm` object containing descriptions for specified tables.
 #' @export

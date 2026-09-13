@@ -55,8 +55,8 @@ check_new_tbls <- function(dm, tbls) {
 #' `r lifecycle::badge("experimental")`
 #'
 #' Updates one or more existing tables in a [`dm`].
-#' For now, the column names must be identical.
-#' This restriction may be levied optionally in the future.
+#'  For now, the column names must be identical.
+#'  This restriction may be levied optionally in the future.
 #'
 #' @seealso [dm()], [dm_select_tbl()]
 #'
