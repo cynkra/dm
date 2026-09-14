@@ -1,5 +1,62 @@
 # Changelog
 
+## dm 1.1.2.9015
+
+### Bug fixes
+
+- Let the backend decide how joins match `NA`, with `na_matches = NULL`
+  ([\#2522](https://github.com/cynkra/dm/issues/2522)).
+
+- Stop asking SQL Server for `TOP Inf` when `.max_value` is infinite
+  ([\#2518](https://github.com/cynkra/dm/issues/2518)).
+
+- Build the constraint identifier for MariaDB and MySQL, so `dm_meta()`
+  keys hold ([\#2516](https://github.com/cynkra/dm/issues/2516)).
+
+- Stop calling
+  [`dplyr::src_tbls()`](https://dplyr.tidyverse.org/reference/src_tbls.html),
+  deprecated in dbplyr 2.6.0
+  ([\#2504](https://github.com/cynkra/dm/issues/2504)).
+
+- Silence the table identifier warning when appending autoincrement rows
+  ([\#2502](https://github.com/cynkra/dm/issues/2502)).
+
+### Chore
+
+- Remove Copilot setup steps.
+
+### Testing
+
+- Record the DuckDB
+  [`dm_filter()`](https://dm.cynkra.com/dev/reference/dm_filter.md)
+  snapshot from a full run
+  ([\#2525](https://github.com/cynkra/dm/issues/2525)).
+
+- Scrub the `src:` line out of the
+  [`dm_filter()`](https://dm.cynkra.com/dev/reference/dm_filter.md)
+  snapshot ([\#2524](https://github.com/cynkra/dm/issues/2524)).
+
+- Compare identifier quoting by dm’s own route, not DBI’s
+  ([\#2523](https://github.com/cynkra/dm/issues/2523)).
+
+- Refresh the DuckDB
+  [`dm_sql()`](https://dm.cynkra.com/dev/reference/dm_sql.md) snapshots
+  for dbplyr 2.6.0 ([\#2515](https://github.com/cynkra/dm/issues/2515)).
+
+- Record the backend snapshot variants, and refresh what dbplyr 2.6.0
+  changed ([\#2512](https://github.com/cynkra/dm/issues/2512)).
+
+- Give the `dm_meta()` snapshot a backend variant, so MariaDB stops
+  fighting it ([\#2514](https://github.com/cynkra/dm/issues/2514)).
+
+- Give backend-sensitive snapshots a variant, raise the dbplyr floor
+  ([\#2501](https://github.com/cynkra/dm/issues/2501)).
+
+### Uncategorized
+
+- Fix(fledge): Push the bump to the default branch wherever that is
+  allowed (cynkra/cynkratemplate#117).
+
 ## dm 1.1.2.9014
 
 ### Bug fixes

@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9014</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9015</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +54,35 @@
       <small>Source: <a href="https://github.com/cynkra/dm/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.2.9015" id="dm-1129015">dm 1.1.2.9015<a class="anchor" aria-label="anchor" href="#dm-1129015"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-1-2-9015">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-1-2-9015"></a></h3>
+<ul><li><p>Let the backend decide how joins match <code>NA</code>, with <code>na_matches = NULL</code> (<a href="https://github.com/cynkra/dm/issues/2522" class="external-link">#2522</a>).</p></li>
+<li><p>Stop asking SQL Server for <code>TOP Inf</code> when <code>.max_value</code> is infinite (<a href="https://github.com/cynkra/dm/issues/2518" class="external-link">#2518</a>).</p></li>
+<li><p>Build the constraint identifier for MariaDB and MySQL, so <code>dm_meta()</code> keys hold (<a href="https://github.com/cynkra/dm/issues/2516" class="external-link">#2516</a>).</p></li>
+<li><p>Stop calling <code><a href="https://dplyr.tidyverse.org/reference/src_tbls.html" class="external-link">dplyr::src_tbls()</a></code>, deprecated in dbplyr 2.6.0 (<a href="https://github.com/cynkra/dm/issues/2504" class="external-link">#2504</a>).</p></li>
+<li><p>Silence the table identifier warning when appending autoincrement rows (<a href="https://github.com/cynkra/dm/issues/2502" class="external-link">#2502</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="chore-1-1-2-9015">Chore<a class="anchor" aria-label="anchor" href="#chore-1-1-2-9015"></a></h3>
+<ul><li>Remove Copilot setup steps.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-1-1-2-9015">Testing<a class="anchor" aria-label="anchor" href="#testing-1-1-2-9015"></a></h3>
+<ul><li><p>Record the DuckDB <code><a href="../reference/dm_filter.html">dm_filter()</a></code> snapshot from a full run (<a href="https://github.com/cynkra/dm/issues/2525" class="external-link">#2525</a>).</p></li>
+<li><p>Scrub the <code>src:</code> line out of the <code><a href="../reference/dm_filter.html">dm_filter()</a></code> snapshot (<a href="https://github.com/cynkra/dm/issues/2524" class="external-link">#2524</a>).</p></li>
+<li><p>Compare identifier quoting by dm’s own route, not DBI’s (<a href="https://github.com/cynkra/dm/issues/2523" class="external-link">#2523</a>).</p></li>
+<li><p>Refresh the DuckDB <code><a href="../reference/dm_sql.html">dm_sql()</a></code> snapshots for dbplyr 2.6.0 (<a href="https://github.com/cynkra/dm/issues/2515" class="external-link">#2515</a>).</p></li>
+<li><p>Record the backend snapshot variants, and refresh what dbplyr 2.6.0 changed (<a href="https://github.com/cynkra/dm/issues/2512" class="external-link">#2512</a>).</p></li>
+<li><p>Give the <code>dm_meta()</code> snapshot a backend variant, so MariaDB stops fighting it (<a href="https://github.com/cynkra/dm/issues/2514" class="external-link">#2514</a>).</p></li>
+<li><p>Give backend-sensitive snapshots a variant, raise the dbplyr floor (<a href="https://github.com/cynkra/dm/issues/2501" class="external-link">#2501</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="uncategorized-1-1-2-9015">Uncategorized<a class="anchor" aria-label="anchor" href="#uncategorized-1-1-2-9015"></a></h3>
+<ul><li>Fix(fledge): Push the bump to the default branch wherever that is allowed (cynkra/cynkratemplate#117).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.2.9014" id="dm-1129014">dm 1.1.2.9014<a class="anchor" aria-label="anchor" href="#dm-1129014"></a></h2>
 <div class="section level3">
