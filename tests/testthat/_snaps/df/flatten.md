@@ -120,7 +120,7 @@
       13        7              31
       
     Code
-      dm_flatten_to_tbl(dm_for_flatten(), fact)
+      arrange(dm_flatten_to_tbl(dm_for_flatten(), fact), pick(everything()))
     Message
       Renaming ambiguous columns: %>%
         dm_rename(fact, something.fact = something) %>%
@@ -145,7 +145,7 @@
       # i 4 more variables: something.dim_1 <chr>, something.dim_2 <chr>,
       #   something.dim_3 <int>, something.dim_4 <int>
     Code
-      result_from_flatten_new()
+      arrange(result_from_flatten_new(), pick(everything()))
     Output
       # A tibble: 10 x 11
          fact     dim_1_key_1 dim_1_key_2 dim_2_key dim_3_key dim_4_key something.fact

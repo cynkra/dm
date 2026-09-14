@@ -38,7 +38,16 @@
        8          8 H          j              
        9          9 I          k              
       10         10 J          l              
-      # i more rows
+      11         11 K          m              
+      12         12 L          n              
+      13         13 M          o              
+      14         14 N          p              
+      15         15 O          q              
+      16         16 P          r              
+      17         17 Q          s              
+      18         18 R          t              
+      19         19 S          u              
+      20         20 T          v              
       
       $dim_2
          dim_2_pk something.dim_2
@@ -53,7 +62,16 @@
        8 h        L              
        9 i        M              
       10 j        N              
-      # i more rows
+      11 k        O              
+      12 l        P              
+      13 m        Q              
+      14 n        R              
+      15 o        S              
+      16 p        T              
+      17 q        U              
+      18 r        V              
+      19 s        W              
+      20 t        X              
       
       $dim_3
          dim_3_pk something.dim_3
@@ -68,7 +86,16 @@
        8 L                     10
        9 M                     11
       10 N                     12
-      # i more rows
+      11 O                     13
+      12 P                     14
+      13 Q                     15
+      14 R                     16
+      15 S                     17
+      16 T                     18
+      17 U                     19
+      18 V                     20
+      19 W                     21
+      20 X                     22
       
       $dim_4
          dim_4_pk something.dim_4
@@ -83,10 +110,12 @@
        8       12              26
        9       11              27
       10       10              28
-      # i more rows
+      11        9              29
+      12        8              30
+      13        7              31
       
     Code
-      dm_flatten_to_tbl(dm_for_flatten(), fact)
+      arrange(dm_flatten_to_tbl(dm_for_flatten(), fact), pick(everything()))
     Message
       Renaming ambiguous columns: %>%
         dm_rename(fact, something.fact = something) %>%
@@ -110,7 +139,7 @@
       # i 4 more variables: something.dim_1 <chr>, something.dim_2 <chr>,
       #   something.dim_3 <int>, something.dim_4 <int>
     Code
-      result_from_flatten_new()
+      arrange(result_from_flatten_new(), pick(everything()))
     Output
          fact     dim_1_key_1 dim_1_key_2 dim_2_key dim_3_key dim_4_key something.fact
          <chr>          <int> <chr>       <chr>     <chr>         <int>          <int>

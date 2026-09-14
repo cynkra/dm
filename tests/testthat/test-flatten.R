@@ -6,6 +6,10 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
     pillar.max_title_chars = NULL,
     pillar.max_footer_lines = NULL,
     pillar.bold = NULL,
+    # The dim_* tables have exactly 20 rows, which is tibble's default print_max.
+    # Sitting on the boundary makes the printed row count depend on the installed
+    # tibble, so pin it and always print in full.
+    pillar.print_max = Inf,
   )
 
   # FIXME: Debug GHA fail
@@ -23,8 +27,8 @@ test_that("`dm_flatten_to_tbl()` does the right things for 'left_join()'", {
         gotta_rename = TRUE
       ) %>%
         dm_get_tables()
-      dm_flatten_to_tbl(dm_for_flatten(), fact)
-      result_from_flatten_new()
+      arrange(dm_flatten_to_tbl(dm_for_flatten(), fact), pick(everything()))
+      arrange(result_from_flatten_new(), pick(everything()))
     },
     variant = my_test_src_name
   )
