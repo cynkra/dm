@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9016
+
+## Bug fixes
+
+- Only apply pkgdown behavior when building dm's own site (#2194, #2528).
+
+## Testing
+
+- Make the `left_join()` flatten snapshot independent of the runner (#2527).
+
+
 # dm 1.1.2.9015
 
 ## Bug fixes
