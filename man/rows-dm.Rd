@@ -36,9 +36,8 @@ relevant for mutable backends (e.g. databases, data.tables).
 When \code{TRUE}, a modified version of \code{x} is returned invisibly;
 when \code{FALSE}, a new object representing the resulting changes is returned.}
 
-\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
-hide in non-interactive mode, show in interactive mode. Requires the
-'progress' package.}
+\item{progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
+Requires the 'progress' package.}
 }
 \value{
 A dm object of the same \code{\link[=dm_ptype]{dm_ptype()}} as \code{x}.
@@ -49,14 +48,11 @@ and \code{x} is returned, invisibly.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 These functions provide a framework for updating data in existing tables.
-Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created
-on the database.
-All operations expect that both existing and new data are presented
-in two compatible \link{dm} objects on the same data source.
+Unlike \code{\link[=compute]{compute()}}, \code{\link[=copy_to]{copy_to()}} or \code{\link[=copy_dm_to]{copy_dm_to()}}, no new tables are created on the database.
+All operations expect that both existing and new data are presented in two compatible \link{dm} objects on the same data source.
 
-The functions make sure that the tables in the target dm
-are processed in topological order so that parent (dimension)
-tables receive insertions before child (fact) tables.
+The functions make sure that the tables in the target dm are processed in topological order
+so that parent (dimension) tables receive insertions before child (fact) tables.
 
 These operations, in contrast to all other operations,
 may lead to irreversible changes to the underlying database.
@@ -76,8 +72,7 @@ Use \code{in_place = FALSE} and apply \code{\link[=dm_examine_constraints]{dm_ex
 \code{dm_rows_update()} updates existing records via \code{\link[=rows_update]{rows_update()}}.
 Primary keys must match for all records to be updated.
 
-\code{dm_rows_patch()} updates missing values in existing records
-via \code{\link[=rows_patch]{rows_patch()}}.
+\code{dm_rows_patch()} updates missing values in existing records via \code{\link[=rows_patch]{rows_patch()}}.
 Primary keys must match for all records to be patched.
 
 \code{dm_rows_upsert()} updates existing records and adds new records,

@@ -14,8 +14,10 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-Once you have all your primary keys set and all foreign key relations defined, a graphical representation of your data model offers a condensed view of the tables and the relationships between the tables.
-The following functions can be used to visualize the `dm` object:^[The code for the functions in this section is borrowed from the [{datamodelr}](https://github.com/bergant/datamodelr) package.]
+Once you have all your primary keys set and all foreign key relations defined,
+a graphical representation of your data model offers a condensed view of the tables and the relationships between the tables.
+The following functions can be used
+to visualize the `dm` object:^[The code for the functions in this section is borrowed from the [{datamodelr}](https://github.com/bergant/datamodelr) package.]
 
 1. `dm_draw()`
 1. `dm_set_colors()`

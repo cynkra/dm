@@ -53,15 +53,13 @@ and because the notion of a "source" seems to be getting phased out from dplyr.
 Use other ways to access the tables in a \code{dm}.
 }
 \details{
-Use \code{\link[=dm_get_con]{dm_get_con()}} instead of \code{dm_get_src()} to get the DBI connetion for a
-\code{dm} object
+Use \code{\link[=dm_get_con]{dm_get_con()}} instead of \code{dm_get_src()} to get the DBI connetion for a \code{dm} object
 
 Use \code{\link[base:Extract]{[[}} instead of \code{tbl()} to access individual tables in a \code{dm} object.
 
 Get the names from \code{\link[=dm_get_tables]{dm_get_tables()}} instead of calling \code{dm_get_src()}
 to list the table names in a \code{dm} object.
 
-Use \code{\link[=copy_to]{copy_to()}} on a table and then \code{\link[=dm]{dm()}} instead of \code{copy_to()}
-on a \code{dm} object.
+Use \code{\link[=copy_to]{copy_to()}} on a table and then \code{\link[=dm]{dm()}} instead of \code{copy_to()} on a \code{dm} object.
 }
 \keyword{internal}

@@ -9,8 +9,7 @@ db_schema_list(con, include_default = TRUE, ...)
 \arguments{
 \item{con}{An object of class \code{"src"} or \code{"DBIConnection"}.}
 
-\item{include_default}{Boolean, if \code{TRUE} (default), also the default schema
-on the database is included in the result}
+\item{include_default}{Boolean, if \code{TRUE} (default), also the default schema on the database is included in the result}
 
 \item{...}{Passed on to the individual methods.}
 }
@@ -31,8 +30,8 @@ Methods are not available for all DBMS.
 
 Additional arguments are:
 \itemize{
-\item \code{dbname}: supported for MSSQL. List schemas on a different database on the connected MSSQL-server;
-default: database addressed by \code{con}.
+\item \code{dbname}: supported for MSSQL.
+List schemas on a different database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{

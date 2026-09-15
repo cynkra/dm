@@ -5,7 +5,8 @@ dm_upgrade <- function(dm, quiet) {
 
   if (version < 1L) {
     # FIXME: Can't give unconditional message, because IDE can tickle object in environment,
-    # and this also produces a message. Don't emit message when calling str()?
+    # and this also produces a message.
+    # Don't emit message when calling str()?
     if (!quiet) {
       message("Upgrading dm object created with dm <= 0.2.1.")
     }
@@ -26,7 +27,8 @@ dm_upgrade <- function(dm, quiet) {
 
   if (version < 2L) {
     # FIXME: Can't give unconditional message, because IDE can tickle object in environment,
-    # and this also produces a message. Don't emit message when calling str()?
+    # and this also produces a message.
+    # Don't emit message when calling str()?
     if (!quiet) {
       message("Upgrading dm object created with dm <= 0.2.4.")
     }
@@ -37,7 +39,8 @@ dm_upgrade <- function(dm, quiet) {
 
   if (version < 3L) {
     # FIXME: Can't give unconditional message, because IDE can tickle object in environment,
-    # and this also produces a message. Don't emit message when calling str()?
+    # and this also produces a message.
+    # Don't emit message when calling str()?
     if (!quiet) {
       message("Upgrading dm object created with dm <= 0.3.0.")
     }

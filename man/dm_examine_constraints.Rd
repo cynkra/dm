@@ -18,12 +18,10 @@ dm_examine_constraints(
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{.progress}{Whether to display a progress bar, if \code{NA} (the default)
-hide in non-interactive mode, show in interactive mode. Requires the
-'progress' package.}
+\item{.progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
+Requires the 'progress' package.}
 
-\item{.max_value}{Maximum number of distinct problematic values to report
-in the \code{problem} column, defaults to \code{6}.
+\item{.max_value}{Maximum number of distinct problematic values to report in the \code{problem} column, defaults to \code{6}.
 Set to \code{Inf} to report all values.}
 
 \item{dm, progress}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
@@ -47,8 +45,8 @@ to print as a regular tibble.
 }
 \details{
 For the primary key constraints, it is tested if the values in the respective columns are all unique.
-For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column
-form a subset of the values of the referenced column.
+For the foreign key constraints, the tests check if for each foreign key constraint,
+the values of the foreign key column form a subset of the values of the referenced column.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}

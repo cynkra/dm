@@ -14,8 +14,7 @@
 #' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
 #' @param col_attr Deprecated, use `colummn_types` instead.
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
-#'   It defines the level of details for rendering tables
-#'   (only primary and foreign keys, all columns, or no columns).
+#'   It defines the level of details for rendering tables (only primary and foreign keys, all columns, or no columns).
 #' @inheritParams rlang::args_dots_empty
 #' @param column_types Set to `TRUE` to show column types.
 #' @param backend Currently, only the default `"DiagrammeR"` is accepted.
@@ -33,20 +32,13 @@
 #'     and `table_description` (default `8`).
 #'     Can be set as a named integer vector, e.g.
 #'     `c(table_headers = 18L, table_description = 6L)`.
-#' @param columnArrows `r lifecycle::badge("deprecated")` Use
-#'   `backend_opts = list(column_arrow = ...)` instead.
-#' @param graph_attrs `r lifecycle::badge("deprecated")` Use
-#'   `backend_opts = list(graph_attrs = ...)` instead.
-#' @param node_attrs `r lifecycle::badge("deprecated")` Use
-#'   `backend_opts = list(node_attrs = ...)` instead.
-#' @param edge_attrs `r lifecycle::badge("deprecated")` Use
-#'   `backend_opts = list(edge_attrs = ...)` instead.
-#' @param focus `r lifecycle::badge("deprecated")` Use
-#'   `backend_opts = list(focus = ...)` instead.
-#' @param graph_name `r lifecycle::badge("deprecated")` Use
-#'   `backend_opts = list(graph_name = ...)` instead.
-#' @param font_size `r lifecycle::badge("deprecated")` Use
-#'   `backend_opts = list(font_size = ...)` instead.
+#' @param columnArrows `r lifecycle::badge("deprecated")` Use `backend_opts = list(column_arrow = ...)` instead.
+#' @param graph_attrs `r lifecycle::badge("deprecated")` Use `backend_opts = list(graph_attrs = ...)` instead.
+#' @param node_attrs `r lifecycle::badge("deprecated")` Use `backend_opts = list(node_attrs = ...)` instead.
+#' @param edge_attrs `r lifecycle::badge("deprecated")` Use `backend_opts = list(edge_attrs = ...)` instead.
+#' @param focus `r lifecycle::badge("deprecated")` Use `backend_opts = list(focus = ...)` instead.
+#' @param graph_name `r lifecycle::badge("deprecated")` Use `backend_opts = list(graph_name = ...)` instead.
+#' @param font_size `r lifecycle::badge("deprecated")` Use `backend_opts = list(font_size = ...)` instead.
 #'
 #' @seealso [dm_set_colors()] for defining the table colors.
 #' @seealso [dm_set_table_description()] for adding details to one or more tables in the diagram
@@ -217,8 +209,7 @@ dm_draw <- function(
 
 #' Get data_model
 #'
-#' `dm_get_data_model()` converts a `dm` to a \pkg{datamodelr}
-#' data model object for drawing.
+#' `dm_get_data_model()` converts a `dm` to a \pkg{datamodelr} data model object for drawing.
 #'
 #' @noRd
 #' @autoglobal
@@ -273,8 +264,7 @@ dm_get_data_model <- function(x, column_types = FALSE) {
     types %>%
     full_join(keys_pk, by = c("table", "column")) %>%
     full_join(keys_fk, by = c("table", "column")) %>%
-    # there is a legitimate interest to have duplicates in `table` and `column`
-    # in table `references_for_columns`.
+    # there is a legitimate interest to have duplicates in `table` and `column` in table `references_for_columns`.
     # When using a dplyr version >= 1.1.0, we get a warning in that case, thus
     # we need `multiple = "all"`.
     # FIXME: is there another way? like this we need a min dplyr version 1.1.0.
@@ -428,8 +418,7 @@ dm_get_colors <- function(dm) {
 #' dm_get_available_colors()
 #'
 #' `dm_get_available_colors()` returns an overview of the names of the available colors
-#' These are the standard colors also returned by [grDevices::colors()] plus a default
-#' table color with the name "default".
+#' These are the standard colors also returned by [grDevices::colors()] plus a default table color with the name "default".
 #'
 #' @return For `dm_get_available_colors()`, a vector with the available colors.
 #'

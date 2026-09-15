@@ -19,17 +19,24 @@ source("setup/setup.R")
 ``````
 
 {dm} was designed to make connecting to and working with a relational database management system (RDBMS) as straightforward as possible.
-To this end, a dm object can be created from any database that has a {[DBI](https://dbi.r-dbi.org/)} backend available ([see list](https://github.com/r-dbi/backends)).
+To this end, a dm object can be created from any database
+that has a {[DBI](https://dbi.r-dbi.org/)} backend available ([see list](https://github.com/r-dbi/backends)).
 
-When a dm object is created via a DBI connection to an RDBMS, it can import all the tables in the database, the active schema, or a limited set.
-For some RDBMS, such as Postgres, SQL Server and MariaDB, primary and foreign keys are also imported and do not have to be manually added afterwards.
+When a dm object is created via a DBI connection to an RDBMS,
+it can import all the tables in the database, the active schema, or a limited set.
+For some RDBMS, such as Postgres, SQL Server and MariaDB,
+primary and foreign keys are also imported and do not have to be manually added afterwards.
 
-To demonstrate, we will connect to a `r href("relational dataset repository", "https://relational.fel.cvut.cz/")` with a database server that is publicly accessible without registration.
-It hosts a `r href("financial dataset", "https://relational.fel.cvut.cz/dataset/Financial")` that contains loan data along with relevant account information and transactions.
-We chose this dataset because the relationships between `loan`, `account`, and `transactions` tables are a good representation of databases that record real-world business transactions.
+To demonstrate, we will connect to a `r href("relational dataset repository", "https://relational.fel.cvut.cz/")` with a database server
+that is publicly accessible without registration.
+It hosts a `r href("financial dataset", "https://relational.fel.cvut.cz/dataset/Financial")`
+that contains loan data along with relevant account information and transactions.
+We chose this dataset because the relationships between `loan`, `account`,
+and `transactions` tables are a good representation of databases that record real-world business transactions.
 
 Below, we open a connection to the publicly accessible database server using their documented connection parameters.
-Connection details vary from database to database. Before connecting to your own RDBMS, you may want to read `vignette("DBI", package = "DBI")` for further information.
+Connection details vary from database to database.
+Before connecting to your own RDBMS, you may want to read `vignette("DBI", package = "DBI")` for further information.
 
 
 ``````{r eval = FALSE}
@@ -102,7 +109,8 @@ fin_dm <- dm_from_con(my_db, learn_keys = FALSE)
 fin_dm
 ``````
 
-The `r href("model diagram", "https://relational.fel.cvut.cz/assets/img/datasets-generated/financial.svg")` provided by our test database loosely illustrates the intended relationships between tables.
+The `r href("model diagram", "https://relational.fel.cvut.cz/assets/img/datasets-generated/financial.svg")`
+provided by our test database loosely illustrates the intended relationships between tables.
 In the diagram, we can see that the `loans` table should be linked to the `accounts` table.
 Below, we create those links in 3 steps:
 
@@ -112,8 +120,10 @@ Below, we create those links in 3 steps:
 
 Then we assign colors to the tables and draw the structure of the dm.
 
-Note that when the foreign key is created, the primary key in the referenced table does not need to be *specified*, but the primary key must already be *defined*.
-And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres, SQL Server databases and MariaDB, and only when `dm_from_con()` is used.
+Note that when the foreign key is created, the primary key in the referenced table does not need to be *specified*,
+but the primary key must already be *defined*.
+And, as mentioned above, primary and foreign key constraints on the database are currently only imported for Postgres,
+SQL Server databases and MariaDB, and only when `dm_from_con()` is used.
 This process of key definition needs to be done manually for other databases.
 
 ``````{r }
@@ -141,7 +151,8 @@ my_dm_keys %>%
 ## Serializing a dm object
 
 A dm object is always linked to a database connection.
-This connection is lost when the dm object is saved to disk, e.g., when saving the workspace in R or in Posit Workbench, or when using knitr chunks:
+This connection is lost when the dm object is saved to disk, e.g.,
+when saving the workspace in R or in Posit Workbench, or when using knitr chunks:
 
 ``````{r error = TRUE}
 unserialize(serialize(my_dm_keys, NULL))
@@ -183,7 +194,8 @@ my_dm_fun() %>%
   dm_draw()
 ``````
 
-To avoid reconnecting and/or recreating every time you need a dm object, you can use `memoise::memoise()` to memoize the connection and/or dm functions.
+To avoid reconnecting and/or recreating every time you need a dm object,
+you can use `memoise::memoise()` to memoize the connection and/or dm functions.
 
 ## Transient nature of operations
 
@@ -212,11 +224,13 @@ my_dm_keys %>%
 
 ## Performing operations on tables by "zooming"
 
-As the dm is a collection of tables, if we wish to perform operations on an individual table, we set it as the context for those operations using `dm_zoom_to()`.
+As the dm is a collection of tables, if we wish to perform operations on an individual table,
+we set it as the context for those operations using `dm_zoom_to()`.
 See `vignette("tech-dm-zoom")` for more detail on zooming.
 
 dm operations are transient unless persistence is explicitly requested.
-To make our chain of manipulations on the selected table permanent, we assign the result of `dm_insert_zoomed()` to a new object, `my_dm_total`.
+To make our chain of manipulations on the selected table permanent,
+we assign the result of `dm_insert_zoomed()` to a new object, `my_dm_total`.
 This is a new dm object, derived from `my_dm_keys`, with a new lazy table `total_loans` linked to the `accounts` table.
 
 ``````{r }
@@ -232,7 +246,8 @@ You can learn more about zooming in the tutorial `vignette("tech-dm-zoom")`.
 We then use {[dplyr](https://dplyr.tidyverse.org/)} functions on the zoomed table to generate a new summary table.
 
 `summarize()` returns a temporary table with one row for each group created by the `.by` argument.
-The columns in the temporary table are constrained to the columns passed as the `.by` argument and the column(s) created by the `summarize()` function.
+The columns in the temporary table are constrained to the columns passed as the `.by` argument
+and the column(s) created by the `summarize()` function.
 
 `dm_insert_zoomed("total_loans")` adds the temporary table created by `summarize()` to the data model under a new name, `total_loans`.
 Because the grouping variable `account_id` is a primary key, the new derived table is automatically linked to the `accounts` table.
@@ -249,7 +264,8 @@ The resulting table `total_loans` can be accessed like any other table in the dm
 my_dm_total$total_loans
 ``````
 
-It is a *lazy table* powered by the {[dbplyr](https://dbplyr.tidyverse.org/)} package: the results are not materialized; instead, an SQL query is built and executed each time the data is requested.
+It is a *lazy table* powered by the {[dbplyr](https://dbplyr.tidyverse.org/)} package:
+the results are not materialized; instead, an SQL query is built and executed each time the data is requested.
 
 ``````{r}
 my_dm_total$total_loans %>%
@@ -277,7 +293,8 @@ my_dm_local$total_loans
 ``````
 
 Use this method with caution.
-If you are not sure of the size of the dataset you will be downloading, you can call `dm_nrow()` on your `dm` for the row count of your data model's tables.
+If you are not sure of the size of the dataset you will be downloading,
+you can call `dm_nrow()` on your `dm` for the row count of your data model's tables.
 
 ```{r}
 my_dm_total %>%
@@ -300,7 +317,8 @@ deployed_dm
 my_dm_local
 ``````
 
-In the output, you can observe that the `src` for `deployed_dm` is the SQLite database, while for `my_dm_local` the source is the local R environment.
+In the output, you can observe that the `src` for `deployed_dm` is the SQLite database,
+while for `my_dm_local` the source is the local R environment.
 
 Persisting tables are covered in more detail in `vignette("howto-dm-copy")`.
 
@@ -324,6 +342,10 @@ The next step is to read `vignette("howto-dm-copy")`, where copying your tables 
 
 ## Further reading
 
-`vignette("howto-dm-df")` -- Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
+`vignette("howto-dm-df")` -- Is your data in local data frames?
+This article covers creating a data model from your local data frames, including building the relationships in your data model,
+verifying your model, and leveraging the power of dplyr to operate on your data model.
 
-`vignette("howto-dm-theory")` -- Do you know all about data frames but very little about relational data models? This quick introduction will walk you through the key similarities and differences, and show you how to move from individual data frames to a relational data model.
+`vignette("howto-dm-theory")` -- Do you know all about data frames but very little about relational data models?
+This quick introduction will walk you through the key similarities and differences,
+and show you how to move from individual data frames to a relational data model.

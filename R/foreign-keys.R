@@ -1,23 +1,20 @@
 #' Add foreign keys
 #'
 #' @description
-#' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with
-#' respect to a key of table `ref_table`.
+#' `dm_add_fk()` marks the specified `columns` as the foreign key of table `table` with respect to a key of table `ref_table`.
 #' Usually the referenced columns are a primary key in `ref_table`.
 #' However, it is also possible to specify other columns via the `ref_columns` argument.
-#' If `check == TRUE`, then it will first check if the values in `columns` are a subset
-#' of the values of the key in table `ref_table`.
+#' If `check == TRUE`, then it will first check if the values in `columns` are a subset of the values of the key in table `ref_table`.
 #'
 #' @inheritParams dm_add_pk
-#' @param columns The columns of `table` which are to become the foreign key columns that
-#'   reference `ref_table`.
+#' @param columns The columns of `table` which are to become the foreign key columns that reference `ref_table`.
 #'   To define a compound key, use `c(col1, col2)`.
 #' @param ref_table The table which `table` will be referencing.
 #' @param ref_columns The column(s) of `table` which are to become the referenced column(s) in `ref_table`.
 #'   By default, the primary key is used.
 #'   To define a compound key, use `c(col1, col2)`.
-#' @param check Boolean, if `TRUE`, a check will be performed to determine if the values of
-#'   `columns` are a subset of the values of the key column(s) of `ref_table`.
+#' @param check Boolean, if `TRUE`,
+#'   a check will be performed to determine if the values of `columns` are a subset of the values of the key column(s) of `ref_table`.
 #' @param on_delete
 #'   `r lifecycle::badge("experimental")`
 #'
@@ -32,8 +29,7 @@
 #' @family foreign key functions
 #'
 #' @details
-#' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor
-#' explicit unique keys (UK).
+#' It is possible that a foreign key (FK) is pointing to columns that are neither primary (PK) nor explicit unique keys (UK).
 #' This can happen
 #'   1. when a FK is added without a corresponding PK or UK being present in the parent table
 #'   1. when the PK or UK is removed ([`dm_rm_pk()`]/[`dm_rm_uk()`]) without first removing the associated FKs.
@@ -532,11 +528,9 @@ dm_rm_fk_impl <- function(
 #' - the error message triggered for unsuitable candidates that may include the types of mismatched columns
 #'
 #' @section Life cycle:
-#' These functions are marked "experimental" because we are not yet sure about
-#' the interface, in particular if we need both `dm_enum...()` and `enum...()`
-#' variants.
-#' Changing the interface later seems harmless because these functions are
-#' most likely used interactively.
+#' These functions are marked "experimental" because we are not yet sure about the interface,
+#' in particular if we need both `dm_enum...()` and `enum...()` variants.
+#' Changing the interface later seems harmless because these functions are most likely used interactively.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{

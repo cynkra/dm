@@ -1,10 +1,9 @@
 #' Load a dm from a remote data source
 #'
 #' @description
-#' `dm_from_con()` creates a [dm] from some or all tables in a [src]
-#' (a database or an environment) or which are accessible via a DBI-Connection.
-#' For Postgres/Redshift and SQL Server databases, primary and foreign keys
-#' are imported from the database.
+#' `dm_from_con()` creates a [dm] from some or all tables in a [src] (a database or an environment)
+#' or which are accessible via a DBI-Connection.
+#' For Postgres/Redshift and SQL Server databases, primary and foreign keys are imported from the database.
 #'
 #' @param con A [`DBI::DBIConnection-class`] or a `Pool` object.
 #' @param table_names
@@ -12,30 +11,29 @@
 #' @param learn_keys
 #'   `r lifecycle::badge("experimental")`
 #'
-#'   Set to `TRUE` to query the definition of primary and
-#'   foreign keys from the database.
+#'   Set to `TRUE` to query the definition of primary and foreign keys from the database.
 #'   Currently works for Postgres/Redshift, MariaDB/MySQL, SQLite, SQL Server, and DuckDB databases.
 #'   The default attempts to query and issues an informative message.
 #' @param .names
 #'   `r lifecycle::badge("experimental")`
 #'
-#'   A glue specification that describes how to name the tables
-#'   within the output, currently only for MSSQL, Postgres/Redshift and MySQL/MariaDB.
-#'   This can use `{.table}` to stand for the table name, and
-#'   `{.schema}` to stand for the name of the schema which the table lives
-#'   within. The default (`NULL`) is equivalent to `"{.table}"` when a single
-#'   schema is specified in `schema`, and `"{.schema}.{.table}"` for the case
-#'   where multiple schemas are given, and may change in future versions.
+#'   A glue specification that describes how to name the tables within the output,
+#'   currently only for MSSQL, Postgres/Redshift and MySQL/MariaDB.
+#'   This can use `{.table}` to stand for the table name, and `{.schema}` to stand for the name of the schema which the table lives within.
+#'   The default (`NULL`) is equivalent to `"{.table}"` when a single schema is specified in `schema`,
+#'   and `"{.schema}.{.table}"` for the case where multiple schemas are given, and may change in future versions.
 #' @param ... `r lifecycle::badge("experimental")`
 #'
 #'   Additional parameters for the schema learning query.
 #'
-#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres/Redshift (default: `"public"`), MariaDB/MySQL
-#'     (default: current database) and SQLite (default: main schema).
+#'   - `schema`: supported for MSSQL (default: `"dbo"`), Postgres/Redshift (default: `"public"`),
+#'     MariaDB/MySQL (default: current database) and SQLite (default: main schema).
 #'     Learn the tables in a specific schema (or database for MariaDB/MySQL).
-#'   - `dbname`: supported for MSSQL. Access different databases on the connected MSSQL-server;
-#'     default: active database.
-#'   - `table_type`: supported for Postgres/Redshift (default: `"BASE TABLE"`). Specify the table type. Options are:
+#'   - `dbname`: supported for MSSQL.
+#'     Access different databases on the connected MSSQL-server; default: active database.
+#'   - `table_type`: supported for Postgres/Redshift (default: `"BASE TABLE"`).
+#'     Specify the table type.
+#'     Options are:
 #'     1. `"BASE TABLE"` for a persistent table (normal table type)
 #'     2. `"VIEW"` for a view
 #'     3. `"FOREIGN TABLE"` for a foreign table

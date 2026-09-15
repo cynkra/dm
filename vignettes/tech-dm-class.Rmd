@@ -15,7 +15,8 @@ editor_options:
 source("setup/setup.R")
 ``````
 
-The goal of the {dm} package and the `dm` class that comes with it, is to make your life easier when you are dealing with data from several different tables.
+The goal of the {dm} package and the `dm` class that comes with it,
+is to make your life easier when you are dealing with data from several different tables.
 
 Let's take a look at the `dm` class.
 
@@ -93,7 +94,10 @@ flights_dm
 
 
 The function `dm_from_con(con, table_names = NULL)` includes all available tables on a source in the `dm` object.
-This means that you can use this, for example, on a postgres database that you access via `DBI::dbConnect(RPostgres::Postgres())` (with the appropriate arguments `dbname`, `host`, `port`, ...), to produce a `dm` object with all the tables on the database.
+This means that you can use this, for example,
+on a postgres database
+that you access via `DBI::dbConnect(RPostgres::Postgres())` (with the appropriate arguments `dbname`, `host`, `port`, ...),
+to produce a `dm` object with all the tables on the database.
 
 ### Low-level construction
 
@@ -138,7 +142,8 @@ Some useful functions for managing primary key settings are:
 1. `dm_rm_pk()`
 1. `dm_enum_pk_candidates()`
 
-If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm), your object does not yet have any primary keys set.
+If you created a `dm` object according to the examples in ["Examples of `dm` objects"](#ex_dm),
+your object does not yet have any primary keys set.
 So let's add one.
 
 We use the `nycflights13` tables, i.e. `flights_dm` from above.
@@ -168,7 +173,8 @@ dm_rm_pk(flights_dm_with_key, airports) %>%
   dm_has_pk(airports)
 ```
 
-If you still need to get to know your data better, and it is already available in the form of a `dm` object, you can use the  `dm_enum_pk_candidates()` function in order to get information about which columns of the table are unique keys:
+If you still need to get to know your data better, and it is already available in the form of a `dm` object,
+you can use the `dm_enum_pk_candidates()` function in order to get information about which columns of the table are unique keys:
 
 ```{r}
 dm_enum_pk_candidates(flights_dm_with_key, airports)
@@ -206,7 +212,8 @@ With the `dm_add_fk()` function you can define which column of which table point
 
 This is done by choosing a foreign key from one table that will point to a primary key of another table.
 The primary key of the referred table must be set with `dm_add_pk()`.
-`dm_add_fk()` will find the primary key column of the referenced table by itself and make the indicated column of the child table point to it.
+`dm_add_fk()` will find the primary key column of the referenced table by itself
+and make the indicated column of the child table point to it.
 
 ```{r}
 flights_dm_with_key %>% dm_add_fk(flights, origin, airports)
@@ -226,7 +233,8 @@ Let's create a `dm` object with a foreign key relation to work with later on:
 flights_dm_with_fk <- dm_add_fk(flights_dm_with_key, flights, origin, airports)
 ```
 
-What if we tried to add another foreign key relation from `flights` to `airports` to the object? Column `dest` might work, since it also contains airport codes:
+What if we tried to add another foreign key relation from `flights` to `airports` to the object?
+Column `dest` might work, since it also contains airport codes:
 
 ```{r error=TRUE}
 try(
@@ -264,7 +272,8 @@ flights_dm_with_fk %>%
 
 Since the primary keys are defined in the `dm` object, you do not usually need to provide the referenced column name of `ref_table`.
 
-Another function for getting to know your data better (cf. `dm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `dm_enum_fk_candidates()`. Use it to get an overview over foreign key candidates that point from one table to another:
+Another function for getting to know your data better (cf. `dm_enum_pk_candidates()` in ["Primary keys of `dm` objects"](#pk)) is `dm_enum_fk_candidates()`.
+Use it to get an overview over foreign key candidates that point from one table to another:
 
 ```{r}
 dm_enum_fk_candidates(flights_dm_with_key, weather, airports)

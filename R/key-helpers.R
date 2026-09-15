@@ -7,8 +7,8 @@
 #' If the columns given in the ellipsis ARE a key, the data frame itself is returned silently, so that it can be used for piping.
 #'
 #' @param x The data frame whose columns should be tested for key properties.
-#' @param ... The names of the columns to be checked, processed with
-#'   [dplyr::select()]. If omitted, all columns will be checked.
+#' @param ... The names of the columns to be checked, processed with [dplyr::select()].
+#'   If omitted, all columns will be checked.
 #' @param .data Deprecated.
 #'
 #' @return Returns `x`, invisibly, if the check is passed.
@@ -134,10 +134,8 @@ is_unique_key_se <- function(.data, colname, max_value = MAX_COMMAS) {
 #'
 #' @param x,y A data frame or lazy table.
 #' @inheritParams rlang::args_dots_empty
-#' @param x_select,y_select Key columns to restrict the check, processed with
-#'   [dplyr::select()].
-#' @param by_position Set to `TRUE` to ignore column names and match
-#'   by position instead.
+#' @param x_select,y_select Key columns to restrict the check, processed with [dplyr::select()].
+#' @param by_position Set to `TRUE` to ignore column names and match by position instead.
 #'   The default means matching by name, use `x_select` and/or `y_select`
 #'   to align the names.
 #'

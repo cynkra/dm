@@ -8,11 +8,9 @@
 #'
 #' @param .dm A `dm` object.
 #' @inheritParams rlang::args_dots_empty
-#' @param .progress Whether to display a progress bar, if `NA` (the default)
-#'   hide in non-interactive mode, show in interactive mode. Requires the
-#'   'progress' package.
-#' @param .max_value Maximum number of distinct problematic values to report
-#'   in the `problem` column, defaults to `6`.
+#' @param .progress Whether to display a progress bar, if `NA` (the default) hide in non-interactive mode, show in interactive mode.
+#'   Requires the 'progress' package.
+#' @param .max_value Maximum number of distinct problematic values to report in the `problem` column, defaults to `6`.
 #'   Set to `Inf` to report all values.
 #' @param dm,progress `r lifecycle::badge("deprecated")`
 #'
@@ -27,8 +25,8 @@
 #'   }
 #'
 #' @details For the primary key constraints, it is tested if the values in the respective columns are all unique.
-#' For the foreign key constraints, the tests check if for each foreign key constraint, the values of the foreign key column
-#' form a subset of the values of the referenced column.
+#' For the foreign key constraints, the tests check if for each foreign key constraint,
+#' the values of the foreign key column form a subset of the values of the referenced column.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("nycflights13")

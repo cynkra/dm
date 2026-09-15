@@ -176,15 +176,18 @@
 \method{cross_join}{dm_keyed_tbl}(x, y, ..., copy = NULL, suffix = c(".x", ".y"))
 }
 \arguments{
-\item{x, y}{tbls to join. \code{x} is the \code{dm_zoomed} and \code{y} is another table in the \code{dm}.}
+\item{x, y}{tbls to join.
+\code{x} is the \code{dm_zoomed} and \code{y} is another table in the \code{dm}.}
 
-\item{by}{If left \code{NULL} (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now \code{x})
+\item{by}{If left \code{NULL} (default),
+the join will be performed by via the foreign key relation that exists between the originally zoomed table (now \code{x})
 and the other table (\code{y}).
 If you provide a value (for the syntax see \code{\link[dplyr:join]{dplyr::join}}), you can also join tables that are not connected in the \code{dm}.}
 
 \item{copy}{Disabled, since all tables in a \code{dm} are by definition on the same \code{src}.}
 
-\item{suffix}{Disabled, since columns are disambiguated automatically if necessary, changing the column names to \code{table_name.column_name}.}
+\item{suffix}{Disabled, since columns are disambiguated automatically if necessary,
+changing the column names to \code{table_name.column_name}.}
 
 \item{...}{see \code{\link[dplyr:join]{dplyr::join}}}
 
@@ -271,7 +274,8 @@ exists.
 \code{relationship} doesn't handle cases where there are zero matches. For that,
 see \code{unmatched}.}
 
-\item{select}{Select a subset of the \strong{RHS-table}'s columns, the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
+\item{select}{Select a subset of the \strong{RHS-table}'s columns,
+the syntax being \code{select = c(col_1, col_2, col_3)} (unquoted or quoted).
 This argument is specific for the \code{join}-methods for \code{dm_zoomed}.
 The table's \code{by} column(s) are automatically added if missing in the selection.}
 

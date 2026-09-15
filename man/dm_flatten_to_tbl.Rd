@@ -21,7 +21,8 @@ The order of the tables here determines the order of the joins.
 If the argument is empty, all tables that can be reached will be included.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
-\item{.recursive}{Logical, defaults to \code{FALSE}. Should not only parent tables be joined to \code{.start}, but also their ancestors?}
+\item{.recursive}{Logical, defaults to \code{FALSE}.
+Should not only parent tables be joined to \code{.start}, but also their ancestors?}
 
 \item{.join}{The type of join to be performed, see \code{\link[dplyr:join]{dplyr::join()}}.}
 }
@@ -33,32 +34,29 @@ A single table that results from consecutively joining all affected tables to th
 It performs a disambiguation of column names and a cascade of joins.
 }
 \details{
-With \code{...} left empty, this function will join together all the tables of your \code{\link{dm}}
-object that can be reached from the \code{.start} table, in the direction of the foreign key relations
-(pointing from the child tables to the parent tables), using the foreign key relations to
-determine the argument \code{by} for the necessary joins.
+With \code{...} left empty, this function will join together all the tables of your \code{\link{dm}} object that can be reached from the \code{.start} table,
+in the direction of the foreign key relations (pointing from the child tables to the parent tables),
+using the foreign key relations to determine the argument \code{by} for the necessary joins.
 The result is one table with unique column names.
 Use the \code{...} argument if you would like to control which tables should be joined to the \code{.start} table.
 
-Mind that calling \code{dm_flatten_to_tbl()} with \code{.join = right_join} and no table order determined in the \code{...} argument
-will not lead to a well-defined result if two or more foreign tables are to be joined to \code{.start}.
-The resulting
-table would depend on the order the tables that are listed in the \code{dm}.
+Mind that calling \code{dm_flatten_to_tbl()} with \code{.join = right_join}
+and no table order determined in the \code{...} argument will not lead to a well-defined result
+if two or more foreign tables are to be joined to \code{.start}.
+The resulting table would depend on the order the tables that are listed in the \code{dm}.
 Therefore, trying this will result in a warning.
 
 Since \code{.join = nest_join} does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 
-The difference between \code{.recursive = FALSE} and \code{.recursive = TRUE} is
-the following (see the examples):
+The difference between \code{.recursive = FALSE} and \code{.recursive = TRUE} is the following (see the examples):
 \itemize{
 \item \code{.recursive = FALSE} allows only one level of hierarchy
 (i.e., direct neighbors to table \code{.start}), while
 \item \code{.recursive = TRUE} will go through all levels of hierarchy while joining.
 }
 
-Additionally, these functions differ from \code{dm_wrap_tbl()}, which always
-returns a \code{dm} object.
+Additionally, these functions differ from \code{dm_wrap_tbl()}, which always returns a \code{dm} object.
 }
 \examples{
 \dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}

@@ -8,8 +8,7 @@
 #' Use other ways to access the tables in a `dm`.
 #'
 #' @details
-#' Use [dm_get_con()] instead of `dm_get_src()` to get the DBI connetion for a
-#' `dm` object
+#' Use [dm_get_con()] instead of `dm_get_src()` to get the DBI connetion for a `dm` object
 #'
 #' @name dplyr_src
 #' @export
@@ -61,8 +60,7 @@ src_tbls.dm <- function(x, ...) {
 }
 
 #' @details
-#' Use [copy_to()] on a table and then [dm()] instead of `copy_to()`
-#' on a `dm` object.
+#' Use [copy_to()] on a table and then [dm()] instead of `copy_to()` on a `dm` object.
 #' @param dest For `copy_to.dm()`: The `dm` object to which a table should be copied.
 #' @param df For `copy_to.dm()`: A table (can be on a different `src`)
 #' @param name For `copy_to.dm()`: See [dplyr::copy_to()]

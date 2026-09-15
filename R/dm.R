@@ -5,8 +5,7 @@
 #' It is inspired by [datamodelr](https://github.com/bergant/datamodelr),
 #' and extends the idea by offering operations to access the data in the tables.
 #'
-#' `dm()` creates a `dm` object from [tbl] objects
-#' (tibbles or lazy data objects).
+#' `dm()` creates a `dm` object from [tbl] objects (tibbles or lazy data objects).
 #'
 #' @param ... Tables or existing `dm` objects to add to the `dm` object.
 #'   Unnamed tables are auto-named, `dm` objects must not be named.
@@ -99,8 +98,8 @@ dm_impl <- function(tbls, names) {
 #'
 #' - If called without arguments, it will create an empty `dm`.
 #'
-#' - If called with arguments, no validation checks will be made to ascertain that
-#'   the inputs are of the expected class and internally consistent;
+#' - If called with arguments,
+#'   no validation checks will be made to ascertain that the inputs are of the expected class and internally consistent;
 #'   use [dm_validate()] to double-check the returned object.
 #'
 #' @param tables A named list of the tables (tibble-objects, not names),
@@ -439,8 +438,7 @@ as_dm_zoomed_df <- function(x) {
 
 new_dm_zoomed_df <- function(x, ...) {
   if (is.data.frame(x) && !inherits(x, "duckplyr_df")) {
-    # need this in order to avoid star (from rownames, automatic from `structure(...)`)
-    # in print method for local tibbles
+    # need this in order to avoid star (from rownames, automatic from `structure(...)`) in print method for local tibbles
     return(new_tibble(
       x,
       class = c("dm_zoomed_df", class(x), c("tbl_df", "tbl", "data.frame")),
@@ -670,8 +668,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' Materialize
 #'
 #' @description
-#' `compute()` materializes all tables in a `dm` to new temporary
-#' tables on the database.
+#' `compute()` materializes all tables in a `dm` to new temporary tables on the database.
 #'
 #' @details
 #' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
@@ -814,8 +811,7 @@ empty_dm <- function() {
 #' @param table One unquoted table name for `pull_tbl.dm()`, ignored for `pull_tbl.dm_zoomed()`.
 #' @inheritParams dm_get_tables
 #'
-#' @seealso [dm_deconstruct()] to generate code of the form
-#'   `pull_tbl(..., keyed = TRUE)` from an existing `dm` object.
+#' @seealso [dm_deconstruct()] to generate code of the form `pull_tbl(..., keyed = TRUE)` from an existing `dm` object.
 #'
 #' @return The requested table.
 #'
@@ -893,14 +889,13 @@ as.list.dm_zoomed <- function(x, ...) {
 #' Get a glimpse of your `dm` object
 #'
 #' @inheritParams dm_get_tables
-#' @param width Controls the maximum number of columns on a line used in
-#'   printing. If `NULL`, `getOption("width")` will be consulted.
+#' @param width Controls the maximum number of columns on a line used in printing.
+#'   If `NULL`, `getOption("width")` will be consulted.
 #' @param ... Passed to [pillar::glimpse()].
 #'
 #' @description
-#' `glimpse()` provides an overview (dimensions, column data types, primary
-#' keys, etc.) of all tables included in the `dm` object. It will additionally
-#' print details about outgoing foreign keys for the child table.
+#' `glimpse()` provides an overview (dimensions, column data types, primary keys, etc.) of all tables included in the `dm` object.
+#' It will additionally print details about outgoing foreign keys for the child table.
 #'
 #' `glimpse()` is provided by the pillar package, and re-exported by \pkg{dm}.
 #'  See [pillar::glimpse()] for more details.

@@ -13,8 +13,7 @@ dm_deconstruct(dm, dm_name = NULL)
 by default the expression passed to this function.}
 }
 \value{
-This function is called for its side effect of printing
-generated code.
+This function is called for its side effect of printing generated code.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

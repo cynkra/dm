@@ -15,8 +15,7 @@ but no data.
 All tables are truncated and converted to zero-row tibbles,
 also for remote data models.
 Columns retain their type.
-This is useful for performing creation and population of a database
-in separate steps.
+This is useful for performing creation and population of a database in separate steps.
 }
 \examples{
 \dontshow{if (dm:::dm_has_financial()) withAutoprint(\{ # examplesIf}

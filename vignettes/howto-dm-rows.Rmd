@@ -38,11 +38,14 @@ All six methods take the same arguments and using them follows the same process:
 
 To start, a `dm` object is created containing the tables and rows that you want to change.
 This changeset `dm` is then copied into the same source as the dm you want to modify.
-With the dm in the same RDBMS as the destination dm, you call the appropriate method, such as `dm_rows_insert()`, to make your planned changes, along with an argument of `in_place = FALSE` so you can confirm you achieve the changes that you want.
+With the dm in the same RDBMS as the destination dm, you call the appropriate method, such as `dm_rows_insert()`,
+to make your planned changes, along with an argument of `in_place = FALSE` so you can confirm you achieve the changes that you want.
 
-This verification can be done visually, looking at row counts and the like, or using {dm}'s constraint checking method, `dm_examine_constraints()`.
+This verification can be done visually, looking at row counts and the like,
+or using {dm}'s constraint checking method, `dm_examine_constraints()`.
 The biggest danger is damaging key relations between data spread across multiple tables by deleting or duplicating rows and their keys.
-`dm_examine_constraints()` will catch errors where primary keys are duplicated or foreign keys do not have a matching primary key (unless the foreign key value is `NA`).
+`dm_examine_constraints()` will catch errors where primary keys are duplicated
+or foreign keys do not have a matching primary key (unless the foreign key value is `NA`).
 
 With the changes confirmed, you execute the method again, this time with the argument `in_place = TRUE` to make the changes permanent.
 Note that `in_place = FALSE` is the default: you must opt in to actually change data on the database.
@@ -59,7 +62,8 @@ These involve constraints on primary key values that uniquely identify rows.
 | `dm_rows_upsert()` | Updates existing records and adds new records, based on the primary key.|
 | `dm_rows_delete()` | Removes matching records based on the primary key. Primary keys must match for all records to be deleted.|
 
-To ensure the integrity of all relations during the process, all methods automatically determine the correct processing order for the tables involved.
+To ensure the integrity of all relations during the process,
+all methods automatically determine the correct processing order for the tables involved.
 For operations that create records, parent tables (which hold primary keys) are processed before child tables (which hold foreign keys).
 For `dm_rows_delete()`, child tables are processed before their parent tables.
 Note that the user is still responsible for setting transactions to ensure integrity of operations across multiple tables.
@@ -88,7 +92,8 @@ demo_dm %>%
 
 {dm} doesn't check your key values when you create a dm, we add this check:[^null-fk]
 
-[^null-fk]: Be aware that when using `dm_examine_constraints()`, missing (denoted by `NULL` in SQL, while `NA` in R) foreign keys are allowed and will be counted as a match.
+[^null-fk]: Be aware that when using `dm_examine_constraints()`,
+missing (denoted by `NULL` in SQL, while `NA` in R) foreign keys are allowed and will be counted as a match.
 In some cases this doesn't make sense and non-NULL columns should be enforced by the RDBMS.
 Currently, {dm} does not specify or check non-NULL constraints for columns.
 
@@ -97,7 +102,8 @@ dm_examine_constraints(demo_dm)
 ``````
 
 Then we copy `demo_dm` into an SQLite database.
-Note: the default for the method used, `copy_dm_to()`, is to create temporary tables that will be automatically deleted when your session ends.
+Note: the default for the method used, `copy_dm_to()`,
+is to create temporary tables that will be automatically deleted when your session ends.
 As `demo_sql` will be the destination dm for the examples, the argument `temporary = FALSE` is used to make this distinction apparent.
 
 
@@ -108,12 +114,15 @@ demo_sql <- copy_dm_to(sqlite_db, demo_dm, temporary = FALSE)
 demo_sql
 ``````
 
-{dm}'s table modification methods can be piped together to create a repeatable sequence of operations that returns a dm incorporating all the changes required.
-This is a common use case for {dm} -- manually building a sequence of operations using temporary results until it is complete and correct, and then committing the result.
+{dm}'s table modification methods can be piped together to create a repeatable sequence of operations
+that returns a dm incorporating all the changes required.
+This is a common use case for {dm} -- manually building a sequence of operations using temporary results until it is complete and correct,
+and then committing the result.
 
 ## `dm_rows_insert()` {#insert}
 
-To demonstrate `dm_rows_insert()`, we create a dm with tables containing the rows to insert and copy it to `sqlite_db`, the same source as `demo_sql`.
+To demonstrate `dm_rows_insert()`, we create a dm with tables containing the rows to insert and copy it to `sqlite_db`,
+the same source as `demo_sql`.
 For all of the `dm_rows_...()` methods, the source and destination `dm` objects must be in the same RDBMS.
 You will get an error message if this is not the case.
 
@@ -246,10 +255,12 @@ There are a few limitations, as mentioned in the tutorial, but these will be add
 
 If this tutorial answered some questions, but opened others, these resources might be of assistance.
 
-Is your data in an RDBMS? `vignette("howto-dm-db")` offers a detailed look at working with an existing relational data model.
+Is your data in an RDBMS?
+`vignette("howto-dm-db")` offers a detailed look at working with an existing relational data model.
 
 If your data is in data frames, then you may want to read `vignette("howto-dm-df")` next.
 
 If you would like to know more about relational data models in order to get the most out of dm, check out `vignette("howto-dm-theory")`.
 
-If you're familiar with relational data models but want to know how to work with them in dm, then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.
+If you're familiar with relational data models but want to know how to work with them in dm,
+then any of `vignette("tech-dm-join")`, `vignette("tech-dm-filter")`, or `vignette("tech-dm-zoom")` is a good next step.

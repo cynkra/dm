@@ -13,8 +13,7 @@
 #' @param dm_name The code to use to access the dm object,
 #'   by default the expression passed to this function.
 #'
-#' @return This function is called for its side effect of printing
-#'   generated code.
+#' @return This function is called for its side effect of printing generated code.
 #'
 #' @export
 #' @examplesIf rlang::is_installed("DiagrammeR")

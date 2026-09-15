@@ -5,25 +5,22 @@
 #' and a [`dm`] object as its second argument.
 #' The latter is copied to the former.
 #' The default is to create temporary tables, set `temporary = FALSE` to create permanent tables.
-#' Unless `set_key_constraints` is `FALSE`, primary key, foreign key, and unique constraints
-#' are set, and indexes for foreign keys are created, on all databases.
+#' Unless `set_key_constraints` is `FALSE`, primary key, foreign key,
+#' and unique constraints are set, and indexes for foreign keys are created, on all databases.
 #'
 #' @inheritParams dm_examine_constraints
 #'
 #' @param dest An object of class `"src"` or `"DBIConnection"`.
 #' @param dm A `dm` object.
 #' @inheritParams rlang::args_dots_empty
-#' @param set_key_constraints If `TRUE` will mirror
-#'   the primary, foreign, and unique key constraints
+#' @param set_key_constraints If `TRUE` will mirror the primary, foreign, and unique key constraints
 #'   and create indexes for foreign key constraints
 #'   for the primary and foreign keys in the `dm` object.
-#'   Set to `FALSE` if your data model currently does not satisfy
-#'   primary or foreign key constraints.
+#'   Set to `FALSE` if your data model currently does not satisfy primary or foreign key constraints.
 #' @param temporary If `TRUE`, only temporary tables will be created.
 #'   These tables will vanish when disconnecting from the database.
 #' @param schema Name of schema to copy the `dm` to.
-#'   If `schema` is provided, an error will be thrown if `temporary = FALSE` or
-#'   `table_names` is not `NULL`.
+#'   If `schema` is provided, an error will be thrown if `temporary = FALSE` or `table_names` is not `NULL`.
 #'
 #'   Not all DBMS are supported.
 #' @param table_names Desired names for the tables on `dest`; the names within the `dm` remain unchanged.
@@ -42,8 +39,7 @@
 #'   that result should be a vector of identifiers of the same length
 #'   as the original table names.
 #'
-#'   Use a variant of
-#'   `table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))`
+#'   Use a variant of `table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))`
 #'   to specify the same schema for all tables.
 #'   Use `table_names = identity` with `temporary = TRUE`
 #'   to avoid giving temporary tables unique names.

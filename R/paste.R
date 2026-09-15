@@ -8,11 +8,10 @@
 #'   Deprecated, see `"select"` in the `options` argument.
 #' @param ... Must be empty.
 #' @param tab_width Indentation width for code from the second line onwards
-#' @param options Formatting options. A character vector containing some of:
-#'   - `"tables"`: [tibble()] calls for empty table definitions
-#'     derived from [dm_ptype()], overrides `"select"`.
-#'   - `"select"`: [dm_select()] statements for columns that are part
-#'     of the dm.
+#' @param options Formatting options.
+#'   A character vector containing some of:
+#'   - `"tables"`: [tibble()] calls for empty table definitions derived from [dm_ptype()], overrides `"select"`.
+#'   - `"select"`: [dm_select()] statements for columns that are part of the dm.
 #'   - `"keys"`: [dm_add_pk()], [dm_add_fk()] and [dm_add_uk()] statements for adding keys.
 #'   - `"color"`: [dm_set_colors()] statements to set color.
 #'   - `"all"`: All options above except `"select"`
@@ -245,8 +244,7 @@ df_paste <- function(x, tab) {
 }
 
 dm_paste_chunk_operations <- function(code_construct, parts, tab, chunk_size = 100) {
-  # Build chunks by accumulating complete groups (parts), never splitting a group
-  # across chunks unless the group itself exceeds chunk_size.
+  # Build chunks by accumulating complete groups (parts), never splitting a group across chunks unless the group itself exceeds chunk_size.
   chunks_ops <- list()
   current_ops <- character()
 
@@ -271,8 +269,8 @@ dm_paste_chunk_operations <- function(code_construct, parts, tab, chunk_size = 1
   }
   chunks_ops <- c(chunks_ops, list(current_ops))
 
-  # Remove a trailing empty chunk (can arise if the last part was exactly split
-  # into sub-chunks), but always keep at least one chunk for the construct.
+  # Remove a trailing empty chunk (can arise if the last part was exactly split into sub-chunks),
+  # but always keep at least one chunk for the construct.
   if (length(chunks_ops) > 1 && length(chunks_ops[[length(chunks_ops)]]) == 0) {
     chunks_ops <- chunks_ops[-length(chunks_ops)]
   }

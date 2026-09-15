@@ -53,11 +53,9 @@ The outcome of the join operation determines the value of the \code{why} column 
 }
 \section{Life cycle}{
 
-These functions are marked "experimental" because we are not yet sure about
-the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
-variants.
-Changing the interface later seems harmless because these functions are
-most likely used interactively.
+These functions are marked "experimental" because we are not yet sure about the interface,
+in particular if we need both \code{dm_enum...()} and \code{enum...()} variants.
+Changing the interface later seems harmless because these functions are most likely used interactively.
 }
 
 \examples{

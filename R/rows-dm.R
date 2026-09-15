@@ -4,14 +4,11 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' These functions provide a framework for updating data in existing tables.
-#' Unlike [compute()], [copy_to()] or [copy_dm_to()], no new tables are created
-#' on the database.
-#' All operations expect that both existing and new data are presented
-#' in two compatible [dm] objects on the same data source.
+#' Unlike [compute()], [copy_to()] or [copy_dm_to()], no new tables are created on the database.
+#' All operations expect that both existing and new data are presented in two compatible [dm] objects on the same data source.
 #'
-#' The functions make sure that the tables in the target dm
-#' are processed in topological order so that parent (dimension)
-#' tables receive insertions before child (fact) tables.
+#' The functions make sure that the tables in the target dm are processed in topological order
+#' so that parent (dimension) tables receive insertions before child (fact) tables.
 #'
 #' These operations, in contrast to all other operations,
 #' may lead to irreversible changes to the underlying database.
@@ -153,8 +150,7 @@ dm_rows_update <- function(x, y, ..., in_place = NULL, progress = NA) {
 
 #' dm_rows_patch
 #'
-#' `dm_rows_patch()` updates missing values in existing records
-#' via [rows_patch()].
+#' `dm_rows_patch()` updates missing values in existing records via [rows_patch()].
 #' Primary keys must match for all records to be patched.
 #'
 #' @rdname rows-dm

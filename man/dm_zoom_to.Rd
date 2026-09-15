@@ -62,8 +62,8 @@ For \code{dm_zoom_to()}: A \code{dm_zoomed} object.
 For \code{dm_insert_zoomed()}, \code{dm_update_zoomed()} and \code{dm_discard_zoomed()}: A \code{dm} object.
 }
 \description{
-Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table, while retaining the
-context of the \code{dm} object.
+Zooming to a table of a \code{\link{dm}} allows for the use of many \code{dplyr}-verbs directly on this table,
+while retaining the context of the \code{dm} object.
 
 \code{dm_zoom_to()} zooms to the given table.
 

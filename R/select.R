@@ -5,19 +5,17 @@
 #'
 #' @inheritParams dm_zoom_to
 #' @param ... One or more unquoted expressions separated by commas.
-#'   You can treat
-#'   variable names as if they were positions, and use expressions like `x:y`
+#'   You can treat variable names as if they were positions, and use expressions like `x:y`
 #'   to select the ranges of variables.
 #'
 #'   Use named arguments, e.g. `new_name = old_name`, to rename the selected variables.
 #'
-#'   The arguments in ... are automatically quoted and evaluated in a context where
-#'   column names represent column positions.
+#'   The arguments in ... are automatically quoted and evaluated in a context where column names represent column positions.
 #'   They also support unquoting and splicing.
 #'   See `vignette("programming", package = "dplyr")` for an introduction to those concepts.
 #'
-#'   See select helpers for more details, and the examples about [tidyselect
-#'   helpers][tidyselect::select_helpers], such as `starts_with()`, `everything()`, etc.
+#'   See select helpers for more details, and the examples about [tidyselect helpers][tidyselect::select_helpers],
+#'   such as `starts_with()`, `everything()`, etc.
 #'
 #' @details If key columns are renamed, then the meta-information of the `dm` is updated accordingly.
 #'

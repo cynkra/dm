@@ -11,12 +11,11 @@ dm_wrap_tbl(dm, root, strict = TRUE, progress = NA)
 
 \item{root}{Table to wrap the dm into (unquoted).}
 
-\item{strict}{Whether to fail for cyclic dms that cannot be wrapped into a
-single table, if \code{FALSE} a partially wrapped dm will be returned.}
+\item{strict}{Whether to fail for cyclic dms that cannot be wrapped into a single table,
+if \code{FALSE} a partially wrapped dm will be returned.}
 
-\item{progress}{Whether to display a progress bar, if \code{NA} (the default)
-hide in non-interactive mode, show in interactive mode. Requires the
-'progress' package.}
+\item{progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
+Requires the 'progress' package.}
 }
 \value{
 A \code{dm} object.
@@ -27,16 +26,13 @@ A \code{dm} object.
 \code{dm_wrap_tbl()} creates a single tibble dm containing the \code{root} table
 enhanced with all the data related to it
 through the relationships stored in the dm.
-It runs a sequence of \code{\link[=dm_nest_tbl]{dm_nest_tbl()}} and \code{\link[=dm_pack_tbl]{dm_pack_tbl()}} operations
-on the dm.
+It runs a sequence of \code{\link[=dm_nest_tbl]{dm_nest_tbl()}} and \code{\link[=dm_pack_tbl]{dm_pack_tbl()}} operations on the dm.
 }
 \details{
 \code{dm_wrap_tbl()} is an inverse to \code{dm_unwrap_tbl()},
-i.e., wrapping after unwrapping returns the same information
-(disregarding row and column order).
+i.e., wrapping after unwrapping returns the same information (disregarding row and column order).
 The opposite is not generally true:
-since \code{dm_wrap_tbl()} keeps only rows related directly or indirectly to
-rows in the \code{root} table.
+since \code{dm_wrap_tbl()} keeps only rows related directly or indirectly to rows in the \code{root} table.
 Even if all referential constraints are satisfied,
 unwrapping after wrapping loses rows in parent tables
 that don't have a corresponding row in the child table.

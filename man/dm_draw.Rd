@@ -32,8 +32,7 @@ dm_draw(
 \item{col_attr}{Deprecated, use \code{colummn_types} instead.}
 
 \item{view_type}{Can be "keys_only" (default), "all" or "title_only".
-It defines the level of details for rendering tables
-(only primary and foreign keys, all columns, or no columns).}
+It defines the level of details for rendering tables (only primary and foreign keys, all columns, or no columns).}
 
 \item{column_types}{Set to \code{TRUE} to show column types.}
 
@@ -56,26 +55,19 @@ Can be set as a named integer vector, e.g.
 \code{c(table_headers = 18L, table_description = 6L)}.
 }}
 
-\item{columnArrows}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
-\code{backend_opts = list(column_arrow = ...)} instead.}
+\item{columnArrows}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{backend_opts = list(column_arrow = ...)} instead.}
 
-\item{graph_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
-\code{backend_opts = list(graph_attrs = ...)} instead.}
+\item{graph_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{backend_opts = list(graph_attrs = ...)} instead.}
 
-\item{node_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
-\code{backend_opts = list(node_attrs = ...)} instead.}
+\item{node_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{backend_opts = list(node_attrs = ...)} instead.}
 
-\item{edge_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
-\code{backend_opts = list(edge_attrs = ...)} instead.}
+\item{edge_attrs}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{backend_opts = list(edge_attrs = ...)} instead.}
 
-\item{focus}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
-\code{backend_opts = list(focus = ...)} instead.}
+\item{focus}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{backend_opts = list(focus = ...)} instead.}
 
-\item{graph_name}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
-\code{backend_opts = list(graph_name = ...)} instead.}
+\item{graph_name}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{backend_opts = list(graph_name = ...)} instead.}
 
-\item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
-\code{backend_opts = list(font_size = ...)} instead.}
+\item{font_size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{backend_opts = list(font_size = ...)} instead.}
 }
 \value{
 An object with a \code{\link[=print]{print()}} method, which,

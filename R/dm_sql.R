@@ -9,8 +9,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' Generate SQL scripts to create tables, load data and set constraints, keys and indices.
-#' This function powers [copy_dm_to()] and is useful if you need more control
-#' over the process of copying a `dm` to a database.
+#' This function powers [copy_dm_to()] and is useful if you need more control over the process of copying a `dm` to a database.
 #'
 #' @param dm A `dm` object.
 #' @param dest Connection to database.
@@ -19,7 +18,8 @@
 #'   or [dbplyr::in_catalog()],
 #'   with one unique element for each table in `dm`.
 #'   The default, `NULL`, means to use the original table names.
-#' @param temporary Should the tables be marked as \emph{temporary}? Defaults to `TRUE`.
+#' @param temporary Should the tables be marked as \emph{temporary}?
+#'   Defaults to `TRUE`.
 #'
 #' @details
 #' \itemize{
@@ -384,14 +384,16 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
       }
 
       # MariaDB:
-      # Doesn't have a special data type. Uses `AUTO_INCREMENT` attribute instead.
+      # Doesn't have a special data type.
+      # Uses `AUTO_INCREMENT` attribute instead.
       # Ref: https://mariadb.com/kb/en/auto_increment/
       if (is_mariadb(con)) {
         types[pk_col_name] <- paste0(types[pk_col_name], " AUTO_INCREMENT")
       }
 
       # DuckDB:
-      # Doesn't have a special data type. Uses `CREATE SEQUENCE` instead.
+      # Doesn't have a special data type.
+      # Uses `CREATE SEQUENCE` instead.
       # Ref: https://duckdb.org/docs/sql/statements/create_sequence
       # https://stackoverflow.com/a/72883259/946850
       if (is_duckdb(con)) {
@@ -404,8 +406,9 @@ ddl_get_col_defs <- function(tables, con, table_names, pks) {
       }
 
       # SQLite:
-      # For a primary key, autoincrementing works by default, and it is almost never
-      # necessary to use the `AUTOINCREMENT` keyword. So nothing we need to do here.
+      # For a primary key, autoincrementing works by default,
+      # and it is almost never necessary to use the `AUTOINCREMENT` keyword.
+      # So nothing we need to do here.
       # Ref: https://www.sqlite.org/autoinc.html
     }
 

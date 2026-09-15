@@ -15,10 +15,8 @@ pull_tbl(dm, table, ..., keyed = FALSE)
 
 \item{keyed}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Set to \code{TRUE} to return objects of the internal class \code{"dm_keyed_tbl"}
-that will contain information on primary and foreign keys
-in the individual table objects.
-This allows using dplyr workflows on those tables and later reconstruct them
-into a \code{dm} object.
+that will contain information on primary and foreign keys in the individual table objects.
+This allows using dplyr workflows on those tables and later reconstruct them into a \code{dm} object.
 See \code{\link[=dm_deconstruct]{dm_deconstruct()}} for a function that generates corresponding code
 for an existing dm object, and \code{vignette("tech-dm-keyed")} for details.}
 }
@@ -45,6 +43,5 @@ dm_nycflights13() \%>\%
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link[=dm_deconstruct]{dm_deconstruct()}} to generate code of the form
-\code{pull_tbl(..., keyed = TRUE)} from an existing \code{dm} object.
+\code{\link[=dm_deconstruct]{dm_deconstruct()}} to generate code of the form \code{pull_tbl(..., keyed = TRUE)} from an existing \code{dm} object.
 }

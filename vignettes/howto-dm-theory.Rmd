@@ -17,7 +17,9 @@ source("setup/setup.R")
 ``````
 
 Computer scientists are familiar with multiple, linked tables.
-But, because many R users tend to have backgrounds in other disciplines, we present **six important terms in relational data modeling** to help you to jump-start working with {dm}. These terms are:
+But, because many R users tend to have backgrounds in other disciplines,
+we present **six important terms in relational data modeling** to help you to jump-start working with {dm}.
+These terms are:
 
 1) [Data Frames and Tables](#tables)
 2) [Data Model](#model)
@@ -33,12 +35,15 @@ A data frame is a fundamental data structure in R.
 Columns represent variables, rows represent observations.
 In more technical terms, a data frame is a list of variables of identical length and unique row names.
 If you imagine it visually, the result is a typical table structure.
-That is why working with data from spreadsheets is so convenient and the users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
+That is why working with data from spreadsheets is so convenient
+and the users of the popular [{dplyr}](https://dplyr.tidyverse.org) package for data wrangling mainly rely on data frames.
 
-The downside is that data frames and flat file systems like spreadsheets can result in bloated tables because they hold many repetitive values.
+The downside is that data frames and flat file systems like spreadsheets can result in bloated tables
+because they hold many repetitive values.
 In the worst case, a data frame can contain multiple columns with only a single value different in each row.
 
-This calls for better data organization by utilizing the resemblance between data frames and database tables, which also consist of columns and rows.
+This calls for better data organization by utilizing the resemblance between data frames and database tables,
+which also consist of columns and rows.
 The elements are just named differently:
 
 | Data Frame | Table                 |
@@ -52,22 +57,29 @@ Relational databases, unlike data frames, do not keep all data in one large tabl
 That separation into sub-tables has several advantages:
 
 - all information is stored only once, avoiding redundancy and conserving memory
-- all information needs to be updated only once and in one place, improving consistency and avoiding errors that may result from updating (or forgetting to update) the same value in multiple locations
+- all information needs to be updated only once and in one place,
+  improving consistency and avoiding errors that may result from updating (or forgetting to update) the same value in multiple locations
 - all information is organized by topic and segmented into smaller tables that are easier to handle
 
-It is for these reasons that separation of data helps with data quality, and they explain the popularity of relational databases in production-level data management.
+It is for these reasons that separation of data helps with data quality,
+and they explain the popularity of relational databases in production-level data management.
 
-The downside of this approach is that it is harder to merge together information from different data sources and to identify which entities refer to the same object, a common task when modeling or plotting data.
+The downside of this approach is that it is harder to merge together information from different data sources
+and to identify which entities refer to the same object, a common task when modeling or plotting data.
 
-Thus, to take full advantage of the relational database approach, an associated **data model** is needed to overcome the challenges that arise when working with multiple tables.
+Thus, to take full advantage of the relational database approach,
+an associated **data model** is needed to overcome the challenges that arise when working with multiple tables.
 
-Let's illustrate this challenge with the data from the [`nycflights13` dataset](https://github.com/tidyverse/nycflights13) that
-contains detailed information about the 336,776 flights that departed from New York City in 2013.
+Let's illustrate this challenge with the data from the [`nycflights13` dataset](https://github.com/tidyverse/nycflights13)
+that contains detailed information about the 336,776 flights that departed from New York City in 2013.
 The information is stored in five tables.
 
-Details like the full name of an airport are not available immediately; these can only be obtained by joining or merging the constituent tables, which can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of data merging.
+Details like the full name of an airport are not available immediately;
+these can only be obtained by joining or merging the constituent tables,
+which can result in long and inflated pipe chains full of `left_join()`, `anti_join()` and other forms of data merging.
 
-In classical {dplyr} notation, you will need four `left_join()` calls to gradually merge the `flights` table to the `airlines`, `planes`, `airports`, and `weather` tables to create one wide data frame.
+In classical {dplyr} notation, you will need four `left_join()` calls to gradually merge the `flights` table to the `airlines`,
+`planes`, `airports`, and `weather` tables to create one wide data frame.
 
 ```{r}
 library(dm)
@@ -85,7 +97,8 @@ nycflights13_df
 
 {dm} offers a more elegant and shorter way to combine tables while augmenting {dplyr}/{dbplyr} workflows.
 
-It is possible to have the best of both worlds: manage your data with {dm} as linked tables, and, when necessary, flatten multiple tables into a single data frame for analysis with {dplyr}.
+It is possible to have the best of both worlds: manage your data with {dm} as linked tables,
+and, when necessary, flatten multiple tables into a single data frame for analysis with {dplyr}.
 
 The next step is to create a [data model](#model) based on multiple tables:
 
@@ -102,14 +115,16 @@ dm %>%
   dm_draw()
 ```
 
-The `flights` table is linked to four other tables: `airlines`, `planes`, `weather`, and `airports`. 
-By using directed arrows, the visualization shows explicitly the connection between different columns (they are called attributes in the relational data sphere).
+The `flights` table is linked to four other tables: `airlines`, `planes`, `weather`, and `airports`.
+By using directed arrows,
+the visualization shows explicitly the connection between different columns (they are called attributes in the relational data sphere).
 
 For example: The column `carrier` in `flights` can be joined with the column `carrier` from the `airlines` table.
 
 The links between the tables are established through [primary keys](#pk) and [foreign keys](#fk).
 
-As an aside, we can also now see how avoiding redundant data by building data models with multiple tables can save memory compared to storing data in single a data frame:
+As an aside, we can also now see how avoiding redundant data by building data models
+with multiple tables can save memory compared to storing data in single a data frame:
 
 ```{r}
 object.size(dm)
@@ -143,7 +158,8 @@ dm %>%
   dm_enum_pk_candidates(airports)
 ```
 
-Further Reading: The {dm} package offers several functions for dealing with [primary keys](https://dm.cynkra.com/articles/tech-dm-class.html).
+Further Reading: The {dm} package offers several functions
+for dealing with [primary keys](https://dm.cynkra.com/articles/tech-dm-class.html).
 
 ## 4. Foreign Keys {#fk}
 
@@ -151,11 +167,15 @@ The **counterpart of a primary key in one table is the foreign key in another ta
 In order to join two tables, the primary key of the first table needs to be referenced from the second table.
 This column or these columns are called the *foreign key* (abbreviated with "fk").
 
-For example, if you want to link the `airlines` table to the `flights` table, the primary key in `airlines` needs to match the foreign key in `flights`.
-This condition is satisfied because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
-In the case of compound keys, the `origin` and `time_hour` columns (which form the primary key of the `weather` table) are also present in the `flights` table.
+For example, if you want to link the `airlines` table to the `flights` table,
+the primary key in `airlines` needs to match the foreign key in `flights`.
+This condition is satisfied
+because the column `carrier` is present as a primary key in the `airlines` table as well as a foreign key in the `flights` table.
+In the case of compound keys,
+the `origin` and `time_hour` columns (which form the primary key of the `weather` table) are also present in the `flights` table.
 
-You can find foreign key candidates for simple keys with the function `dm_enum_fk_candidates()`; they are marked with `TRUE` in the `candidate` column.
+You can find foreign key candidates for simple keys with the function `dm_enum_fk_candidates()`;
+they are marked with `TRUE` in the `candidate` column.
 
 ```{r}
 dm %>%
@@ -175,7 +195,8 @@ Further Reading: All {dm} functions for working with [foreign keys](https://dm.c
 
 A data set has referential integrity if all relations between tables are valid.
 That is, every foreign key holds a primary key that is present in the parent table.
-If a foreign key contains a reference where the corresponding row in the parent table is not available, that row is an orphan row and the database no longer has referential integrity.
+If a foreign key contains a reference where the corresponding row in the parent table is not available,
+that row is an orphan row and the database no longer has referential integrity.
 
 {dm} allows checking referential integrity with the `dm_examine_constraints()` function.
 The following conditions are checked:
@@ -191,7 +212,8 @@ dm %>%
 ```
 
 Establishing referential integrity is important for providing clean data for analysis or downstream users.
-See `vignette("howto-dm-rows")` for more information on adding, deleting, or updating individual rows, and `vignette("tech-dm-zoom")` for operations on the data in a data model.
+See `vignette("howto-dm-rows")` for more information on adding, deleting, or updating individual rows,
+and `vignette("tech-dm-zoom")` for operations on the data in a data model.
 
 ## 6. Normalization {#normalization}
 
@@ -220,7 +242,8 @@ flights %>%
 
 Another way to demonstrate normalization is splitting a table into two parts.
 
-Let's look at the `planes` table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane, like the year it was manufactured or the average cruising speed.
+Let's look at the `planes` table, which consists of 3322 individual tail numbers and corresponding information for the specific airplane,
+like the year it was manufactured or the average cruising speed.
 
 The function `decompose_table()` extracts two new tables and creates a new key `model_id`, that links both tables.
 
@@ -231,19 +254,24 @@ planes %>%
   decompose_table(model_id, model, manufacturer, type, engines, seats, speed)
 ```
 
-While `child_table` contains 3322 unique `tailnum` rows and therefore consists of 3322 rows, just like the original `planes` table, the `parent_table` shrunk to just 147 rows, enough to store all relevant combinations and avoid storing redundant information.
+While `child_table` contains 3322 unique `tailnum` rows and therefore consists of 3322 rows, just like the original `planes` table,
+the `parent_table` shrunk to just 147 rows, enough to store all relevant combinations and avoid storing redundant information.
 
-Further Reading: See the [Simple English Wikipedia article on database normalization](https://simple.wikipedia.org/wiki/Database_normalisation) for more details.
+Further Reading: See the [Simple English Wikipedia article on database normalization](https://simple.wikipedia.org/wiki/Database_normalisation)
+for more details.
 
 ## 7. Relational Databases {#relational-databases}
 
 {dm} is built upon relational data models but it is not a database itself.
-Databases are systems for data management and many of them are constructed as relational databases (e.g., SQLite, MySQL, MSSQL, Postgres, etc.).
-As you can guess from the names of the databases, SQL, short for Structured Querying Language, plays an important role: it was invented for the purpose of querying relational databases.
+Databases are systems for data management
+and many of them are constructed as relational databases (e.g., SQLite, MySQL, MSSQL, Postgres, etc.).
+As you can guess from the names of the databases, SQL, short for Structured Querying Language,
+plays an important role: it was invented for the purpose of querying relational databases.
 
 In production, the data is stored in a relational database and {dm} is used to work with the data.
 
-Therefore, {dm} can copy data [from and to databases](https://dm.cynkra.com/articles/howto-dm-copy.html), and works transparently with both in-memory data and with relational database systems.
+Therefore, {dm} can copy data [from and to databases](https://dm.cynkra.com/articles/howto-dm-copy.html),
+and works transparently with both in-memory data and with relational database systems.
 
 For example, let's create a local SQLite database and copy the `dm` object to it:
 
@@ -256,7 +284,8 @@ copy_dm_to(con_sqlite, dm)
 DBI::dbListTables(con_sqlite)
 ```
 
-In the opposite direction, `dm` can also be populated with data from a database. Unfortunately, keys currently can be learned only for Microsoft SQL Server and Postgres, but not for SQLite.
+In the opposite direction, `dm` can also be populated with data from a database.
+Unfortunately, keys currently can be learned only for Microsoft SQL Server and Postgres, but not for SQLite.
 Therefore, the `dm` contains the tables but not the keys:
 
 ```{r}
@@ -271,10 +300,15 @@ DBI::dbDisconnect(con_sqlite)
 
 ## Conclusion {#conclusion}
 
-In this article, we have learned about some of the most fundamental concepts and data structures associated with the relational database management system (RDBMS).
+In this article, we have learned about some of the most fundamental concepts
+and data structures associated with the relational database management system (RDBMS).
 
 ## Further reading
 
-`vignette("howto-dm-db")` -- This article covers accessing and working with RDBMSs within your R session, including manipulating data, filling in missing relationships between tables, getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
+`vignette("howto-dm-db")` -- This article covers accessing and working with RDBMSs within your R session, including manipulating data,
+filling in missing relationships between tables,
+getting data out of the RDBMS and into your model, and deploying your data model to an RDBMS.
 
-`vignette("howto-dm-df")` -- Is your data in local data frames? This article covers creating a data model from your local data frames, including building the relationships in your data model, verifying your model, and leveraging the power of dplyr to operate on your data model.
+`vignette("howto-dm-df")` -- Is your data in local data frames?
+This article covers creating a data model from your local data frames, including building the relationships in your data model,
+verifying your model, and leveraging the power of dplyr to operate on your data model.

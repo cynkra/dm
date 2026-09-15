@@ -20,8 +20,9 @@
 
 #' Check if suggested package is installed
 #'
-#' @param packages Vector of package names to check. Can supply a version
-#'   between parenthesis. (See examples).
+#' @param packages Vector of package names to check.
+#'   Can supply a version between parenthesis.
+#'   (See examples).
 #' @param top_level_fun the name of the top level function called.
 #' @param use whether to trigger the check, `NA` means `TRUE` if `is_interactive()`
 #'   and `FALSE` otherwise

@@ -41,14 +41,13 @@ The \code{dm} class holds a list of tables and their relationships.
 It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
 and extends the idea by offering operations to access the data in the tables.
 
-\code{dm()} creates a \code{dm} object from \link{tbl} objects
-(tibbles or lazy data objects).
+\code{dm()} creates a \code{dm} object from \link{tbl} objects (tibbles or lazy data objects).
 
 \code{new_dm()} is a low-level constructor that creates a new \code{dm} object.
 \itemize{
 \item If called without arguments, it will create an empty \code{dm}.
-\item If called with arguments, no validation checks will be made to ascertain that
-the inputs are of the expected class and internally consistent;
+\item If called with arguments,
+no validation checks will be made to ascertain that the inputs are of the expected class and internally consistent;
 use \code{\link[=dm_validate]{dm_validate()}} to double-check the returned object.
 }
 

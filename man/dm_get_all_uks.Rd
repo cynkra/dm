@@ -24,9 +24,8 @@ A tibble with the following columns:
 }
 }
 \description{
-\code{dm_get_all_uks()} checks the \code{dm} object for unique keys
-(primary keys, explicit and implicit unique keys) and returns the tables and
-the respective unique key columns.
+\code{dm_get_all_uks()} checks the \code{dm} object for unique keys (primary keys, explicit and implicit unique keys)
+and returns the tables and the respective unique key columns.
 }
 \details{
 There are 3 kinds of unique keys:

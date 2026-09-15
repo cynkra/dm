@@ -756,8 +756,7 @@ abort_rm_fk_col_missing <- function() {
 }
 
 #' @description
-#' `dm_add_tbl` is deprecated as of dm 1.0.0, because the same functionality
-#' is offered by [dm()] with `.name_repair = "unique"`.
+#' `dm_add_tbl` is deprecated as of dm 1.0.0, because the same functionality is offered by [dm()] with `.name_repair = "unique"`.
 #' @rdname deprecated
 #' @keywords internal
 #' @export
@@ -785,8 +784,7 @@ dm_add_tbl <- function(dm, ..., repair = "unique", quiet = FALSE) {
 }
 
 #' @description
-#' `dm_bind()`  is deprecated as of dm 1.0.0, because the same functionality
-#' is offered by [dm()].
+#' `dm_bind()` is deprecated as of dm 1.0.0, because the same functionality is offered by [dm()].
 #'
 #' @rdname deprecated
 #' @keywords internal
@@ -801,8 +799,8 @@ dm_bind <- function(..., repair = "check_unique", quiet = FALSE) {
 }
 
 #' @description
-#' `dm_squash_to_tbl()`  is deprecated as of dm 1.0.0, because the same functionality
-#' is offered by [dm_flatten_to_tbl()] with `.recursive = TRUE`.
+#' `dm_squash_to_tbl()` is deprecated as of dm 1.0.0,
+#' because the same functionality is offered by [dm_flatten_to_tbl()] with `.recursive = TRUE`.
 #'
 #' @rdname deprecated
 #' @keywords internal
@@ -838,8 +836,7 @@ dm_squash_to_tbl <- function(dm, start, ..., join = left_join) {
 
 #' @description
 #' `rows_truncate()` is deprecated as of dm 1.0.0, because it's a DDL operation
-#' and requires different permissions than the
-#' [`dplyr::rows_*()`][dplyr::rows_insert()] functions.
+#' and requires different permissions than the [`dplyr::rows_*()`][dplyr::rows_insert()] functions.
 #'
 #' @rdname deprecated
 #' @keywords internal

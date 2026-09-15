@@ -16,8 +16,8 @@ reunite_parent_child_from_list(list_of_parent_child_tables, id_column)
 
 \item{id_column}{Identical name of referencing / referenced column in \code{child_table}/\code{parent_table}.}
 
-\item{list_of_parent_child_tables}{Cf arguments \code{child_table} and \code{parent_table} from
-\code{reunite_parent_child()}, but both in a named list (as created by \code{decompose_table()}).}
+\item{list_of_parent_child_tables}{Cf arguments \code{child_table} and \code{parent_table} from \code{reunite_parent_child()},
+but both in a named list (as created by \code{decompose_table()}).}
 }
 \value{
 A wide table produced by joining the two given tables.
@@ -28,21 +28,18 @@ A wide table produced by joining the two given tables.
 Perform table fusion by combining two tables by a common (key) column, and then removing this column.
 
 \code{reunite_parent_child()}: After joining the two tables by the column \code{id_column}, this column will be removed.
-The transformation is roughly the
-inverse of what \code{decompose_table()} does.
+The transformation is roughly the inverse of what \code{decompose_table()} does.
 
-\code{reunite_parent_child_from_list()}: After joining the two tables
-by the column \code{id_column}, \code{id_column} is removed.
+\code{reunite_parent_child_from_list()}: After joining the two tables by the column \code{id_column}, \code{id_column} is removed.
 
-This function is almost exactly the inverse of \code{decompose_table()} (the order
-of the columns is not retained, and the original row names are lost).
+This function is almost exactly the inverse of \code{decompose_table()} (the order of the columns is not retained,
+and the original row names are lost).
 }
 \section{Life cycle}{
 
 These functions are marked "experimental" because they seem more useful
 when applied to a table in a dm object.
-Changing the interface later seems harmless because these functions are
-most likely used interactively.
+Changing the interface later seems harmless because these functions are most likely used interactively.
 }
 
 \examples{

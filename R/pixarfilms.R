@@ -5,18 +5,16 @@
 #' \pkg{pixarfilms}, along with the references.
 #'
 #' @inheritParams rlang::args_dots_empty
-#' @param color Boolean, if `TRUE` (default), the resulting `dm` object will
-#'   have colors assigned to different tables for visualization with
-#'   `dm_draw()`.
-#' @param consistent Boolean, In the original `dm`  the  `film` column in
-#' `pixar_films` contains missing values so cannot be made a proper primary key.
+#' @param color Boolean, if `TRUE` (default),
+#'   the resulting `dm` object will have colors assigned to different tables for visualization with `dm_draw()`.
+#' @param consistent Boolean, In the original `dm` the `film` column in `pixar_films` contains missing values
+#' so cannot be made a proper primary key.
 #' Set to `TRUE` to remove those records.
 #' @param version The version of the data to use.
 #'   `"v1"` (default) uses a vendored snapshot of \pkg{pixarfilms} 0.2.1.
 #'   `"latest"` uses the data from the installed \pkg{pixarfilms} package.
 #'
-#' @return A `dm` object consisting of \pkg{pixarfilms} tables, complete with
-#'   primary and foreign keys and optionally colored.
+#' @return A `dm` object consisting of \pkg{pixarfilms} tables, complete with primary and foreign keys and optionally colored.
 #'
 #' @export
 #' @autoglobal

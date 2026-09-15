@@ -14,8 +14,7 @@
 #' @export
 dm_nrow <- function(dm) {
   check_not_zoomed(dm)
-  # FIXME: with "direct" filter maybe no check necessary: but do we want to issue
-  # a message in case the filters haven't been applied yet?
+  # FIXME: with "direct" filter maybe no check necessary: but do we want to issue a message in case the filters haven't been applied yet?
   check_no_filter(dm)
   map_dbl(dm_get_tables_impl(dm), ~ as.numeric(pull(collect(safe_count(.)))))
 }

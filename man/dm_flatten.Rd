@@ -27,14 +27,12 @@ for example a fact table in a star schema.}
 
 Unquoted names of the parent tables to be joined into \code{table}.
 The order of the tables here determines the order of the joins.
-If \code{NULL} (the default), all direct parent tables
-are joined in non-recursive mode,
+If \code{NULL} (the default), all direct parent tables are joined in non-recursive mode,
 or all reachable ancestor tables in recursive mode.
 \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 
 \item{recursive}{Logical, defaults to \code{FALSE}.
-If \code{TRUE}, recursively flatten parent tables before joining them
-into \code{table}.
+If \code{TRUE}, recursively flatten parent tables before joining them into \code{table}.
 Uses simple recursion: recursively flattening the parents
 and then doing a join in order.
 If \code{FALSE}, fails if a parent table has further parents
@@ -44,8 +42,7 @@ Cannot be \code{TRUE} when \code{allow_deep} is \code{TRUE}.}
 \item{allow_deep}{Logical, defaults to \code{FALSE}.
 Only relevant if \code{recursive = FALSE}.
 If \code{TRUE}, parent tables with further parents are allowed
-and will remain in the result with a
-foreign-key relationship to the flattened table.
+and will remain in the result with a foreign-key relationship to the flattened table.
 Cannot be \code{TRUE} when \code{recursive} is \code{TRUE}.}
 
 \item{join}{The type of join to use when combining parent tables,
