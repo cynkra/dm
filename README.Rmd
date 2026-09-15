@@ -27,10 +27,6 @@ knit_print.grViz <- function(x, ..., options) {
 }
 vctrs::s3_register("knitr::knit_print", "grViz")
 
-clean_output <- function(x, options) {
-  x
-}
-
 options(
   cli.num_colors = 256,
   pillar.bold = TRUE,
@@ -38,13 +34,6 @@ options(
   pillar.max_title_chars = 5,
   pillar.max_footer_lines = 12
 )
-
-local({
-  hook_source <- knitr::knit_hooks$get("document")
-  knitr::knit_hooks$set(document = clean_output)
-})
-
-# For initial rendering, can be removed
 ```
 
 # [dm](https://dm.cynkra.com/)
