@@ -12,7 +12,7 @@ dm_unwrap_tbl(dm, ptype, progress = NA)
 \item{ptype}{A dm, only used to query names of primary and foreign keys.}
 
 \item{progress}{Whether to display a progress bar, if \code{NA} (the default) hide in non-interactive mode, show in interactive mode.
-Requires the 'progress' package.}
+ Requires the 'progress' package.}
 }
 \value{
 A dm.
@@ -21,7 +21,7 @@ A dm.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{dm_unwrap_tbl()} unwraps all tables in a dm object so that the resulting dm matches a given ptype dm.
-It runs a sequence of \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}} and \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} operations on the dm.
+ It runs a sequence of \code{\link[=dm_unnest_tbl]{dm_unnest_tbl()}} and \code{\link[=dm_unpack_tbl]{dm_unpack_tbl()}} operations on the dm.
 }
 \examples{
 

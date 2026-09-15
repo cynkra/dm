@@ -10,14 +10,14 @@ dm_mutate_tbl(dm, ...)
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{...}{One or more tables to update in the \code{dm}.
-Must be named.}
+ Must be named.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Updates one or more existing tables in a \code{\link{dm}}.
-For now, the column names must be identical.
-This restriction may be levied optionally in the future.
+ For now, the column names must be identical.
+ This restriction may be levied optionally in the future.
 }
 \examples{
 \dontshow{if (rlang::is_installed("nycflights13")) withAutoprint(\{ # examplesIf}

@@ -11,7 +11,7 @@ json_pack(.data, ..., .names_sep = NULL)
 
 \item{...}{<\code{\link[tidyr:tidyr_tidy_select]{tidy-select}}> Columns to pack, specified
 using name-variable pairs of the form \code{new_col = c(col1, col2, col3)}.
-The right hand side can be any valid tidy select expression.}
+ The right hand side can be any valid tidy select expression.}
 
 \item{.names_sep}{If \code{NULL}, the default, the names will be left as is.}
 }

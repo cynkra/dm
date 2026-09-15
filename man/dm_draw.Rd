@@ -32,15 +32,15 @@ dm_draw(
 \item{col_attr}{Deprecated, use \code{colummn_types} instead.}
 
 \item{view_type}{Can be "keys_only" (default), "all" or "title_only".
-It defines the level of details for rendering tables (only primary and foreign keys, all columns, or no columns).}
+ It defines the level of details for rendering tables (only primary and foreign keys, all columns, or no columns).}
 
 \item{column_types}{Set to \code{TRUE} to show column types.}
 
 \item{backend}{Currently, only the default \code{"DiagrammeR"} is accepted.
-Pass this value explicitly if your code relies on the type of the return value.}
+ Pass this value explicitly if your code relies on the type of the return value.}
 
 \item{backend_opts}{A named list of backend-specific options.
-For the \code{"DiagrammeR"} backend, supported options are:
+ For the \code{"DiagrammeR"} backend, supported options are:
 \itemize{
 \item \code{graph_attrs}: Additional graph attributes (default \code{""}).
 \item \code{node_attrs}: Additional node attributes (default \code{""}).
@@ -51,7 +51,7 @@ For the \code{"DiagrammeR"} backend, supported options are:
 \item \code{font_size}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Font size for \code{header} (default \code{16}), \code{column} (default \code{16}),
 and \code{table_description} (default \code{8}).
-Can be set as a named integer vector, e.g.
+ Can be set as a named integer vector, e.g.
 \code{c(table_headers = 18L, table_description = 6L)}.
 }}
 
@@ -72,7 +72,7 @@ Can be set as a named integer vector, e.g.
 \value{
 An object with a \code{\link[=print]{print()}} method, which,
 when printed, produces the output seen in the viewer as a side effect.
-Currently, this is an object of class \code{grViz} (see also
+ Currently, this is an object of class \code{grViz} (see also
 \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}), but this is subject to change.
 }
 \description{
@@ -80,10 +80,10 @@ Currently, this is an object of class \code{grViz} (see also
 }
 \details{
 Currently, \pkg{dm} uses \pkg{DiagrammeR} to draw diagrams.
-Use \code{\link[DiagrammeRsvg:export_svg]{DiagrammeRsvg::export_svg()}} to convert the diagram to an SVG file.
+ Use \code{\link[DiagrammeRsvg:export_svg]{DiagrammeRsvg::export_svg()}} to convert the diagram to an SVG file.
 
 The backend for drawing the diagrams might change in the future.
-If you rely on DiagrammeR, pass an explicit value for the \code{backend} argument.
+ If you rely on DiagrammeR, pass an explicit value for the \code{backend} argument.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "DiagrammeR"))) withAutoprint(\{ # examplesIf}

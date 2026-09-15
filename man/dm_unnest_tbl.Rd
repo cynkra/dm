@@ -22,12 +22,12 @@ A dm.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{dm_unnest_tbl()} target a specific column to unnest from the given table in a given dm.
-A ptype or a set of keys should be given, not both.
+ A ptype or a set of keys should be given, not both.
 }
 \details{
 \code{\link[=dm_nest_tbl]{dm_nest_tbl()}} is an inverse operation to \code{dm_unnest_tbl()}
 if differences in row and column order are ignored.
-The opposite is true if referential constraints between both tables are satisfied.
+ The opposite is true if referential constraints between both tables are satisfied.
 }
 \examples{
 airlines_wrapped <-

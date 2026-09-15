@@ -21,18 +21,18 @@ check_set_equality(
 \item{x_select, y_select}{Key columns to restrict the check, processed with \code{\link[dplyr:select]{dplyr::select()}}.}
 
 \item{by_position}{Set to \code{TRUE} to ignore column names and match by position instead.
-The default means matching by name, use \code{x_select} and/or \code{y_select}
+ The default means matching by name, use \code{x_select} and/or \code{y_select}
 to align the names.}
 }
 \value{
 Returns \code{x}, invisibly, if the check is passed.
-Otherwise an error is thrown and the reason for it is explained.
+ Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
 \code{check_set_equality()} is a wrapper of \code{\link[=check_subset]{check_subset()}}.
 
 It tests if one table is a subset of another and vice versa, i.e., if both sets are the same.
-If not, it throws an error.
+ If not, it throws an error.
 }
 \examples{
 data_1 <- tibble::tibble(a = c(1, 2, 1), b = c(1, 4, 1), c = c(5, 6, 7))

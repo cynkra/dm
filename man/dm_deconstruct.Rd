@@ -20,7 +20,7 @@ This function is called for its side effect of printing generated code.
 
 Emits code that assigns each table in the dm to a variable,
 using \code{\link[=pull_tbl]{pull_tbl()}} with \code{keyed = TRUE}.
-These tables retain information about primary and foreign keys,
+ These tables retain information about primary and foreign keys,
 even after data transformations,
 and can be converted back to a dm object with \code{\link[=dm]{dm()}}.
 }

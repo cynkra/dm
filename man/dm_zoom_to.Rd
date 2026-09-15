@@ -68,7 +68,7 @@ while retaining the context of the \code{dm} object.
 \code{dm_zoom_to()} zooms to the given table.
 
 \code{dm_update_zoomed()} overwrites the originally zoomed table with the manipulated table.
-The filter conditions for the zoomed table are added to the original filter conditions.
+ The filter conditions for the zoomed table are added to the original filter conditions.
 
 \code{dm_insert_zoomed()} adds a new table to the \code{dm}.
 
@@ -83,7 +83,7 @@ when using \code{dm_insert_zoomed()} or \code{dm_update_zoomed()}.
 
 Functions from \code{dplyr} that are supported for a \code{dm_zoomed}: \code{\link[=group_by]{group_by()}}, \code{\link[=summarise]{summarise()}}, \code{\link[=mutate]{mutate()}},
 \code{\link[=transmute]{transmute()}}, \code{\link[=filter]{filter()}}, \code{\link[=select]{select()}}, \code{\link[=rename]{rename()}} and \code{\link[=ungroup]{ungroup()}}.
-You can use these functions just like you would
+ You can use these functions just like you would
 with a normal table.
 
 Calling \code{\link[=filter]{filter()}} on a zoomed \code{dm} is different from calling \code{\link[=dm_filter]{dm_filter()}}:
@@ -91,8 +91,8 @@ only with the latter, the filter expression is added to the list of table filter
 
 Furthermore, different \code{join()}-variants from \pkg{dplyr} are also supported,
 e.g. \code{\link[=left_join]{left_join()}} and \code{\link[=semi_join]{semi_join()}}.
-(Support for \code{\link[dplyr:nest_join]{nest_join()}} is planned.)
-The join-methods for \code{dm_zoomed} infer the columns to join by from the primary and foreign keys,
+ (Support for \code{\link[dplyr:nest_join]{nest_join()}} is planned.)
+ The join-methods for \code{dm_zoomed} infer the columns to join by from the primary and foreign keys,
 and have an extra argument \code{select} that allows choosing the columns of the RHS table.
 
 And -- last but not least -- also the \pkg{tidyr}-functions \code{\link[=unite]{unite()}} and \code{\link[=separate]{separate()}} are supported for \code{dm_zoomed}.
