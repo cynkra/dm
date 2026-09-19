@@ -1,5 +1,20 @@
 # Changelog
 
+## dm 1.1.2.9016
+
+### Bug fixes
+
+- Only apply pkgdown behavior when building dm’s own site
+  ([\#2194](https://github.com/cynkra/dm/issues/2194),
+  [\#2528](https://github.com/cynkra/dm/issues/2528)).
+
+### Testing
+
+- Make the
+  [`left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+  flatten snapshot independent of the runner
+  ([\#2527](https://github.com/cynkra/dm/issues/2527)).
+
 ## dm 1.1.2.9015
 
 ### Bug fixes
