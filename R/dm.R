@@ -35,12 +35,12 @@
 #' @examples
 #' dm(trees, mtcars)
 #'
-#' new_dm(list(trees = trees, mtcars = mtcars))
+#' 
 #'
-#' as_dm(list(trees = trees, mtcars = mtcars))
+#' 
 #' @examplesIf rlang::is_installed(c("nycflights13", "dbplyr"))
 #'
-#' is_dm(dm_nycflights13())
+#' 
 #'
 #' dm_nycflights13()$airports
 #'
@@ -76,6 +76,16 @@ dm <- function(
       ))
     }
   }
+  #' #load packages
+   library(dm)
+  #'
+  #' create a simple dm object using built- in datasets
+  #' dm_obj<- dm(trees, mtcars)
+  #'
+  #' # print the dm object
+  #' dm_obj
+
+  ##' Note: dm_learn_from_db() requires a database connection
 
   # FIXME: check not zoomed, prettier
   stopifnot(names2(quos)[is_dm] == "")
