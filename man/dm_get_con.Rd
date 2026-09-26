@@ -14,7 +14,7 @@ The \code{\link[DBI:DBIConnection-class]{DBI::DBIConnection}} object for a \code
 }
 \description{
 \code{dm_get_con()} returns the DBI connection for a \code{dm} object.
-This works only if the tables are stored on a database, otherwise an error is thrown.
+ This works only if the tables are stored on a database, otherwise an error is thrown.
 }
 \details{
 All lazy tables in a dm object must be stored on the same database server

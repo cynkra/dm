@@ -13,7 +13,7 @@ dm_rename_tbl(dm, ...)
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{...}{One or more table names of the tables of the \code{\link{dm}} object.
-\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
+ \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.}
 }
 \value{
 The input \code{dm} with tables renamed or removed.

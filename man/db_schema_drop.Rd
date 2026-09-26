@@ -12,8 +12,8 @@ db_schema_drop(con, schema, force = FALSE, ...)
 \item{schema}{Class \code{character} or \code{SQL} (cf. Details), name of the schema}
 
 \item{force}{Boolean, default \code{FALSE}.
-Set to \code{TRUE} to drop a schema and all objects it contains at once.
-Currently only supported for Postgres/Redshift.}
+ Set to \code{TRUE} to drop a schema and all objects it contains at once.
+ Currently only supported for Postgres/Redshift.}
 
 \item{...}{Passed on to the individual methods.}
 }
@@ -24,7 +24,7 @@ Currently only supported for Postgres/Redshift.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{db_schema_drop()} deletes a schema from the database.
-For certain DBMS it is possible to force the removal of a non-empty schema, see below.
+ For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 }
 \details{
 Methods are not available for all DBMS.
@@ -32,12 +32,12 @@ Methods are not available for all DBMS.
 An error is thrown if no schema of that name exists.
 
 The argument \code{schema} (and \code{dbname} for MSSQL) can be provided as \code{SQL} objects.
-Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers.
+ Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers.
 
 Additional arguments are:
 \itemize{
 \item \code{dbname}: supported for MSSQL.
-Remove a schema from a different database on the connected MSSQL-server; default: database addressed by \code{con}.
+ Remove a schema from a different database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{

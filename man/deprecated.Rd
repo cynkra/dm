@@ -232,7 +232,7 @@ dm_rows_truncate(x, y, ..., in_place = NULL, progress = NA)
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{force}{Boolean, if \code{FALSE} (default), an error will be thrown if there is already a primary key set for this table.
-If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
+ If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 
 \item{dm}{A \code{\link{dm}} object.}
 
@@ -249,11 +249,11 @@ If \code{TRUE}, a potential old \code{pk} is deleted before setting a new one.}
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 
 \item{columns}{Table columns, unquoted.
-To define a compound key, use \code{c(col1, col2)}.}
+ To define a compound key, use \code{c(col1, col2)}.}
 }
 \description{
 These functions are deprecated in favor of better alternatives.
-Most functions with the \code{cdm_} prefix have an identical alternative
+ Most functions with the \code{cdm_} prefix have an identical alternative
 with a \code{dm_} prefix.
 
 \verb{sql_schema_*()} functions have been replaced with the corresponding \verb{db_schema_*()} functions.

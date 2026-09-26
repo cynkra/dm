@@ -20,11 +20,11 @@ dm_disambiguate_cols(
 \item{...}{These dots are for future extensions and must be empty.}
 
 \item{.quiet}{Boolean.
-By default, this function lists the renamed columns in a message, pass \code{TRUE} to suppress this message.}
+ By default, this function lists the renamed columns in a message, pass \code{TRUE} to suppress this message.}
 
 \item{.position}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 By default, table names are appended to the column names to resolve conflicts.
-Prepending table names was the default for versions before 1.0.0,
+ Prepending table names was the default for versions before 1.0.0,
 use \code{"prefix"} to achieve this behavior.}
 }
 \value{
@@ -35,9 +35,9 @@ This function ensures that all columns in a \code{dm} have unique names.
 }
 \details{
 The function first checks if there are any column names that are not unique.
-If there are, those columns will be assigned new, unique, names by prefixing their existing name
+ If there are, those columns will be assigned new, unique, names by prefixing their existing name
 with the name of their table and a separator.
-Columns that act as primary or foreign keys will not be renamed
+ Columns that act as primary or foreign keys will not be renamed
 because only the foreign key column will remain when two tables are joined,
 making that column name "unique" as well.
 }

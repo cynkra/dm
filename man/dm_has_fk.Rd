@@ -23,6 +23,6 @@ dm_get_fk(dm, table, ref_table, ...)
 
 These functions are deprecated because of their limited use
 since the introduction of foreign keys to arbitrary columns in dm 0.2.1.
-Use \code{\link[=dm_get_all_fks]{dm_get_all_fks()}} with table manipulation functions instead.
+ Use \code{\link[=dm_get_all_fks]{dm_get_all_fks()}} with table manipulation functions instead.
 }
 \keyword{internal}

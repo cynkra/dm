@@ -14,16 +14,16 @@ check_subset(x, y, ..., x_select = NULL, y_select = NULL, by_position = NULL)
 \item{x_select, y_select}{Key columns to restrict the check, processed with \code{\link[dplyr:select]{dplyr::select()}}.}
 
 \item{by_position}{Set to \code{TRUE} to ignore column names and match by position instead.
-The default means matching by name, use \code{x_select} and/or \code{y_select}
+ The default means matching by name, use \code{x_select} and/or \code{y_select}
 to align the names.}
 }
 \value{
 Returns \code{x}, invisibly, if the check is passed.
-Otherwise an error is thrown and the reason for it is explained.
+ Otherwise an error is thrown and the reason for it is explained.
 }
 \description{
 \code{check_subset()} tests if \code{x} is a subset of \code{y}.
-For convenience, the \code{x_select} and \code{y_select} arguments allow restricting the check
+ For convenience, the \code{x_select} and \code{y_select} arguments allow restricting the check
 to a set of key columns without affecting the return value.
 }
 \examples{

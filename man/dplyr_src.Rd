@@ -41,7 +41,7 @@ dm_get_src(x)
 \item{overwrite}{For \code{copy_to.dm()}: See \code{\link[dplyr:copy_to]{dplyr::copy_to()}}; \code{TRUE} leads to an error}
 
 \item{temporary}{For \code{copy_to.dm()}: If the \code{dm} is on a DB, the copied version of \code{df} will only be written temporarily to the DB.
-After the connection is reset it will no longer be available.}
+ After the connection is reset it will no longer be available.}
 
 \item{repair, quiet}{Name repair options; cf. \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}}
 }
@@ -50,7 +50,7 @@ After the connection is reset it will no longer be available.}
 
 These methods are deprecated because of their limited use,
 and because the notion of a "source" seems to be getting phased out from dplyr.
-Use other ways to access the tables in a \code{dm}.
+ Use other ways to access the tables in a \code{dm}.
 }
 \details{
 Use \code{\link[=dm_get_con]{dm_get_con()}} instead of \code{dm_get_src()} to get the DBI connetion for a \code{dm} object

@@ -16,7 +16,7 @@ dm_reset_table_description(dm, table = NULL, ...)
 \item{dm}{A \code{\link{dm}} object.}
 
 \item{...}{For \code{dm_set_table_description()}: Descriptions for tables to set in the form \code{description = table}.
-\code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.
+ \code{tidyselect} is supported, see \code{\link[dplyr:select]{dplyr::select()}} for details on the semantics.
 
 For \code{dm_get_table_description()} and \code{dm_reset_table_description()}: These dots are for future extensions and must be empty.}
 
@@ -40,9 +40,9 @@ When creating a diagram from a \code{dm} using \code{\link[=dm_draw]{dm_draw()}}
 }
 \details{
 Multi-line descriptions can be achieved using the newline symbol \verb{\\n}.
-Descriptions are set with \code{dm_set_table_description()}.
-The currently set descriptions can be checked using \code{dm_get_table_description()}.
-Descriptions can be removed using \code{dm_reset_table_description()}.
+ Descriptions are set with \code{dm_set_table_description()}.
+ The currently set descriptions can be checked using \code{dm_get_table_description()}.
+ Descriptions can be removed using \code{dm_reset_table_description()}.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("nycflights13", "labelled", "DiagrammeR"))) withAutoprint(\{ # examplesIf}

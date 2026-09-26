@@ -21,10 +21,10 @@ as_dm(x, ...)
 }
 \arguments{
 \item{...}{Tables or existing \code{dm} objects to add to the \code{dm} object.
-Unnamed tables are auto-named, \code{dm} objects must not be named.}
+ Unnamed tables are auto-named, \code{dm} objects must not be named.}
 
 \item{.name_repair, .quiet}{Options for name repair.
-Forwarded as \code{repair} and \code{quiet} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
+ Forwarded as \code{repair} and \code{quiet} to \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}}.}
 
 \item{tables}{A named list of the tables (tibble-objects, not names),
 to be included in the \code{dm} object.}
@@ -38,7 +38,7 @@ For \code{is_dm()}: A scalar logical, \code{TRUE} if is this object is a \code{d
 }
 \description{
 The \code{dm} class holds a list of tables and their relationships.
-It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
+ It is inspired by \href{https://github.com/bergant/datamodelr}{datamodelr},
 and extends the idea by offering operations to access the data in the tables.
 
 \code{dm()} creates a \code{dm} object from \link{tbl} objects (tibbles or lazy data objects).
