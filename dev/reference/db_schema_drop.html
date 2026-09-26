@@ -11,7 +11,7 @@ For certain DBMS it is possible to force the removal of a non-empty schema, see 
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,8 +83,9 @@ For certain DBMS it is possible to force the removal of a non-empty schema, see 
 
 
 <dt id="arg-force">force<a class="anchor" aria-label="anchor" href="#arg-force"></a></dt>
-<dd><p>Boolean, default <code>FALSE</code>. Set to <code>TRUE</code> to drop a schema and
-all objects it contains at once. Currently only supported for Postgres/Redshift.</p></dd>
+<dd><p>Boolean, default <code>FALSE</code>.
+Set to <code>TRUE</code> to drop a schema and all objects it contains at once.
+Currently only supported for Postgres/Redshift.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -101,8 +102,8 @@ all objects it contains at once. Currently only supported for Postgres/Redshift.
 <p>An error is thrown if no schema of that name exists.</p>
 <p>The argument <code>schema</code> (and <code>dbname</code> for MSSQL) can be provided as <code>SQL</code> objects.
 Keep in mind, that in this case it is assumed that they are already correctly quoted as identifiers.</p>
-<p>Additional arguments are:</p><ul><li><p><code>dbname</code>: supported for MSSQL. Remove a schema from a different
-database on the connected MSSQL-server; default: database addressed by <code>con</code>.</p></li>
+<p>Additional arguments are:</p><ul><li><p><code>dbname</code>: supported for MSSQL.
+Remove a schema from a different database on the connected MSSQL-server; default: database addressed by <code>con</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -1,5 +1,11 @@
 # Changelog
 
+## dm 1.1.2.9017
+
+### Continuous integration
+
+- Delete `.github/workflows/unblock.yaml`.
+
 ## dm 1.1.2.9016
 
 ### Bug fixes

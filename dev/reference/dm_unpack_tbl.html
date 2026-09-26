@@ -9,7 +9,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,14 +89,12 @@
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>dm_unpack_tbl()</code> targets a specific column to unpack
-from the given table in a given dm.
+    <p><code>dm_unpack_tbl()</code> targets a specific column to unpack from the given table in a given dm.
 A ptype or a set of keys should be given,
 not both.</p>
 <p><code><a href="dm_pack_tbl.html">dm_pack_tbl()</a></code> is an inverse operation to <code>dm_unpack_tbl()</code>
 if differences in row and column order are ignored.
-The opposite is true if referential constraints between both tables
-are satisfied
+The opposite is true if referential constraints between both tables are satisfied
 and if all rows in the parent table have at least one child row,
 i.e. if the relationship is of cardinality 1:n or 1:1.</p>
     </div>

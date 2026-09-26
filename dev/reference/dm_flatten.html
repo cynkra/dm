@@ -11,7 +11,7 @@ and removes the now integrated parent tables from the dm."><meta property="og:im
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,16 +100,14 @@ for example a fact table in a star schema.</p></dd>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
 <p>Unquoted names of the parent tables to be joined into <code>table</code>.
 The order of the tables here determines the order of the joins.
-If <code>NULL</code> (the default), all direct parent tables
-are joined in non-recursive mode,
+If <code>NULL</code> (the default), all direct parent tables are joined in non-recursive mode,
 or all reachable ancestor tables in recursive mode.
 <code>tidyselect</code> is supported, see <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> for details on the semantics.</p></dd>
 
 
 <dt id="arg-recursive">recursive<a class="anchor" aria-label="anchor" href="#arg-recursive"></a></dt>
 <dd><p>Logical, defaults to <code>FALSE</code>.
-If <code>TRUE</code>, recursively flatten parent tables before joining them
-into <code>table</code>.
+If <code>TRUE</code>, recursively flatten parent tables before joining them into <code>table</code>.
 Uses simple recursion: recursively flattening the parents
 and then doing a join in order.
 If <code>FALSE</code>, fails if a parent table has further parents
@@ -121,8 +119,7 @@ Cannot be <code>TRUE</code> when <code>allow_deep</code> is <code>TRUE</code>.</
 <dd><p>Logical, defaults to <code>FALSE</code>.
 Only relevant if <code>recursive = FALSE</code>.
 If <code>TRUE</code>, parent tables with further parents are allowed
-and will remain in the result with a
-foreign-key relationship to the flattened table.
+and will remain in the result with a foreign-key relationship to the flattened table.
 Cannot be <code>TRUE</code> when <code>recursive</code> is <code>TRUE</code>.</p></dd>
 
 

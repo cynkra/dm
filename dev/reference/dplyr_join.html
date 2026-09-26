@@ -7,7 +7,7 @@
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -238,11 +238,13 @@
 
 
 <dl><dt id="arg-x-y">x, y<a class="anchor" aria-label="anchor" href="#arg-x-y"></a></dt>
-<dd><p>tbls to join. <code>x</code> is the <code>dm_zoomed</code> and <code>y</code> is another table in the <code>dm</code>.</p></dd>
+<dd><p>tbls to join.
+<code>x</code> is the <code>dm_zoomed</code> and <code>y</code> is another table in the <code>dm</code>.</p></dd>
 
 
 <dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
-<dd><p>If left <code>NULL</code> (default), the join will be performed by via the foreign key relation that exists between the originally zoomed table (now <code>x</code>)
+<dd><p>If left <code>NULL</code> (default),
+the join will be performed by via the foreign key relation that exists between the originally zoomed table (now <code>x</code>)
 and the other table (<code>y</code>).
 If you provide a value (for the syntax see <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join</a></code>), you can also join tables that are not connected in the <code>dm</code>.</p></dd>
 
@@ -252,7 +254,8 @@ If you provide a value (for the syntax see <code><a href="https://dplyr.tidyvers
 
 
 <dt id="arg-suffix">suffix<a class="anchor" aria-label="anchor" href="#arg-suffix"></a></dt>
-<dd><p>Disabled, since columns are disambiguated automatically if necessary, changing the column names to <code>table_name.column_name</code>.</p></dd>
+<dd><p>Disabled, since columns are disambiguated automatically if necessary,
+changing the column names to <code>table_name.column_name</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -330,7 +333,8 @@ see <code>unmatched</code>.</p></dd>
 
 
 <dt id="arg-select">select<a class="anchor" aria-label="anchor" href="#arg-select"></a></dt>
-<dd><p>Select a subset of the <strong>RHS-table</strong>'s columns, the syntax being <code>select = c(col_1, col_2, col_3)</code> (unquoted or quoted).
+<dd><p>Select a subset of the <strong>RHS-table</strong>'s columns,
+the syntax being <code>select = c(col_1, col_2, col_3)</code> (unquoted or quoted).
 This argument is specific for the <code>join</code>-methods for <code>dm_zoomed</code>.
 The table's <code>by</code> column(s) are automatically added if missing in the selection.</p></dd>
 

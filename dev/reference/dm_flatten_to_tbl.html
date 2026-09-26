@@ -9,7 +9,7 @@ It performs a disambiguation of column names and a cascade of joins."><meta prop
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,8 @@ If the argument is empty, all tables that can be reached will be included.
 
 
 <dt id="arg--recursive">.recursive<a class="anchor" aria-label="anchor" href="#arg--recursive"></a></dt>
-<dd><p>Logical, defaults to <code>FALSE</code>. Should not only parent tables be joined to <code>.start</code>, but also their ancestors?</p></dd>
+<dd><p>Logical, defaults to <code>FALSE</code>.
+Should not only parent tables be joined to <code>.start</code>, but also their ancestors?</p></dd>
 
 
 <dt id="arg--join">.join<a class="anchor" aria-label="anchor" href="#arg--join"></a></dt>
@@ -104,25 +105,22 @@ If the argument is empty, all tables that can be reached will be included.
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>With <code>...</code> left empty, this function will join together all the tables of your <code><a href="dm.html">dm</a></code>
-object that can be reached from the <code>.start</code> table, in the direction of the foreign key relations
-(pointing from the child tables to the parent tables), using the foreign key relations to
-determine the argument <code>by</code> for the necessary joins.
+    <p>With <code>...</code> left empty, this function will join together all the tables of your <code><a href="dm.html">dm</a></code> object that can be reached from the <code>.start</code> table,
+in the direction of the foreign key relations (pointing from the child tables to the parent tables),
+using the foreign key relations to determine the argument <code>by</code> for the necessary joins.
 The result is one table with unique column names.
 Use the <code>...</code> argument if you would like to control which tables should be joined to the <code>.start</code> table.</p>
-<p>Mind that calling <code>dm_flatten_to_tbl()</code> with <code>.join = right_join</code> and no table order determined in the <code>...</code> argument
-will not lead to a well-defined result if two or more foreign tables are to be joined to <code>.start</code>.
-The resulting
-table would depend on the order the tables that are listed in the <code>dm</code>.
+<p>Mind that calling <code>dm_flatten_to_tbl()</code> with <code>.join = right_join</code>
+and no table order determined in the <code>...</code> argument will not lead to a well-defined result
+if two or more foreign tables are to be joined to <code>.start</code>.
+The resulting table would depend on the order the tables that are listed in the <code>dm</code>.
 Therefore, trying this will result in a warning.</p>
 <p>Since <code>.join = nest_join</code> does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.</p>
-<p>The difference between <code>.recursive = FALSE</code> and <code>.recursive = TRUE</code> is
-the following (see the examples):</p><ul><li><p><code>.recursive = FALSE</code> allows only one level of hierarchy
+<p>The difference between <code>.recursive = FALSE</code> and <code>.recursive = TRUE</code> is the following (see the examples):</p><ul><li><p><code>.recursive = FALSE</code> allows only one level of hierarchy
 (i.e., direct neighbors to table <code>.start</code>), while</p></li>
 <li><p><code>.recursive = TRUE</code> will go through all levels of hierarchy while joining.</p></li>
-</ul><p>Additionally, these functions differ from <code><a href="dm_wrap_tbl.html">dm_wrap_tbl()</a></code>, which always
-returns a <code>dm</code> object.</p>
+</ul><p>Additionally, these functions differ from <code><a href="dm_wrap_tbl.html">dm_wrap_tbl()</a></code>, which always returns a <code>dm</code> object.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

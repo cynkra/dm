@@ -3,13 +3,13 @@
 and a dm object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set temporary = FALSE to create permanent tables.
-Unless set_key_constraints is FALSE, primary key, foreign key, and unique constraints
-are set, and indexes for foreign keys are created, on all databases."><meta property="og:description" content="copy_dm_to() takes a dbplyr::src_dbi object or a DBI::DBIConnection object as its first argument
+Unless set_key_constraints is FALSE, primary key, foreign key,
+and unique constraints are set, and indexes for foreign keys are created, on all databases."><meta property="og:description" content="copy_dm_to() takes a dbplyr::src_dbi object or a DBI::DBIConnection object as its first argument
 and a dm object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set temporary = FALSE to create permanent tables.
-Unless set_key_constraints is FALSE, primary key, foreign key, and unique constraints
-are set, and indexes for foreign keys are created, on all databases."><meta property="og:image" content="https://dm.cynkra.com/logo.png"><meta name="robots" content="noindex"><script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script></head><body>
+Unless set_key_constraints is FALSE, primary key, foreign key,
+and unique constraints are set, and indexes for foreign keys are created, on all databases."><meta property="og:image" content="https://dm.cynkra.com/logo.png"><meta name="robots" content="noindex"><script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -17,7 +17,7 @@ are set, and indexes for foreign keys are created, on all databases."><meta prop
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,8 +70,8 @@ are set, and indexes for foreign keys are created, on all databases."><meta prop
 and a <code><a href="dm.html">dm</a></code> object as its second argument.
 The latter is copied to the former.
 The default is to create temporary tables, set <code>temporary = FALSE</code> to create permanent tables.
-Unless <code>set_key_constraints</code> is <code>FALSE</code>, primary key, foreign key, and unique constraints
-are set, and indexes for foreign keys are created, on all databases.</p>
+Unless <code>set_key_constraints</code> is <code>FALSE</code>, primary key, foreign key,
+and unique constraints are set, and indexes for foreign keys are created, on all databases.</p>
     </div>
 
     <div class="section level2">
@@ -107,12 +107,10 @@ are set, and indexes for foreign keys are created, on all databases.</p>
 
 
 <dt id="arg-set-key-constraints">set_key_constraints<a class="anchor" aria-label="anchor" href="#arg-set-key-constraints"></a></dt>
-<dd><p>If <code>TRUE</code> will mirror
-the primary, foreign, and unique key constraints
+<dd><p>If <code>TRUE</code> will mirror the primary, foreign, and unique key constraints
 and create indexes for foreign key constraints
 for the primary and foreign keys in the <code>dm</code> object.
-Set to <code>FALSE</code> if your data model currently does not satisfy
-primary or foreign key constraints.</p></dd>
+Set to <code>FALSE</code> if your data model currently does not satisfy primary or foreign key constraints.</p></dd>
 
 
 <dt id="arg-table-names">table_names<a class="anchor" aria-label="anchor" href="#arg-table-names"></a></dt>
@@ -127,8 +125,7 @@ as the only argument.
 The output of this function is processed by <code><a href="https://dbi.r-dbi.org/reference/dbQuoteIdentifier.html" class="external-link">DBI::dbQuoteIdentifier()</a></code>,
 that result should be a vector of identifiers of the same length
 as the original table names.</p>
-<p>Use a variant of
-<code>table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))</code>
+<p>Use a variant of <code>table_names = ~ DBI::SQL(paste0("schema_name", ".", .x))</code>
 to specify the same schema for all tables.
 Use <code>table_names = identity</code> with <code>temporary = TRUE</code>
 to avoid giving temporary tables unique names.</p>
@@ -149,15 +146,13 @@ These tables will vanish when disconnecting from the database.</p></dd>
 
 <dt id="arg-schema">schema<a class="anchor" aria-label="anchor" href="#arg-schema"></a></dt>
 <dd><p>Name of schema to copy the <code>dm</code> to.
-If <code>schema</code> is provided, an error will be thrown if <code>temporary = FALSE</code> or
-<code>table_names</code> is not <code>NULL</code>.</p>
+If <code>schema</code> is provided, an error will be thrown if <code>temporary = FALSE</code> or <code>table_names</code> is not <code>NULL</code>.</p>
 <p>Not all DBMS are supported.</p></dd>
 
 
 <dt id="arg-progress">progress<a class="anchor" aria-label="anchor" href="#arg-progress"></a></dt>
-<dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
-hide in non-interactive mode, show in interactive mode. Requires the
-'progress' package.</p></dd>
+<dd><p>Whether to display a progress bar, if <code>NA</code> (the default) hide in non-interactive mode, show in interactive mode.
+Requires the 'progress' package.</p></dd>
 
 
 <dt id="arg-unique-table-names-copy-to">unique_table_names, copy_to<a class="anchor" aria-label="anchor" href="#arg-unique-table-names-copy-to"></a></dt>

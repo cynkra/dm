@@ -15,7 +15,7 @@ With pull_tbl.dm_zoomed() you will retrieve the zoomed table in the current stat
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,10 +92,8 @@ With pull_tbl.dm_zoomed() you will retrieve the zoomed table in the current stat
 <dt id="arg-keyed">keyed<a class="anchor" aria-label="anchor" href="#arg-keyed"></a></dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>
 Set to <code>TRUE</code> to return objects of the internal class <code>"dm_keyed_tbl"</code>
-that will contain information on primary and foreign keys
-in the individual table objects.
-This allows using dplyr workflows on those tables and later reconstruct them
-into a <code>dm</code> object.
+that will contain information on primary and foreign keys in the individual table objects.
+This allows using dplyr workflows on those tables and later reconstruct them into a <code>dm</code> object.
 See <code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> for a function that generates corresponding code
 for an existing dm object, and <code><a href="../articles/tech-dm-keyed.html">vignette("tech-dm-keyed")</a></code> for details.</p></dd>
 
@@ -106,8 +104,7 @@ for an existing dm object, and <code><a href="../articles/tech-dm-keyed.html">vi
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> to generate code of the form
-<code>pull_tbl(..., keyed = TRUE)</code> from an existing <code>dm</code> object.</p></div>
+    <div class="dont-index"><p><code><a href="dm_deconstruct.html">dm_deconstruct()</a></code> to generate code of the form <code>pull_tbl(..., keyed = TRUE)</code> from an existing <code>dm</code> object.</p></div>
     </div>
 
     <div class="section level2">

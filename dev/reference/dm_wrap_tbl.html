@@ -3,13 +3,11 @@
 dm_wrap_tbl() creates a single tibble dm containing the root table
 enhanced with all the data related to it
 through the relationships stored in the dm.
-It runs a sequence of dm_nest_tbl() and dm_pack_tbl() operations
-on the dm."><meta property="og:description" content="
+It runs a sequence of dm_nest_tbl() and dm_pack_tbl() operations on the dm."><meta property="og:description" content="
 dm_wrap_tbl() creates a single tibble dm containing the root table
 enhanced with all the data related to it
 through the relationships stored in the dm.
-It runs a sequence of dm_nest_tbl() and dm_pack_tbl() operations
-on the dm."><meta property="og:image" content="https://dm.cynkra.com/logo.png"><meta name="robots" content="noindex"><script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script></head><body>
+It runs a sequence of dm_nest_tbl() and dm_pack_tbl() operations on the dm."><meta property="og:image" content="https://dm.cynkra.com/logo.png"><meta name="robots" content="noindex"><script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -17,7 +15,7 @@ on the dm."><meta property="og:image" content="https://dm.cynkra.com/logo.png"><
     <a href="https://cynkra.com" class="external-link logo-cynkra"><img src="https://cynkra.com/assets/img/logo-cynkra-square.svg" alt="cynkra" width="100" height="100"><div class="sr-only">cynkra</div></a>
     <a class="navbar-brand me-2" href="../index.html">dm</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9016</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,8 +68,7 @@ on the dm."><meta property="og:image" content="https://dm.cynkra.com/logo.png"><
 <p><code>dm_wrap_tbl()</code> creates a single tibble dm containing the <code>root</code> table
 enhanced with all the data related to it
 through the relationships stored in the dm.
-It runs a sequence of <code><a href="dm_nest_tbl.html">dm_nest_tbl()</a></code> and <code><a href="dm_pack_tbl.html">dm_pack_tbl()</a></code> operations
-on the dm.</p>
+It runs a sequence of <code><a href="dm_nest_tbl.html">dm_nest_tbl()</a></code> and <code><a href="dm_pack_tbl.html">dm_pack_tbl()</a></code> operations on the dm.</p>
     </div>
 
     <div class="section level2">
@@ -92,14 +89,13 @@ on the dm.</p>
 
 
 <dt id="arg-strict">strict<a class="anchor" aria-label="anchor" href="#arg-strict"></a></dt>
-<dd><p>Whether to fail for cyclic dms that cannot be wrapped into a
-single table, if <code>FALSE</code> a partially wrapped dm will be returned.</p></dd>
+<dd><p>Whether to fail for cyclic dms that cannot be wrapped into a single table,
+if <code>FALSE</code> a partially wrapped dm will be returned.</p></dd>
 
 
 <dt id="arg-progress">progress<a class="anchor" aria-label="anchor" href="#arg-progress"></a></dt>
-<dd><p>Whether to display a progress bar, if <code>NA</code> (the default)
-hide in non-interactive mode, show in interactive mode. Requires the
-'progress' package.</p></dd>
+<dd><p>Whether to display a progress bar, if <code>NA</code> (the default) hide in non-interactive mode, show in interactive mode.
+Requires the 'progress' package.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -109,11 +105,9 @@ hide in non-interactive mode, show in interactive mode. Requires the
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>dm_wrap_tbl()</code> is an inverse to <code><a href="dm_unwrap_tbl.html">dm_unwrap_tbl()</a></code>,
-i.e., wrapping after unwrapping returns the same information
-(disregarding row and column order).
+i.e., wrapping after unwrapping returns the same information (disregarding row and column order).
 The opposite is not generally true:
-since <code>dm_wrap_tbl()</code> keeps only rows related directly or indirectly to
-rows in the <code>root</code> table.
+since <code>dm_wrap_tbl()</code> keeps only rows related directly or indirectly to rows in the <code>root</code> table.
 Even if all referential constraints are satisfied,
 unwrapping after wrapping loses rows in parent tables
 that don't have a corresponding row in the child table.</p>
