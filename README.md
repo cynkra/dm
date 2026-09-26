@@ -79,7 +79,7 @@ pak::pak("cynkra/dm")
 
 ## Usage
 
-Create a dm object with `dm_nycflights13()`
+Create a dm object with [`dm_nycflights13()`](https://dm.cynkra.com/reference/dm_nycflights13.html)
 (see [Getting started](https://dm.cynkra.com/articles/dm.html) for details,
 or [Create a dm object from data frames](https://dm.cynkra.com/articles/howto-dm-df.html)
 and [from a database](https://dm.cynkra.com/articles/howto-dm-db.html) for your own data).
@@ -112,7 +112,7 @@ dm$flights %>%
 #> 3 LGA      518
 ```
 
-Visualize relationships at any time with `dm_draw()`,
+Visualize relationships at any time with [`dm_draw()`](https://dm.cynkra.com/reference/dm_draw.html),
 covered in [Visualizing dm objects](https://dm.cynkra.com/articles/tech-dm-draw.html):
 
 ``` r
@@ -122,7 +122,7 @@ dm %>%
 
 <img src="man/figures/README-draw.svg" />
 
-Simple joins with `dm_flatten_to_tbl()`, which follows the keys for you --
+Simple joins with [`dm_flatten_to_tbl()`](https://dm.cynkra.com/reference/dm_flatten_to_tbl.html), which follows the keys for you --
 see [Joining in relational data models](https://dm.cynkra.com/articles/tech-dm-join.html):
 
 ``` r
@@ -167,7 +167,7 @@ dm %>%
 #> #   wind_speed <dbl>, wind_gust <dbl>, precip <dbl>, pressure <dbl>, …
 ```
 
-Check consistency with `dm_examine_constraints()`,
+Check consistency with [`dm_examine_constraints()`](https://dm.cynkra.com/reference/dm_examine_constraints.html),
 whose checks are described in
 [Model verification](https://dm.cynkra.com/articles/tech-dm-low-level.html):
 
