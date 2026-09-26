@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9018
+
+## Documentation
+
+- Break lines at meaning boundaries (#2510).
+
+- Drop the branch from the coverage badge (#2503).
+
+- Harmonize README and pkgdown front page rendering (#2505).
+
+- Use `pak::pak()` for the development install (#2499).
+
+
 # dm 1.1.2.9017
 
 ## Continuous integration
