@@ -1,73 +1,55 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md and index.md are generated from README.Rmd.
+     Edit that file and render it the usual way: rmarkdown::render(),
+     devtools::build_readme(), or the Knit button. The cynkratemplate
+     package must be installed; it supplies the output format. -->
 
 # [dm](https://dm.cynkra.com/)
 
 <!-- badges: start -->
 
-[![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R build
-status](https://github.com/cynkra/dm/workflows/rcc/badge.svg)](https://github.com/cynkra/dm/actions)
-[![Codecov test
-coverage](https://codecov.io/gh/cynkra/dm/branch/main/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=main)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
-[![Launch
-rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![R build status](https://github.com/cynkra/dm/workflows/rcc/badge.svg)](https://github.com/cynkra/dm/actions)
+[![Codecov test coverage](https://codecov.io/gh/cynkra/dm/branch/main/graph/badge.svg)](https://app.codecov.io/gh/cynkra/dm?branch=main)
+[![CRAN status](https://www.r-pkg.org/badges/version/dm)](https://CRAN.R-project.org/package=dm)
+[![Launch rstudio.cloud](https://img.shields.io/badge/rstudio-cloud-blue.svg)](https://rstudio.cloud/project/523482)
 <!-- badges: end -->
 
-> Are you using multiple data frames or database tables in R? Organize
-> them with dm.
+> Are you using multiple data frames or database tables in R? Organize them with dm.
 >
 > - Use it for data analysis today.
 > - Build data models tomorrow.
-> - Deploy the data models to your organization’s Relational Database
->   Management System (RDBMS) the day after.
+> - Deploy the data models to your organization's Relational Database Management System (RDBMS) the day after.
 
 ## Overview
 
-dm bridges the gap in the data pipeline between individual data frames
-and relational databases. It’s a grammar of joined tables that provides
-a consistent set of verbs for consuming, creating, and deploying
-relational data models. For individual researchers, it broadens the
-scope of datasets they can work with and how they work with them. For
-organizations, it enables teams to quickly and efficiently create and
-share large, complex datasets.
+dm bridges the gap in the data pipeline between individual data frames and relational databases.
+It's a grammar of joined tables that provides a consistent set of verbs for consuming, creating, and deploying relational data models.
+For individual researchers, it broadens the scope of datasets they can work with and how they work with them.
+For organizations, it enables teams to quickly and efficiently create and share large, complex datasets.
 
-dm objects encapsulate relational data models constructed from local
-data frames or lazy tables connected to an RDBMS. dm objects support the
-full suite of dplyr data manipulation verbs along with additional
-methods for constructing and verifying relational data models, including
-key selection, key creation, and rigorous constraint checking. Once a
-data model is complete, dm provides methods for deploying it to an
-RDBMS. This allows it to scale from datasets that fit in memory to
-databases with billions of rows.
+dm objects encapsulate relational data models constructed from local data frames or lazy tables connected to an RDBMS.
+dm objects support the full suite of dplyr data manipulation verbs along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking.
+Once a data model is complete, dm provides methods for deploying it to an RDBMS.
+This allows it to scale from datasets that fit in memory to databases with billions of rows.
 
 ## Features
 
-dm makes it easy to bring an existing relational data model into your R
-session. As the dm object behaves like a named list of tables it
-requires little change to incorporate it within existing workflows. The
-dm interface and behavior is modeled after dplyr, so you may already be
-familiar with many of its verbs. dm also offers:
+dm makes it easy to bring an existing relational data model into your R session.
+As the dm object behaves like a named list of tables it requires little change to incorporate it within existing workflows.
+The dm interface and behavior is modeled after dplyr, so you may already be familiar with many of its verbs.
+dm also offers:
 
-- visualization to help you understand relationships between entities
-  represented by the tables
-- simpler joins that “know” how tables are related, including a
-  “flatten” operation that automatically follows keys and performs
-  column name disambiguation
-- consistency and constraint checks to help you understand (and fix) the
-  limitations of your data
+- visualization to help you understand relationships between entities represented by the tables
+- simpler joins that "know" how tables are related, including a "flatten" operation that automatically follows keys and performs column name disambiguation
+- consistency and constraint checks to help you understand (and fix) the limitations of your data
 
-That’s just the tip of the iceberg. See [Getting
-started](https://dm.cynkra.com/articles/dm.html) to hit the ground
-running and explore all the features.
+That's just the tip of the iceberg.
+See [Getting started](https://dm.cynkra.com/articles/dm.html) to hit the ground running and explore all the features.
 
 ## Installation
 
-The latest stable version of the {dm} package can be obtained from
-[CRAN](https://CRAN.R-project.org/package=dm) with the command
+The latest stable version of the {dm} package can be obtained from [CRAN](https://CRAN.R-project.org/package=dm) with the command
 
 ``` r
 install.packages("dm")
@@ -96,8 +78,7 @@ pak::pak("cynkra/dm")
 
 ## Usage
 
-Create a dm object (see [Getting
-started](https://dm.cynkra.com/articles/dm.html) for details).
+Create a dm object (see [Getting started](https://dm.cynkra.com/articles/dm.html) for details).
 
 ``` r
 library(dm)
@@ -189,15 +170,12 @@ dm %>%
 #> • Table `flights`: foreign key `tailnum` into table `planes`: values of `flights$tailnum` not in `planes$tailnum`: N725MQ (6), N537MQ (5), N722MQ (5), N730MQ (5), N736MQ (5), …
 ```
 
-Learn more in the [Getting
-started](https://dm.cynkra.com/articles/dm.html) article.
+Learn more in the [Getting started](https://dm.cynkra.com/articles/dm.html) article.
 
 ## Getting help
 
-If you encounter a clear bug, please file an issue with a minimal
-reproducible example on [GitHub](https://github.com/cynkra/dm/issues).
-For questions and other discussion, please use
-[community.rstudio.com](https://forum.posit.co/).
+If you encounter a clear bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/cynkra/dm/issues).
+For questions and other discussion, please use [community.rstudio.com](https://forum.posit.co/).
 
 ------------------------------------------------------------------------
 
@@ -206,11 +184,11 @@ License: MIT © cynkra GmbH.
 Funded by:
 
 [![energie360°](man/figures/energie-72.png)](https://www.energie360.ch/de/)
-<span style="padding-right:50px"> </span>
+<span style="padding-right:50px">
+</span>
 [![cynkra](man/figures/cynkra-72.png)](https://www.cynkra.com/)
 
 ------------------------------------------------------------------------
 
-Please note that the ‘dm’ project is released with a [Contributor Code
-of Conduct](https://dm.cynkra.com/CODE_OF_CONDUCT.html). By contributing
-to this project, you agree to abide by its terms.
+Please note that the 'dm' project is released with a [Contributor Code of Conduct](https://dm.cynkra.com/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
