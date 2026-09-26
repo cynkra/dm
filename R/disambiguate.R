@@ -78,8 +78,8 @@ get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
 
     table_colnames <-
       table_colnames %>%
-      # in case of flattening, the primary key columns will never be responsible for the name
-      # of the resulting column in the end, so they do not need to be disambiguated
+      # in case of flattening, the primary key columns will never be responsible for the name of the resulting column in the end,
+      # so they do not need to be disambiguated
       anti_join(keep_colnames, by = c("table", "column"))
   }
 
@@ -90,8 +90,7 @@ get_table_colnames <- function(dm, tables = NULL, exclude_pk = TRUE) {
 #'
 #' It will contain :
 #'   * table: the table name
-#'   * renames: a list of named symbols to be substituted in
-#'     `db_rename(dm, tbl, new = old)`
+#'   * renames: a list of named symbols to be substituted in `db_rename(dm, tbl, new = old)`
 #'   * name and a list of tibbles containing character cols `new_name` and `column`
 #'     that will be used to print`db_rename` instructions through explain_col_rename
 #' @param table_colnames a table containing table name and col names of dm

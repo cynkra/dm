@@ -12,15 +12,14 @@
 \arguments{
 \item{x}{A \code{dm} object.}
 
-\item{width}{Controls the maximum number of columns on a line used in
-printing. If \code{NULL}, \code{getOption("width")} will be consulted.}
+\item{width}{Controls the maximum number of columns on a line used in printing.
+If \code{NULL}, \code{getOption("width")} will be consulted.}
 
 \item{...}{Passed to \code{\link[pillar:glimpse]{pillar::glimpse()}}.}
 }
 \description{
-\code{glimpse()} provides an overview (dimensions, column data types, primary
-keys, etc.) of all tables included in the \code{dm} object. It will additionally
-print details about outgoing foreign keys for the child table.
+\code{glimpse()} provides an overview (dimensions, column data types, primary keys, etc.) of all tables included in the \code{dm} object.
+It will additionally print details about outgoing foreign keys for the child table.
 
 \code{glimpse()} is provided by the pillar package, and re-exported by \pkg{dm}.
 See \code{\link[pillar:glimpse]{pillar::glimpse()}} for more details.

@@ -9,8 +9,7 @@ NULL
 
 #' sql_schema_create()
 #'
-#' `sql_schema_*()` functions have been replaced with the corresponding
-#' `db_schema_*()` functions.
+#' `sql_schema_*()` functions have been replaced with the corresponding `db_schema_*()` functions.
 #'
 #' @keywords internal
 #' @rdname deprecated

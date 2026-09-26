@@ -1,14 +1,12 @@
 #' Filtering
 #'
 #' @description
-#' Filtering a table of a [`dm`] object may affect other tables that are connected to it
-#' directly or indirectly via foreign key relations.
+#' Filtering a table of a [`dm`] object may affect other tables that are connected to it directly or indirectly via foreign key relations.
 #'
 #' `dm_filter()` can be used to define filter conditions for tables using syntax that is similar to [dplyr::filter()].
 #' The filters work across related tables:
-#' The resulting `dm` object only contains rows that are related
-#' (directly or indirectly) to rows that remain after applying the filters
-#' on all tables.
+#' The resulting `dm` object only contains rows that are related (directly or indirectly) to rows
+#' that remain after applying the filters on all tables.
 #'
 #' @details
 #' As of dm 1.0.0, these conditions are no longer stored in the `dm` object,
@@ -147,8 +145,8 @@ dm_filter_impl <- function(dm_zoomed, ..., set_filter) {
   tbl <- tbl_zoomed(dm_zoomed)
   filtered_tbl <- filter(tbl, ...)
 
-  # attribute filter expression to zoomed table. Needs to be flagged with `zoomed = TRUE`, since
-  # in case of `dm_insert_zoomed()` the filter exprs needs to be transferred
+  # attribute filter expression to zoomed table.
+  # Needs to be flagged with `zoomed = TRUE`, since in case of `dm_insert_zoomed()` the filter exprs needs to be transferred
   if (set_filter) {
     dm_zoomed <-
       dm_zoomed %>%
@@ -214,8 +212,7 @@ dm_apply_filters_to_tbl_impl <- function(dm, table) {
   dm_get_filtered_table(dm, table_name)
 }
 
-# calculates the necessary semi-joins from all tables that were filtered to
-# the requested table
+# calculates the necessary semi-joins from all tables that were filtered to the requested table
 #' @autoglobal
 dm_get_filtered_table <- function(dm, from) {
   filters <- dm_get_filters_impl(dm)
@@ -265,8 +262,7 @@ dm_get_filtered_table <- function(dm, from) {
 #' Get filter expressions
 #'
 #' `dm_get_filters()` returns the filter expressions that have been applied to a `dm` object.
-#' These filter expressions are not intended for evaluation, only for
-#' information.
+#' These filter expressions are not intended for evaluation, only for information.
 #'
 #' @section Life cycle:
 #' This function is marked "questioning" because it seems wrong
@@ -276,11 +272,9 @@ dm_get_filtered_table <- function(dm, from) {
 #' and row filters.
 #' However, these filter condition should be only of informative nature
 #' and never affect the results of other operations.
-#' We are working on formalizing the semantics of the underlying operations
-#' in order to present them in a cleaner interface.
+#' We are working on formalizing the semantics of the underlying operations in order to present them in a cleaner interface.
 #'
-#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering
-#' the filter.
+#' Use [dm_zoom_to()] and [dplyr::filter()] to filter rows without registering the filter.
 #'
 #' @seealso [dm_filter()], [dm_apply_filters()]
 #'
@@ -335,13 +329,12 @@ get_all_filtered_connected <- function(dm, table) {
   graph <- create_graph_from_dm(dm)
 
   # Computation of distances and shortest paths uses the same algorithm
-  # internally, but s.p. doesn't return distances and distances don't return
-  # the predecessor.
+  # internally, but s.p. doesn't return distances and distances don't return the predecessor.
   distances <- graph_distances(graph, table)[1, ]
   finite_distances <- distances[is.finite(distances)]
 
-  # Using only nodes with finite distances (=in the same connected component)
-  # as target. This avoids a warning.
+  # Using only nodes with finite distances (=in the same connected component) as target.
+  # This avoids a warning.
   target_tables <- names(finite_distances)
 
   if (is_empty(intersect(target_tables, filtered_tables))) {
@@ -371,8 +364,7 @@ get_all_filtered_connected <- function(dm, table) {
   all_edges$parent[is.na(all_edges$parent)] <- all_edges$node[is.na(all_edges$parent)]
   stopifnot(!anyNA(all_edges$parent))
 
-  # Edges of interest, will be grown until source node `table` is reachable
-  # from all nodes
+  # Edges of interest, will be grown until source node `table` is reachable from all nodes
   edges <-
     all_edges %>%
     filter(node %in% !!c(filtered_tables, table))

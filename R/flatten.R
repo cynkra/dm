@@ -15,37 +15,35 @@
 #'   The order of the tables here determines the order of the joins.
 #'   If the argument is empty, all tables that can be reached will be included.
 #'   `tidyselect` is supported, see [dplyr::select()] for details on the semantics.
-#' @param .recursive Logical, defaults to `FALSE`. Should not only parent tables be joined to `.start`, but also their ancestors?
+#' @param .recursive Logical, defaults to `FALSE`.
+#'   Should not only parent tables be joined to `.start`, but also their ancestors?
 #' @param .join The type of join to be performed, see [dplyr::join()].
 #' @family flattening functions
 #'
 #' @details
-#' With `...` left empty, this function will join together all the tables of your [`dm`]
-#' object that can be reached from the `.start` table, in the direction of the foreign key relations
-#' (pointing from the child tables to the parent tables), using the foreign key relations to
-#' determine the argument `by` for the necessary joins.
+#' With `...` left empty, this function will join together all the tables of your [`dm`] object that can be reached from the `.start` table,
+#' in the direction of the foreign key relations (pointing from the child tables to the parent tables),
+#' using the foreign key relations to determine the argument `by` for the necessary joins.
 #' The result is one table with unique column names.
 #' Use the `...` argument if you would like to control which tables should be joined to the `.start` table.
 #'
-#' Mind that calling `dm_flatten_to_tbl()` with `.join = right_join` and no table order determined in the `...` argument
-#' will not lead to a well-defined result if two or more foreign tables are to be joined to `.start`.
-#' The resulting
-#' table would depend on the order the tables that are listed in the `dm`.
+#' Mind that calling `dm_flatten_to_tbl()` with `.join = right_join`
+#' and no table order determined in the `...` argument will not lead to a well-defined result
+#' if two or more foreign tables are to be joined to `.start`.
+#' The resulting table would depend on the order the tables that are listed in the `dm`.
 #' Therefore, trying this will result in a warning.
 #'
 #' Since `.join = nest_join` does not make sense in this direction (LHS = child table, RHS = parent table: for valid key constraints
 #' each nested column entry would be a tibble of one row), an error will be thrown if this method is chosen.
 #'
-#' The difference between `.recursive = FALSE` and `.recursive = TRUE` is
-#' the following (see the examples):
+#' The difference between `.recursive = FALSE` and `.recursive = TRUE` is the following (see the examples):
 #'
 #' - `.recursive = FALSE` allows only one level of hierarchy
 #'   (i.e., direct neighbors to table `.start`), while
 #'
 #' - `.recursive = TRUE` will go through all levels of hierarchy while joining.
 #'
-#' Additionally, these functions differ from `dm_wrap_tbl()`, which always
-#' returns a `dm` object.
+#' Additionally, these functions differ from `dm_wrap_tbl()`, which always returns a `dm` object.
 #'
 #' @return A single table that results from consecutively joining all affected tables to the `.start` table.
 #'
@@ -107,8 +105,7 @@ dm_flatten_to_tbl_impl <- function(
   # produce results, that are of interest, e.g.
   # dm_flatten_to_tbl(dm_nycflights13(cycle = TRUE) %>% dm_rm_fk(flights, origin, airports), flights, airports, join = anti_join)
 
-  # need to work with directed graph here, since we only want to go in the direction
-  # the foreign key is pointing to
+  # need to work with directed graph here, since we only want to go in the direction the foreign key is pointing to
   g <- create_graph_from_dm(dm, directed = TRUE)
 
   # If no tables are given, we use all reachable tables
@@ -146,8 +143,8 @@ dm_flatten_to_tbl_impl <- function(
   prep_dm <- prepare_dm_for_flatten(dm, order_df$name, gotta_rename, position = .position)
 
   # Drop the first table in the list of join partners. (We have at least one table, `.start`.)
-  # (Working with `reduce2()` here and the `.init`-argument is the first table)
-  # in the case of only one table in the `dm` (table "start"), all code below is a no-op
+  # (Working with `reduce2()` here and the `.init`-argument is the first table) in the case of only one table in the `dm` (table "start"),
+  # all code below is a no-op
   order_df <- order_df[-1, ]
   # the order given in the ellipsis determines the join-list; if empty ellipsis, this is a no-op.
   # `unname()` to avoid warning (tibble version ‘2.99.99.9012’ retains names in column vectors)

@@ -22,14 +22,12 @@ to \code{TRUE} are kept.}
 An updated \code{dm} object with filters executed across all tables.
 }
 \description{
-Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it
-directly or indirectly via foreign key relations.
+Filtering a table of a \code{\link{dm}} object may affect other tables that are connected to it directly or indirectly via foreign key relations.
 
 \code{dm_filter()} can be used to define filter conditions for tables using syntax that is similar to \code{\link[dplyr:filter]{dplyr::filter()}}.
 The filters work across related tables:
-The resulting \code{dm} object only contains rows that are related
-(directly or indirectly) to rows that remain after applying the filters
-on all tables.
+The resulting \code{dm} object only contains rows that are related (directly or indirectly) to rows
+that remain after applying the filters on all tables.
 }
 \details{
 As of dm 1.0.0, these conditions are no longer stored in the \code{dm} object,

@@ -6,24 +6,20 @@
 #' `dm_wrap_tbl()` creates a single tibble dm containing the `root` table
 #' enhanced with all the data related to it
 #' through the relationships stored in the dm.
-#' It runs a sequence of [dm_nest_tbl()] and [dm_pack_tbl()] operations
-#' on the dm.
+#' It runs a sequence of [dm_nest_tbl()] and [dm_pack_tbl()] operations on the dm.
 #'
-#' @param strict Whether to fail for cyclic dms that cannot be wrapped into a
-#'   single table, if `FALSE` a partially wrapped dm will be returned.
+#' @param strict Whether to fail for cyclic dms that cannot be wrapped into a single table,
+#'   if `FALSE` a partially wrapped dm will be returned.
 #' @param dm A cycle free dm object.
 #' @param root Table to wrap the dm into (unquoted).
-#' @param progress Whether to display a progress bar, if `NA` (the default)
-#'   hide in non-interactive mode, show in interactive mode. Requires the
-#'   'progress' package.
+#' @param progress Whether to display a progress bar, if `NA` (the default) hide in non-interactive mode, show in interactive mode.
+#'   Requires the 'progress' package.
 #'
 #' @details
 #' `dm_wrap_tbl()` is an inverse to `dm_unwrap_tbl()`,
-#' i.e., wrapping after unwrapping returns the same information
-#' (disregarding row and column order).
+#' i.e., wrapping after unwrapping returns the same information (disregarding row and column order).
 #' The opposite is not generally true:
-#' since `dm_wrap_tbl()` keeps only rows related directly or indirectly to
-#' rows in the `root` table.
+#' since `dm_wrap_tbl()` keeps only rows related directly or indirectly to rows in the `root` table.
 #' Even if all referential constraints are satisfied,
 #' unwrapping after wrapping loses rows in parent tables
 #' that don't have a corresponding row in the child table.
@@ -109,10 +105,8 @@ dm_wrap_tbl_plan <- function(dm, root) {
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `dm_unwrap_tbl()` unwraps all tables in a dm object so that the resulting dm
-#' matches a given ptype dm.
-#' It runs a sequence of [dm_unnest_tbl()] and [dm_unpack_tbl()] operations
-#' on the dm.
+#' `dm_unwrap_tbl()` unwraps all tables in a dm object so that the resulting dm matches a given ptype dm.
+#' It runs a sequence of [dm_unnest_tbl()] and [dm_unpack_tbl()] operations on the dm.
 #'
 #' @param dm A dm.
 #' @param ptype A dm, only used to query names of primary and foreign keys.

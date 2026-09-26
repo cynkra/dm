@@ -5,21 +5,18 @@
 #'
 #' `dm_zoom2_to()` zooms to the given table, returning a keyed table
 #' that has the dm object as an attribute.
-#' Key column tracking (primary and foreign) is the responsibility
-#' of the `dm_keyed_tbl` object.
+#' Key column tracking (primary and foreign) is the responsibility of the `dm_keyed_tbl` object.
 #'
 #' `dm_update_zoom2ed()` overwrites the originally zoomed table
 #' with the manipulated table.
 #'
 #' `dm_insert_zoom2ed()` adds the manipulated table as a new table to the dm.
 #'
-#' `dm_discard_zoom2ed()` discards the zoomed table and returns the
-#' original `dm` as it was before zooming.
+#' `dm_discard_zoom2ed()` discards the zoomed table and returns the original `dm` as it was before zooming.
 #'
 #' @inheritParams dm_zoom_to
 #'
-#' @return For `dm_zoom2_to()`: A `dm_keyed_tbl` object with zoom2 info
-#'   stored in `dm_key_info`.
+#' @return For `dm_zoom2_to()`: A `dm_keyed_tbl` object with zoom2 info stored in `dm_key_info`.
 #'
 #' @noRd
 #' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
@@ -61,8 +58,7 @@ dm_zoom2_to <- function(dm, table) {
 #' @param zoomed_tbl A `dm_keyed_tbl` object returned by `dm_zoom2_to()`
 #'   or modified via dplyr operations.
 #'
-#' @return For `dm_update_zoom2ed()`, `dm_insert_zoom2ed()` and
-#'   `dm_discard_zoom2ed()`: A `dm` object.
+#' @return For `dm_update_zoom2ed()`, `dm_insert_zoom2ed()` and `dm_discard_zoom2ed()`: A `dm` object.
 #'
 #' @noRd
 dm_update_zoom2ed <- function(zoomed_tbl) {

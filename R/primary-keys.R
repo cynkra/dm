@@ -2,10 +2,8 @@
 #'
 #' @description
 #' `dm_add_pk()` marks the specified columns as the primary key of the specified table.
-#' If `check == TRUE`, then it will first check if
-#' the given combination of columns is a unique key of the table.
-#' If `force == TRUE`, the function will replace an already
-#' set key, without altering foreign keys previously pointing to that primary key.
+#' If `check == TRUE`, then it will first check if the given combination of columns is a unique key of the table.
+#' If `force == TRUE`, the function will replace an already set key, without altering foreign keys previously pointing to that primary key.
 #'
 #' @details There can be only one primary key per table in a [`dm`].
 #' It's possible though to set an unlimited number of unique keys using [dm_add_uk()]
@@ -17,13 +15,11 @@
 #' @param columns Table columns, unquoted.
 #'   To define a compound key, use `c(col1, col2)`.
 #' @param check Boolean, if `TRUE`, a check is made if the combination of columns is a unique key of the table.
-#' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key
-#'   set for this table.
+#' @param force Boolean, if `FALSE` (default), an error will be thrown if there is already a primary key set for this table.
 #'   If `TRUE`, a potential old `pk` is deleted before setting a new one.
 #' @param autoincrement
 #'   `r lifecycle::badge("experimental")`
-#'   If `TRUE`, the  column specified in `columns` will be populated
-#'   automatically with a sequence of integers.
+#'   If `TRUE`, the column specified in `columns` will be populated automatically with a sequence of integers.
 #'
 #' @family primary key functions
 #'
@@ -172,8 +168,7 @@ dm_get_pk_impl <- function(dm, table_name) {
 #' Get all primary keys of a [`dm`] object
 #'
 #' @description
-#' `dm_get_all_pks()` checks the `dm` object for primary keys and
-#' returns the tables and the respective primary key columns.
+#' `dm_get_all_pks()` checks the `dm` object for primary keys and returns the tables and the respective primary key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, unquoted,
@@ -336,9 +331,8 @@ dm_rm_pk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `enum_pk_candidates()` checks for each column of a
-#' table if the column contains only unique values, and is thus
-#' a suitable candidate for a primary key of the table.
+#' `enum_pk_candidates()` checks for each column of a table if the column contains only unique values,
+#' and is thus a suitable candidate for a primary key of the table.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -348,11 +342,9 @@ dm_rm_pk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
 #'   }
 #'
 #' @section Life cycle:
-#' These functions are marked "experimental" because we are not yet sure about
-#' the interface, in particular if we need both `dm_enum...()` and `enum...()`
-#' variants.
-#' Changing the interface later seems harmless because these functions are
-#' most likely used interactively.
+#' These functions are marked "experimental" because we are not yet sure about the interface,
+#' in particular if we need both `dm_enum...()` and `enum...()` variants.
+#' Changing the interface later seems harmless because these functions are most likely used interactively.
 #'
 #' @rdname dm_enum_pk_candidates
 #' @export

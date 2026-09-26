@@ -86,8 +86,8 @@ gui_server <- function(input, output, session) {
     r_table_names_ordered(table_names)
   })
 
-  # Is there a better solution for this? Seems like a standard problem:
-  # Two input widgets that update each other.
+  # Is there a better solution for this?
+  # Seems like a standard problem: Two input widgets that update each other.
 
   g_table_names_select <- character()
   g_update_time <- Sys.time()

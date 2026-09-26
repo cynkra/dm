@@ -1,6 +1,6 @@
 #' Connection to SQL Financial Database
-#' @description Connects to relational.fel.cvut.cz unless the service is
-#' unavailable, in which case databases.pacha.dev is used as a fallback
+#' @description Connects to relational.fel.cvut.cz unless the service is unavailable,
+#' in which case databases.pacha.dev is used as a fallback
 #' @return A `MariaDBConnection` object
 #' @noRd
 financial_db_con <- function() {

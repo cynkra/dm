@@ -11,8 +11,9 @@ db_schema_drop(con, schema, force = FALSE, ...)
 
 \item{schema}{Class \code{character} or \code{SQL} (cf. Details), name of the schema}
 
-\item{force}{Boolean, default \code{FALSE}. Set to \code{TRUE} to drop a schema and
-all objects it contains at once. Currently only supported for Postgres/Redshift.}
+\item{force}{Boolean, default \code{FALSE}.
+Set to \code{TRUE} to drop a schema and all objects it contains at once.
+Currently only supported for Postgres/Redshift.}
 
 \item{...}{Passed on to the individual methods.}
 }
@@ -35,8 +36,8 @@ Keep in mind, that in this case it is assumed that they are already correctly qu
 
 Additional arguments are:
 \itemize{
-\item \code{dbname}: supported for MSSQL. Remove a schema from a different
-database on the connected MSSQL-server; default: database addressed by \code{con}.
+\item \code{dbname}: supported for MSSQL.
+Remove a schema from a different database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{

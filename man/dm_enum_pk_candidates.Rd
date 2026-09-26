@@ -27,20 +27,17 @@ A tibble with the following columns:
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{enum_pk_candidates()} checks for each column of a
-table if the column contains only unique values, and is thus
-a suitable candidate for a primary key of the table.
+\code{enum_pk_candidates()} checks for each column of a table if the column contains only unique values,
+and is thus a suitable candidate for a primary key of the table.
 
 \code{dm_enum_pk_candidates()} performs these checks
 for a table in a \link{dm} object.
 }
 \section{Life cycle}{
 
-These functions are marked "experimental" because we are not yet sure about
-the interface, in particular if we need both \code{dm_enum...()} and \code{enum...()}
-variants.
-Changing the interface later seems harmless because these functions are
-most likely used interactively.
+These functions are marked "experimental" because we are not yet sure about the interface,
+in particular if we need both \code{dm_enum...()} and \code{enum...()} variants.
+Changing the interface later seems harmless because these functions are most likely used interactively.
 }
 
 \examples{

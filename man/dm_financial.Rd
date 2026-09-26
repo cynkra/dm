@@ -13,8 +13,7 @@ dm_financial_sqlite()
 A \code{dm} object.
 }
 \description{
-\code{dm_financial()} creates an example \code{\link{dm}} object from the tables at
-https://relational.fel.cvut.cz/dataset/Financial.
+\code{dm_financial()} creates an example \code{\link{dm}} object from the tables at https://relational.fel.cvut.cz/dataset/Financial.
 The connection is established once per session,
 subsequent calls return the same connection.
 

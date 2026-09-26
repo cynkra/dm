@@ -9,12 +9,11 @@ dm_pixarfilms(..., color = TRUE, consistent = FALSE, version = "v1")
 \arguments{
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{color}{Boolean, if \code{TRUE} (default), the resulting \code{dm} object will
-have colors assigned to different tables for visualization with
-\code{dm_draw()}.}
+\item{color}{Boolean, if \code{TRUE} (default),
+the resulting \code{dm} object will have colors assigned to different tables for visualization with \code{dm_draw()}.}
 
-\item{consistent}{Boolean, In the original \code{dm}  the  \code{film} column in
-\code{pixar_films} contains missing values so cannot be made a proper primary key.
+\item{consistent}{Boolean, In the original \code{dm} the \code{film} column in \code{pixar_films} contains missing values
+so cannot be made a proper primary key.
 Set to \code{TRUE} to remove those records.}
 
 \item{version}{The version of the data to use.
@@ -22,8 +21,7 @@ Set to \code{TRUE} to remove those records.}
 \code{"latest"} uses the data from the installed \pkg{pixarfilms} package.}
 }
 \value{
-A \code{dm} object consisting of \pkg{pixarfilms} tables, complete with
-primary and foreign keys and optionally colored.
+A \code{dm} object consisting of \pkg{pixarfilms} tables, complete with primary and foreign keys and optionally colored.
 }
 \description{
 Creates an example \code{\link{dm}} object from the tables in

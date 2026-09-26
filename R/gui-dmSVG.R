@@ -41,8 +41,7 @@ dmSVG <- function(
 
 #' Shiny bindings for dmSVG
 #'
-#' Output and render functions for using dmSVG within Shiny
-#' applications and interactive Rmd documents.
+#' Output and render functions for using dmSVG within Shiny applications and interactive Rmd documents.
 #'
 #' @param outputId output variable to read from
 #' @param width,height Must be a valid CSS unit (like \code{'100\%'},
@@ -50,8 +49,8 @@ dmSVG <- function(
 #'   string and have \code{'px'} appended.
 #' @param expr An expression that generates a dmSVG
 #' @param env The environment in which to evaluate \code{expr}.
-#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
-#'   is useful if you want to save an expression in a variable.
+#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})?
+#'   This is useful if you want to save an expression in a variable.
 #'
 #' @name dmSVG-shiny
 #'

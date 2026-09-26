@@ -2,17 +2,17 @@
 #'
 #' @description
 #' `dm_add_uk()` marks the specified columns as a unique key of the specified table.
-#' If `check == TRUE`, then it will first check if
-#' the given combination of columns is a unique key of the table.
+#' If `check == TRUE`, then it will first check if the given combination of columns is a unique key of the table.
 #'
 #' @inheritParams dm_add_pk
 #'
 #' @details The difference between a primary key (PK) and a unique key (UK) consists in the following:
-#' - When a local `dm` is copied to a database (DB) with `copy_dm_to()`, a PK will be set on the DB by default, whereas a UK is being ignored.
+#' - When a local `dm` is copied to a database (DB) with `copy_dm_to()`,
+#'   a PK will be set on the DB by default, whereas a UK is being ignored.
 #' - A PK can be set as an `autoincrement` key (also implemented on certain DBMS when the `dm` is transferred to the DB)
 #' - There can be only one PK for each table, whereas there can be unlimited UKs
-#' - A UK will be used, if the same table has an autoincrement PK in addition, to ensure that during delta load processes
-#'   on the DB (cf. [dm_rows_append()]) the foreign keys are updated accordingly.
+#' - A UK will be used, if the same table has an autoincrement PK in addition,
+#'   to ensure that during delta load processes on the DB (cf. [dm_rows_append()]) the foreign keys are updated accordingly.
 #'   If no UK is available, the insertion is done row-wise, which also ensures a correct matching, but can be much slower.
 #' - A UK can generally enhance the data model by adding additional information
 #' - There can also be implicit UKs, when the columns addressed by a foreign key are neither a PK nor a UK.
@@ -89,9 +89,8 @@ dm_add_uk_impl <- function(dm, table, column) {
 #' Get all unique keys of a [`dm`] object
 #'
 #' @description
-#' `dm_get_all_uks()` checks the `dm` object for unique keys
-#' (primary keys, explicit and implicit unique keys) and returns the tables and
-#' the respective unique key columns.
+#' `dm_get_all_uks()` checks the `dm` object for unique keys (primary keys, explicit and implicit unique keys)
+#' and returns the tables and the respective unique key columns.
 #'
 #' @family primary key functions
 #' @param table One or more table names, unquoted,
@@ -237,11 +236,10 @@ dm_rm_uk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
       )
     )
 
-    # if `columns` is not NULL, it refers to only one UK, therefore we can choose
-    # the first element of the list created by `map2()`
+    # if `columns` is not NULL, it refers to only one UK, therefore we can choose the first element of the list created by `map2()`
 
-    # FIXME: error message should be more informative: which UKs are available
-    # for the given table? What was the user input for `columns`?
+    # FIXME: error message should be more informative: which UKs are available for the given table?
+    # What was the user input for `columns`?
     if (!any(ii_col[[1]])) {
       abort_uk_not_defined()
     }
@@ -265,8 +263,7 @@ dm_rm_uk_impl <- function(dm, table_name, columns, error_call = caller_env()) {
       )
     )
   }
-  # Execute
-  # in case `length(i) > 1`: all tables have all their UKs removed, respectively
+  # Execute in case `length(i) > 1`: all tables have all their UKs removed, respectively
   def$uks[i] <- if (length(i) > 1) {
     list_of(new_uk())
   } else {

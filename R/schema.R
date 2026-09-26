@@ -8,16 +8,15 @@
 #' `db_schema_list()` lists the available schemas on the database.
 #'
 #' @param con An object of class `"src"` or `"DBIConnection"`.
-#' @param include_default Boolean, if `TRUE` (default), also the default schema
-#' on the database is included in the result
+#' @param include_default Boolean, if `TRUE` (default), also the default schema on the database is included in the result
 #' @param ... Passed on to the individual methods.
 #'
 #' @details Methods are not available for all DBMS.
 #'
 #' Additional arguments are:
 #'
-#'   - `dbname`: supported for MSSQL. List schemas on a different database on the connected MSSQL-server;
-#'   default: database addressed by `con`.
+#'   - `dbname`: supported for MSSQL.
+#'   List schemas on a different database on the connected MSSQL-server; default: database addressed by `con`.
 #'
 #' @return A tibble with the following columns:
 #'   \describe{
@@ -119,8 +118,8 @@ db_schema_list.Pool <- function(con, include_default = TRUE, ...) {
 #'
 #' Additional arguments are:
 #'
-#'   - `dbname`: supported for MSSQL. Check if a schema exists on a different
-#'   database on the connected MSSQL-server; default: database addressed by `con`.
+#'   - `dbname`: supported for MSSQL.
+#'   Check if a schema exists on a different database on the connected MSSQL-server; default: database addressed by `con`.
 #' @return A boolean: `TRUE` if schema exists, `FALSE` otherwise.
 #'
 #' @family schema handling functions
@@ -184,8 +183,8 @@ db_schema_exists.SQLiteConnection <- function(con, schema, ...) {
 #'
 #' Additional arguments are:
 #'
-#'   - `dbname`: supported for MSSQL. Create a schema in a different
-#'   database on the connected MSSQL-server; default: database addressed by `con`.
+#'   - `dbname`: supported for MSSQL.
+#'   Create a schema in a different database on the connected MSSQL-server; default: database addressed by `con`.
 #'
 #' @return `NULL` invisibly.
 #'
@@ -320,8 +319,9 @@ sql_schema_table_list_postgres <- function(con, schema = NULL) {
 #' For certain DBMS it is possible to force the removal of a non-empty schema, see below.
 #'
 #' @inheritParams db_schema_create
-#' @param force Boolean, default `FALSE`. Set to `TRUE` to drop a schema and
-#' all objects it contains at once. Currently only supported for Postgres/Redshift.
+#' @param force Boolean, default `FALSE`.
+#' Set to `TRUE` to drop a schema and all objects it contains at once.
+#' Currently only supported for Postgres/Redshift.
 #'
 #' @details Methods are not available for all DBMS.
 #'
@@ -332,8 +332,8 @@ sql_schema_table_list_postgres <- function(con, schema = NULL) {
 #'
 #' Additional arguments are:
 #'
-#'   - `dbname`: supported for MSSQL. Remove a schema from a different
-#'   database on the connected MSSQL-server; default: database addressed by `con`.
+#'   - `dbname`: supported for MSSQL.
+#'   Remove a schema from a different database on the connected MSSQL-server; default: database addressed by `con`.
 #'
 #' @return `NULL` invisibly.
 #'

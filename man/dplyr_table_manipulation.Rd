@@ -187,7 +187,8 @@ particularly when it comes to data containing a mix of upper and lower case
 letters. This is explained in more detail on the \link[dplyr:dplyr-locale]{locale}
 help page under the \verb{Default locale} section.}
 
-\item{.keep_pk}{For \code{slice.dm_zoomed}: Logical, if \code{TRUE}, the primary key will be retained during this transformation. If \code{FALSE}, it will be dropped.
+\item{.keep_pk}{For \code{slice.dm_zoomed}: Logical, if \code{TRUE}, the primary key will be retained during this transformation.
+If \code{FALSE}, it will be dropped.
 By default, the value is \code{NULL}, which causes the function to issue a message in case a primary key is available for the zoomed table.
 This argument is specific for the \code{slice.dm_zoomed()} method.}
 

@@ -32,8 +32,8 @@ using \code{\link[DBI:dbQuoteIdentifier]{DBI::dbQuoteIdentifier()}}.
 
 Additional arguments are:
 \itemize{
-\item \code{dbname}: supported for MSSQL. Create a schema in a different
-database on the connected MSSQL-server; default: database addressed by \code{con}.
+\item \code{dbname}: supported for MSSQL.
+Create a schema in a different database on the connected MSSQL-server; default: database addressed by \code{con}.
 }
 }
 \seealso{
