@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9019
+
+## bugfix
+
+- 'mutate.zoomed_dm()' when no keys are tracked (#146).
+
+## Uncategorized
+
+- Ci: Bound every job with `timeout-minutes` (cynkra/cynkratemplate#144).
+
+- Fix(revdep2): Let a slice with no packages check nothing instead of failing (cynkra/cynkratemplate#150).
+
+
 # dm 1.1.2.9018
 
 ## Documentation
