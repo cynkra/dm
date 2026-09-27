@@ -1,5 +1,22 @@
 # Changelog
 
+## dm 1.1.2.9018
+
+### Documentation
+
+- Break lines at meaning boundaries
+  ([\#2510](https://github.com/cynkra/dm/issues/2510)).
+
+- Drop the branch from the coverage badge
+  ([\#2503](https://github.com/cynkra/dm/issues/2503)).
+
+- Harmonize README and pkgdown front page rendering
+  ([\#2505](https://github.com/cynkra/dm/issues/2505)).
+
+- Use [`pak::pak()`](https://pak.r-lib.org/reference/pak.html) for the
+  development install
+  ([\#2499](https://github.com/cynkra/dm/issues/2499)).
+
 ## dm 1.1.2.9017
 
 ### Continuous integration
