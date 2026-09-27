@@ -1,5 +1,30 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9019
+
+## Bug fixes
+
+### ci
+
+- Restore the custom `before-install` and `after-install` actions (#2537).
+
+## Continuous integration
+
+- Run coverage checks after pkgdown push.
+
+## bugfix
+
+- 'mutate.zoomed_dm()' when no keys are tracked (#146).
+
+## Uncategorized
+
+- Feat(ci): Render `README.md` and `index.md` in CI (cynkra/cynkratemplate#118).
+
+- Ci: Bound every job with `timeout-minutes` (cynkra/cynkratemplate#144).
+
+- Fix(revdep2): Let a slice with no packages check nothing instead of failing (cynkra/cynkratemplate#150).
+
+
 # dm 1.1.2.9018
 
 ## Documentation
