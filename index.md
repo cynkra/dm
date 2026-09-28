@@ -80,7 +80,10 @@ pak::pak("cynkra/dm")
 
 ## Usage
 
-Create a dm object (see [Getting started](https://dm.cynkra.com/articles/dm.html) for details).
+Create a dm object with `dm_nycflights13()`
+(see [Getting started](https://dm.cynkra.com/articles/dm.html) for details,
+or [Create a dm object from data frames](https://dm.cynkra.com/articles/howto-dm-df.html)
+and [from a database](https://dm.cynkra.com/articles/howto-dm-db.html) for your own data).
 
 ``` r
 library(dm)
@@ -110,7 +113,8 @@ dm$flights %>%
 #> [38;5;250m3[39m LGA      518
 ```
 
-Visualize relationships at any time:
+Visualize relationships at any time with `dm_draw()`,
+covered in [Visualizing dm objects](https://dm.cynkra.com/articles/tech-dm-draw.html):
 
 ``` r
 dm %>%
@@ -119,7 +123,8 @@ dm %>%
 
 <img src="man/figures/README-draw.svg" />
 
-Simple joins:
+Simple joins with `dm_flatten_to_tbl()`, which follows the keys for you --
+see [Joining in relational data models](https://dm.cynkra.com/articles/tech-dm-join.html):
 
 ``` r
 dm %>%
@@ -163,7 +168,9 @@ dm %>%
 #> [38;5;246m#   [1mwind_speed[22m <dbl>, [1mwind_gust[22m <dbl>, [1mprecip[22m <dbl>, [1mpressure[22m <dbl>, …[39m
 ```
 
-Check consistency:
+Check consistency with `dm_examine_constraints()`,
+whose checks are described in
+[Model verification](https://dm.cynkra.com/articles/tech-dm-low-level.html):
 
 ``` r
 dm %>%
