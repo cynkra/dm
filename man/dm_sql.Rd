@@ -41,7 +41,8 @@ This function powers \code{\link[=copy_dm_to]{copy_dm_to()}} and is useful if yo
 \details{
 \itemize{
 \item{ \code{dm_ddl_pre()} generates \verb{CREATE TABLE} statements (including \verb{PRIMARY KEY} definition). }
-\item{ \code{dm_dml_load()} generates \verb{INSERT INTO} statements. }
+\item{ \code{dm_dml_load()} generates \verb{INSERT INTO} statements.
+On SQL Server, tables with more than 1000 rows are loaded with one statement per chunk of 1000 rows. }
 \item{ \code{dm_ddl_post()} generates scripts for \verb{FOREIGN KEY}, \verb{UNIQUE KEY} and \code{INDEX}. }
 \item{ \code{dm_sql()} calls all three above and returns a complete set of scripts. }
 }
