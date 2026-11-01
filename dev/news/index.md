@@ -1,5 +1,41 @@
 # Changelog
 
+## dm 1.1.2.9020
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#2538](https://github.com/cynkra/dm/issues/2538)).
+
+## dm 1.1.2.9019
+
+### Bug fixes
+
+#### ci
+
+- Restore the custom `before-install` and `after-install` actions
+  ([\#2537](https://github.com/cynkra/dm/issues/2537)).
+
+### Continuous integration
+
+- Run coverage checks after pkgdown push.
+
+### bugfix
+
+- ‘mutate.zoomed_dm()’ when no keys are tracked
+  ([\#146](https://github.com/cynkra/dm/issues/146)).
+
+### Uncategorized
+
+- Feat(ci): Render `README.md` and `index.md` in CI
+  (cynkra/cynkratemplate#118).
+
+- Ci: Bound every job with `timeout-minutes`
+  (cynkra/cynkratemplate#144).
+
+- Fix(revdep2): Let a slice with no packages check nothing instead of
+  failing (cynkra/cynkratemplate#150).
+
 ## dm 1.1.2.9018
 
 ### Documentation
