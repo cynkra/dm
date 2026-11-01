@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9021
+
+## Chore
+
+- Drop the local favicon copy, the template ships it (#2541).
+
+
 # dm 1.1.2.9020
 
 ## Chore
