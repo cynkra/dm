@@ -6,19 +6,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Filtering in relational data models • dm</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
-<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="icon" sizes="any" href="../favicon.ico">
-<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Fira_Mono-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Fira_Mono-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Filtering in relational data models">
-<script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script>
+<script defer data-domain="dm.cynkra.com" src="https://plausible.io/js/plausible.js"></script><!-- cynkra favicons, shipped by cynkratemplate in inst/pkgdown/assets/ --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -87,9 +85,9 @@
                         <h4 data-toc-skip class="author">Katharina
 Brunner</h4>
             
-            <h4 data-toc-skip class="date">2026-05-17</h4>
+            <h4 data-toc-skip class="date">2026-11-01</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/cran-1.1.2/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cynkra/dm/blob/docs/vignettes/tech-dm-filter.Rmd" class="external-link"><code>vignettes/tech-dm-filter.Rmd</code></a></small>
       <div class="d-none name"><code>tech-dm-filter.Rmd</code></div>
     </div>
 
@@ -366,13 +364,13 @@ database.</strong></p>
 <code>flights</code>, <code>airlines</code> and <code>airports</code>
 tables from the <code>nyflights13</code> dataset to a temporary
 in-memory database using the built-in function <code><a href="../reference/copy_dm_to.html">copy_dm_to()</a></code>
-and <code><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">dbplyr::src_memdb</a></code>.</p>
+and <code><a href="https://dbplyr.tidyverse.org/reference/src_memdb.html" class="external-link">dbplyr::src_memdb</a></code>.</p>
 <p>Then we filter the data, and print the corresponding SQL statement
 with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class="external-link">dbplyr::sql_render()</a></code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_select_tbl.html">dm_select_tbl</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">airlines</span>, <span class="va">airports</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/memdb_frame.html" class="external-link">src_memdb</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/copy_dm_to.html">copy_dm_to</a></span><span class="op">(</span><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/src_memdb.html" class="external-link">src_memdb</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/dm_filter.html">dm_filter</a></span><span class="op">(</span></span>
 <span>    airlines <span class="op">=</span> <span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Delta Air Lines Inc."</span><span class="op">)</span>,</span>
 <span>    airports <span class="op">=</span> <span class="op">(</span><span class="va">name</span> <span class="op">!=</span> <span class="st">"John F Kennedy Intl"</span><span class="op">)</span>,</span>
@@ -385,7 +383,7 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt; FROM (</span></span>
 <span><span class="co">#&gt;   SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
-<span><span class="co">#&gt;     SELECT `flights_1_20200828_071303_12345`.*</span></span>
+<span><span class="co">#&gt;     SELECT *</span></span>
 <span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
@@ -406,7 +404,7 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt; $airlines</span></span>
 <span><span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt; FROM (</span></span>
-<span><span class="co">#&gt;   SELECT `airlines_1_20200828_071303_12345`.*</span></span>
+<span><span class="co">#&gt;   SELECT *</span></span>
 <span><span class="co">#&gt;   FROM `airlines_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;   WHERE ((`name` = 'Delta Air Lines Inc.'))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
@@ -414,7 +412,7 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
 <span><span class="co">#&gt;   SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
-<span><span class="co">#&gt;     SELECT `flights_1_20200828_071303_12345`.*</span></span>
+<span><span class="co">#&gt;     SELECT *</span></span>
 <span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
@@ -431,7 +429,7 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt; $airports</span></span>
 <span><span class="co">#&gt; &lt;SQL&gt; SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt; FROM (</span></span>
-<span><span class="co">#&gt;   SELECT `airports_1_20200828_071303_12345`.*</span></span>
+<span><span class="co">#&gt;   SELECT *</span></span>
 <span><span class="co">#&gt;   FROM `airports_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;   WHERE ((`name` != 'John F Kennedy Intl'))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>
@@ -439,7 +437,7 @@ with <code><a href="https://dbplyr.tidyverse.org/reference/sql_build.html" class
 <span><span class="co">#&gt;   SELECT 1 FROM (</span></span>
 <span><span class="co">#&gt;   SELECT `LHS`.*</span></span>
 <span><span class="co">#&gt;   FROM (</span></span>
-<span><span class="co">#&gt;     SELECT `flights_1_20200828_071303_12345`.*</span></span>
+<span><span class="co">#&gt;     SELECT *</span></span>
 <span><span class="co">#&gt;     FROM `flights_1_20200828_071303_12345`</span></span>
 <span><span class="co">#&gt;     WHERE ((`month` = 1.0))</span></span>
 <span><span class="co">#&gt; ) AS `LHS`</span></span>

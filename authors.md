@@ -33,7 +33,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/cynkra/dm/blob/cran-1.1.2/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/cynkra/dm/blob/docs/DESCRIPTION)
 
 Schieferdecker T, Müller K, Bergant D (2026). *dm: Relational Data
 Models*. R package version 1.1.2, <https://dm.cynkra.com/>.

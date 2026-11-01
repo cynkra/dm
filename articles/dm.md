@@ -80,7 +80,7 @@ fin_dm$loans
 ```
 
 ``` fansi
-#> # Source:   table<`Financial_ijs`.`loans`> [?? x 7]
+#> # A query:  ?? x 7
 #> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
 #>       id account_id date       amount duration payments status
 #>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr> 
@@ -103,7 +103,7 @@ dplyr::count(fin_dm$trans)
 ```
 
 ``` fansi
-#> # Source:   SQL [?? x 1]
+#> # A query:  ?? x 1
 #> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
 #>         n
 #>   <int64>
@@ -202,7 +202,7 @@ fin_dm_keys %>%
 ```
 
 ``` fansi
-#> # Source:   SQL [?? x 25]
+#> # A query:  ?? x 25
 #> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
 #>       id account_id date.loans amount duration payments status district_id
 #>    <int>      <int> <date>      <dbl>    <int>    <dbl> <chr>        <int>
@@ -280,7 +280,7 @@ fin_dm_total$total_loans
 ```
 
 ``` fansi
-#> # Source:   SQL [?? x 2]
+#> # A query:  ?? x 2
 #> # Database: mysql  [guest@relational.fel.cvut.cz:3306/Financial_ijs]
 #>    account_id total_amount
 #>         <int>        <dbl>

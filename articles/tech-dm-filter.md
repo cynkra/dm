@@ -358,7 +358,7 @@ To show the SQL query behind a
 the `flights`, `airlines` and `airports` tables from the `nyflights13`
 dataset to a temporary in-memory database using the built-in function
 [`copy_dm_to()`](https://dm.cynkra.com/reference/copy_dm_to.md) and
-[`dbplyr::src_memdb`](https://dbplyr.tidyverse.org/reference/memdb_frame.html).
+[`dbplyr::src_memdb`](https://dbplyr.tidyverse.org/reference/src_memdb.html).
 
 Then we filter the data, and print the corresponding SQL statement with
 [`dbplyr::sql_render()`](https://dbplyr.tidyverse.org/reference/sql_build.html).
@@ -380,7 +380,7 @@ dm %>%
 #> FROM (
 #>   SELECT `LHS`.*
 #>   FROM (
-#>     SELECT `flights_1_20200828_071303_12345`.*
+#>     SELECT *
 #>     FROM `flights_1_20200828_071303_12345`
 #>     WHERE ((`month` = 1.0))
 #> ) AS `LHS`
@@ -401,7 +401,7 @@ dm %>%
 #> $airlines
 #> <SQL> SELECT `LHS`.*
 #> FROM (
-#>   SELECT `airlines_1_20200828_071303_12345`.*
+#>   SELECT *
 #>   FROM `airlines_1_20200828_071303_12345`
 #>   WHERE ((`name` = 'Delta Air Lines Inc.'))
 #> ) AS `LHS`
@@ -409,7 +409,7 @@ dm %>%
 #>   SELECT 1 FROM (
 #>   SELECT `LHS`.*
 #>   FROM (
-#>     SELECT `flights_1_20200828_071303_12345`.*
+#>     SELECT *
 #>     FROM `flights_1_20200828_071303_12345`
 #>     WHERE ((`month` = 1.0))
 #> ) AS `LHS`
@@ -426,7 +426,7 @@ dm %>%
 #> $airports
 #> <SQL> SELECT `LHS`.*
 #> FROM (
-#>   SELECT `airports_1_20200828_071303_12345`.*
+#>   SELECT *
 #>   FROM `airports_1_20200828_071303_12345`
 #>   WHERE ((`name` != 'John F Kennedy Intl'))
 #> ) AS `LHS`
@@ -434,7 +434,7 @@ dm %>%
 #>   SELECT 1 FROM (
 #>   SELECT `LHS`.*
 #>   FROM (
-#>     SELECT `flights_1_20200828_071303_12345`.*
+#>     SELECT *
 #>     FROM `flights_1_20200828_071303_12345`
 #>     WHERE ((`month` = 1.0))
 #> ) AS `LHS`

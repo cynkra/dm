@@ -101,7 +101,7 @@ my_dm_total_computed <-
 my_dm_total_computed$total_loans %>%
   sql_render()
 #> <SQL> SELECT *
-#> FROM `dbplyr_b4eYrKPRds`
+#> FROM `dbplyr_tmp_b4eYrKPRds`
 ```
 
 Note the differences in queries returned by
@@ -263,8 +263,8 @@ my_dm_sqlite_resid$loans_residuals
 ```
 
 ``` fansi
-#> # Source:   table<`loans_residuals_1_20200828_071303_12345`> [?? x 2]
-#> # Database: sqlite 3.52.0 []
+#> # A query:  ?? x 2
+#> # Database: sqlite 3.53.3 []
 #>       id   resid
 #>    <int>   <dbl>
 #>  1  4959 -31912.
@@ -335,7 +335,7 @@ deployed_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.52.0 []
+#> src:  sqlite 3.53.3 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `districts`, `clients`, `orders`, `cards`, `disps`, … (8 total)
 #> Columns: 47
@@ -378,7 +378,7 @@ dup_dm
 
 ``` fansi
 #> ── Table source ───────────────────────────────────────────────────────────
-#> src:  sqlite 3.52.0 []
+#> src:  sqlite 3.53.3 []
 #> ── Metadata ───────────────────────────────────────────────────────────────
 #> Tables: `districts`, `clients`, `orders`, `cards`, `disps`, … (8 total)
 #> Columns: 47

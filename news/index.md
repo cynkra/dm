@@ -2,6 +2,8 @@
 
 ## dm 1.1.2
 
+CRAN release: 2026-05-17
+
 ### Bug fixes
 
 - Fix for upcoming dbplyr 2.6.0 release
