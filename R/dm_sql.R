@@ -24,7 +24,8 @@
 #' @details
 #' \itemize{
 #'   \item{ `dm_ddl_pre()` generates `CREATE TABLE` statements (including `PRIMARY KEY` definition). }
-#'   \item{ `dm_dml_load()` generates `INSERT INTO` statements. }
+#'   \item{ `dm_dml_load()` generates `INSERT INTO` statements.
+#'     On SQL Server, tables with more than 1000 rows are loaded with one statement per chunk of 1000 rows. }
 #'   \item{ `dm_ddl_post()` generates scripts for `FOREIGN KEY`, `UNIQUE KEY` and `INDEX`. }
 #'   \item{ `dm_sql()` calls all three above and returns a complete set of scripts. }
 #' }
@@ -528,6 +529,32 @@ dml_tbl_load <- function(tbl_name, dm, table_names, pks, dest) {
   mssql_autoinc <- !is.null(pks) && isTRUE(pks$autoincrement[tbl_name == pks$table])
 
   remote_name <- table_names[[tbl_name]]
+
+  # SQL Server parses the entire inline row set before inserting anything,
+  # a single statement for a large table can stall the load.
+  # Emit one statement per chunk instead, as `copy_dm_to()` did before 1.1.0 (#2467).
+  if (is_mssql(dest) && nrow(tbl) > dml_mssql_chunk_size()) {
+    chunk_size <- dml_mssql_chunk_size()
+    starts <- seq.int(1L, nrow(tbl), by = chunk_size)
+    return(map(
+      starts,
+      ~ dml_tbl_load_rows(
+        vec_slice(tbl, seq.int(.x, min(.x + chunk_size - 1L, nrow(tbl)))),
+        remote_name,
+        mssql_autoinc,
+        dest
+      )
+    ))
+  }
+
+  dml_tbl_load_rows(tbl, remote_name, mssql_autoinc, dest)
+}
+
+dml_mssql_chunk_size <- function() {
+  1000L
+}
+
+dml_tbl_load_rows <- function(tbl, remote_name, mssql_autoinc, dest) {
   selectvals <- dbplyr::sql_render(dbplyr::copy_inline(dest, tbl))
 
   if (is_mariadb(dest)) {
