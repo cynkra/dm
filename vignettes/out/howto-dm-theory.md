@@ -193,11 +193,11 @@ You can get all primary keys in a `dm` by calling `dm_get_all_pks()`:
 dm %>%
   dm_get_all_pks()
 #> # A tibble: 4 x 2
-#>   table    pk_col           
-#>   <chr>    <keys>           
-#> 1 airlines carrier          
-#> 2 airports faa              
-#> 3 planes   tailnum          
+#>   table    pk_col
+#>   <chr>    <keys>
+#> 1 airlines carrier
+#> 2 airports faa
+#> 3 planes   tailnum
 #> 4 weather  origin, time_hour
 ```
 
@@ -208,15 +208,15 @@ simple primary key:
 dm %>%
   dm_enum_pk_candidates(airports)
 #> # A tibble: 8 x 3
-#>   columns candidate why                                                    
-#>   <keys>  <lgl>     <chr>                                                  
-#> 1 faa     TRUE      ""                                                     
-#> 2 lon     TRUE      ""                                                     
+#>   columns candidate why
+#>   <keys>  <lgl>     <chr>
+#> 1 faa     TRUE      ""
+#> 2 lon     TRUE      ""
 #> 3 name    FALSE     "has duplicate values: Municipal Airport (5), All Airp…
-#> 4 lat     FALSE     "has duplicate values: 38.88944 (2), 40.63975 (2)"     
+#> 4 lat     FALSE     "has duplicate values: 38.88944 (2), 40.63975 (2)"
 #> 5 alt     FALSE     "has duplicate values: 0 (51), 13 (13), 14 (12), 15 (1…
 #> 6 tz      FALSE     "has duplicate values: -5 (521), -6 (342), -9 (240), -…
-#> 7 dst     FALSE     "has duplicate values: A (1388), U (47), N (23)"       
+#> 7 dst     FALSE     "has duplicate values: A (1388), U (47), N (23)"
 #> 8 tzone   FALSE     "has duplicate values: America/New_York (519), America…
 ```
 
@@ -247,9 +247,9 @@ You can find foreign key candidates for simple keys with the function
 dm %>%
   dm_enum_fk_candidates(flights, airlines)
 #> # A tibble: 19 x 3
-#>    columns      candidate why                                              
-#>    <keys>       <lgl>     <chr>                                            
-#>  1 carrier      TRUE      ""                                               
+#>    columns      candidate why
+#>    <keys>       <lgl>     <chr>
+#>  1 carrier      TRUE      ""
 #>  2 year         FALSE     "Can't combine `value1` <integer> and `value1` <…
 #>  3 month        FALSE     "Can't combine `value1` <integer> and `value1` <…
 #>  4 day          FALSE     "Can't combine `value1` <integer> and `value1` <…
@@ -278,7 +278,7 @@ keys](https://cynkra.github.io/dm/articles/tech-dm-class.html#foreign-keys).
 A data set has referential integrity if all relations between tables are
 valid. That is, every foreign key holds a primary key that is present in
 the parent table. If a foreign key contains a reference where the
-corresponding row in the parent table is not availabe, that row is an
+corresponding row in the parent table is not available, that row is an
 orphan row and the database no longer has referential integrity.
 
 {dm} allows checking referential integrity with the
@@ -328,8 +328,8 @@ airlines[airlines$carrier == "UA", "name"] <- "United broke my guitar"
 airlines %>%
   filter(carrier == "UA")
 #> # A tibble: 1 x 2
-#>   carrier name                  
-#>   <chr>   <chr>                 
+#>   carrier name
+#>   <chr>   <chr>
 #> 1 UA      United broke my guitar
 
 # ...propagates to all related records
@@ -338,18 +338,18 @@ flights %>%
   select(flight, name)
 #> Joining, by = "carrier"
 #> # A tibble: 336,776 x 2
-#>    flight name                    
-#>     <int> <chr>                   
-#>  1   1545 United broke my guitar  
-#>  2   1714 United broke my guitar  
-#>  3   1141 American Airlines Inc.  
-#>  4    725 JetBlue Airways         
-#>  5    461 Delta Air Lines Inc.    
-#>  6   1696 United broke my guitar  
-#>  7    507 JetBlue Airways         
+#>    flight name
+#>     <int> <chr>
+#>  1   1545 United broke my guitar
+#>  2   1714 United broke my guitar
+#>  3   1141 American Airlines Inc.
+#>  4    725 JetBlue Airways
+#>  5    461 Delta Air Lines Inc.
+#>  6   1696 United broke my guitar
+#>  7    507 JetBlue Airways
 #>  8   5708 ExpressJet Airlines Inc.
-#>  9     79 JetBlue Airways         
-#> 10    301 American Airlines Inc.  
+#>  9     79 JetBlue Airways
+#> 10    301 American Airlines Inc.
 #> # … with 336,766 more rows
 ```
 
@@ -384,7 +384,7 @@ planes %>%
 #>  9 N109UW   1999 Turbo-fan       93
 #> 10 N110UW   1999 Turbo-fan       93
 #> # … with 3,312 more rows
-#> 
+#>
 #> $parent_table
 #> # A tibble: 147 x 7
 #>    model_id model      manufacturer   type              engines seats speed
@@ -435,7 +435,7 @@ object to it:
 con_sqlite <- DBI::dbConnect(RSQLite::SQLite())
 con_sqlite
 #> <SQLiteConnection>
-#>   Path: 
+#>   Path:
 #>   Extensions: TRUE
 DBI::dbListTables(con_sqlite)
 #> character(0)
@@ -444,10 +444,10 @@ copy_dm_to(con_sqlite, dm)
 DBI::dbListTables(con_sqlite)
 #> [1] "airlines_2020_08_28_07_13_03_12345_1"
 #> [2] "airports_2020_08_28_07_13_03_12345_1"
-#> [3] "flights_2020_08_28_07_13_03_12345_1" 
-#> [4] "planes_2020_08_28_07_13_03_12345_1"  
-#> [5] "sqlite_stat1"                        
-#> [6] "sqlite_stat4"                        
+#> [3] "flights_2020_08_28_07_13_03_12345_1"
+#> [4] "planes_2020_08_28_07_13_03_12345_1"
+#> [5] "sqlite_stat1"
+#> [6] "sqlite_stat4"
 #> [7] "weather_2020_08_28_07_13_03_12345_1"
 ```
 
