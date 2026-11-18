@@ -8,7 +8,7 @@
 #' Use other ways to access the tables in a `dm`.
 #'
 #' @details
-#' Use [dm_get_con()] instead of `dm_get_src()` to get the DBI connetion for a `dm` object
+#' Use [dm_get_con()] instead of `dm_get_src()` to get the DBI connection for a `dm` object
 #'
 #' @name dplyr_src
 #' @export

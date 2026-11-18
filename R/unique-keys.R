@@ -20,7 +20,7 @@
 #'
 #' @family primary key functions
 #'
-#' @return An updated `dm` with an additional unqiue key.
+#' @return An updated `dm` with an additional unique key.
 #'
 #' @examplesIf rlang::is_installed(c("nycflights13", "DiagrammeR"))
 #'

@@ -674,7 +674,7 @@ src_tbls_impl <- function(dm, quiet = FALSE) {
 #' Called on a `dm` object, these methods create a copy of all tables in the `dm`.
 #' Depending on the size of your data this may take a long time.
 #'
-#' To create permament tables, first create the database schema using [copy_dm_to()]
+#' To create permanent tables, first create the database schema using [copy_dm_to()]
 #' or [dm_sql()], and then use [dm_rows_append()].
 #'
 #' @inheritParams dm_get_tables
