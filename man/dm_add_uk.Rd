@@ -19,7 +19,7 @@ To define a compound key, use \code{c(col1, col2)}.}
 \item{check}{Boolean, if \code{TRUE}, a check is made if the combination of columns is a unique key of the table.}
 }
 \value{
-An updated \code{dm} with an additional unqiue key.
+An updated \code{dm} with an additional unique key.
 }
 \description{
 \code{dm_add_uk()} marks the specified columns as a unique key of the specified table.

@@ -29,7 +29,7 @@ dm_draw(
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{col_attr}{Deprecated, use \code{colummn_types} instead.}
+\item{col_attr}{Deprecated, use \code{column_types} instead.}
 
 \item{view_type}{Can be "keys_only" (default), "all" or "title_only".
 It defines the level of details for rendering tables (only primary and foreign keys, all columns, or no columns).}
