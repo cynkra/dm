@@ -104,7 +104,7 @@ create_figure(
   caption = "```r\ndm(df1, df2, df3)\n```\n"
 )
 ```
-         
+
 ### <i class="cheatsheet-icon fa-solid fa-diagram-project"></i> from dm: `dm(dm1, df1...)`
 
 ```{r, results='asis'}
@@ -123,7 +123,7 @@ create_figure(
   src = "dm-dm.svg",
   caption = "```r\ndm(dm1, dm2)\n```\n"
 )
-```        
+```
 
 <hr class="d-none d-print-block"></hr>
 
@@ -145,7 +145,7 @@ create_figure(
   caption = "**Add** primary keys:\n\n```r\ndm1 |>
   dm_add_pk(table, columns)\n```\n"
 )
-```        
+```
 
 
 **Identify** potential foreign keys:
@@ -160,7 +160,7 @@ create_figure(
   caption = "**Add** foreign keys:\n\n```r\ndm1 |>
   dm_add_fk(table, column)\n```\n"
 )
-``` 
+```
 </div>
 <div class="page1col2">
 ::: {.important-div}
@@ -185,7 +185,7 @@ cat(
   />'
 )
 ```
-            
+
 :::
 
 <hr class="d-none d-print-block"></hr>
@@ -202,7 +202,7 @@ create_figure(
   caption = "```r\ndm1 |>
   dm_select_tbl(-df3)\n```\n"
 )
-``` 
+```
 
 ### Rename tables: `dm_rename_tbl(dm1, ...)`
 
@@ -214,7 +214,7 @@ Automatic update of dm meta-information and table relations.
 ```{r, results='asis'}
 create_figure(
   class = "right",
-  alt = "diagram showing two dm objects, the third table of the one on the right has two colmns less",
+  alt = "diagram showing two dm objects, the third table of the one on the right has two columns less",
   src = "dm_select.svg",
   caption = "```r\ndm1 |>
   dm_select(df3, -c3, -c4)\n```\n"
@@ -259,7 +259,7 @@ create_figure(
     rankdir = "TB"
   )\n```\n'
 )
-``` 
+```
 
 ### Control diagram scope
 
@@ -279,10 +279,10 @@ create_figure(
   ) |>
   dm_draw()\n```\n'
 )
-``` 
+```
 
 <hr class="d-none d-print-block"></hr>
-          
+
 ## <i class="cheatsheet-icon fa-solid fa-check"></i> Data checks
 
 ### `dm_examine_constraints()`
@@ -324,7 +324,7 @@ Only direct neighbours: `dm_flatten_to_tbl()`
 ```{r, results='asis'}
 create_figure(
   class = "big",
-  alt = "On the left a dm object where table A is linked to table B and table C. Table D is linked to table B. On the right a table corresponding to a join of table A, B and C. Not D as it is not a direct neighboor",
+  alt = "On the left a dm object where table A is linked to table B and table C. Table D is linked to table B. On the right a table corresponding to a join of table A, B and C. Not D as it is not a direct neighbour",
   src = "flatten.svg",
   caption = "```r\ndm1 |>
   dm_flatten_to_tbl(
@@ -474,7 +474,7 @@ create_figure(
   dm_update_zoomed()\n```\n"
 )
 ```
-    
+
 </div>
 <div class="page2col3">
 ## <i class="cheatsheet-icon fa-solid fa-database"></i> Modify database source of a dm

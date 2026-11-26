@@ -12,7 +12,7 @@
 #'
 #' @param dm A [`dm`] object.
 #' @param rankdir Graph attribute for direction (e.g., 'BT' = bottom --> top).
-#' @param col_attr Deprecated, use `colummn_types` instead.
+#' @param col_attr Deprecated, use `column_types` instead.
 #' @param view_type Can be "keys_only" (default), "all" or "title_only".
 #'   It defines the level of details for rendering tables (only primary and foreign keys, all columns, or no columns).
 #' @inheritParams rlang::args_dots_empty

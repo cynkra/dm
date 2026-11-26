@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{Techincal: Visualizing dm objects}
+  %\VignetteIndexEntry{Technical: Visualizing dm objects}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
@@ -99,4 +99,4 @@ flights_dm_w_many_keys_and_colors %>%
   dm_draw() %>%
   DiagrammeRsvg::export_svg() %>%
   write("flights_dm_w_many_keys_and_color.svg")
-``` 
+```
