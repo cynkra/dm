@@ -2,49 +2,26 @@ Package: dm
 Title: Relational Data Models
 Version: 1.1.2.9022
 Date: 2026-11-27
-Authors@R: 
-    c(person(given = "Tobias",
-             family = "Schieferdecker",
-             role = "aut",
-             email = "tobias@cynkra.com"),
-      person(given = "Kirill",
-             family = "Müller",
-             role = c("aut", "cre"),
-             email = "kirill@cynkra.com",
-             comment = c(ORCID = "0000-0002-1416-3412")),
-      person(given = "Antoine",
-             family = "Fabri",
-             role = "ctb"),
-      person(given = "Darko",
-             family = "Bergant",
-             role = "aut",
-             email = "darko.bergant@gmail.com"),
-      person(given = "Katharina",
-             family = "Brunner",
-             role = "ctb"),
-      person(given = "James",
-             family = "Wondrasek",
-             role = "ctb"),
-      person(given = "Indrajeet",
-             family = "Patil",
-             comment = c(ORCID = "0000-0003-1995-6531"),
-             role = "ctb"),
-      person(given = "Maëlle",
-             family = "Salmon",
-             comment = c(ORCID = "0000-0002-2815-0399"),
-             role = "ctb"),
-      person(given = "energie360° AG",
-             role = "fnd",
-             email = "info@energie360.ch"),
-      person(given = "cynkra GmbH",
-             role = c("fnd", "cph"),
-             email = "mail@cynkra.com",
-             comment = c(ROR = "0335t7e62"))
-    )
-Description: Provides tools for working with multiple related
-    tables, stored as data frames or in a relational database.  Multiple
-    tables (data and metadata) are stored in a compound object, which can
-    then be manipulated with a pipe-friendly syntax.
+Authors@R: c(
+    person("Tobias", "Schieferdecker", , "tobias@cynkra.com", role = "aut"),
+    person("Kirill", "Müller", , "kirill@cynkra.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-1416-3412")),
+    person("Antoine", "Fabri", role = "ctb"),
+    person("Darko", "Bergant", , "darko.bergant@gmail.com", role = "aut"),
+    person("Katharina", "Brunner", role = "ctb"),
+    person("James", "Wondrasek", role = "ctb"),
+    person("Indrajeet", "Patil", role = "ctb",
+           comment = c(ORCID = "0000-0003-1995-6531")),
+    person("Maëlle", "Salmon", role = "ctb",
+           comment = c(ORCID = "0000-0002-2815-0399")),
+    person("energie360° AG", , , "info@energie360.ch", role = "fnd"),
+    person("cynkra GmbH", , , "mail@cynkra.com", role = c("fnd", "cph"),
+           comment = c(ROR = "0335t7e62"))
+  )
+Description: Provides tools for working with multiple related tables,
+    stored as data frames or in a relational database.  Multiple tables
+    (data and metadata) are stored in a compound object, which can then be
+    manipulated with a pipe-friendly syntax.
 License: MIT + file LICENSE
 URL: https://dm.cynkra.com/, https://github.com/cynkra/dm
 BugReports: https://github.com/cynkra/dm/issues
@@ -104,21 +81,10 @@ Suggests:
     tidyverse,
     waldo,
     withr
-Config/Needs/website:
-    brio,
-    bslib,
-    cynkra/cynkratemplate,
-    htmltools,
-    pagedown,
-    purrr,
-    rmarkdown,
-    whisker,
-    xml2
-Config/Needs/check: anthonynorth/roxyglobals
-Config/gha/extra-packages:
-    odbc=?ignore-build-errors,
-    duckdb=?ignore-build-errors,
-    duckplyr=?ignore-build-errors
+VignetteBuilder:
+    knitr
+Config/autostyle/scope: line_breaks
+Config/autostyle/strict: true
 Config/comment/gha/extra-packages: Posit Package Manager publishes no
     aarch64 Windows binaries, so windows-11-arm builds every dependency
     from source: odbc's vendored nanodbc does not compile against the
@@ -131,17 +97,16 @@ Config/comment/gha/extra-packages: Posit Package Manager publishes no
     RCMDCHECK_ERROR_ON to warning when a declared dependency is missing.
     Same lever as duckdb/duckdb-r, explained in its
     handbook/operations/ci/matrix/README.md.
-VignetteBuilder:
-    knitr
-Config/autostyle/scope: line_breaks
-Config/autostyle/strict: true
+Config/gha/extra-packages: odbc=?ignore-build-errors,
+    duckdb=?ignore-build-errors, duckplyr=?ignore-build-errors
+Config/Needs/check: anthonynorth/roxyglobals
+Config/Needs/website: brio, bslib, cynkra/cynkratemplate, htmltools,
+    pagedown, purrr, rmarkdown, whisker, xml2
+Config/roxygen2/version: 8.1.1.9000
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Config/testthat/start-first: zzx-deprecated, flatten, dplyr, filter-dm,
     draw-dm, bind, rows-dm, learn
 Encoding: UTF-8
-Roxygen: list(
-      markdown = TRUE,
-      roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet")
-    )
-Config/roxygen2/version: 8.1.1.9000
+Roxygen: list( markdown = TRUE, roclets = c("collate", "namespace", "rd",
+    "roxyglobals::global_roclet") )
