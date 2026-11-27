@@ -1,5 +1,17 @@
 # Changelog
 
+## dm 1.1.2.9022
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#2544](https://github.com/cynkra/dm/issues/2544)).
+
+### Continuous integration
+
+- Sync the workflows with cynkra/cynkratemplate
+  ([\#2545](https://github.com/cynkra/dm/issues/2545)).
+
 ## dm 1.1.2.9021
 
 ### Chore
