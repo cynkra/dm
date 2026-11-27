@@ -14,7 +14,7 @@ test_that("snapshot test for datamodelr code", {
   path <- tempfile(fileext = ".dot")
   writeLines(bdm_create_graph(data_model, font_size = list())$dot_code, path)
 
-  expect_snapshot_file(path, "nycflights13.dot")
+  expect_snapshot_file(path, "nycflights13.dot", compare = compare_file_text)
 })
 
 test_that("snapshot test 2 for datamodelr code", {
@@ -34,7 +34,7 @@ test_that("snapshot test 2 for datamodelr code", {
     path
   )
 
-  expect_snapshot_file(path, "nycflights13_table_desc_1.dot")
+  expect_snapshot_file(path, "nycflights13_table_desc_1.dot", compare = compare_file_text)
 })
 
 test_that("snapshot test 3 for datamodelr code", {
@@ -54,7 +54,7 @@ test_that("snapshot test 3 for datamodelr code", {
     path
   )
 
-  expect_snapshot_file(path, "nycflights13_table_desc_2.dot")
+  expect_snapshot_file(path, "nycflights13_table_desc_2.dot", compare = compare_file_text)
 })
 
 test_that("snapshot test 4 for datamodelr code", {
@@ -75,7 +75,7 @@ test_that("snapshot test 4 for datamodelr code", {
     path
   )
 
-  expect_snapshot_file(path, "nycflights13_draw_uk_1.dot")
+  expect_snapshot_file(path, "nycflights13_draw_uk_1.dot", compare = compare_file_text)
 })
 
 test_that("snapshot test 5 for datamodelr code", {
@@ -96,7 +96,7 @@ test_that("snapshot test 5 for datamodelr code", {
     path
   )
 
-  expect_snapshot_file(path, "nycflights13_draw_uk_2.dot")
+  expect_snapshot_file(path, "nycflights13_draw_uk_2.dot", compare = compare_file_text)
 })
 
 test_that("snapshot test 6 for datamodelr code", {
@@ -117,7 +117,7 @@ test_that("snapshot test 6 for datamodelr code", {
     path
   )
 
-  expect_snapshot_file(path, "nycflights13_draw_uk_3.dot")
+  expect_snapshot_file(path, "nycflights13_draw_uk_3.dot", compare = compare_file_text)
 })
 
 
@@ -130,5 +130,5 @@ test_that("snapshot test for weird data models", {
   path <- tempfile(fileext = ".dot")
   writeLines(bdm_create_graph(data_model, font_size = list())$dot_code, path)
 
-  expect_snapshot_file(path, "weird.dot")
+  expect_snapshot_file(path, "weird.dot", compare = compare_file_text)
 })
