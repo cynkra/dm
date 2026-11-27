@@ -1,5 +1,12 @@
 # Changelog
 
+## dm 1.1.2.9021
+
+### Chore
+
+- Drop the local favicon copy, the template ships it
+  ([\#2541](https://github.com/cynkra/dm/issues/2541)).
+
 ## dm 1.1.2.9020
 
 ### Chore
