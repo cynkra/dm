@@ -82,7 +82,8 @@ Suggests:
     waldo,
     withr
 VignetteBuilder:
-    knitr
+    knitr,
+    rmarkdown
 Config/autostyle/scope: line_breaks
 Config/autostyle/strict: true
 Config/comment/gha/extra-packages: Posit Package Manager publishes no
@@ -97,10 +98,10 @@ Config/comment/gha/extra-packages: Posit Package Manager publishes no
     RCMDCHECK_ERROR_ON to warning when a declared dependency is missing.
     Same lever as duckdb/duckdb-r, explained in its
     handbook/operations/ci/matrix/README.md.
-Config/gha/extra-packages:odbc=?ignore-build-errors,
+Config/gha/extra-packages: odbc=?ignore-build-errors,
     duckdb=?ignore-build-errors, duckplyr=?ignore-build-errors
 Config/Needs/check: anthonynorth/roxyglobals
-Config/Needs/website:brio, bslib, cynkra/cynkratemplate, htmltools,
+Config/Needs/website: brio, bslib, cynkra/cynkratemplate, htmltools,
     pagedown, purrr, rmarkdown, whisker, xml2
 Config/roxygen2/version: 8.1.1.9000
 Config/testthat/edition: 3
