@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# dm 1.1.2.9023
+
+## Chore
+
+- Declare every vignette builder in DESCRIPTION (#2548).
+
+- Tidy DESCRIPTION with `usethis::use_tidy_description()` (#2547).
+
+
 # dm 1.1.2.9022
 
 ## Chore

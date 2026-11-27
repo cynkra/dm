@@ -1,6 +1,6 @@
 Package: dm
 Title: Relational Data Models
-Version: 1.1.2.9022
+Version: 1.1.2.9023
 Date: 2026-11-27
 Authors@R: c(
     person("Tobias", "Schieferdecker", , "tobias@cynkra.com", role = "aut"),
